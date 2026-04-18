@@ -10,12 +10,41 @@ import Image from "#windows/Image";
 import Contact from "#windows/Contact";
 import Home from "#components/Home";
 import Photos from "#windows/Photos";
+import MobileOS from "#components/MobileOS";
 import gsap from "gsap";
+import { useState, useEffect } from "react";
 
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
 
 const App = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <main className="mobile-os">
+        <MobileOS />
+        <Terminal />
+        <Safari />
+        <Resume />
+        <Finder />
+        <Text />
+        <Image />
+        <Contact />
+        <Photos />
+      </main>
+    );
+  }
+
   return (
     <main>
       <Navbar />

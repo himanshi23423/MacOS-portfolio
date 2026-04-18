@@ -2,48 +2,87 @@ import useWindowsStore from "#store/window";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
-import { useLayoutEffect, useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const windowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
     const { focusWindow, windows } = useWindowsStore();
     const { isOpen, zIndex } = windows[windowKey];
     const ref = useRef(null);
+    const prevOpenRef = useRef(false);
+    const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
 
+    useEffect(() => {
+      const checkMobile = () => setIsMobile(window.innerWidth < 768);
+      window.addEventListener("resize", checkMobile);
+      return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
+    // Desktop: GSAP drag
     useGSAP(() => {
       const el = ref.current;
+      if (!el || isMobile) return;
+      const [instance] = Draggable.create(el, {
+        onPress: () => focusWindow(windowKey),
+      });
+      return () => instance.kill();
+    }, [isMobile]);
 
-      if (!el || !isOpen) return;
-
-      el.style.display = "block";
-
-      gsap.fromTo(
-        el,
-        { scale: 0.8, opacity: 0, y: 40 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
-      );
-    }, [isOpen]);
-
-    useGSAP(()=>{
+    // Desktop: GSAP open animation
+    useGSAP(() => {
       const el = ref.current;
-      if(!el) return;
+      if (!el || isMobile) return;
+      if (isOpen && !prevOpenRef.current) {
+        el.style.display = "block";
+        gsap.fromTo(
+          el,
+          { scale: 0.88, opacity: 0, y: 30 },
+          { scale: 1, opacity: 1, y: 0, duration: 0.38, ease: "power3.out" }
+        );
+      } else if (!isOpen) {
+        el.style.display = "none";
+      }
+      prevOpenRef.current = isOpen;
+    }, [isOpen, isMobile]);
 
-     const [instance]= Draggable.create(el,{onPress:()=>focusWindow(windowKey)});
+    const mobileStyles = {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100dvw",
+      height: "100dvh",
+      zIndex: isOpen ? 9999 : -1,
+      background: "#ffffff",
+      flexDirection: "column",
+      overflow: "hidden",
+      display: "flex",
+      opacity: isOpen ? 1 : 0,
+      pointerEvents: isOpen ? "auto" : "none",
+      transform: isOpen ? "translateX(0)" : "translateX(100%)",
+      transition: "transform 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s ease",
+      border: "none",
+      outline: "none",
+      boxShadow: "none",
+      borderRadius: 0,
+    };
 
-     return ()=>instance.kill()
-    },[])
+    const desktopStyles = {
+      zIndex,
+      display: isOpen ? "block" : "none",
+    };
 
-    useLayoutEffect(() => {
-      const el = ref.current;
-      if (!el) return;
-      el.style.display = isOpen ? "block" : "none";
-    }, [isOpen]);
     return (
-      <section id={windowKey} ref={ref} style={{ zIndex }} className="absolute">
+      <section
+        id={windowKey}
+        ref={ref}
+        style={isMobile ? mobileStyles : desktopStyles}
+        className={isMobile ? "" : "absolute"}
+      >
         <Component {...props} />
       </section>
     );
   };
+
   Wrapped.displayName = `WindowWrapper(${
     Component.displayName || Component.name || "Component"
   })`;

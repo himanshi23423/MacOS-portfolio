@@ -25,7 +25,7 @@ const Finder = () => {
         <WindowControls target={"finder"} />
         <Search className="icon" />
       </div>
-      <div className="bg-white flex h-full">
+      <div className="bg-white flex h-full finder-main">
         <div className="sidebar">
           <div>
             <h3>Favorites</h3>

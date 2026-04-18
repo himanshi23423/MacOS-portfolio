@@ -17,7 +17,7 @@ const Photos = () => {
         </div>
       </div>
 
-      <div className="flex w-full">
+      <div className="flex  w-full photos-main">
         <div className="sidebar">
           <h2>Photos</h2>
 
