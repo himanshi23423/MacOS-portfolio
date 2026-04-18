@@ -7,12 +7,12 @@ const Terminal = () => {
   return (
     <>
       <div id="window-header">
-      <WindowControls target="terminal"/>
+        <WindowControls target="terminal" />
         <h2>Tech Stack</h2>
       </div>
       <div className="techstack">
         <p>
-          <span className="font-bold">@Kunal % </span>
+          <span className="font-bold">@kuldeep % </span>
           show tech stack
         </p>
         <div className="label">

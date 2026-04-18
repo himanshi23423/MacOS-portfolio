@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { Tooltip } from "react-tooltip";
 
 const Dock = () => {
-  const { openWindow, closeWindow, focusWindow ,windows} = useWindowsStore();
+  const { openWindow, closeWindow, focusWindow, windows } = useWindowsStore();
   const dockRef = useRef(null);
 
   useGSAP(() => {
@@ -42,7 +42,7 @@ const Dock = () => {
           y: 0,
           duration: 0.3,
           ease: "power1.out",
-        })
+        }),
       );
     dock.addEventListener("mousemove", handleMouseMove);
     dock.addEventListener("mouseleave", resetIcons);

@@ -20,7 +20,7 @@ const renderText = (text, classname, baseWeight = 400) => {
 };
 
 const setupTextHover = (container, type) => {
-  if (!container) return ()=>{}
+  if (!container) return () => {};
 
   const letters = container.querySelectorAll("span");
   const { min, max, default: base } = FONT_WEIGHTS[type];
@@ -78,9 +78,9 @@ const Welcome = () => {
     <section id="welcome">
       <p ref={subtitleRef}>
         {renderText(
-          "Hey, I'm Kunal! Welcome to my",
+          "Hey, I'm kuldeep! Welcome to my",
           "text-3xl font-georama",
-          100
+          100,
         )}
       </p>
 

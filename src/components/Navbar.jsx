@@ -156,16 +156,15 @@ const Navbar = () => {
           className={`control-center ${isControlOpen ? "is-open" : ""}`}
           aria-hidden={!isControlOpen}
         >
-          <header>
+          <header className="flex justify-center items-center">
             <div className="datetime">
               <p>{now.format("h:mm A")}</p>
               <span>{now.format("dddd, MMMM D")}</span>
             </div>
             <div className="identity">
-              <img src="/icons/logo.svg" alt="Kunal" />
+              <img src="/icons/logo.svg" alt="kuldeep" />
               <div>
-                <p>Kunal</p>
-                <span className="-ml-3.5">Available</span>
+                <p>kuldeep</p>
               </div>
             </div>
           </header>
