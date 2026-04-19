@@ -44,7 +44,7 @@ const dockApps = [
   },
   {
     id: "safari",
-    name: "Articles", // was "Safari"
+    name: "Safari", // was "Safari"
     icon: "safari.png",
     canOpen: true,
   },
@@ -74,29 +74,31 @@ const dockApps = [
   },
 ];
 
-const blogPosts = [
+const projects = [
   {
     id: 1,
-    date: "Sep 2, 2025",
-    title:
-      "TypeScript Explained: What It Is, Why It Matters, and How to Master It",
-    image: "/images/blog1.png",
-    link: "https://jsmastery.com/blog/typescript-explained-what-it-is-why-it-matters-and-how-to-master-it",
+    title: "NewTube",
+    description: "A modern video streaming application built with Next.js, Tailwind CSS, tRPC, and PostgreSQL.",
+    image: "/images/project-1.png",
+    link: "https://newtube-ruddy.vercel.app/",
+    github: "https://github.com/Kuldeep23345/newtube"
   },
   {
     id: 2,
-    date: "Aug 28, 2025",
-    title: "The Ultimate Guide to Mastering Three.js for 3D Development",
-    image: "/images/blog2.png",
-    link: "https://jsmastery.com/blog/the-ultimate-guide-to-mastering-three-js-for-3d-development",
+    title: "Free Course Finder",
+    description: "An AI-powered learning platform to discover free courses from multiple sources.",
+    image: "/images/project-2.png",
+    link: "https://ai-course-finder-ivory.vercel.app/",
+    github: "https://github.com/Kuldeep23345/ai-course-finder"
   },
   {
     id: 3,
-    date: "Aug 15, 2025",
-    title: "The Ultimate Guide to Mastering GSAP Animations",
-    image: "/images/blog3.png",
-    link: "https://jsmastery.com/blog/the-ultimate-guide-to-mastering-gsap-animations",
-  },
+    title: "Resume Ats Scanner",
+    description: "AI-powered resume parsing and analysis platform optimized for ATS.",
+    image: "/images/project-3.png",
+    link: "https://resume-ats-omega.vercel.app/",
+    github: "https://github.com/Kuldeep23345/resume-ats-scanner"
+  }
 ];
 
 const techStack = [
@@ -133,6 +135,7 @@ const socials = [
     icon: "/icons/github.svg",
     bg: "#f4656b",
     link: "https://github.com/Kuldeep23345",
+    img:"/images/github.png"
   },
   {
     id: 2,
@@ -140,6 +143,7 @@ const socials = [
     icon: "/icons/atom.svg",
     bg: "#4bcb63",
     link: "#",
+    img:"/images/youtube.png"
   },
   {
     id: 3,
@@ -147,13 +151,15 @@ const socials = [
     icon: "/icons/twitter.svg",
     bg: "#ff866b",
     link: "https://x.com/kuldeep_rajput23",
+    img:"/images/x.png"
   },
   {
     id: 4,
     text: "LinkedIn",
     icon: "/icons/linkedin.svg",
     bg: "#05b6f6",
-    link: "linkedin.com/in/kuldeep-rajput-24196537b",
+    link: "https://linkedin.com/in/kuldeep-rajput-24196537b",
+    img:"/images/linkedin.png"
   },
 ];
 
@@ -208,7 +214,7 @@ export {
   navLinks,
   navIcons,
   dockApps,
-  blogPosts,
+  projects,
   techStack,
   socials,
   photosLinks,
