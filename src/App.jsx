@@ -11,6 +11,7 @@ import Contact from "#windows/Contact";
 import Home from "#components/Home";
 import Photos from "#windows/Photos";
 import MobileOS from "#components/MobileOS";
+import BootScreen from "#components/BootScreen";
 import gsap from "gsap";
 import { useState, useEffect } from "react";
 
@@ -19,6 +20,7 @@ gsap.registerPlugin(Draggable);
 
 const App = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [booting, setBooting] = useState(true);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -31,8 +33,30 @@ const App = () => {
 
   if (isMobile) {
     return (
-      <main className="mobile-os">
-        <MobileOS />
+      <>
+        {booting && <BootScreen onComplete={() => setBooting(false)} />}
+        <main className="mobile-os">
+          <MobileOS />
+          <Terminal />
+          <Safari />
+          <Resume />
+          <Finder />
+          <Text />
+          <Image />
+          <Contact />
+          <Photos />
+        </main>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {booting && <BootScreen onComplete={() => setBooting(false)} />}
+      <main>
+        <Navbar />
+        <Welcome />
+        <Dock />
         <Terminal />
         <Safari />
         <Resume />
@@ -41,25 +65,9 @@ const App = () => {
         <Image />
         <Contact />
         <Photos />
+        <Home />
       </main>
-    );
-  }
-
-  return (
-    <main>
-      <Navbar />
-      <Welcome />
-      <Dock />
-      <Terminal />
-      <Safari />
-      <Resume />
-      <Finder />
-      <Text />
-      <Image />
-      <Contact />
-      <Photos />
-      <Home />
-    </main>
+    </>
   );
 };
 
