@@ -248,8 +248,8 @@ const Finder = () => {
   }
 
   return (
-    <>
-      <div id="window-header">
+    <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden">
+      <div id="window-header" className="!bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2 shrink-0">
         <WindowControls target={"finder"} />
         <Search className="icon" />
       </div>
@@ -290,20 +290,22 @@ const Finder = () => {
             </ul>
           </div>
         </div>
-        <ul className="content">
+        <ul className="flex-1 p-6 bg-white overflow-y-auto flex flex-wrap content-start gap-6">
           {activeLocation?.children.map((item) => (
             <li
               key={item.id}
-              className={item.position}
+              className="flex flex-col items-center gap-2 cursor-pointer group w-20"
               onClick={() => openItem(item)}
             >
-              <img src={item.icon} alt={item.name} />
-              <p>{item.name}</p>
+              <div className="w-12 h-12 flex items-center justify-center transition-transform group-hover:scale-105">
+                <img src={item.icon} alt={item.name} className="max-w-full max-h-full object-contain" />
+              </div>
+              <p className="text-xs font-medium text-center text-gray-800 line-clamp-2 break-words w-full px-1">{item.name}</p>
             </li>
           ))}
         </ul>
       </div>
-    </>
+    </div>
   );
 };
 

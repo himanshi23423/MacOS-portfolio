@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { Tooltip } from "react-tooltip";
 
 const Dock = () => {
-  const { openWindow, closeWindow, focusWindow, windows } = useWindowsStore();
+  const { openWindow, closeWindow, focusWindow, unminimizeWindow, windows } = useWindowsStore();
   const dockRef = useRef(null);
 
   useGSAP(() => {
@@ -57,12 +57,15 @@ const Dock = () => {
     if (!app.canOpen) return;
 
     const window = windows[app.id];
-    if (window.isOpen) {
-      closeWindow(app.id);
+    if (window?.isOpen) {
+      if (window.isMinimized) {
+        unminimizeWindow(app.id);
+      } else {
+        closeWindow(app.id);
+      }
     } else {
       openWindow(app.id);
     }
-    console.log(windows);
   };
   return (
     <section id="dock">
@@ -86,6 +89,9 @@ const Dock = () => {
                 className={canOpen ? "" : "opacity-60"}
               />
             </button>
+            {windows[id]?.isOpen && (
+              <div className="absolute -bottom-1.5 w-1 h-1 bg-white rounded-full" />
+            )}
           </div>
         ))}
         <Tooltip id="dock-tooltip" place="top" className="tooltip" />

@@ -385,7 +385,7 @@ const Safari = () => {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white select-none overflow-hidden rounded-xl">
+    <div className="flex flex-col h-full w-full @container bg-white select-none overflow-hidden rounded-xl">
       <div
         id="window-header"
         className="!bg-white !border-b-[#d1d1d1] !px-4 !py-2"
@@ -482,7 +482,7 @@ const Safari = () => {
               <h2 className="text-xl font-semibold text-gray-800 mb-6">
                 Favorites
               </h2>
-              <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-8">
+              <div className="grid grid-cols-3 @md:grid-cols-4 @lg:grid-cols-6 @xl:grid-cols-8 gap-6 @md:gap-8">
                 {socials.map((favorite) => (
                   <a
                     key={favorite.id}
@@ -542,7 +542,7 @@ const Safari = () => {
               <h2 className="text-xl font-semibold text-gray-800 mb-6">
                 Featured Projects
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 @md:grid-cols-2 gap-6">
                 {projects.map((project) => (
                   <div
                     key={project.id}

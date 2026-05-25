@@ -208,15 +208,15 @@ const Photos = () => {
   }
 
   return (
-    <>
-      <div id="window-header">
+    <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden">
+      <div id="window-header" className="shrink-0 !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2">
         <WindowControls target={"photos"} />
         <div className="w-full flex justify-end items-center gap-3 text-gray-500">
           <Search className="icon" />
         </div>
       </div>
-      <div className="flex w-full photos-main">
-        <div className="sidebar">
+      <div className="flex w-full flex-1 overflow-hidden photos-main">
+        <div className="sidebar w-1/3 @md:w-3/12 border-r border-gray-200 overflow-y-auto">
           <h2>Photos</h2>
           <ul>
             {photosLinks.map(({ id, icon, title }) => (
@@ -227,8 +227,8 @@ const Photos = () => {
             ))}
           </ul>
         </div>
-        <div className="gallery">
-          <ul>
+        <div className="gallery flex-1 overflow-y-auto p-2 @sm:p-5">
+          <ul className="flex flex-col @sm:grid @sm:grid-cols-5 @sm:grid-rows-5 gap-2.5">
             {gallery.map(({ id, img }) => (
               <li
                 key={id}
@@ -249,7 +249,7 @@ const Photos = () => {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 const PhotosWindow = windowWrapper(Photos, "photos");

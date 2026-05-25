@@ -6,13 +6,12 @@ const Text = () => {
   const { windows } = useWindowsStore();
   const data = windows.txtfile?.data;
 
-  if (!data) return null;
-  const { name, image, subtitle, description } = data;
+  const { name = "Document", image = "", subtitle = "", description = [] } = data || {};
   return (
-    <>
-      <div id="window-header">
+    <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden">
+      <div id="window-header" className="shrink-0 !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2 flex items-center justify-between">
         <WindowControls target={"txtfile"} />
-        <h2>{name}</h2>
+        <h2 className="flex-1 text-center font-bold text-gray-500">{name}</h2>
       </div>
       <div className="p-5 space-y-6 bg-white">
         {image ? (
@@ -32,7 +31,7 @@ const Text = () => {
           </div>
         ) : null}
       </div>
-    </>
+    </div>
   );
 };
 const TextWindow = windowWrapper(Text, "txtfile");

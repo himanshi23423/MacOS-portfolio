@@ -340,12 +340,24 @@ body.theme-dark {
     }
 
     .minimize {
-      @apply size-3.5 rounded-full bg-[#ffc030];
+      @apply size-3.5 rounded-full bg-[#ffc030] cursor-pointer;
     }
 
     .maximize {
-      @apply size-3.5 rounded-full bg-[#2acb42];
+      @apply size-3.5 rounded-full bg-[#2acb42] cursor-pointer;
     }
+  }
+
+  .maximized {
+    width: 100vw !important;
+    height: calc(100dvh - 35px) !important;
+    top: 35px !important;
+    left: 0 !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   #window-header {
@@ -357,7 +369,7 @@ body.theme-dark {
   }
 
   #terminal {
-    @apply w-xl absolute top-32 left-1/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-[600px] h-[500px] absolute top-32 left-1/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     h2 {
       @apply font-bold text-sm text-center w-full;
@@ -403,7 +415,7 @@ body.theme-dark {
   }
 
   #contact {
-    @apply max-w-2xl absolute top-60 left-5/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-[600px] h-[450px] max-w-2xl absolute top-60 left-5/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     h2 {
       @apply font-bold text-sm text-center w-full;
@@ -414,10 +426,8 @@ body.theme-dark {
     }
 
     ul {
-      @apply flex items-center gap-3;
-
       li {
-        @apply rounded-lg p-3 w-60 hover:-translate-y-0.5 hover:scale-105 origin-center transition-all duration-300;
+        @apply rounded-lg p-3 hover:-translate-y-0.5 hover:scale-105 origin-center transition-all duration-300;
 
         a {
           @apply space-y-5;
@@ -431,7 +441,7 @@ body.theme-dark {
   }
 
   #photos {
-    @apply max-w-3xl bg-white absolute top-96 left-1/2 -translate-y-1/2 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-[800px] h-[550px] max-w-3xl bg-white absolute top-96 left-1/2 -translate-y-1/2 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     .sidebar {
       @apply w-3/12 flex-none bg-gray-50 border-r border-gray-200 flex flex-col p-5;
@@ -460,30 +470,10 @@ body.theme-dark {
     }
 
     .gallery {
-      @apply p-5;
-
       ul {
-        @apply grid grid-cols-5 grid-rows-5 gap-2.5;
-
         li {
           img {
             @apply size-full object-cover rounded-lg;
-          }
-
-          &:first-child {
-            @apply row-start-1 row-span-3 col-start-1 col-span-3;
-          }
-
-          &:nth-child(2) {
-            @apply row-start-1 row-span-3 col-start-4 col-span-2;
-          }
-
-          &:nth-child(3) {
-            @apply row-start-4 row-span-2 col-start-3 col-span-3;
-          }
-
-          &:last-child {
-            @apply row-start-4 row-span-2 col-start-1 col-span-2;
           }
         }
       }
@@ -491,7 +481,7 @@ body.theme-dark {
   }
 
 #resume {
-  @apply w-fit h-fit absolute top-16 left-7/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+  @apply w-[800px] h-[80vh] absolute top-16 left-7/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
   .resume-main {
     @apply overflow-auto;
@@ -505,7 +495,7 @@ body.theme-dark {
 }
 
   #finder {
-    @apply absolute w-3xl left-40 top-20 shadow-2xl drop-shadow-2xl overflow-hidden rounded-xl;
+    @apply w-[768px] h-[500px] absolute left-40 top-20 shadow-2xl drop-shadow-2xl overflow-hidden rounded-xl;
 
     .sidebar {
       @apply w-48 bg-gray-50 border-r border-gray-200 flex flex-col p-5 space-y-3;
@@ -549,7 +539,7 @@ body.theme-dark {
   }
 
   #txtfile {
-    @apply w-md absolute top-36 right-32 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-[500px] h-[400px] absolute top-36 right-32 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     h2 {
       @apply font-bold text-sm text-center w-full;
@@ -557,7 +547,7 @@ body.theme-dark {
   }
 
   #imgfile {
-    @apply w-xl absolute top-40 left-2/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-[700px] h-[550px] absolute top-40 left-2/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     #window-header {
       p {
@@ -759,4 +749,36 @@ body.theme-dark {
     width: 100% !important;
     max-width: 100% !important;
   }
+}
+
+/* ===== RESIZE HANDLES ===== */
+.resize-handle {
+  position: absolute;
+  z-index: 100;
+  touch-action: none;
+}
+
+.resize-n {
+  top: -4px; left: 0; right: 0; height: 8px; cursor: ns-resize;
+}
+.resize-s {
+  bottom: -4px; left: 0; right: 0; height: 8px; cursor: ns-resize;
+}
+.resize-e {
+  top: 0; bottom: 0; right: -4px; width: 8px; cursor: ew-resize;
+}
+.resize-w {
+  top: 0; bottom: 0; left: -4px; width: 8px; cursor: ew-resize;
+}
+.resize-ne {
+  top: -4px; right: -4px; width: 12px; height: 12px; cursor: nesw-resize; z-index: 101;
+}
+.resize-nw {
+  top: -4px; left: -4px; width: 12px; height: 12px; cursor: nwse-resize; z-index: 101;
+}
+.resize-se {
+  bottom: -4px; right: -4px; width: 12px; height: 12px; cursor: nwse-resize; z-index: 101;
+}
+.resize-sw {
+  bottom: -4px; left: -4px; width: 12px; height: 12px; cursor: nesw-resize; z-index: 101;
 }

@@ -3,7 +3,7 @@ import { ChevronLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const WindowControls = ({ target }) => {
-  const { closeWindow } = useWindowsStore();
+  const { closeWindow, toggleMaximize, minimizeWindow } = useWindowsStore();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -35,8 +35,8 @@ const WindowControls = ({ target }) => {
   return (
     <div id="window-controls">
       <div className="close" onClick={() => closeWindow(target)} />
-      <div className="minimize" />
-      <div className="maximize" />
+      <div className="minimize" onClick={() => toggleMaximize(target)} title="Zoom" />
+      <div className="maximize" onClick={() => minimizeWindow(target)} title="Minimize" />
     </div>
   );
 };

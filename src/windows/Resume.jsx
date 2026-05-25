@@ -12,8 +12,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 const Resume = () => {
   return (
-    <>
-      <div id="window-header">
+    <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden">
+      <div id="window-header" className="shrink-0 !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2 flex items-center justify-between">
         <WindowControls target={"resume"} />
         <h2>Resume.pdf</h2>
         <a
@@ -25,12 +25,12 @@ const Resume = () => {
           <Download className="icon" />
         </a>
       </div>
-      <div className="resume-main">
+      <div className="resume-main flex-1 overflow-y-auto flex justify-center bg-gray-100">
         <Document file="files/resume.pdf">
           <Page pageNumber={1} renderTextLayer renderAnnotationLayer />
         </Document>
       </div>
-    </>
+    </div>
   );
 };
 

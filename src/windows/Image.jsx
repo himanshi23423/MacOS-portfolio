@@ -15,9 +15,7 @@ const Image = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  if (!data) return null;
-
-  const { name, imageMobUrl, imageUrl } = data;
+  const { name = "Image", imageMobUrl = "", imageUrl = "" } = data || {};
 
   if (isMobile) {
     return (
@@ -80,24 +78,22 @@ const Image = () => {
   }
 
   return (
-    <>
-      <div id="window-header">
+    <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden">
+      <div id="window-header" className="shrink-0 !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2 flex items-center justify-between">
         <WindowControls target={"imgfile"} />
-        <h2>{name}</h2>
+        <h2 className="flex-1 text-center font-bold text-gray-500">{name}</h2>
       </div>
 
-      <div>
+      <div className="flex-1 overflow-hidden flex items-center justify-center bg-gray-50 p-2 @sm:p-4">
         {imageUrl ? (
-          <div className="w-full">
-            <img
-              src={imageUrl}
-              alt={name}
-              className="w-full h-auto max-h-[70vh] object-contain rounded"
-            />
-          </div>
+          <img
+            src={imageUrl}
+            alt={name}
+            className="w-full h-full object-contain drop-shadow-md rounded-md"
+          />
         ) : null}
       </div>
-    </>
+    </div>
   );
 };
 
