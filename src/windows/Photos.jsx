@@ -15,9 +15,14 @@ const tabIcons = {
 };
 
 const Photos = () => {
-  const { openWindow } = useWindowsStore();
+  const { openWindow, favorites } = useWindowsStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [activeTab, setActiveTab] = useState("Library");
+
+  const filteredGallery = gallery.filter((item) => {
+    if (activeTab === "Favorites") return favorites.includes(item.id);
+    return item.category === activeTab;
+  });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -104,7 +109,7 @@ const Photos = () => {
               {activeTab}
             </p>
             <p style={{ fontSize: 15, color: "#8e8e93", marginTop: 2 }}>
-              {gallery.filter(item => item.category === activeTab).length} Photos
+              {filteredGallery.length} Photos
             </p>
           </div>
 
@@ -117,7 +122,7 @@ const Photos = () => {
                 gap: 2,
               }}
             >
-              {gallery.filter(item => item.category === activeTab).map(({ id, img }) => (
+              {filteredGallery.map(({ id, img }) => (
                 <button
                   key={id}
                   onClick={() =>
@@ -236,7 +241,7 @@ const Photos = () => {
         </div>
         <div className="gallery flex-1 overflow-y-auto p-2 @sm:p-5">
           <ul className="flex flex-col @sm:grid @sm:grid-cols-5 @sm:grid-rows-5 gap-2.5">
-            {gallery.filter(item => item.category === activeTab).map(({ id, img }) => (
+            {filteredGallery.map(({ id, img }) => (
               <li
                 key={id}
                 onClick={() =>

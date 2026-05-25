@@ -2,11 +2,13 @@ import WindowControls from "#components/WindowControls";
 import windowWrapper from "#hoc/windowWrapper";
 import useWindowsStore from "#store/window";
 import { useState, useEffect } from "react";
+import { Heart } from "lucide-react";
 
 const Image = () => {
-  const { windows } = useWindowsStore();
+  const { windows, favorites, toggleFavorite } = useWindowsStore();
   const data = windows.imgfile?.data;
-  console.log(data);
+  const { name = "Image", imageMobUrl = "", imageUrl = "", id } = data || {};
+  const isFavorite = id ? favorites.includes(id) : false;
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
 
   useEffect(() => {
@@ -14,8 +16,6 @@ const Image = () => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
-  const { name = "Image", imageMobUrl = "", imageUrl = "" } = data || {};
 
   if (isMobile) {
     return (
@@ -59,18 +59,43 @@ const Image = () => {
             justifyContent: "center",
             background: "#fff",
             overflow: "hidden",
+            position: "relative",
           }}
         >
           {imageUrl ? (
-            <img
-              src={imageMobUrl ? imageMobUrl : imageUrl}
-              alt={name}
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-              }}
-            />
+            <>
+              <img
+                src={imageMobUrl ? imageMobUrl : imageUrl}
+                alt={name}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  objectFit: "contain",
+                }}
+              />
+              {id && (
+                <button 
+                  onClick={() => toggleFavorite(id)}
+                  style={{
+                    position: "absolute",
+                    top: 20,
+                    right: 20,
+                    padding: 8,
+                    borderRadius: "50%",
+                    background: "rgba(0,0,0,0.3)",
+                    backdropFilter: "blur(4px)",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    zIndex: 10,
+                  }}
+                >
+                  <Heart size={24} fill={isFavorite ? "#ff3b30" : "transparent"} color={isFavorite ? "#ff3b30" : "white"} strokeWidth={2} />
+                </button>
+              )}
+            </>
           ) : null}
         </div>
       </>
@@ -84,13 +109,23 @@ const Image = () => {
         <h2 className="flex-1 text-center font-bold text-gray-500">{name}</h2>
       </div>
 
-      <div className="flex-1 overflow-hidden flex items-center justify-center bg-gray-50 p-2 @sm:p-4">
+      <div className="flex-1 overflow-hidden flex items-center justify-center bg-gray-50 p-2 @sm:p-4 relative">
         {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={name}
-            className="w-full h-full object-contain drop-shadow-md rounded-md"
-          />
+          <>
+            <img
+              src={imageUrl}
+              alt={name}
+              className="w-full h-full object-contain drop-shadow-md rounded-md"
+            />
+            {id && (
+              <button 
+                onClick={() => toggleFavorite(id)}
+                className="absolute top-6 right-6 p-2 rounded-full bg-black/30 hover:bg-black/50 transition-colors backdrop-blur-sm shadow-xl z-10"
+              >
+                <Heart size={24} fill={isFavorite ? "#ff3b30" : "transparent"} color={isFavorite ? "#ff3b30" : "white"} strokeWidth={2} />
+              </button>
+            )}
+          </>
         ) : null}
       </div>
     </div>

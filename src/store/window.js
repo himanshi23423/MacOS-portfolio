@@ -6,6 +6,16 @@ const useWindowsStore = create(
   immer((set) => ({
     windows: WINDOW_CONFIG,
     nextZIndex: INITIAL_Z_INDEX + 1,
+    favorites: [],
+
+    toggleFavorite: (id) =>
+      set((state) => {
+        if (state.favorites.includes(id)) {
+          state.favorites = state.favorites.filter((fId) => fId !== id);
+        } else {
+          state.favorites.push(id);
+        }
+      }),
 
     openWindow: (windowKey, data = null) =>
       set((state) => {
