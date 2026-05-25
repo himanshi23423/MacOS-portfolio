@@ -101,10 +101,10 @@ const Photos = () => {
           {/* Date section header (iOS Photos style) */}
           <div style={{ padding: "16px 16px 6px" }}>
             <p style={{ fontSize: 22, fontWeight: 700, color: "#000" }}>
-              Library
+              {activeTab}
             </p>
             <p style={{ fontSize: 15, color: "#8e8e93", marginTop: 2 }}>
-              {gallery.length} Photos
+              {gallery.filter(item => item.category === activeTab).length} Photos
             </p>
           </div>
 
@@ -117,7 +117,7 @@ const Photos = () => {
                 gap: 2,
               }}
             >
-              {gallery.map(({ id, img }) => (
+              {gallery.filter(item => item.category === activeTab).map(({ id, img }) => (
                 <button
                   key={id}
                   onClick={() =>
@@ -209,7 +209,10 @@ const Photos = () => {
 
   return (
     <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden">
-      <div id="window-header" className="shrink-0 !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2">
+      <div
+        id="window-header"
+        className="shrink-0 !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2"
+      >
         <WindowControls target={"photos"} />
         <div className="w-full flex justify-end items-center gap-3 text-gray-500">
           <Search className="icon" />
@@ -220,7 +223,11 @@ const Photos = () => {
           <h2>Photos</h2>
           <ul>
             {photosLinks.map(({ id, icon, title }) => (
-              <li key={id}>
+              <li 
+                key={id}
+                onClick={() => setActiveTab(title)}
+                className={`cursor-pointer ${activeTab === title ? 'bg-blue-100 text-blue-700' : ''}`}
+              >
                 <img src={icon} alt={title} />
                 <p>{title}</p>
               </li>
@@ -229,7 +236,7 @@ const Photos = () => {
         </div>
         <div className="gallery flex-1 overflow-y-auto p-2 @sm:p-5">
           <ul className="flex flex-col @sm:grid @sm:grid-cols-5 @sm:grid-rows-5 gap-2.5">
-            {gallery.map(({ id, img }) => (
+            {gallery.filter(item => item.category === activeTab).map(({ id, img }) => (
               <li
                 key={id}
                 onClick={() =>
