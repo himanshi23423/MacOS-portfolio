@@ -89,7 +89,7 @@ const Dock = () => {
                 src={`/images/${icon}`}
                 alt={name}
                 loading="lazy"
-                className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""} ${id === "appletv" ? "scale-[0.88]" : ""} ${id === "calculator" ? "scale-[0.90]" : ""}`}
+                className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""} ${id === "appletv" ? "scale-[0.87]" : ""} ${id === "calculator" ? "scale-[0.90]" : ""} ${id === "call" ? "scale-[0.80]" : ""}`}
               />
             </button>
             {windows[id]?.isOpen && (
