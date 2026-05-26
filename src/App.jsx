@@ -14,6 +14,7 @@ import Settings from "#windows/Settings";
 import Calculator from "#windows/Calculator";
 import Notes from "#windows/Notes";
 import Messages from "#windows/Messages";
+import AppleTV from "#windows/AppleTV";
 import MobileOS from "#components/MobileOS";
 import BootScreen from "#components/BootScreen";
 import LoginScreen from "#components/LoginScreen";
@@ -57,6 +58,7 @@ const App = () => {
             <Calculator />
             <Notes />
             <Messages />
+            <AppleTV />
           </main>
         )}
       </>
@@ -84,6 +86,7 @@ const App = () => {
           <Calculator />
           <Notes />
           <Messages />
+          <AppleTV />
           <Home />
         </main>
       )}

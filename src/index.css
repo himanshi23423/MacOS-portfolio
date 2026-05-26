@@ -113,6 +113,13 @@ body.night-light-active::after {
     height: 540px;
   }
 
+  #appletv {
+    top: 6vh;
+    left: 18vw;
+    width: 900px;
+    height: 580px;
+  }
+
   nav.mac-navbar {
     @apply flex justify-between items-center bg-white/58 sm:bg-white/40 backdrop-blur-3xl sm:backdrop-blur-2xl p-2 px-5 sm:px-3 select-none z-[9999] relative;
 
@@ -699,7 +706,8 @@ body.night-light-active::after {
   #imgfile,
   #settings,
   #notes,
-  #messages {
+  #messages,
+  #appletv {
     border-radius: 0 !important;
     box-shadow: none !important;
     max-width: none !important;

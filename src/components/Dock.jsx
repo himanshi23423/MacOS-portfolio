@@ -6,7 +6,8 @@ import { useRef } from "react";
 import { Tooltip } from "react-tooltip";
 
 const Dock = () => {
-  const { openWindow, closeWindow, focusWindow, unminimizeWindow, windows } = useWindowsStore();
+  const { openWindow, closeWindow, focusWindow, unminimizeWindow, windows } =
+    useWindowsStore();
   const dockRef = useRef(null);
 
   useGSAP(() => {
@@ -43,7 +44,7 @@ const Dock = () => {
           y: 0,
           duration: 0.3,
           ease: "power1.out",
-        })
+        }),
       );
     };
     dock.addEventListener("mousemove", handleMouseMove);
@@ -88,7 +89,7 @@ const Dock = () => {
                 src={`/images/${icon}`}
                 alt={name}
                 loading="lazy"
-                className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""}`}
+                className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""} ${id === "appletv" ? "scale-[0.88]" : ""} ${id === "calculator" ? "scale-[0.90]" : ""}`}
               />
             </button>
             {windows[id]?.isOpen && (

@@ -91,6 +91,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "appletv",
+    name: "Apple TV",
+    icon: "appletv.png",
+    canOpen: true,
+  },
+  {
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
@@ -641,6 +647,7 @@ const WINDOW_CONFIG = {
   calculator: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   notes: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   messages: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  appletv: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };

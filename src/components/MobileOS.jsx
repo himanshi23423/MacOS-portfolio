@@ -2,7 +2,20 @@ import { dockApps } from "#constants";
 import useWindowsStore from "#store/window";
 import dayjs from "dayjs";
 import { useEffect, useState, useRef } from "react";
-import { Battery, Wifi, Signal, X, Sun, Moon, Bluetooth, Flashlight, Calculator, Camera, Clock, Search } from "lucide-react";
+import {
+  Battery,
+  Wifi,
+  Signal,
+  X,
+  Sun,
+  Moon,
+  Bluetooth,
+  Flashlight,
+  Calculator,
+  Camera,
+  Clock,
+  Search,
+} from "lucide-react";
 import gsap from "gsap";
 
 const MobileOS = () => {
@@ -36,7 +49,7 @@ const MobileOS = () => {
       gsap.fromTo(
         controlCenterRef.current,
         { y: "-100%", opacity: 0 },
-        { y: "0%", opacity: 1, duration: 0.42, ease: "power3.out" }
+        { y: "0%", opacity: 1, duration: 0.42, ease: "power3.out" },
       );
     } else {
       gsap.to(controlCenterRef.current, {
@@ -128,21 +141,33 @@ const MobileOS = () => {
                 <button
                   onClick={() => toggle("airplane")}
                   className="flex items-center justify-center transition-all w-[46px] h-[46px] rounded-full"
-                  style={{ background: settings.airplane ? "#f59e0b" : "rgba(255,255,255,0.12)" }}
+                  style={{
+                    background: settings.airplane
+                      ? "#f59e0b"
+                      : "rgba(255,255,255,0.12)",
+                  }}
                 >
                   <span className="text-xl">✈︎</span>
                 </button>
                 <button
                   onClick={() => toggle("wifi")}
                   className="flex items-center justify-center transition-all w-[46px] h-[46px] rounded-full"
-                  style={{ background: settings.wifi ? "#007AFF" : "rgba(255,255,255,0.12)" }}
+                  style={{
+                    background: settings.wifi
+                      ? "#007AFF"
+                      : "rgba(255,255,255,0.12)",
+                  }}
                 >
                   <Wifi size={20} />
                 </button>
                 <button
                   onClick={() => toggle("bluetooth")}
                   className="flex items-center justify-center transition-all w-[46px] h-[46px] rounded-full"
-                  style={{ background: settings.bluetooth ? "#007AFF" : "rgba(255,255,255,0.12)" }}
+                  style={{
+                    background: settings.bluetooth
+                      ? "#007AFF"
+                      : "rgba(255,255,255,0.12)",
+                  }}
                 >
                   <Bluetooth size={20} />
                 </button>
@@ -151,7 +176,11 @@ const MobileOS = () => {
                 <button
                   onClick={() => toggle("flashlight")}
                   className="flex items-center justify-center transition-all w-[46px] h-[46px] rounded-full"
-                  style={{ background: settings.flashlight ? "#007AFF" : "rgba(255,255,255,0.12)" }}
+                  style={{
+                    background: settings.flashlight
+                      ? "#007AFF"
+                      : "rgba(255,255,255,0.12)",
+                  }}
                 >
                   <Flashlight size={20} />
                 </button>
@@ -203,7 +232,11 @@ const MobileOS = () => {
               >
                 <div
                   className="flex items-center justify-center w-8 h-8 rounded-2xl"
-                  style={{ background: settings.darkMode ? "#007AFF" : "rgba(255,255,255,0.12)" }}
+                  style={{
+                    background: settings.darkMode
+                      ? "#007AFF"
+                      : "rgba(255,255,255,0.12)",
+                  }}
                 >
                   {settings.darkMode ? <Moon size={15} /> : <Sun size={15} />}
                 </div>
@@ -242,7 +275,11 @@ const MobileOS = () => {
               >
                 <div
                   className="flex items-center justify-center w-8 h-8 rounded-2xl"
-                  style={{ background: settings.lowPower ? "#f59e0b" : "rgba(255,255,255,0.12)" }}
+                  style={{
+                    background: settings.lowPower
+                      ? "#f59e0b"
+                      : "rgba(255,255,255,0.12)",
+                  }}
                 >
                   <Battery size={15} />
                 </div>
@@ -293,7 +330,9 @@ const MobileOS = () => {
                     ? "0 2px 8px rgba(0,0,0,0.18), 0 0 0 0.5px rgba(255,255,255,0.08)"
                     : "none",
                   opacity: app.canOpen ? 1 : 0.4,
-                  background: app.canOpen ? "transparent" : "rgba(255,255,255,0.1)",
+                  background: app.canOpen
+                    ? "transparent"
+                    : "rgba(255,255,255,0.1)",
                 }}
               >
                 <img
@@ -302,9 +341,7 @@ const MobileOS = () => {
                   className="w-full h-full object-cover rounded-[15px]"
                 />
               </div>
-              <span
-                className="text-[11px] font-medium text-center text-white leading-tight max-w-[72px] [text-shadow:0_1px_4px_rgba(0,0,0,0.9)]"
-              >
+              <span className="text-[11px] font-medium text-center text-white leading-tight max-w-[72px] [text-shadow:0_1px_4px_rgba(0,0,0,0.9)]">
                 {app.name}
               </span>
             </button>
@@ -320,9 +357,10 @@ const MobileOS = () => {
                 className="h-[7px] rounded-[4px] transition-all duration-250 ease-out"
                 style={{
                   width: i === currentPage ? 18 : 7,
-                  background: i === currentPage
-                    ? "rgba(255,255,255,0.9)"
-                    : "rgba(255,255,255,0.3)",
+                  background:
+                    i === currentPage
+                      ? "rgba(255,255,255,0.9)"
+                      : "rgba(255,255,255,0.3)",
                 }}
               />
             ))}
