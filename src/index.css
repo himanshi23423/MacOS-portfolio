@@ -252,9 +252,13 @@ body.night-light-active::after {
           @apply shrink-0 text-white/90 cursor-pointer rounded-full transition-colors;
           width: 24px;
           height: 24px;
+          padding: 0;
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+
+        .slider-arrow {
           &:hover {
             background: rgba(255, 255, 255, 0.1);
           }
@@ -400,8 +404,8 @@ body.night-light-active::after {
 
   .maximized {
     width: 100vw !important;
-    height: calc(100dvh - 35px) !important;
-    top: 35px !important;
+    height: calc(100dvh - 28px) !important;
+    top: 28px !important;
     left: 0 !important;
     transform: none !important;
     border-radius: 0 !important;
@@ -541,7 +545,7 @@ body.night-light-active::after {
   }
 
   #finder {
-    @apply w-[768px] h-[500px] absolute left-40 top-20 shadow-2xl drop-shadow-2xl overflow-hidden rounded-xl;
+    @apply w-[768px] h-[500px] absolute left-40 top-20 shadow-2xl drop-shadow-2xl rounded-xl;
 
     .sidebar {
       @apply w-48 bg-gray-50 border-r border-gray-200 flex flex-col p-5 space-y-3;
@@ -582,6 +586,10 @@ body.night-light-active::after {
         }
       }
     }
+  }
+
+  #settings {
+    @apply w-[850px] h-[520px] absolute left-36 top-24 shadow-2xl drop-shadow-2xl rounded-xl;
   }
 
   #txtfile {
@@ -655,7 +663,8 @@ body.night-light-active::after {
   #photos,
   #resume,
   #txtfile,
-  #imgfile {
+  #imgfile,
+  #settings {
     border-radius: 0 !important;
     box-shadow: none !important;
     max-width: none !important;
@@ -870,4 +879,20 @@ body.night-light-active::after {
   height: 12px;
   cursor: nesw-resize;
   z-index: 101;
+}
+
+/* ===== THIN MAC SCROLLBAR ===== */
+::-webkit-scrollbar, .thin-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track, .thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb, .thin-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover, .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
 }

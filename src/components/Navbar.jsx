@@ -2,6 +2,7 @@ import { navIcons, navLinks } from "#constants/index";
 import useWindowsStore from "#store/window";
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
+import html2canvas from "html2canvas";
 
 const Navbar = () => {
   const { openWindow } = useWindowsStore();
@@ -102,6 +103,26 @@ const Navbar = () => {
     setSettings((current) => ({ ...current, [key]: Number(value) }));
   };
 
+  const takeScreenshot = () => {
+    setIsControlOpen(false);
+    setTimeout(async () => {
+      try {
+        const canvas = await html2canvas(document.body, {
+          backgroundColor: null,
+          useCORS: true,
+          scale: window.devicePixelRatio || 2,
+        });
+        const image = canvas.toDataURL("image/png", 1.0);
+        const link = document.createElement("a");
+        link.download = `Screenshot_${dayjs().format("YYYY-MM-DD_HH-mm-ss")}.png`;
+        link.href = image;
+        link.click();
+      } catch (err) {
+        console.error("Screenshot failed:", err);
+      }
+    }, 300);
+  };
+
   const openControlCenterFromNavbar = (event) => {
     if (controlCenterRef.current?.contains(event.target)) return;
     setIsControlOpen(true);
@@ -179,14 +200,14 @@ const Navbar = () => {
               </span>
             </div>
             <div className="gnome-actions">
-              <button className="gnome-circle-btn">
+              <button className="gnome-circle-btn" onClick={takeScreenshot}>
                 <img
                   src="/icons/capture.svg"
                   alt="Capture"
                   className="w-[15px] h-[15px] invert opacity-90"
                 />
               </button>
-              <button className="gnome-circle-btn">
+              <button className="gnome-circle-btn" onClick={() => { setIsControlOpen(false); openWindow("settings"); }}>
                 <img
                   src="/icons/settings.svg"
                   alt="Settings"

@@ -10,6 +10,7 @@ import Image from "#windows/Image";
 import Contact from "#windows/Contact";
 import Home from "#components/Home";
 import Photos from "#windows/Photos";
+import Settings from "#windows/Settings";
 import MobileOS from "#components/MobileOS";
 import BootScreen from "#components/BootScreen";
 import gsap from "gsap";
@@ -45,6 +46,7 @@ const App = () => {
           <Image />
           <Contact />
           <Photos />
+          <Settings />
         </main>
       </>
     );
@@ -65,6 +67,7 @@ const App = () => {
         <Image />
         <Contact />
         <Photos />
+        <Settings />
         <Home />
       </main>
     </>

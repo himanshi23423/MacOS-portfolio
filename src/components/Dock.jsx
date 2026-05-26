@@ -13,8 +13,8 @@ const Dock = () => {
     const dock = dockRef.current;
     if (!dock) return;
 
-    const icons = dock.querySelectorAll(".dock-icon");
     const animateIcons = (mouseX) => {
+      const icons = dock.querySelectorAll(".dock-icon");
       const { left } = dock.getBoundingClientRect();
       icons.forEach((icon) => {
         const { left: iconLeft, width } = icon.getBoundingClientRect();
@@ -35,15 +35,17 @@ const Dock = () => {
       const { left } = dock.getBoundingClientRect();
       animateIcons(e.clientX - left);
     };
-    const resetIcons = () =>
+    const resetIcons = () => {
+      const icons = dock.querySelectorAll(".dock-icon");
       icons.forEach((icon) =>
         gsap.to(icon, {
           scale: 1,
           y: 0,
           duration: 0.3,
           ease: "power1.out",
-        }),
+        })
       );
+    };
     dock.addEventListener("mousemove", handleMouseMove);
     dock.addEventListener("mouseleave", resetIcons);
 
@@ -53,7 +55,7 @@ const Dock = () => {
     };
   }, []);
 
-  const toggleApp = (app) => {
+  const toggleApp = (app, e) => {
     if (!app.canOpen) return;
 
     const window = windows[app.id];
@@ -80,13 +82,13 @@ const Dock = () => {
               data-tooltip-content={name}
               data-tooltip-delay-show={150}
               disabled={!canOpen}
-              onClick={() => toggleApp({ id, canOpen })}
+              onClick={(e) => toggleApp({ id, canOpen }, e)}
             >
               <img
                 src={`/images/${icon}`}
                 alt={name}
                 loading="lazy"
-                className={canOpen ? "" : "opacity-60"}
+                className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""}`}
               />
             </button>
             {windows[id]?.isOpen && (

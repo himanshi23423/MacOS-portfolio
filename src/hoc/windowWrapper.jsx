@@ -22,9 +22,10 @@ const windowWrapper = (Component, windowKey) => {
       const el = ref.current;
       if (!el || isMobile || !isOpen) return;
       
-      const header = el.querySelector("#window-header");
+      const headers = el.querySelectorAll("#window-header, .window-header");
+      const dragTrigger = headers.length > 0 ? Array.from(headers) : el;
       const [instance] = Draggable.create(el, {
-        trigger: header || el,
+        trigger: dragTrigger,
         cursor: "default",
         onPress: () => focusWindow(windowKey),
       });
