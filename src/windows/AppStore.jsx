@@ -18,6 +18,7 @@ const STORE_APPS = [
   { id: "appletv", name: "Apple TV", category: "Entertainment", desc: "Watch Apple Originals and movies.", rating: 4.8, icon: "appletv.png", native: true },
   { id: "safari", name: "Safari", category: "Utilities", desc: "Fast, secure, and private web browsing.", rating: 4.6, icon: "safari.png", native: true },
   { id: "settings", name: "Settings", category: "Utilities", desc: "Customize system preferences.", rating: 4.3, icon: "settings.png", native: true },
+  { id: "calendar", name: "Calendar", category: "Productivity", desc: "Organize your schedule and tasks.", rating: 4.7, icon: "calendar.png", native: true },
   
   // Non-Native Apps (Developer / Productivity)
   { id: "figma", name: "Figma", category: "Graphics & Design", desc: "Collaborative design & prototyping.", rating: 4.9, icon: "figma.png", native: false, url: "https://figma.com" },

@@ -109,6 +109,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "calendar",
+    name: "Calendar",
+    icon: "calendar.png",
+    canOpen: true,
+  },
+  {
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
@@ -662,6 +668,7 @@ const WINDOW_CONFIG = {
   appletv: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   call: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   appstore: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  calendar: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };

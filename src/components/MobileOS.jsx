@@ -335,11 +335,24 @@ const MobileOS = () => {
                     : "rgba(255,255,255,0.1)",
                 }}
               >
-                <img
-                  src={`/images/${app.icon}`}
-                  alt={app.name}
-                  className="w-full h-full object-cover rounded-[15px]"
-                />
+                {app.id === "calendar" ? (
+                  <div className="w-full h-full bg-white flex flex-col items-center justify-between select-none relative pb-1">
+                    {/* Day of Week */}
+                    <div className="text-[#ff3b30] text-[9px] font-bold mt-1 uppercase tracking-tight leading-none">
+                      {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][new Date().getDay()]}
+                    </div>
+                    {/* Date Number */}
+                    <div className="text-gray-900 font-semibold text-3xl leading-none -mt-1 font-sans">
+                      {new Date().getDate()}
+                    </div>
+                  </div>
+                ) : (
+                  <img
+                    src={`/images/${app.icon}`}
+                    alt={app.name}
+                    className="w-full h-full object-cover rounded-[15px]"
+                  />
+                )}
               </div>
               <span className="text-[11px] font-medium text-center text-white leading-tight max-w-[72px] [text-shadow:0_1px_4px_rgba(0,0,0,0.9)]">
                 {app.name}
@@ -379,11 +392,24 @@ const MobileOS = () => {
               onClick={() => openWindow(app.id)}
               className="active:scale-[0.82] transition-transform duration-150 w-[58px] h-[58px] rounded-[14px] overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
             >
-              <img
-                src={`/images/${app.icon}`}
-                alt={app.name}
-                className="w-full h-full object-cover rounded-[14px]"
-              />
+              {app.id === "calendar" ? (
+                <div className="w-full h-full bg-white flex flex-col items-center justify-between select-none relative pb-1">
+                  {/* Day of Week */}
+                  <div className="text-[#ff3b30] text-[8px] font-bold mt-1 uppercase tracking-tight leading-none">
+                    {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][new Date().getDay()]}
+                  </div>
+                  {/* Date Number */}
+                  <div className="text-gray-900 font-semibold text-2xl leading-none -mt-1 font-sans">
+                    {new Date().getDate()}
+                  </div>
+                </div>
+              ) : (
+                <img
+                  src={`/images/${app.icon}`}
+                  alt={app.name}
+                  className="w-full h-full object-cover rounded-[14px]"
+                />
+              )}
             </button>
           ))}
       </footer>

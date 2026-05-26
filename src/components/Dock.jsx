@@ -85,12 +85,25 @@ const Dock = () => {
               disabled={!canOpen}
               onClick={(e) => toggleApp({ id, canOpen }, e)}
             >
-              <img
-                src={`/images/${icon}`}
-                alt={name}
-                loading="lazy"
-                className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""} ${id === "appletv" ? "scale-[0.87]" : ""} ${id === "calculator" ? "scale-[0.90]" : ""} ${id === "call" ? "scale-[0.80]" : ""} `}
-              />
+              {id === "calendar" ? (
+                <div className="w-full h-full bg-white rounded-[13px] border border-black/10 shadow-sm overflow-hidden flex flex-col items-center select-none scale-[0.76] relative aspect-square transition-all duration-200 hover:scale-[0.82]">
+                  {/* Red Header Bar */}
+                  <div className="w-full bg-[#ff3b30] text-white text-[9px] font-extrabold py-0.5 text-center leading-none tracking-wider uppercase">
+                    {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date().getDay()]}
+                  </div>
+                  {/* Date Number */}
+                  <div className="flex-1 flex items-center justify-center text-gray-800 font-bold text-2xl leading-none font-sans -mt-0.5">
+                    {new Date().getDate()}
+                  </div>
+                </div>
+              ) : (
+                <img
+                  src={`/images/${icon}`}
+                  alt={name}
+                  loading="lazy"
+                  className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""} ${id === "appletv" ? "scale-[0.87]" : ""} ${id === "calculator" ? "scale-[0.90]" : ""} ${id === "call" ? "scale-[0.80]" : ""} ` }
+                />
+              )}
             </button>
             {windows[id]?.isOpen && (
               <div className="absolute -bottom-1.5 w-1 h-1 bg-white rounded-full" />
