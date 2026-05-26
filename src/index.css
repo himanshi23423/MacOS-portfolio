@@ -414,6 +414,10 @@ body.night-light-active::after {
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  .maximized > div, .maximized > div > div {
+    border-radius: 0 !important;
+  }
+
   #window-header {
     @apply flex items-center justify-between px-4 py-3 rounded-t-lg bg-gray-50 border-b border-gray-200 select-none text-sm text-gray-400;
   }
@@ -589,7 +593,7 @@ body.night-light-active::after {
   }
 
   #settings {
-    @apply w-[850px] h-[520px] absolute left-36 top-24 shadow-2xl drop-shadow-2xl rounded-xl;
+    @apply w-[850px] h-[520px] absolute left-36 top-24 shadow-2xl drop-shadow-2xl rounded-lg;
   }
 
   #txtfile {

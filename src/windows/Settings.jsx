@@ -80,7 +80,7 @@ const Settings = () => {
 
   return (
     <div className="@container w-full h-full">
-      <div className="flex h-full w-full bg-[#f3f3f3]/95 backdrop-blur-3xl overflow-hidden rounded-xl font-sans select-none border border-black/10">
+      <div className="flex h-full w-full bg-[#f3f3f3]/95 backdrop-blur-3xl overflow-hidden rounded-lg font-sans select-none border border-black/10">
       
       {/* Sidebar - Strictly Light Theme */}
       <div className="hidden @md:flex w-[240px] h-full shrink-0 bg-[#e8e8e8]/50 border-r border-black/10 flex-col">
