@@ -269,6 +269,26 @@ const gallery = [
     img: "/images/places/4.jpeg",
     category: "Places",
   },
+  {
+    id: 14,
+    img: "/images/people/1.jpeg",
+    category: "People",
+  },
+  {
+    id: 15,
+    img: "/images/people/2.jpeg",
+    category: "People",
+  },
+  {
+    id: 16,
+    img: "/images/people/3.jpeg",
+    category: "People",
+  },
+  {
+    id: 17,
+    img: "/images/people/4.jpeg",
+    category: "People",
+  },
 ];
 
 export {
