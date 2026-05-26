@@ -71,37 +71,6 @@ const Photos = () => {
             flexDirection: "column",
           }}
         >
-          {/* Tab bar */}
-          <div
-            style={{
-              display: "flex",
-              padding: "8px 12px 4px",
-              gap: 0,
-              overflowX: "auto",
-              WebkitOverflowScrolling: "touch",
-            }}
-          >
-            {photosLinks.map(({ id, title }) => (
-              <button
-                key={id}
-                onClick={() => setActiveTab(title)}
-                className="flex-shrink-0"
-                style={{
-                  padding: "6px 14px",
-                  borderRadius: 20,
-                  background: activeTab === title ? "#007AFF" : "transparent",
-                  color: activeTab === title ? "#fff" : "#007AFF",
-                  fontSize: 13,
-                  fontWeight: 500,
-                  border: "none",
-                  marginRight: 6,
-                  transition: "all 0.2s ease",
-                }}
-              >
-                {title}
-              </button>
-            ))}
-          </div>
 
           {/* Date section header (iOS Photos style) */}
           <div style={{ padding: "16px 16px 6px" }}>
@@ -174,7 +143,7 @@ const Photos = () => {
             flexShrink: 0,
           }}
         >
-          {photosLinks.slice(0, 4).map(({ id, title }) => (
+          {photosLinks.map(({ id, title }) => (
             <button
               key={id}
               onClick={() => setActiveTab(title)}
