@@ -11,6 +11,8 @@ import Contact from "#windows/Contact";
 import Home from "#components/Home";
 import Photos from "#windows/Photos";
 import Settings from "#windows/Settings";
+import Calculator from "#windows/Calculator";
+import Notes from "#windows/Notes";
 import MobileOS from "#components/MobileOS";
 import BootScreen from "#components/BootScreen";
 import LoginScreen from "#components/LoginScreen";
@@ -51,6 +53,8 @@ const App = () => {
             <Contact />
             <Photos />
             <Settings />
+            <Calculator />
+            <Notes />
           </main>
         )}
       </>
@@ -75,6 +79,8 @@ const App = () => {
           <Contact />
           <Photos />
           <Settings />
+          <Calculator />
+          <Notes />
           <Home />
         </main>
       )}

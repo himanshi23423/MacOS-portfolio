@@ -73,6 +73,18 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "calculator",
+    name: "Calculator",
+    icon: "calculator.png",
+    canOpen: true,
+  },
+  {
+    id: "notes",
+    name: "Notes",
+    icon: "notes.png",
+    canOpen: true,
+  },
+  {
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
@@ -620,6 +632,8 @@ const WINDOW_CONFIG = {
   txtfile: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   imgfile: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   settings: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  calculator: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  notes: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };

@@ -12,7 +12,7 @@ body {
   width: 100dvw;
   overflow: hidden;
   height: 100dvh;
-  background-image: url("/images/wallpaper2.png");
+  background-image: url("/images/wallpaper.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -83,6 +83,27 @@ body.night-light-active::after {
     outline: none;
     border: none;
     background: transparent;
+  }
+
+  #contact {
+    top: 18vh;
+    left: 28vw;
+    width: 380px;
+    height: 500px;
+  }
+
+  #calculator {
+    top: 15vh;
+    left: 60vw;
+    width: 320px;
+    height: 450px;
+  }
+
+  #notes {
+    top: 10vh;
+    left: 20vw;
+    width: 780px;
+    height: 520px;
   }
 
   nav.mac-navbar {
@@ -414,7 +435,8 @@ body.night-light-active::after {
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .maximized > div, .maximized > div > div {
+  .maximized > div,
+  .maximized > div > div {
     border-radius: 0 !important;
   }
 
@@ -643,7 +665,7 @@ body.night-light-active::after {
 
 /* ===== MOBILE OS STYLES (iPhone 16) ===== */
 .mobile-os-container {
-  background-image: url("/images/wallpaper2.png");
+  background-image: url("/images/wallpaper.png");
   background-size: cover;
   background-position: center;
   -webkit-font-smoothing: antialiased;
@@ -668,7 +690,8 @@ body.night-light-active::after {
   #resume,
   #txtfile,
   #imgfile,
-  #settings {
+  #settings,
+  #notes {
     border-radius: 0 !important;
     box-shadow: none !important;
     max-width: none !important;
@@ -886,17 +909,21 @@ body.night-light-active::after {
 }
 
 /* ===== THIN MAC SCROLLBAR ===== */
-::-webkit-scrollbar, .thin-scrollbar::-webkit-scrollbar {
+::-webkit-scrollbar,
+.thin-scrollbar::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
-::-webkit-scrollbar-track, .thin-scrollbar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,
+.thin-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
-::-webkit-scrollbar-thumb, .thin-scrollbar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb,
+.thin-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover, .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover,
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.35);
 }
