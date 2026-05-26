@@ -16,6 +16,7 @@ const Navbar = () => {
     focusMode: false,
     brightness: 75,
     soundLevel: 45,
+    nightLight: false,
   });
   const [battery, setBattery] = useState({
     level: null,
@@ -35,7 +36,8 @@ const Navbar = () => {
   useEffect(() => {
     document.body.classList.toggle("theme-light", !settings.darkMode);
     document.body.classList.toggle("theme-dark", settings.darkMode);
-  }, [settings.darkMode]);
+    document.body.classList.toggle("night-light-active", settings.nightLight);
+  }, [settings.darkMode, settings.nightLight]);
 
   useEffect(() => {
     let batteryManager;
