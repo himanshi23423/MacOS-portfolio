@@ -7,6 +7,8 @@ import html2canvas from "html2canvas";
 const Navbar = () => {
   const { openWindow } = useWindowsStore();
   const [isControlOpen, setIsControlOpen] = useState(false);
+  const [isPowerMenuOpen, setIsPowerMenuOpen] = useState(false);
+  const [isAsleep, setIsAsleep] = useState(false);
   const [now, setNow] = useState(dayjs());
   const [settings, setSettings] = useState({
     darkMode: true,
@@ -77,12 +79,14 @@ const Navbar = () => {
         !controlCenterRef.current.contains(event.target)
       ) {
         setIsControlOpen(false);
+        setIsPowerMenuOpen(false);
       }
     };
 
     const handleEscape = (event) => {
       if (event.key === "Escape") {
         setIsControlOpen(false);
+        setIsPowerMenuOpen(false);
       }
     };
 
@@ -129,8 +133,15 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="mac-navbar">
-      <div className="nav-left">
+    <>
+      {isAsleep && (
+        <div
+          className="fixed inset-0 z-[999999] bg-black cursor-pointer"
+          onClick={() => setIsAsleep(false)}
+        ></div>
+      )}
+      <nav className="mac-navbar">
+        <div className="nav-left">
         <img  src="/icons/logo.svg" alt="logo" className="apple-logo" />
 
         <ul className="nav-links max-sm:hidden">
@@ -187,6 +198,26 @@ const Navbar = () => {
           className={`control-center gnome-panel ${isControlOpen ? "is-open" : ""}`}
           aria-hidden={!isControlOpen}
         >
+          {/* Expanded Power Menu */}
+          {isPowerMenuOpen && (
+            <div 
+              className="mb-4 bg-[rgba(255,255,255,0.05)] rounded-2xl flex flex-col p-2 cursor-default border border-white/10" 
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center gap-3 px-3 py-2 mb-1">
+                 <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                   <img src="/icons/power.svg" className="w-4 h-4 invert opacity-90" alt="Power" />
+                 </div>
+                 <span className="font-bold text-white/90 text-[15px]">Power Off</span>
+              </div>
+              <button className="w-full text-left px-3 py-2.5 text-[14px] text-white/90 hover:bg-white/10 rounded-lg transition-colors" onClick={() => { setIsPowerMenuOpen(false); setIsControlOpen(false); setIsAsleep(true); }}>Suspend</button>
+              <button className="w-full text-left px-3 py-2.5 text-[14px] text-white/90 hover:bg-white/10 rounded-lg transition-colors" onClick={() => window.location.reload()}>Restart...</button>
+              <button className="w-full text-left px-3 py-2.5 text-[14px] text-white/90 hover:bg-white/10 rounded-lg transition-colors" onClick={() => { window.open("about:blank", "_blank"); window.close(); }}>Power Off...</button>
+              <div className="h-[1px] bg-white/10 my-1 mx-2"></div>
+              <button className="w-full text-left px-3 py-2.5 text-[14px] text-white/90 hover:bg-white/10 rounded-lg transition-colors" onClick={() => window.location.reload()}>Log Out...</button>
+            </div>
+          )}
+
           {/* Top Row */}
           <div className="gnome-top-row">
             <div className="gnome-battery">
@@ -221,7 +252,10 @@ const Navbar = () => {
                   className="w-[15px] h-[15px] invert opacity-90"
                 />
               </button>
-              <button className="gnome-circle-btn">
+              <button 
+                className="gnome-circle-btn"
+                onClick={(e) => { e.stopPropagation(); setIsPowerMenuOpen(!isPowerMenuOpen); }}
+              >
                 <img
                   src="/icons/power.svg"
                   alt="Power"
@@ -416,9 +450,11 @@ const Navbar = () => {
               </div>
             </button>
           </div>
+
         </aside>
       </div>
-    </nav>
+      </nav>
+    </>
   );
 };
 
