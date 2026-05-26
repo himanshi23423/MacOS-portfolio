@@ -85,6 +85,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "messages",
+    name: "Messages",
+    icon: "message.png",
+    canOpen: true,
+  },
+  {
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
@@ -634,6 +640,7 @@ const WINDOW_CONFIG = {
   settings: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   calculator: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   notes: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  messages: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };
