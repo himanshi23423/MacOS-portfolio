@@ -12,6 +12,7 @@
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.1.17",
+    "@xterm/addon-fit": "^0.10.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
     "gsap": "^3.13.0",
@@ -23,6 +24,7 @@
     "react-pdf": "^10.2.0",
     "react-tooltip": "^5.30.0",
     "tailwindcss": "^4.1.17",
+    "xterm": "^5.3.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
