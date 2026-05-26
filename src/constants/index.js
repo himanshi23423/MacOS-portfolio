@@ -103,6 +103,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "appstore",
+    name: "App Store",
+    icon: "appstore.png",
+    canOpen: true,
+  },
+  {
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
@@ -655,6 +661,7 @@ const WINDOW_CONFIG = {
   messages: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   appletv: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   call: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  appstore: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };
