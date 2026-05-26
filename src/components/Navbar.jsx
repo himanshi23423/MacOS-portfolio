@@ -10,6 +10,8 @@ const Navbar = () => {
   const [settings, setSettings] = useState({
     darkMode: true,
     wifi: true,
+    bluetooth: true,
+    airdrop: false,
     volume: true,
     focusMode: false,
     brightness: 75,
@@ -104,21 +106,24 @@ const Navbar = () => {
   };
 
   return (
-    <nav>
-      <div>
-        <img src="/icons/logo.svg" alt="logo" />
+    <nav className="mac-navbar">
+      <div className="nav-left">
+        <img  src="/icons/logo.svg" alt="logo" className="apple-logo" />
 
-        <ul>
+        <ul className="nav-links max-sm:hidden">
           {navLinks.map(({ id, name, type }) => (
-            <li key={id} onClick={() => openWindow(type)}>
-              <p>{name}</p>
+            <li className="font-sans text-zinc-800 hover:text-zinc-950" key={id} onClick={() => openWindow(type)}>
+              {name}
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="relative" onClick={openControlCenterFromNavbar}>
-        <ul>
+      <div
+        className="nav-right relative max-sm:hidden"
+        onClick={openControlCenterFromNavbar}
+      >
+        <ul className="status-icons">
           {navIcons.map(({ id, img }) => (
             <li key={id}>
               <img src={img} className="icon-hover" alt={`icon-${id}`} />
@@ -142,9 +147,12 @@ const Navbar = () => {
                 <i />
               </div>
               {battery.charging && (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M14.5 2 7 13h4l-1.5 9L17 11h-4l1.5-9Z" />
-                </svg>
+                <img
+                  src="/icons/battery-charging.svg"
+                  alt="Charging"
+                  aria-hidden="true"
+                  className="w-[14px]"
+                />
               )}
             </div>
           </li>
@@ -153,119 +161,238 @@ const Navbar = () => {
 
         <aside
           ref={controlCenterRef}
-          className={`control-center ${isControlOpen ? "is-open" : ""}`}
+          className={`control-center gnome-panel ${isControlOpen ? "is-open" : ""}`}
           aria-hidden={!isControlOpen}
         >
-          <header className="flex justify-center items-center">
-            <div className="datetime">
-              <p>{now.format("h:mm A")}</p>
-              <span>{now.format("dddd, MMMM D")}</span>
-            </div>
-            <div className="identity">
-              <img src="/icons/logo.svg" alt="kuldeep" />
-              <div>
-                <p>kuldeep</p>
-              </div>
-            </div>
-          </header>
-
-          <section className="toggle-grid">
-            <button
-              type="button"
-              className={`setting-tile ${settings.darkMode ? "active" : ""}`}
-              onClick={() => toggleSetting("darkMode")}
-            >
-              <div className="tile-head">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 3.25A8.75 8.75 0 1 0 20.75 12 6.9 6.9 0 0 1 12 3.25Z" />
-                </svg>
-                <span>Dark Mode</span>
-              </div>
-              <p>{settings.darkMode ? "Enabled" : "Disabled"}</p>
-            </button>
-
-            <button
-              type="button"
-              className={`setting-tile ${settings.wifi ? "active" : ""}`}
-              onClick={() => toggleSetting("wifi")}
-            >
-              <div className="tile-head">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 18.5a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5Z" />
-                  <path d="M4.2 12.35a1 1 0 0 1-.15-1.4 10.5 10.5 0 0 1 15.9 0 1 1 0 1 1-1.55 1.27 8.5 8.5 0 0 0-12.8 0 1 1 0 0 1-1.4.13Z" />
-                  <path d="M7.5 15.05a1 1 0 0 1-.15-1.4 6.5 6.5 0 0 1 9.3 0 1 1 0 1 1-1.5 1.32 4.5 4.5 0 0 0-6.3 0 1 1 0 0 1-1.35.08Z" />
-                </svg>
-                <span>Wi-Fi</span>
-              </div>
-              <p>{settings.wifi ? "Connected" : "Offline"}</p>
-            </button>
-
-            <button
-              type="button"
-              className={`setting-tile ${settings.volume ? "active" : ""}`}
-              onClick={() => toggleSetting("volume")}
-            >
-              <div className="tile-head">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M10.2 6.2 6.7 9.1H4a1 1 0 0 0-1 1v3.8a1 1 0 0 0 1 1h2.7l3.5 2.9a1 1 0 0 0 1.6-.77V7a1 1 0 0 0-1.6-.8Z" />
-                  <path d="M15.2 9.2a1 1 0 0 1 1.4.14 4.4 4.4 0 0 1 0 5.32 1 1 0 1 1-1.56-1.26 2.4 2.4 0 0 0 0-2.8 1 1 0 0 1 .2-1.4Z" />
-                  <path d="M17.9 6.85a1 1 0 0 1 1.4.15 8.4 8.4 0 0 1 0 10 1 1 0 0 1-1.56-1.26 6.4 6.4 0 0 0 0-7.5 1 1 0 0 1 .16-1.4Z" />
-                </svg>
-                <span>Volume</span>
-              </div>
-              <p>{settings.volume ? "Enabled" : "Muted"}</p>
-            </button>
-
-            <button
-              type="button"
-              className={`setting-tile ${settings.focusMode ? "active" : ""}`}
-              onClick={() => toggleSetting("focusMode")}
-            >
-              <div className="tile-head">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2.5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 12 2.5Zm0 4.25a1 1 0 0 1 1 1V11h3.25a1 1 0 1 1 0 2H12a1 1 0 0 1-1-1V7.75a1 1 0 0 1 1-1Z" />
-                </svg>
-                <span>Focus</span>
-              </div>
-              <p>{settings.focusMode ? "On" : "Off"}</p>
-            </button>
-          </section>
-
-          <section className="slider-stack">
-            <label htmlFor="ui-effects">
-              <div>
-                <p>Brightness</p>
-                <span>{settings.brightness}%</span>
-              </div>
-              <input
-                id="ui-effects"
-                type="range"
-                min="0"
-                max="100"
-                value={settings.brightness}
-                onChange={(event) =>
-                  updateSlider("brightness", event.target.value)
-                }
+          {/* Top Row */}
+          <div className="gnome-top-row">
+            <div className="gnome-battery">
+              <img
+                src="/icons/battery-full.svg"
+                alt="Battery"
+                className="w-4 h-4 invert opacity-90"
               />
-            </label>
+              <span>
+                {battery.level !== null ? `${battery.level}%` : "37%"}
+              </span>
+            </div>
+            <div className="gnome-actions">
+              <button className="gnome-circle-btn">
+                <img
+                  src="/icons/capture.svg"
+                  alt="Capture"
+                  className="w-[15px] h-[15px] invert opacity-90"
+                />
+              </button>
+              <button className="gnome-circle-btn">
+                <img
+                  src="/icons/settings.svg"
+                  alt="Settings"
+                  className="w-[15px] h-[15px] invert opacity-90"
+                />
+              </button>
+              <button className="gnome-circle-btn">
+                <img
+                  src="/icons/lock.svg"
+                  alt="Lock"
+                  className="w-[15px] h-[15px] invert opacity-90"
+                />
+              </button>
+              <button className="gnome-circle-btn">
+                <img
+                  src="/icons/power.svg"
+                  alt="Power"
+                  className="w-[15px] h-[15px] invert opacity-90"
+                />
+              </button>
+            </div>
+          </div>
 
-            <label htmlFor="sound-level">
-              <div>
-                <p>Sound Level</p>
-                <span>{settings.soundLevel}%</span>
-              </div>
+          {/* Sliders */}
+          <div className="gnome-sliders">
+            <div className="gnome-slider-row">
+              <img
+                src="/icons/sound.svg"
+                alt="Sound"
+                className="w-4 h-4 invert opacity-90"
+              />
               <input
-                id="sound-level"
                 type="range"
                 min="0"
                 max="100"
                 value={settings.soundLevel}
-                onChange={(event) =>
-                  updateSlider("soundLevel", event.target.value)
-                }
+                onChange={(e) => updateSlider("soundLevel", e.target.value)}
+                style={{ "--val": `${settings.soundLevel}%` }}
               />
-            </label>
-          </section>
+              <button className="slider-arrow">
+                <img
+                  src="/icons/chevron-right.svg"
+                  alt="More"
+                  className="w-4 h-4 invert opacity-90"
+                />
+              </button>
+            </div>
+            <div className="gnome-slider-row">
+              <img
+                src="/icons/brightness.svg"
+                alt="Brightness"
+                className="w-4 h-4 invert opacity-90"
+              />
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={settings.brightness}
+                onChange={(e) => updateSlider("brightness", e.target.value)}
+                style={{
+                  marginRight: "24px",
+                  "--val": `${settings.brightness}%`,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Grid */}
+          <div className="gnome-grid">
+            {/* Wi-Fi */}
+            <button
+              className={`gnome-pill split ${settings.wifi ? "active" : ""}`}
+            >
+              <div
+                className="pill-content"
+                onClick={() => toggleSetting("wifi")}
+              >
+                <img
+                  src="/icons/wifi.svg"
+                  alt="Wi-Fi"
+                  className="w-[18px] invert"
+                />
+                <div className="pill-text">
+                  <span className="title">Wi-Fi</span>
+                  <span className="subtitle">
+                    {settings.wifi ? "Randome......" : "Off"}
+                  </span>
+                </div>
+              </div>
+              <div className="pill-arrow">
+                <img
+                  src="/icons/chevron-right.svg"
+                  alt="More"
+                  className="w-4 h-4 invert opacity-80"
+                />
+              </div>
+            </button>
+
+            {/* Bluetooth */}
+            <button
+              className={`gnome-pill split ${settings.bluetooth ? "active" : ""}`}
+            >
+              <div
+                className="pill-content"
+                onClick={() => toggleSetting("bluetooth")}
+              >
+                <img
+                  src="/icons/bluetooth.svg"
+                  alt="Bluetooth"
+                  className="w-[18px] invert opacity-90"
+                />
+                <div className="pill-text">
+                  <span className="title">Bluetooth</span>
+                </div>
+              </div>
+              <div className="pill-arrow">
+                <img
+                  src="/icons/chevron-right.svg"
+                  alt="More"
+                  className="w-4 h-4 invert opacity-80"
+                />
+              </div>
+            </button>
+
+            {/* Power Mode */}
+            <button
+              className="gnome-pill split"
+              onClick={() =>
+                setSettings((s) => ({
+                  ...s,
+                  powerMode:
+                    s.powerMode === "Balanced" ? "Power Saver" : "Balanced",
+                }))
+              }
+            >
+              <div className="pill-content">
+                <img
+                  src="/icons/power-mode.svg"
+                  alt="Power Mode"
+                  className="w-[18px] invert opacity-90"
+                />
+                <div className="pill-text">
+                  <span className="title">Power Mode</span>
+                  <span className="subtitle">
+                    {settings.powerMode || "Balanced"}
+                  </span>
+                </div>
+              </div>
+              <div className="pill-arrow">
+                <img
+                  src="/icons/chevron-right.svg"
+                  alt="More"
+                  className="w-4 h-4 invert opacity-80"
+                />
+              </div>
+            </button>
+
+            {/* Night Light */}
+            <button
+              className={`gnome-pill ${settings.nightLight ? "active" : ""}`}
+              onClick={() => toggleSetting("nightLight")}
+            >
+              <div className="pill-content">
+                <img
+                  src="/icons/night-light.svg"
+                  alt="Night Light"
+                  className="w-[18px] invert opacity-90"
+                />
+                <div className="pill-text">
+                  <span className="title">Night Light</span>
+                </div>
+              </div>
+            </button>
+
+            {/* Dark Style */}
+            <button
+              className={`gnome-pill ${settings.darkMode ? "active" : ""}`}
+              onClick={() => toggleSetting("darkMode")}
+            >
+              <div className="pill-content">
+                <img
+                  src="/icons/dark-style.svg"
+                  alt="Dark Style"
+                  className="w-[18px] invert opacity-90"
+                />
+                <div className="pill-text">
+                  <span className="title">Dark Style</span>
+                </div>
+              </div>
+            </button>
+
+            {/* Airplane Mode */}
+            <button
+              className={`gnome-pill ${settings.airplaneMode ? "active" : ""}`}
+              onClick={() => toggleSetting("airplaneMode")}
+            >
+              <div className="pill-content">
+                <img
+                  src="/icons/airplane-mode.svg"
+                  alt="Airplane Mode"
+                  className="w-[18px] invert opacity-90"
+                />
+                <div className="pill-text">
+                  <span className="title">Airplane Mode</span>
+                </div>
+              </div>
+            </button>
+          </div>
         </aside>
       </div>
     </nav>
