@@ -13,6 +13,7 @@ import Photos from "#windows/Photos";
 import Settings from "#windows/Settings";
 import MobileOS from "#components/MobileOS";
 import BootScreen from "#components/BootScreen";
+import LoginScreen from "#components/LoginScreen";
 import gsap from "gsap";
 import { useState, useEffect } from "react";
 
@@ -22,6 +23,7 @@ gsap.registerPlugin(Draggable);
 const App = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [booting, setBooting] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -36,8 +38,34 @@ const App = () => {
     return (
       <>
         {booting && <BootScreen onComplete={() => setBooting(false)} />}
-        <main className="mobile-os">
-          <MobileOS />
+        {!booting && !isLoggedIn && <LoginScreen onLogin={() => setIsLoggedIn(true)} />}
+        {isLoggedIn && (
+          <main className="mobile-os">
+            <MobileOS />
+            <Terminal />
+            <Safari />
+            <Resume />
+            <Finder />
+            <Text />
+            <Image />
+            <Contact />
+            <Photos />
+            <Settings />
+          </main>
+        )}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {booting && <BootScreen onComplete={() => setBooting(false)} />}
+      {!booting && !isLoggedIn && <LoginScreen onLogin={() => setIsLoggedIn(true)} />}
+      {isLoggedIn && (
+        <main>
+          <Navbar />
+          <Welcome />
+          <Dock />
           <Terminal />
           <Safari />
           <Resume />
@@ -47,29 +75,9 @@ const App = () => {
           <Contact />
           <Photos />
           <Settings />
+          <Home />
         </main>
-      </>
-    );
-  }
-
-  return (
-    <>
-      {booting && <BootScreen onComplete={() => setBooting(false)} />}
-      <main>
-        <Navbar />
-        <Welcome />
-        <Dock />
-        <Terminal />
-        <Safari />
-        <Resume />
-        <Finder />
-        <Text />
-        <Image />
-        <Contact />
-        <Photos />
-        <Settings />
-        <Home />
-      </main>
+      )}
     </>
   );
 };

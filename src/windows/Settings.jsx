@@ -255,7 +255,7 @@ const Settings = () => {
                 <div className="flex items-center justify-between p-3 px-4">
                   <div className="flex items-center gap-2">
                     <Wifi size={16} className="text-gray-800"/> 
-                    <span className="text-[13px] text-gray-700">iPhone (Kunal)</span>
+                    <span className="text-[13px] text-gray-700">iPhone (Kuldeep)</span>
                   </div>
                   <Lock size={14} className="text-gray-400" />
                 </div>
