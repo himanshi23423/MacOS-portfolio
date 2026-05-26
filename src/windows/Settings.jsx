@@ -5,7 +5,7 @@ import {
   Settings as SettingsIcon, Monitor, Wifi, Bluetooth, 
   Battery, Info, Search, Bell, Volume2, Moon, Hourglass,
   Accessibility, LayoutDashboard, Globe, Lock,
-  ChevronRight, ExternalLink, Check, ToggleRight, ToggleLeft,
+  ChevronLeft, ChevronRight, ExternalLink, Check, ToggleRight, ToggleLeft,
   Shield, Volume1, VolumeX, Eye, Ear, Hand, PlusCircle, AppWindow
 } from "lucide-react";
 
@@ -42,6 +42,14 @@ const Settings = () => {
   const [activeTab, setActiveTab] = useState("Apple ID");
   const [githubData, setGithubData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const [mobileView, setMobileView] = useState("main");
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     Promise.all([
@@ -82,71 +90,136 @@ const Settings = () => {
     <div className="@container w-full h-full">
       <div className="flex h-full w-full bg-[#f3f3f3]/95 backdrop-blur-3xl overflow-hidden rounded-lg font-sans select-none border border-black/10">
       
-      {/* Sidebar - Strictly Light Theme */}
-      <div className="hidden @md:flex w-[240px] h-full shrink-0 bg-[#e8e8e8]/50 border-r border-black/10 flex-col">
-        <div className="window-header h-[52px] shrink-0 flex items-center px-4 cursor-default">
-          <WindowControls target="settings" />
-        </div>
-        
-        <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-4 thin-scrollbar">
-          
-          <div 
-            className={`flex items-center gap-3 cursor-pointer p-2 rounded-lg transition-colors border border-transparent ${activeTab === "Apple ID" ? "bg-black/5 border-black/5" : "hover:bg-black/5"}`}
-            onClick={() => setActiveTab("Apple ID")}
-          >
-            {isLoading ? (
-              <>
-                <div className="w-[42px] h-[42px] rounded-full bg-gray-300 animate-pulse shrink-0"></div>
-                <div className="flex-1 flex flex-col gap-1.5 justify-center">
-                  <div className="h-3 w-20 bg-gray-300 animate-pulse rounded"></div>
-                  <div className="h-2 w-28 bg-gray-300 animate-pulse rounded"></div>
-                </div>
-              </>
-            ) : githubData ? (
-              <>
-                <img 
-                  src={githubData.profile.avatar_url} 
-                  alt="Avatar" 
-                  className="w-[42px] h-[42px] rounded-full border border-gray-300 shadow-sm shrink-0"
-                  draggable="false" 
-                />
-                <div className="flex-1 overflow-hidden">
-                  <h3 className="font-semibold text-[13px] text-gray-900 truncate leading-tight">
-                    {githubData.profile.name || githubData.profile.login}
-                  </h3>
-                  <p className="text-[11px] text-gray-500 truncate leading-tight mt-0.5">
-                    Apple ID, iCloud, Media
-                  </p>
-                </div>
-              </>
-            ) : null}
+      {/* Mobile iOS-Style Sidebar */}
+      {isMobile ? (
+        <div className={`${mobileView === "main" ? "flex" : "hidden"} flex-col h-full w-full bg-[#f2f2f7]`}>
+          <div className="flex flex-col shrink-0 bg-[#f2f2f7] border-b border-gray-300">
+            <div className="px-4 py-3 pb-2 flex items-center justify-between">
+              <WindowControls target="settings" />
+            </div>
+            <h1 className="text-[28px] font-bold text-black px-4 pb-2">Settings</h1>
           </div>
+          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6 thin-scrollbar">
+            <div 
+              className="bg-white rounded-xl shadow-sm flex items-center gap-4 p-4 cursor-pointer active:bg-gray-50 transition-colors"
+              onClick={() => { setActiveTab("Apple ID"); setMobileView("Apple ID"); }}
+            >
+              {isLoading ? (
+                <div className="w-[60px] h-[60px] rounded-full bg-gray-200 animate-pulse shrink-0" />
+              ) : githubData ? (
+                <img src={githubData.profile.avatar_url} className="w-[60px] h-[60px] rounded-full shrink-0 border border-gray-200" alt="Avatar" />
+              ) : (
+                <div className="w-[60px] h-[60px] rounded-full bg-gray-200 shrink-0" />
+              )}
+              <div className="flex-1 overflow-hidden">
+                <h2 className="text-[17px] font-semibold text-black truncate leading-tight">
+                  {githubData?.profile?.name || githubData?.profile?.login || "Loading..."}
+                </h2>
+                <p className="text-[13px] text-gray-500 truncate mt-0.5">Apple ID, iCloud, Media</p>
+              </div>
+              <ChevronRight size={18} className="text-gray-400 shrink-0" />
+            </div>
 
-          <div className="space-y-4">
             {SIDEBAR_GROUPS.map((group, i) => (
-              <div key={i} className="space-y-[2px]">
-                {group.map((item) => (
-                  <SidebarItem 
+              <div key={i} className="bg-white rounded-xl shadow-sm overflow-hidden">
+                {group.map((item, j) => (
+                  <div 
                     key={item.id}
-                    icon={item.icon}
-                    label={item.id}
-                    color={item.color}
-                    active={activeTab === item.id}
-                    onClick={() => setActiveTab(item.id)}
-                  />
+                    className={`flex items-center gap-3 p-3 pl-4 cursor-pointer active:bg-gray-50 transition-colors ${j < group.length - 1 ? 'border-b border-gray-100' : ''}`}
+                    onClick={() => { setActiveTab(item.id); setMobileView(item.id); }}
+                  >
+                    <div className={`flex items-center justify-center w-[28px] h-[28px] rounded-md shadow-sm text-white ${item.color}`}>
+                      {item.icon}
+                    </div>
+                    <span className="flex-1 text-[16px] font-medium text-black">{item.id}</span>
+                    <ChevronRight size={18} className="text-gray-400 shrink-0" />
+                  </div>
                 ))}
               </div>
             ))}
           </div>
-
         </div>
-      </div>
+      ) : (
+        /* Desktop Sidebar - Strictly Light Theme */
+        <div className="hidden @md:flex w-[240px] h-full shrink-0 bg-[#e8e8e8]/50 border-r border-black/10 flex-col">
+          <div className="window-header h-[52px] shrink-0 flex items-center px-4 cursor-default">
+            <WindowControls target="settings" />
+          </div>
+          
+          <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-4 thin-scrollbar">
+            
+            <div 
+              className={`flex items-center gap-3 cursor-pointer p-2 rounded-lg transition-colors border border-transparent ${activeTab === "Apple ID" ? "bg-black/5 border-black/5" : "hover:bg-black/5"}`}
+              onClick={() => setActiveTab("Apple ID")}
+            >
+              {isLoading ? (
+                <>
+                  <div className="w-[42px] h-[42px] rounded-full bg-gray-300 animate-pulse shrink-0"></div>
+                  <div className="flex-1 flex flex-col gap-1.5 justify-center">
+                    <div className="h-3 w-20 bg-gray-300 animate-pulse rounded"></div>
+                    <div className="h-2 w-28 bg-gray-300 animate-pulse rounded"></div>
+                  </div>
+                </>
+              ) : githubData ? (
+                <>
+                  <img 
+                    src={githubData.profile.avatar_url} 
+                    alt="Avatar" 
+                    className="w-[42px] h-[42px] rounded-full border border-gray-300 shadow-sm shrink-0"
+                    draggable="false" 
+                  />
+                  <div className="flex-1 overflow-hidden">
+                    <h3 className="font-semibold text-[13px] text-gray-900 truncate leading-tight">
+                      {githubData.profile.name || githubData.profile.login}
+                    </h3>
+                    <p className="text-[11px] text-gray-500 truncate leading-tight mt-0.5">
+                      Apple ID, iCloud, Media
+                    </p>
+                  </div>
+                </>
+              ) : null}
+            </div>
+
+            <div className="space-y-4">
+              {SIDEBAR_GROUPS.map((group, i) => (
+                <div key={i} className="space-y-[2px]">
+                  {group.map((item) => (
+                    <SidebarItem 
+                      key={item.id}
+                      icon={item.icon}
+                      label={item.id}
+                      color={item.color}
+                      active={activeTab === item.id}
+                      onClick={() => setActiveTab(item.id)}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      )}
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col bg-white">
-        <div className="window-header h-[52px] shrink-0 flex items-center px-6 border-b border-gray-200">
-          <h2 className="text-[15px] font-semibold text-gray-800">{activeTab}</h2>
-        </div>
+      <div className={`${isMobile ? (mobileView !== "main" ? "flex w-full" : "hidden") : "flex-1 flex"} flex-col bg-white`}>
+        {isMobile ? (
+          <div className="flex items-center justify-between shrink-0 bg-[#f2f2f7] border-b border-gray-300 px-2 py-3">
+            <div 
+              className="flex items-center gap-1 text-blue-500 cursor-pointer w-1/3"
+              onClick={() => setMobileView("main")}
+            >
+              <ChevronLeft size={22} />
+              <span className="text-[16px]">Settings</span>
+            </div>
+            <h2 className="text-[16px] font-semibold text-black text-center w-1/3 truncate">{activeTab}</h2>
+            <div className="w-1/3"></div>
+          </div>
+        ) : (
+          <div className="window-header h-[52px] shrink-0 flex items-center px-6 border-b border-gray-200">
+            <h2 className="text-[15px] font-semibold text-gray-800">{activeTab}</h2>
+          </div>
+        )}
         
         <div className="flex-1 overflow-y-auto thin-scrollbar">
           {activeTab === "Wi-Fi" ? (
