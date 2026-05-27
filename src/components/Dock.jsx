@@ -59,30 +59,25 @@ const Dock = () => {
   const toggleApp = (app, e) => {
     if (!app.canOpen) return;
 
-    const window = windows[app.id];
+    const appId = app.id === "folder" ? "finder" : app.id;
+    const window = windows[appId];
     if (window?.isOpen) {
       if (window.isMinimized) {
-        unminimizeWindow(app.id);
+        unminimizeWindow(appId);
       } else {
-        closeWindow(app.id);
+        closeWindow(appId);
       }
     } else {
-      openWindow(app.id);
+      openWindow(appId);
     }
   };
-  const sortedApps = [...dockApps];
-  const launchpadIdx = sortedApps.findIndex((app) => app.id === "launchpad");
-  if (launchpadIdx > -1) {
-    const [launchpad] = sortedApps.splice(launchpadIdx, 1);
-    sortedApps.push(launchpad);
-  }
 
   return (
     <section id="dock">
       <div ref={dockRef} className="dock-container">
-        {sortedApps.map(({ id, name, icon, canOpen }) => (
+        {dockApps.map(({ id, name, icon, canOpen }) => (
           <Fragment key={id}>
-            {id === "trash" && (
+            {id === "folder" && (
               <div className="w-[1px] h-9 bg-white/20 self-center mx-1 shrink-0" />
             )}
             <div className="relative flex justify-center">
@@ -111,7 +106,7 @@ const Dock = () => {
                       }
                     </div>
                     {/* Date Number */}
-                    <div className="flex-1 flex items-center justify-center text-gray-805 font-bold text-2xl leading-none font-sans -mt-0.5">
+                    <div className="flex-1 flex items-center justify-center text-gray-855 font-bold text-2xl leading-none font-sans -mt-0.5">
                       {new Date().getDate()}
                     </div>
                   </div>
@@ -143,6 +138,7 @@ const Dock = () => {
                         font: "scale-[2.8]",
                         telegram: "scale-[0.90]",
                         music: "scale-[0.90]",
+                        folder: "scale-[0.90]",
                         trash: "scale-[0.80]",
                       }[id] || ""
                     }`}
