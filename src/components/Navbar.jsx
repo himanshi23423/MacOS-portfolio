@@ -5,12 +5,81 @@ import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 
 const Navbar = () => {
-  const { openWindow } = useWindowsStore();
+  const { windows, openWindow } = useWindowsStore();
   const [isControlOpen, setIsControlOpen] = useState(false);
+  const [isAppleMenuOpen, setIsAppleMenuOpen] = useState(false);
   const [isPowerMenuOpen, setIsPowerMenuOpen] = useState(false);
   const [isAsleep, setIsAsleep] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [now, setNow] = useState(dayjs());
+  const appleMenuRef = useRef(null);
+
+  const appNames = {
+    finder: "Finder",
+    safari: "Safari",
+    photos: "Photos",
+    contact: "Contact",
+    terminal: "Terminal",
+    settings: "Settings",
+    calculator: "Calculator",
+    notes: "Notes",
+    messages: "Messages",
+    appletv: "Apple TV",
+    call: "FaceTime",
+    appstore: "App Store",
+    calendar: "Calendar",
+    weather: "Weather",
+    chrome: "Chrome",
+    vscode: "VS Code",
+    postman: "Postman",
+    map: "Maps",
+    font: "Font Book",
+    telegram: "Telegram",
+    music: "Music",
+    launchpad: "Launchpad",
+  };
+
+  const getActiveApp = () => {
+    let activeKey = "finder";
+    let maxZ = -1;
+
+    Object.entries(windows).forEach(([key, win]) => {
+      if (win.isOpen && !win.isMinimized && win.zIndex > maxZ) {
+        maxZ = win.zIndex;
+        activeKey = key;
+      }
+    });
+
+    return activeKey;
+  };
+
+  const getAppMenus = (appId) => {
+    const defaultMenus = ["File", "Edit", "View", "Window", "Help"];
+    switch (appId) {
+      case "finder":
+        return ["File", "Edit", "View", "Go", "Window", "Help"];
+      case "safari":
+        return ["File", "Edit", "View", "History", "Bookmarks", "Window", "Help"];
+      case "chrome":
+        return ["File", "Edit", "View", "History", "Bookmarks", "Window", "Help"];
+      case "vscode":
+        return ["File", "Edit", "Selection", "View", "Go", "Run", "Terminal", "Window", "Help"];
+      case "music":
+        return ["File", "Edit", "Song", "View", "Controls", "Window", "Help"];
+      case "photos":
+        return ["File", "Edit", "Image", "View", "Window", "Help"];
+      case "terminal":
+        return ["Shell", "Edit", "View", "Window", "Help"];
+      default:
+        return defaultMenus;
+    }
+  };
+
+  const activeAppKey = getActiveApp();
+  const isPortfolioApp = activeAppKey === "finder" || activeAppKey === "contact" || activeAppKey === "resume";
+  const activeAppName = isPortfolioApp ? "Kuldeep's Portfolio" : (appNames[activeAppKey] || "Finder");
+  const activeAppMenus = isPortfolioApp ? ["Projects", "Contact", "Resume"] : getAppMenus(activeAppKey);
+
   const [settings, setSettings] = useState({
     darkMode: true,
     wifi: true,
@@ -97,12 +166,20 @@ const Navbar = () => {
         setIsControlOpen(false);
         setIsPowerMenuOpen(false);
       }
+      if (
+        isAppleMenuOpen &&
+        appleMenuRef.current &&
+        !appleMenuRef.current.contains(event.target)
+      ) {
+        setIsAppleMenuOpen(false);
+      }
     };
 
     const handleEscape = (event) => {
       if (event.key === "Escape") {
         setIsControlOpen(false);
         setIsPowerMenuOpen(false);
+        setIsAppleMenuOpen(false);
       }
     };
 
@@ -157,15 +234,95 @@ const Navbar = () => {
         ></div>
       )}
       <nav className="mac-navbar">
-        <div className="nav-left">
-        <img  src="/icons/logo.svg" alt="logo" className="apple-logo" />
+        <div className="nav-left relative" ref={appleMenuRef}>
+          <img 
+            src="/icons/logo.svg" 
+            alt="logo" 
+            className="apple-logo hover:bg-black/5 rounded px-2" 
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsAppleMenuOpen(!isAppleMenuOpen);
+            }} 
+          />
+
+          {isAppleMenuOpen && (
+            <div className="absolute left-2.5 top-[28px] w-56 bg-[#2a2a2a]/90 backdrop-blur-3xl border border-white/10 rounded-lg shadow-2xl py-1 z-[99999] select-none text-[13.5px] text-white/95">
+              <button 
+                className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
+                onClick={() => {
+                  setIsAppleMenuOpen(false);
+                  openWindow("settings", { tab: "General", time: Date.now() });
+                }}
+              >
+                About This Mac
+              </button>
+              <div className="h-[1px] bg-white/10 my-1 mx-2" />
+              <button 
+                className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
+                onClick={() => {
+                  setIsAppleMenuOpen(false);
+                  openWindow("settings");
+                }}
+              >
+                System Settings...
+              </button>
+              <button 
+                className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
+                onClick={() => {
+                  setIsAppleMenuOpen(false);
+                  openWindow("appstore");
+                }}
+              >
+                App Store...
+              </button>
+              <div className="h-[1px] bg-white/10 my-1 mx-2" />
+              <button 
+                className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
+                onClick={() => {
+                  setIsAppleMenuOpen(false);
+                  setIsAsleep(true);
+                }}
+              >
+                Sleep
+              </button>
+              <button 
+                className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
+                onClick={() => {
+                  setIsAppleMenuOpen(false);
+                  window.location.reload();
+                }}
+              >
+                Restart...
+              </button>
+              <button 
+                className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
+                onClick={() => {
+                  setIsAppleMenuOpen(false);
+                  window.location.reload();
+                }}
+              >
+                Shut Down...
+              </button>
+            </div>
+          )}
 
         <ul className="nav-links max-sm:hidden">
-          {navLinks.map(({ id, name, type }) => (
-            <li className="font-sans text-zinc-800 hover:text-zinc-950" key={id} onClick={() => openWindow(type)}>
-              {name}
-            </li>
-          ))}
+          <li className="font-bold">
+            {activeAppName}
+          </li>
+          {isPortfolioApp ? (
+            <>
+              <li onClick={() => openWindow("finder")}>Projects</li>
+              <li onClick={() => openWindow("contact")}>Contact</li>
+              <li onClick={() => openWindow("resume")}>Resume</li>
+            </>
+          ) : (
+            activeAppMenus.map((menu, idx) => (
+              <li key={idx}>
+                {menu}
+              </li>
+            ))
+          )}
         </ul>
       </div>
 

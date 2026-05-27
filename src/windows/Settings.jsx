@@ -1,5 +1,6 @@
 import WindowControls from "#components/WindowControls";
 import windowWrapper from "#hoc/windowWrapper";
+import useWindowsStore from "#store/window";
 import { useState, useEffect } from "react";
 import { 
   Settings as SettingsIcon, Monitor, Wifi, Bluetooth, 
@@ -39,9 +40,18 @@ const SidebarItem = ({ icon, label, color, active, onClick }) => (
 );
 
 const Settings = () => {
+  const { windows } = useWindowsStore();
+  const windowData = windows.settings?.data;
+
   const [activeTab, setActiveTab] = useState("Apple ID");
   const [githubData, setGithubData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (windowData?.tab) {
+      setActiveTab(windowData.tab);
+    }
+  }, [windowData]);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [mobileView, setMobileView] = useState("main");
 
