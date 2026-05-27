@@ -72,8 +72,12 @@ const Dock = () => {
     }
   };
 
+  const isAnyWindowMaximized = Object.values(windows).some(
+    (win) => win.isOpen && win.isMaximized && !win.isMinimized
+  );
+
   return (
-    <section id="dock">
+    <section id="dock" className={isAnyWindowMaximized ? "dock-hidden" : ""}>
       <div ref={dockRef} className="dock-container">
         {dockApps.map(({ id, name, icon, canOpen }) => (
           <Fragment key={id}>
