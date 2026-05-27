@@ -2,12 +2,12 @@ import { dockApps } from "#constants";
 import useWindowsStore from "#store/window";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef, Fragment } from "react";
-import { Tooltip } from "react-tooltip";
+import { useRef, Fragment, useState } from "react";
 
 const Dock = () => {
   const { openWindow, closeWindow, focusWindow, unminimizeWindow, windows } =
     useWindowsStore();
+  const [hoveredAppId, setHoveredAppId] = useState(null);
   const dockRef = useRef(null);
 
   useGSAP(() => {
@@ -88,14 +88,18 @@ const Dock = () => {
             <div className="relative flex justify-center">
               <button
                 type="button"
-                className="dock-icon"
+                className="dock-icon relative flex justify-center items-center"
                 aria-label={name}
-                data-tooltip-id="dock-tooltip"
-                data-tooltip-content={name}
-                data-tooltip-delay-show={150}
                 disabled={!canOpen}
                 onClick={(e) => toggleApp({ id, canOpen }, e)}
+                onMouseEnter={() => setHoveredAppId(id)}
+                onMouseLeave={() => setHoveredAppId(null)}
               >
+                {hoveredAppId === id && (
+                  <span className="dock-tooltip-custom animate-tooltip">
+                    {name}
+                  </span>
+                )}
                 {id === "calendar" ? (
                   <div className="w-full h-full bg-white rounded-[13px] border border-black/10 shadow-sm overflow-hidden flex flex-col items-center select-none scale-[0.76] relative aspect-square transition-all duration-200 hover:scale-[0.82]">
                     {/* Red Header Bar */}
@@ -126,7 +130,6 @@ const Dock = () => {
             </div>
           </Fragment>
         ))}
-        <Tooltip id="dock-tooltip" place="top" className="tooltip" noArrow />
       </div>
     </section>
   );

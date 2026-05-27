@@ -429,23 +429,6 @@ body.night-light-active::after {
       @apply bg-white/20 backdrop-blur-md justify-between rounded-2xl p-1.5 flex items-end gap-1.5;
     }
 
-    .tooltip {
-      background-color: rgba(255, 255, 255, 0.72) !important;
-      backdrop-filter: blur(20px) saturate(1.8) !important;
-      -webkit-backdrop-filter: blur(20px) saturate(1.8) !important;
-      color: rgba(0, 0, 0, 0.8) !important;
-      border: 0.5px solid rgba(0, 0, 0, 0.12) !important;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
-      filter: none !important;
-      -webkit-filter: none !important;
-      opacity: 1 !important;
-      padding: 4px 12px !important;
-      font-size: 11px !important;
-      font-weight: 500 !important;
-      border-radius: 6px !important;
-      margin-bottom: 12px !important;
-      pointer-events: none !important;
-    }
 
     .dock-icon {
       @apply size-14 3xl:size-20 cursor-pointer;
@@ -1032,3 +1015,42 @@ body.night-light-active::after {
 .animate-fade-in {
   animation: fadeInLaunchpad 0.32s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
+
+/* ===== DOCK TOOLTIP ANIMATIONS & STYLES ===== */
+@keyframes tooltipFade {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.animate-tooltip {
+  animation: tooltipFade 0.1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.dock-tooltip-custom {
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 30, 0.65) !important;
+  backdrop-filter: blur(20px) saturate(1.6) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  border: 0.5px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+  padding: 4px 10px !important;
+  font-size: 11.5px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-weight: 500 !important;
+  border-radius: 5px !important;
+  pointer-events: none !important;
+  letter-spacing: 0.1px !important;
+  white-space: nowrap !important;
+  z-index: 9999 !important;
+}
+
