@@ -149,7 +149,7 @@ const Music = () => {
       <div id="window-header" className="shrink-0 bg-[#f4f4f6] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600">
         <div className="flex items-center gap-4">
           <WindowControls target="music" />
-          <span className="font-bold text-gray-700 hidden md:inline pl-3 flex items-center gap-1.5">
+          <span className="font-bold text-gray-700 hidden md:flex pl-3 items-center gap-1.5">
             <MusicIcon size={14} className="text-red-500" /> Music
           </span>
         </div>

@@ -14,7 +14,6 @@ const Navbar = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [now, setNow] = useState(dayjs());
   const appleMenuRef = useRef(null);
-
   const appNames = {
     finder: "Finder",
     safari: "Safari",
@@ -38,10 +37,11 @@ const Navbar = () => {
     telegram: "Telegram",
     music: "Music",
     launchpad: "Launchpad",
+    resume: "Resume",
   };
 
   const getActiveApp = () => {
-    let activeKey = "finder";
+    let activeKey = null;
     let maxZ = -1;
 
     Object.entries(windows).forEach(([key, win]) => {
@@ -77,9 +77,7 @@ const Navbar = () => {
   };
 
   const activeAppKey = getActiveApp();
-  const isPortfolioApp = activeAppKey === "finder" || activeAppKey === "contact" || activeAppKey === "resume";
-  const activeAppName = isPortfolioApp ? "Kuldeep's Portfolio" : (appNames[activeAppKey] || "Finder");
-  const activeAppMenus = isPortfolioApp ? ["Projects", "Contact", "Resume"] : getAppMenus(activeAppKey);
+  const activeAppName = activeAppKey ? (appNames[activeAppKey] || "Finder") : "Kuldeep's Portfolio";
 
   const [settings, setSettings] = useState({
     darkMode: true,
@@ -317,22 +315,10 @@ const Navbar = () => {
           )}
 
         <ul className="nav-links max-sm:hidden">
-          <li className="font-bold">
-            {activeAppName}
-          </li>
-          {isPortfolioApp ? (
-            <>
-              <li onClick={() => openWindow("finder")}>Projects</li>
-              <li onClick={() => openWindow("contact")}>Contact</li>
-              <li onClick={() => openWindow("resume")}>Resume</li>
-            </>
-          ) : (
-            activeAppMenus.map((menu, idx) => (
-              <li key={idx}>
-                {menu}
-              </li>
-            ))
-          )}
+          <li className="font-bold cursor-default">{activeAppName}</li>
+          <li onClick={() => openWindow("finder")}>Projects</li>
+          <li onClick={() => openWindow("contact")}>Contact</li>
+          <li onClick={() => openWindow("resume")}>Resume</li>
         </ul>
       </div>
 
