@@ -2,7 +2,7 @@ import { dockApps } from "#constants";
 import useWindowsStore from "#store/window";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef } from "react";
+import { useRef, Fragment } from "react";
 import { Tooltip } from "react-tooltip";
 
 const Dock = () => {
@@ -70,49 +70,61 @@ const Dock = () => {
       openWindow(app.id);
     }
   };
+  const sortedApps = [...dockApps];
+  const launchpadIdx = sortedApps.findIndex((app) => app.id === "launchpad");
+  if (launchpadIdx > -1) {
+    const [launchpad] = sortedApps.splice(launchpadIdx, 1);
+    sortedApps.push(launchpad);
+  }
+
   return (
     <section id="dock">
       <div ref={dockRef} className="dock-container">
-        {dockApps.map(({ id, name, icon, canOpen }) => (
-          <div key={id} className="relative flex justify-center">
-            <button
-              type="button"
-              className="dock-icon"
-              aria-label={name}
-              data-tooltip-id="dock-tooltip"
-              data-tooltip-content={name}
-              data-tooltip-delay-show={150}
-              disabled={!canOpen}
-              onClick={(e) => toggleApp({ id, canOpen }, e)}
-            >
-              {id === "calendar" ? (
-                <div className="w-full h-full bg-white rounded-[13px] border border-black/10 shadow-sm overflow-hidden flex flex-col items-center select-none scale-[0.76] relative aspect-square transition-all duration-200 hover:scale-[0.82]">
-                  {/* Red Header Bar */}
-                  <div className="w-full bg-[#ff3b30] text-white text-[9px] font-extrabold py-0.5 text-center leading-none tracking-wider uppercase">
-                    {
-                      ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][
-                        new Date().getDay()
-                      ]
-                    }
-                  </div>
-                  {/* Date Number */}
-                  <div className="flex-1 flex items-center justify-center text-gray-800 font-bold text-2xl leading-none font-sans -mt-0.5">
-                    {new Date().getDate()}
-                  </div>
-                </div>
-              ) : (
-                <img
-                  src={`/images/${icon}`}
-                  alt={name}
-                  loading="lazy"
-                  className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""} ${id === "appletv" ? "scale-[0.87]" : ""} ${id === "calculator" ? "scale-[0.90]" : ""} ${id === "call" ? "scale-[0.80]" : ""} ${id === "resume" ? "scale-[0.88]" : ""} ${id === "weather" ? "scale-[0.80]" : ""} ${id === "chrome" ? "scale-[0.88]" : ""} ${id === "map" ? "scale-[0.80]" : ""} ${id === "postman" ? "scale-[0.82]" : ""} ${id === "vscode" ? "scale-[0.85]" : ""} ${id === "launchpad" ? "scale-[0.80]" : ""} ${id === "font" ? "scale-[0.95]" : ""} ${id === "telegram" ? "scale-[0.90]" : ""} ${id === "music" ? "scale-[0.88]" : ""}`}
-                />
-              )}
-            </button>
-            {windows[id]?.isOpen && (
-              <div className="absolute -bottom-1.5 w-1 h-1 bg-white rounded-full" />
+        {sortedApps.map(({ id, name, icon, canOpen }) => (
+          <Fragment key={id}>
+            {id === "trash" && (
+              <div className="w-[1px] h-9 bg-white/20 self-center mx-1 shrink-0" />
             )}
-          </div>
+            <div className="relative flex justify-center">
+              <button
+                type="button"
+                className="dock-icon"
+                aria-label={name}
+                data-tooltip-id="dock-tooltip"
+                data-tooltip-content={name}
+                data-tooltip-delay-show={150}
+                disabled={!canOpen}
+                onClick={(e) => toggleApp({ id, canOpen }, e)}
+              >
+                {id === "calendar" ? (
+                  <div className="w-full h-full bg-white rounded-[13px] border border-black/10 shadow-sm overflow-hidden flex flex-col items-center select-none scale-[0.76] relative aspect-square transition-all duration-200 hover:scale-[0.82]">
+                    {/* Red Header Bar */}
+                    <div className="w-full bg-[#ff3b30] text-white text-[9px] font-extrabold py-0.5 text-center leading-none tracking-wider uppercase">
+                      {
+                        ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][
+                          new Date().getDay()
+                        ]
+                      }
+                    </div>
+                    {/* Date Number */}
+                    <div className="flex-1 flex items-center justify-center text-gray-805 font-bold text-2xl leading-none font-sans -mt-0.5">
+                      {new Date().getDate()}
+                    </div>
+                  </div>
+                ) : (
+                  <img
+                    src={`/images/${icon}`}
+                    alt={name}
+                    loading="lazy"
+                    className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""} ${id === "appletv" ? "scale-[0.87]" : ""} ${id === "calculator" ? "scale-[0.90]" : ""} ${id === "call" ? "scale-[0.80]" : ""} ${id === "resume" ? "scale-[0.88]" : ""} ${id === "weather" ? "scale-[0.80]" : ""} ${id === "chrome" ? "scale-[0.88]" : ""} ${id === "map" ? "scale-[0.80]" : ""} ${id === "postman" ? "scale-[0.82]" : ""} ${id === "vscode" ? "scale-[0.85]" : ""} ${id === "launchpad" ? "scale-[0.80]" : ""} ${id === "font" ? "scale-[0.95]" : ""} ${id === "telegram" ? "scale-[0.90]" : ""} ${id === "music" ? "scale-[0.88]" : ""}`}
+                  />
+                )}
+              </button>
+              {windows[id]?.isOpen && (
+                <div className="absolute -bottom-1.5 w-1 h-1 bg-white rounded-full" />
+              )}
+            </div>
+          </Fragment>
         ))}
         <Tooltip id="dock-tooltip" place="top" className="tooltip" noArrow />
       </div>

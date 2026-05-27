@@ -1032,4 +1032,3 @@ body.night-light-active::after {
 .animate-fade-in {
   animation: fadeInLaunchpad 0.32s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
-
