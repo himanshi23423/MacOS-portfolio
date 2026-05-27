@@ -149,9 +149,6 @@ const Dock = () => {
                   />
                 )}
               </button>
-              {windows[id]?.isOpen && (
-                <div className="absolute -bottom-1.5 w-1 h-1 bg-white rounded-full" />
-              )}
             </div>
           </Fragment>
         ))}
