@@ -5,13 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 
 const Navbar = () => {
-  const { windows, openWindow } = useWindowsStore();
+  const { windows, openWindow, music, setMusicState } = useWindowsStore();
   const [isControlOpen, setIsControlOpen] = useState(false);
   const [isAppleMenuOpen, setIsAppleMenuOpen] = useState(false);
   const [isShuttingDown, setIsShuttingDown] = useState(false);
   const [isPowerMenuOpen, setIsPowerMenuOpen] = useState(false);
   const [isAsleep, setIsAsleep] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [now, setNow] = useState(dayjs());
   const appleMenuRef = useRef(null);
   const appNames = {
@@ -116,8 +115,10 @@ const Navbar = () => {
   }, [settings.brightness]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--system-volume", settings.soundLevel);
-  }, [settings.soundLevel]);
+    const currentVolume = music.isMuted ? 0 : music.volume;
+    setSettings((current) => ({ ...current, soundLevel: currentVolume }));
+    document.documentElement.style.setProperty("--system-volume", currentVolume);
+  }, [music.volume, music.isMuted]);
 
   useEffect(() => {
     let batteryManager;
@@ -533,21 +534,36 @@ const Navbar = () => {
                 type="range"
                 min="0"
                 max="100"
-                value={settings.soundLevel}
-                onChange={(e) => updateSlider("soundLevel", e.target.value)}
+                value={music.isMuted ? 0 : music.volume}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setMusicState({ volume: val, isMuted: val === 0 });
+                }}
                 className="mac-slider flex-1"
-                style={{ "--val": `${settings.soundLevel}%` }}
+                style={{ "--val": `${music.isMuted ? 0 : music.volume}%` }}
               />
               <div className="absolute left-3.5 pointer-events-none flex items-center justify-center">
                 <svg className="w-3.5 h-3.5 text-black/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M11 5 6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 0 1 0 7.07" />
                 </svg>
               </div>
-              <div className="flex items-center text-white/60 hover:text-white shrink-0">
-                <svg className="w-[15px] h-[15px] cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
-                  <polygon points="12 15 17 21 7 21 12 15" />
-                </svg>
+              <div 
+                className="flex items-center shrink-0 cursor-pointer"
+                onClick={() => setMusicState({ isMuted: !music.isMuted })}
+              >
+                {music.isMuted ? (
+                  <svg className="w-[18px] h-[18px] text-red-500 hover:text-red-650" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                    <line x1="22" y1="9" x2="16" y2="15" />
+                    <line x1="16" y1="9" x2="22" y2="15" />
+                  </svg>
+                ) : (
+                  <svg className="w-[18px] h-[18px] text-white/80 hover:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                  </svg>
+                )}
               </div>
             </div>
           </div>
@@ -555,14 +571,24 @@ const Navbar = () => {
           {/* Bottom Card: Now Playing / Media Player */}
           <div className="bg-white/5 border border-white/5 rounded-2xl p-3 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <img
-                src="/images/gal1.png"
-                alt="Track Art"
-                className="w-11 h-11 rounded-lg object-cover bg-white/10 border border-white/10 shrink-0"
-              />
+              {music.activeTrack.coverUrl ? (
+                <img
+                  src={music.activeTrack.coverUrl}
+                  alt="Track Art"
+                  className="w-11 h-11 rounded-lg object-cover bg-white/10 border border-white/10 shrink-0"
+                />
+              ) : (
+                <div className={`w-11 h-11 rounded-lg bg-gradient-to-tr ${music.activeTrack.coverColor || 'from-zinc-500 to-zinc-700'} flex items-center justify-center text-lg shadow-md shrink-0 text-white`}>
+                  {music.activeTrack.coverText || '🎵'}
+                </div>
+              )}
               <div className="flex flex-col min-w-0">
-                <span className="text-[12.5px] font-semibold text-white/95 truncate leading-tight">Dragonball Durag</span>
-                <span className="text-[10px] text-white/50 truncate leading-tight mt-0.5">Thundercat - It Is What It Is</span>
+                <span className="text-[12.5px] font-semibold text-white/95 truncate leading-tight">
+                  {music.activeTrack.title || 'Select a Song'}
+                </span>
+                <span className="text-[10px] text-white/50 truncate leading-tight mt-0.5">
+                  {music.activeTrack.artist || 'JioSaavn Music'}
+                </span>
               </div>
             </div>
 
@@ -570,9 +596,9 @@ const Navbar = () => {
             <div className="flex items-center gap-3.5 pr-2">
               <button 
                 className="text-white/80 hover:text-white transition-colors"
-                onClick={() => setIsPlaying(!isPlaying)}
+                onClick={() => setMusicState({ isPlaying: !music.isPlaying })}
               >
-                {isPlaying ? (
+                {music.isPlaying ? (
                   <svg className="w-3.5 h-3.5 fill-white text-white" viewBox="0 0 24 24">
                     <rect x="6" y="4" width="4" height="16" />
                     <rect x="14" y="4" width="4" height="16" />

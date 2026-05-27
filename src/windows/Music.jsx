@@ -1,128 +1,316 @@
 import React, { useState, useEffect, useRef } from "react";
 import WindowControls from "#components/WindowControls";
 import windowWrapper from "#hoc/windowWrapper";
+import useWindowsStore from "#store/window";
 import { 
   Play, Pause, SkipBack, SkipForward, Volume2, VolumeX,
-  Search, Radio, Compass, Disc, Library, Music as MusicIcon,
+  Search, Compass, Disc, Library, Music as MusicIcon,
   Heart, Repeat, Shuffle, Clock, Award
 } from "lucide-react";
 
-// Curated mock music tracks
-const MOCK_TRACKS = [
-  {
-    id: 1,
-    title: "Midnight City",
-    artist: "M83",
-    album: "Hurry Up, We're Dreaming",
-    duration: 243, // in seconds (4:03)
-    coverColor: "from-indigo-600 to-pink-500",
-    coverText: "🌌"
-  },
-  {
-    id: 2,
-    title: "Get Lucky",
-    artist: "Daft Punk",
-    album: "Random Access Memories",
-    duration: 369, // 6:09
-    coverColor: "from-yellow-400 to-amber-600",
-    coverText: "🤖"
-  },
-  {
-    id: 3,
-    title: "Blinding Lights",
-    artist: "The Weeknd",
-    album: "After Hours",
-    duration: 200, // 3:20
-    coverColor: "from-red-650 to-rose-900",
-    coverText: "🕶️"
-  },
-  {
-    id: 4,
-    title: "Sweater Weather",
-    artist: "The Neighbourhood",
-    album: "I Love You.",
-    duration: 240, // 4:00
-    coverColor: "from-zinc-500 to-slate-700",
-    coverText: "☁️"
-  },
-  {
-    id: 5,
-    title: "Intro",
-    artist: "The xx",
-    album: "xx",
-    duration: 128, // 2:08
-    coverColor: "from-neutral-900 to-zinc-950",
-    coverText: "✖️"
-  },
-  {
-    id: 6,
-    title: "Starlight",
-    artist: "Muse",
-    album: "Black Holes and Revelations",
-    duration: 240, // 4:00
-    coverColor: "from-blue-600 to-indigo-950",
-    coverText: "✨"
-  }
+const colors = [
+  "from-indigo-600 to-pink-500",
+  "from-yellow-400 to-amber-600",
+  "from-red-600 to-rose-900",
+  "from-zinc-500 to-slate-700",
+  "from-neutral-900 to-zinc-950",
+  "from-blue-600 to-indigo-950",
+  "from-orange-500 to-amber-500",
+  "from-emerald-500 to-teal-700",
 ];
 
+const getCoverColor = (index) => colors[index % colors.length];
+
+const emojis = ["🌌", "🤖", "🕶️", "☁️", "✖️", "✨", "🪕", "🪈", "🥁", "🎵", "🎸", "🎹", "🎶"];
+const getCoverEmoji = (name) => {
+  const code = (name && name.charCodeAt(0)) || 0;
+  return emojis[code % emojis.length];
+};
+
+// Memoized tracks table to prevent expensive table re-renders on every progress/time tick
+const TracksTable = React.memo(({ tracks, activeTrackId, isPlaying, onSelectTrack, formatTime }) => {
+  return (
+    <table className="w-full text-left border-collapse">
+      <thead>
+        <tr className="border-b border-zinc-100 text-[10px] font-bold text-gray-400 uppercase select-none">
+          <th className="py-2.5 px-4 w-12">#</th>
+          <th className="py-2.5 px-3">Title</th>
+          <th className="py-2.5 px-3">Artist</th>
+          <th className="py-2.5 px-3">Album</th>
+          <th className="py-2.5 px-3 w-16 text-center"><Clock size={12} className="inline" /></th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-zinc-50 text-xs">
+        {tracks.map((track, index) => {
+          const isActive = activeTrackId === track.id;
+          return (
+            <tr 
+              key={track.id}
+              onDoubleClick={() => onSelectTrack(track)}
+              className={`hover:bg-zinc-50 cursor-pointer group ${
+                isActive ? "bg-red-50/50 font-semibold" : ""
+              }`}
+            >
+              <td className="py-3 px-4 text-gray-400">
+                {isActive && isPlaying ? (
+                  <div className="flex items-center gap-0.5 justify-center w-4 h-4">
+                    <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "300ms" }} />
+                  </div>
+                ) : (
+                  <span className="group-hover:hidden">{index + 1}</span>
+                )}
+                <Play 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectTrack(track);
+                  }}
+                  size={12} 
+                  className="hidden group-hover:inline text-red-500 transition-transform active:scale-90" 
+                />
+              </td>
+              <td className={`py-3 px-3 truncate ${isActive ? "text-red-600" : "text-gray-900"}`}>
+                {track.title}
+              </td>
+              <td className="py-3 px-3 text-gray-600 truncate">{track.artist}</td>
+              <td className="py-3 px-3 text-gray-500 truncate">{track.album}</td>
+              <td className="py-3 px-3 text-gray-400 text-center font-mono">{formatTime(track.duration)}</td>
+            </tr>
+          );
+        })}
+
+        {tracks.length === 0 && (
+          <tr>
+            <td colSpan="5" className="text-center py-12 text-gray-400 italic">No songs found in this view</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
+});
+
+TracksTable.displayName = "TracksTable";
+
 const Music = () => {
-  const [tracks, setTracks] = useState(MOCK_TRACKS);
-  const [activeTrack, setActiveTrack] = useState(MOCK_TRACKS[0]);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(34); // start partway through for mock
-  const [volume, setVolume] = useState(72);
-  const [isMuted, setIsMuted] = useState(false);
+  const { music, setMusicState, focusWindow } = useWindowsStore();
+  const activeTrack = music.activeTrack;
+  const isPlaying = music.isPlaying;
+  const volume = music.volume;
+  const isMuted = music.isMuted;
+
+  const [tracks, setTracks] = useState([]);
+  const [currentTime, setCurrentTime] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("Listen Now");
+  const [activeCategory, setActiveCategory] = useState("Browse"); // Default to Browse
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Playback timer simulation
+  const audioRef = useRef(null);
+  const searchInputRef = useRef(null);
+
+  // Fetch tracks from JioSaavn API based on search query and category
   useEffect(() => {
-    let interval = null;
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setCurrentTime((prev) => {
-          if (prev >= activeTrack.duration) {
-            // Repeat or stop
-            if (isRepeat) return 0;
-            handleNext();
-            return 0;
+    const fetchTracks = async () => {
+      setIsLoading(true);
+      try {
+        const apiBase = import.meta.env.VITE_JIOSAAVN_API_URL || "https://jiosaavn-apix.arcadopredator.workers.dev";
+        let query = "Bollywood Hits";
+        
+        if (searchQuery.trim() !== "") {
+          query = searchQuery;
+        } else {
+          switch (activeCategory) {
+            case "Browse":
+              query = "Bollywood Hits";
+              break;
+            case "Listen Now":
+              query = "Arijit Singh Hits";
+              break;
+            case "Hindi Music":
+              query = "New Hindi Songs";
+              break;
+            case "English Music":
+              query = "Imagine Dragons";
+              break;
+            case "Recently Added":
+              query = "Latest Hits";
+              break;
+            case "Artists":
+              query = "Top Artists";
+              break;
+            case "Albums":
+              query = "Top Albums";
+              break;
+            case "Songs":
+              query = "Popular Songs";
+              break;
+            default:
+              query = "Bollywood Hits";
           }
-          return prev + 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, activeTrack, isRepeat]);
+        }
 
-  // Load a song and reset play timer
+        // Fetch songs directly with all details and download URLs in a single request
+        const res = await fetch(`${apiBase}/api/search/songs?query=${encodeURIComponent(query)}&limit=25`);
+        const resultData = await res.json();
+        
+        if (resultData.success && resultData.data && resultData.data.results) {
+          const formattedTracks = resultData.data.results.map((track, index) => {
+            const downloadUrls = track.downloadUrl || [];
+            const audioUrl = downloadUrls.length > 0 ? downloadUrls[downloadUrls.length - 1]?.url : "";
+            
+            // Robust cover art URL resolver
+            const images = track.image;
+            let coverUrl = "";
+            if (typeof images === "string") {
+              coverUrl = images;
+            } else if (Array.isArray(images) && images.length > 0) {
+              const lastImg = images[images.length - 1];
+              coverUrl = typeof lastImg === "string" ? lastImg : (lastImg?.url || lastImg?.link || "");
+            }
+
+            return {
+              id: track.id,
+              title: track.name,
+              artist: track.artists?.primary?.map(a => a.name).join(", ") || track.label || "Unknown Artist",
+              album: track.album?.name || "Single",
+              duration: track.duration,
+              coverColor: getCoverColor(index),
+              coverText: getCoverEmoji(track.name),
+              coverUrl: coverUrl,
+              url: audioUrl,
+              language: track.language
+            };
+          });
+          
+          setTracks(formattedTracks);
+        } else {
+          setTracks([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch JioSaavn tracks:", err);
+        setTracks([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      fetchTracks();
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [activeCategory, searchQuery]);
+
+  // Set the first track as active if none is currently selected
+  useEffect(() => {
+    if (tracks.length > 0 && activeTrack.id === 0) {
+      setMusicState({ activeTrack: tracks[0] });
+    }
+  }, [tracks, activeTrack]);
+
+  // Sync volume with audio element
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume / 100;
+    }
+  }, [volume, isMuted]);
+
+  // Sync play/pause controls when activeTrack or isPlaying changes
+  useEffect(() => {
+    if (audioRef.current && activeTrack.url) {
+      if (isPlaying) {
+        audioRef.current.play().catch(err => {
+          console.log("Audio playback blocked or interrupted:", err);
+          setMusicState({ isPlaying: false });
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying, activeTrack]);
+
+  // Clean up audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      const duration = Math.round(audioRef.current.duration);
+      if (duration && !isNaN(duration)) {
+        setMusicState({ activeTrack: { ...activeTrack, duration } });
+      }
+    }
+  };
+
+  const handleAudioEnded = () => {
+    if (isRepeat) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(err => console.log(err));
+      }
+    } else {
+      handleNext();
+    }
+  };
+
   const handleSelectTrack = (track) => {
-    setActiveTrack(track);
+    setMusicState({ activeTrack: track, isPlaying: true });
     setCurrentTime(0);
-    setIsPlaying(true);
   };
 
   const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
+    if (activeTrack.url) {
+      setMusicState({ isPlaying: !isPlaying });
+    }
   };
 
   const handleNext = () => {
+    const currentList = tracks;
+    if (currentList.length === 0) return;
+    
+    let nextTrack;
     if (isShuffle) {
-      const randIdx = Math.floor(Math.random() * tracks.length);
-      setActiveTrack(tracks[randIdx]);
+      const randIdx = Math.floor(Math.random() * currentList.length);
+      nextTrack = currentList[randIdx];
     } else {
-      const currentIdx = tracks.findIndex(t => t.id === activeTrack.id);
-      const nextIdx = (currentIdx + 1) % tracks.length;
-      setActiveTrack(tracks[nextIdx]);
+      const currentIdx = currentList.findIndex(t => t.id === activeTrack.id);
+      if (currentIdx === -1) {
+        nextTrack = currentList[0];
+      } else {
+        const nextIdx = (currentIdx + 1) % currentList.length;
+        nextTrack = currentList[nextIdx];
+      }
     }
+    setMusicState({ activeTrack: nextTrack });
     setCurrentTime(0);
   };
 
   const handlePrev = () => {
-    const currentIdx = tracks.findIndex(t => t.id === activeTrack.id);
-    const prevIdx = (currentIdx - 1 + tracks.length) % tracks.length;
-    setActiveTrack(tracks[prevIdx]);
+    const currentList = tracks;
+    if (currentList.length === 0) return;
+
+    let prevTrack;
+    const currentIdx = currentList.findIndex(t => t.id === activeTrack.id);
+    if (currentIdx === -1) {
+      prevTrack = currentList[currentList.length - 1];
+    } else {
+      const prevIdx = (currentIdx - 1 + currentList.length) % currentList.length;
+      prevTrack = currentList[prevIdx];
+    }
+    setMusicState({ activeTrack: prevTrack });
     setCurrentTime(0);
   };
 
@@ -133,17 +321,24 @@ const Music = () => {
   };
 
   const handleProgressChange = (e) => {
-    setCurrentTime(parseInt(e.target.value));
+    const newTime = parseInt(e.target.value);
+    setCurrentTime(newTime);
+    if (audioRef.current) {
+      audioRef.current.currentTime = newTime;
+    }
   };
-
-  const filteredTracks = tracks.filter(t => 
-    t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    t.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    t.album.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   return (
     <div className="flex flex-col h-full w-full bg-white text-gray-800 rounded-xl overflow-hidden shadow-2xl border border-zinc-200 select-none">
+      
+      {/* Hidden native audio element */}
+      <audio 
+        ref={audioRef}
+        src={activeTrack.url}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onEnded={handleAudioEnded}
+      />
       
       {/* Title Header Bar */}
       <div id="window-header" className="shrink-0 bg-[#f4f4f6] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600">
@@ -157,10 +352,19 @@ const Music = () => {
         {/* Global search in header */}
         <div className="w-56 relative flex items-center">
           <input 
+            ref={searchInputRef}
             type="text"
-            placeholder="Search Library..."
+            placeholder="Search songs, artists..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onMouseDown={(e) => {
+              e.stopPropagation();
+              focusWindow("music");
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              focusWindow("music");
+            }}
             className="w-full bg-white border border-zinc-300 rounded-lg pl-8 pr-3 py-1 text-xs text-gray-800 outline-none focus:border-red-500 shadow-inner select-text"
           />
           <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -183,8 +387,29 @@ const Music = () => {
           <div className="px-1.5 space-y-0.5">
             {[
               { name: "Listen Now", icon: Disc },
-              { name: "Browse", icon: Compass },
-              { name: "Radio", icon: Radio }
+              { name: "Browse", icon: Compass }
+            ].map(item => (
+              <div 
+                key={item.name}
+                onClick={() => setActiveCategory(item.name)}
+                className={`flex items-center gap-2.5 py-1.5 px-3 rounded-lg cursor-pointer text-xs font-medium transition-colors ${
+                  activeCategory === item.name ? "bg-red-50 text-red-600" : "text-gray-700 hover:bg-gray-200/60"
+                }`}
+              >
+                <item.icon size={15} className={activeCategory === item.name ? "text-red-500" : "text-gray-400"} />
+                <span>{item.name}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="p-3 text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-4">
+            Categories
+          </div>
+          
+          <div className="px-1.5 space-y-0.5">
+            {[
+              { name: "Hindi Music", icon: MusicIcon },
+              { name: "English Music", icon: MusicIcon }
             ].map(item => (
               <div 
                 key={item.name}
@@ -239,7 +464,9 @@ const Music = () => {
                     key={bar}
                     className="flex-1 bg-red-500 rounded-t-sm transition-all duration-300"
                     style={{
-                      height: isPlaying ? "100%" : "20%",
+                      height: "100%",
+                      transformOrigin: "bottom",
+                      transform: isPlaying ? "none" : "scaleY(0.2)",
                       animation: isPlaying ? `bounceVisualizer ${animDuration} infinite ease-in-out` : "none",
                       animationDelay: animDelay
                     }}
@@ -262,62 +489,22 @@ const Music = () => {
             <p className="text-xs text-gray-500 mt-1">Explore high-fidelity tracks, albums, and curated playlists in your library.</p>
           </div>
 
-          {/* Library Tracks Table List */}
+          {/* Library Tracks Table List - Decoupled using React.memo component */}
           <div className="flex-1 overflow-y-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-zinc-100 text-[10px] font-bold text-gray-400 uppercase select-none">
-                  <th className="py-2.5 px-4 w-12">#</th>
-                  <th className="py-2.5 px-3">Title</th>
-                  <th className="py-2.5 px-3">Artist</th>
-                  <th className="py-2.5 px-3">Album</th>
-                  <th className="py-2.5 px-3 w-16 text-center"><Clock size={12} className="inline" /></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-50 text-xs">
-                {filteredTracks.map((track, index) => {
-                  const isActive = activeTrack.id === track.id;
-                  return (
-                    <tr 
-                      key={track.id}
-                      onDoubleClick={() => handleSelectTrack(track)}
-                      className={`hover:bg-zinc-50 cursor-pointer group ${
-                        isActive ? "bg-red-50/50 font-semibold" : ""
-                      }`}
-                    >
-                      <td className="py-3 px-4 text-gray-400">
-                        {isActive && isPlaying ? (
-                          <div className="flex items-center gap-0.5 justify-center w-4 h-4">
-                            <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "0ms" }} />
-                            <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "150ms" }} />
-                            <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "300ms" }} />
-                          </div>
-                        ) : (
-                          <span className="group-hover:hidden">{index + 1}</span>
-                        )}
-                        <Play 
-                          onClick={() => handleSelectTrack(track)}
-                          size={12} 
-                          className="hidden group-hover:inline text-red-500 transition-transform active:scale-90" 
-                        />
-                      </td>
-                      <td className={`py-3 px-3 truncate ${isActive ? "text-red-600" : "text-gray-900"}`}>
-                        {track.title}
-                      </td>
-                      <td className="py-3 px-3 text-gray-600 truncate">{track.artist}</td>
-                      <td className="py-3 px-3 text-gray-500 truncate">{track.album}</td>
-                      <td className="py-3 px-3 text-gray-400 text-center font-mono">{formatTime(track.duration)}</td>
-                    </tr>
-                  );
-                })}
-
-                {filteredTracks.length === 0 && (
-                  <tr>
-                    <td colSpan="5" className="text-center py-12 text-gray-400 italic">No songs found in this view</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-48 flex-col gap-3">
+                <div className="w-7 h-7 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
+                <span className="text-xs text-gray-500">Searching JioSaavn catalog...</span>
+              </div>
+            ) : (
+              <TracksTable 
+                tracks={tracks}
+                activeTrackId={activeTrack.id}
+                isPlaying={isPlaying}
+                onSelectTrack={handleSelectTrack}
+                formatTime={formatTime}
+              />
+            )}
           </div>
 
           {/* Dynamic Bottom Player bar */}
@@ -325,9 +512,17 @@ const Music = () => {
             
             {/* Active Track info */}
             <div className="w-1/3 flex items-center gap-3 min-w-0">
-              <div className={`w-12 h-12 rounded-lg bg-gradient-to-tr ${activeTrack.coverColor} flex items-center justify-center text-xl shadow-md shrink-0`}>
-                {activeTrack.coverText}
-              </div>
+              {activeTrack.coverUrl ? (
+                <img 
+                  src={activeTrack.coverUrl} 
+                  alt={activeTrack.title}
+                  className="w-12 h-12 rounded-lg object-cover shadow-md shrink-0 bg-zinc-100 border border-zinc-200" 
+                />
+              ) : (
+                <div className={`w-12 h-12 rounded-lg bg-gradient-to-tr ${activeTrack.coverColor} flex items-center justify-center text-xl shadow-md shrink-0`}>
+                  {activeTrack.coverText}
+                </div>
+              )}
               <div className="min-w-0">
                 <h4 className="text-xs font-bold text-gray-900 truncate flex items-center gap-1.5">
                   {activeTrack.title}
@@ -385,12 +580,12 @@ const Music = () => {
                 <input 
                   type="range"
                   min="0"
-                  max={activeTrack.duration}
+                  max={activeTrack.duration || 100}
                   value={currentTime}
                   onChange={handleProgressChange}
                   className="flex-1 h-1.5 bg-zinc-200 accent-red-500 rounded-lg cursor-pointer outline-none"
                 />
-                <span>{formatTime(activeTrack.duration)}</span>
+                <span>{formatTime(activeTrack.duration || 100)}</span>
               </div>
 
             </div>
@@ -398,7 +593,7 @@ const Music = () => {
             {/* Volume controls */}
             <div className="w-1/3 flex items-center justify-end gap-2.5 text-gray-500">
               <button 
-                onClick={() => setIsMuted(!isMuted)}
+                onClick={() => setMusicState({ isMuted: !isMuted })}
                 className="hover:text-gray-700 transition-colors"
                 title={isMuted ? "Unmute" : "Mute"}
               >
@@ -410,8 +605,8 @@ const Music = () => {
                 max="100"
                 value={isMuted ? 0 : volume}
                 onChange={(e) => {
-                  setVolume(parseInt(e.target.value));
-                  if (isMuted) setIsMuted(false);
+                  const val = parseInt(e.target.value);
+                  setMusicState({ volume: val, isMuted: val === 0 });
                 }}
                 className="w-20 h-1 bg-zinc-200 accent-red-500 rounded-lg cursor-pointer outline-none"
               />
@@ -426,8 +621,8 @@ const Music = () => {
       {/* Visualizer animation frames */}
       <style>{`
         @keyframes bounceVisualizer {
-          0%, 100% { height: 20%; }
-          50% { height: 95%; }
+          0%, 100% { transform: scaleY(0.2); }
+          50% { transform: scaleY(1); }
         }
       `}</style>
 

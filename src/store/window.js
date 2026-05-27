@@ -7,6 +7,27 @@ const useWindowsStore = create(
     windows: WINDOW_CONFIG,
     nextZIndex: INITIAL_Z_INDEX + 1,
     favorites: [],
+    music: {
+      activeTrack: {
+        id: 0,
+        title: "Select a Song",
+        artist: "JioSaavn Music",
+        album: "Streaming",
+        duration: 0,
+        coverColor: "from-zinc-400 to-zinc-600",
+        coverText: "🎵",
+        coverUrl: "",
+        url: ""
+      },
+      isPlaying: false,
+      volume: 72,
+      isMuted: false
+    },
+
+    setMusicState: (musicData) =>
+      set((state) => {
+        state.music = { ...state.music, ...musicData };
+      }),
 
     toggleFavorite: (id) =>
       set((state) => {
