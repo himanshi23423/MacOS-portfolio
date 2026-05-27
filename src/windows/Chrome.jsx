@@ -1607,7 +1607,7 @@ const Chrome = () => {
                       <span>📍</span> Mumbai, India
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span>🔗</span> <span className="text-blue-400 hover:underline">github.com/kuldeeprajput-dev</span>
+                      <span>🔗</span> <a href="https://github.com/kuldeeprajput-dev" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">github.com/kuldeeprajput-dev</a>
                     </div>
                   </div>
                 </div>
@@ -1758,7 +1758,7 @@ const Chrome = () => {
                       <div>
                         <h2 className="text-xl font-bold text-gray-900">Kuldeep Rajput</h2>
                         <h3 className="text-sm text-gray-700 font-medium">Senior Software Engineer | Full-Stack Developer | Open Source Enthusiast</h3>
-                        <p className="text-xs text-gray-500 mt-1">Mumbai, Maharashtra, India • <span className="text-blue-600 font-bold hover:underline cursor-pointer">Contact info</span></p>
+                        <p className="text-xs text-gray-500 mt-1">Mumbai, Maharashtra, India • <a href="https://www.linkedin.com/in/kuldeepdotcom/" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-bold hover:underline">Contact info</a></p>
                       </div>
 
                       <div className="flex gap-2">
@@ -1870,7 +1870,7 @@ const Chrome = () => {
 
                   <div className="flex gap-4 text-[11px] text-zinc-500 mt-3">
                     <span>📅 Joined August 2019</span>
-                    <span>🔗 <span className="text-sky-400 hover:underline">x.com/kuldeepdotcom</span></span>
+                    <span>🔗 <a href="https://x.com/kuldeepdotcom" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline">x.com/kuldeepdotcom</a></span>
                   </div>
 
                   <div className="flex gap-4 text-xs font-bold text-zinc-400 mt-3.5">
