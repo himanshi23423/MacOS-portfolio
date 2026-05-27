@@ -691,6 +691,10 @@ body.night-light-active::after {
     @apply w-[860px] h-[560px] absolute top-10 left-24 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
   }
 
+  #music {
+    @apply w-[860px] h-[560px] absolute top-10 left-28 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+  }
+
   #txtfile {
     @apply w-[500px] h-[400px] absolute top-36 right-32 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
@@ -773,8 +777,8 @@ body.night-light-active::after {
   #chrome,
   #vscode,
   #postman,
-  #font,
-  #telegram {
+  #telegram,
+  #music {
     border-radius: 0 !important;
     box-shadow: none !important;
     max-width: none !important;

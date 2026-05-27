@@ -163,6 +163,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "music",
+    name: "Music",
+    icon: "music.png",
+    canOpen: true,
+  },
+  {
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
@@ -724,6 +730,7 @@ const WINDOW_CONFIG = {
   map: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   font: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   telegram: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  music: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   launchpad: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 

@@ -25,6 +25,7 @@ import Postman from "#windows/Postman";
 import Map from "#windows/Map";
 import FontBook from "#windows/FontBook";
 import Telegram from "#windows/Telegram";
+import Music from "#windows/Music";
 import MobileOS from "#components/MobileOS";
 import Launchpad from "#components/Launchpad";
 import BootScreen from "#components/BootScreen";
@@ -80,6 +81,7 @@ const App = () => {
             <Map />
             <FontBook />
             <Telegram />
+            <Music />
             <Launchpad />
           </main>
         )}
@@ -119,6 +121,7 @@ const App = () => {
           <Map />
           <FontBook />
           <Telegram />
+          <Music />
           <Launchpad />
           <Home />
         </main>
