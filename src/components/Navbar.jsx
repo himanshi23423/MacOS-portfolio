@@ -8,6 +8,7 @@ const Navbar = () => {
   const { windows, openWindow } = useWindowsStore();
   const [isControlOpen, setIsControlOpen] = useState(false);
   const [isAppleMenuOpen, setIsAppleMenuOpen] = useState(false);
+  const [isShuttingDown, setIsShuttingDown] = useState(false);
   const [isPowerMenuOpen, setIsPowerMenuOpen] = useState(false);
   const [isAsleep, setIsAsleep] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -233,6 +234,12 @@ const Navbar = () => {
           onClick={() => setIsAsleep(false)}
         ></div>
       )}
+      {isShuttingDown && (
+        <div className="fixed inset-0 bg-black z-[9999999] flex flex-col items-center justify-center select-none cursor-none animate-fade-in">
+          <img src="/icons/logo.svg" alt="logo" className="w-14 h-14 invert opacity-95 animate-pulse mb-8" />
+          <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+        </div>
+      )}
       <nav className="mac-navbar">
         <div className="nav-left relative" ref={appleMenuRef}>
           <img 
@@ -298,7 +305,10 @@ const Navbar = () => {
                 className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
                 onClick={() => {
                   setIsAppleMenuOpen(false);
-                  window.location.reload();
+                  setIsShuttingDown(true);
+                  setTimeout(() => {
+                    window.location.href = "about:blank";
+                  }, 2000);
                 }}
               >
                 Shut Down...
