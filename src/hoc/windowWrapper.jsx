@@ -7,7 +7,7 @@ import { useRef, useState, useEffect } from "react";
 const windowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
     const { focusWindow, windows } = useWindowsStore();
-    const { isOpen, zIndex } = windows[windowKey];
+    const { isOpen, zIndex } = windows[windowKey] || { isOpen: false, zIndex: 1000 };
     const ref = useRef(null);
     const prevOpenRef = useRef(false);
     const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
@@ -73,7 +73,7 @@ const windowWrapper = (Component, windowKey) => {
 
     const desktopStyles = {
       zIndex,
-      display: isOpen && !windows[windowKey].isMinimized ? "block" : "none",
+      display: isOpen && !windows[windowKey]?.isMinimized ? "block" : "none",
     };
 
     const handleResizeStart = (e, direction) => {
@@ -158,10 +158,10 @@ const windowWrapper = (Component, windowKey) => {
         id={windowKey}
         ref={ref}
         style={isMobile ? mobileStyles : desktopStyles}
-        className={`${isMobile ? "" : "absolute"} ${windows[windowKey].isMaximized ? "maximized" : ""}`}
+        className={`${isMobile ? "" : "absolute"} ${windows[windowKey]?.isMaximized ? "maximized" : ""}`}
       >
         <Component {...props} />
-        {!isMobile && !windows[windowKey].isMaximized && !windows[windowKey].isMinimized && (
+        {!isMobile && !windows[windowKey]?.isMaximized && !windows[windowKey]?.isMinimized && (
           <>
             <div className="resize-handle resize-n" onPointerDown={(e) => handleResizeStart(e, 'n')} />
             <div className="resize-handle resize-s" onPointerDown={(e) => handleResizeStart(e, 's')} />

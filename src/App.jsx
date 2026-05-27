@@ -18,6 +18,7 @@ import AppleTV from "#windows/AppleTV";
 import Call from "#windows/Call";
 import AppStore from "#windows/AppStore";
 import Calendar from "#windows/Calendar";
+import Weather from "#windows/Weather";
 import MobileOS from "#components/MobileOS";
 import BootScreen from "#components/BootScreen";
 import LoginScreen from "#components/LoginScreen";
@@ -65,6 +66,7 @@ const App = () => {
             <Call />
             <AppStore />
             <Calendar />
+            <Weather />
           </main>
         )}
       </>
@@ -96,6 +98,7 @@ const App = () => {
           <Call />
           <AppStore />
           <Calendar />
+          <Weather />
           <Home />
         </main>
       )}

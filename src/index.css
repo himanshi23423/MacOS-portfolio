@@ -430,7 +430,21 @@ body.night-light-active::after {
     }
 
     .tooltip {
-      @apply !py-1 !px-3 !w-fit !text-center !text-xs !rounded-md !bg-blue-200 !text-blue-900 !shadow-2xl;
+      background-color: rgba(255, 255, 255, 0.72) !important;
+      backdrop-filter: blur(20px) saturate(1.8) !important;
+      -webkit-backdrop-filter: blur(20px) saturate(1.8) !important;
+      color: rgba(0, 0, 0, 0.8) !important;
+      border: 0.5px solid rgba(0, 0, 0, 0.12) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+      filter: none !important;
+      -webkit-filter: none !important;
+      opacity: 1 !important;
+      padding: 4px 12px !important;
+      font-size: 11px !important;
+      font-weight: 500 !important;
+      border-radius: 6px !important;
+      margin-bottom: 12px !important;
+      pointer-events: none !important;
     }
 
     .dock-icon {
