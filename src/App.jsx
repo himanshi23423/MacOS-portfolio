@@ -24,6 +24,7 @@ import VSCode from "#windows/VSCode";
 import Postman from "#windows/Postman";
 import Map from "#windows/Map";
 import MobileOS from "#components/MobileOS";
+import Launchpad from "#components/Launchpad";
 import BootScreen from "#components/BootScreen";
 import LoginScreen from "#components/LoginScreen";
 import gsap from "gsap";
@@ -75,6 +76,7 @@ const App = () => {
             <VSCode />
             <Postman />
             <Map />
+            <Launchpad />
           </main>
         )}
       </>
@@ -111,6 +113,7 @@ const App = () => {
           <VSCode />
           <Postman />
           <Map />
+          <Launchpad />
           <Home />
         </main>
       )}

@@ -43,6 +43,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "launchpad",
+    name: "Launchpad",
+    icon: "Launchpad.png",
+    canOpen: true,
+  },
+  {
     id: "safari",
     name: "Safari", // was "Safari"
     icon: "safari.png",
@@ -704,6 +710,7 @@ const WINDOW_CONFIG = {
   vscode: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   postman: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   map: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  launchpad: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };

@@ -1001,3 +1001,22 @@ body.night-light-active::after {
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.35);
 }
+
+/* ===== LAUNCHPAD ANIMATIONS ===== */
+@keyframes fadeInLaunchpad {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(40px);
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInLaunchpad 0.32s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
