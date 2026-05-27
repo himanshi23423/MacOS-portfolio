@@ -120,7 +120,32 @@ const Dock = () => {
                     src={`/images/${icon}`}
                     alt={name}
                     loading="lazy"
-                    className={`${canOpen ? "" : "opacity-60"} ${id === "settings" ? "p-[3px]" : ""} ${id === "appletv" ? "scale-[0.87]" : ""} ${id === "calculator" ? "scale-[0.90]" : ""} ${id === "call" ? "scale-[0.80]" : ""} ${id === "resume" ? "scale-[0.88]" : ""} ${id === "weather" ? "scale-[0.80]" : ""} ${id === "chrome" ? "scale-[0.88]" : ""} ${id === "map" ? "scale-[0.80]" : ""} ${id === "postman" ? "scale-[0.82]" : ""} ${id === "vscode" ? "scale-[0.85]" : ""} ${id === "launchpad" ? "scale-[0.80]" : ""} ${id === "font" ? "scale-[0.95]" : ""} ${id === "telegram" ? "scale-[0.90]" : ""} ${id === "music" ? "scale-[0.88]" : ""}`}
+                    className={`${canOpen ? "" : "opacity-60"} ${
+                      {
+                        finder: "scale-[0.90]",
+                        launchpad: "scale-[0.90]",
+                        safari: "scale-[0.90]",
+                        photos: "scale-[0.90]",
+                        contact: "scale-[0.90]",
+                        terminal: "scale-[0.90]",
+                        settings: "scale-[0.83]",
+                        calculator: "scale-[0.83]",
+                        notes: "scale-[0.90]",
+                        messages: "scale-[0.90]",
+                        appletv: "scale-[0.80]",
+                        call: "scale-[0.71]",
+                        appstore: "scale-[0.90]",
+                        weather: "scale-[0.81]",
+                        chrome: "scale-[0.95]",
+                        vscode: "scale-[0.95]",
+                        postman: "scale-[0.95]",
+                        map: "scale-[0.72]",
+                        font: "scale-[2.8]",
+                        telegram: "scale-[0.90]",
+                        music: "scale-[0.90]",
+                        trash: "scale-[0.80]",
+                      }[id] || ""
+                    }`}
                   />
                 )}
               </button>

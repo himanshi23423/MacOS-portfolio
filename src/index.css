@@ -431,10 +431,10 @@ body.night-light-active::after {
 
 
     .dock-icon {
-      @apply size-14 3xl:size-20 cursor-pointer;
+      @apply size-14 3xl:size-20 cursor-pointer overflow-visible;
 
       img {
-        @apply object-cover object-center;
+        @apply w-full h-full object-contain;
       }
     }
   }
