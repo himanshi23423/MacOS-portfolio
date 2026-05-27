@@ -4,7 +4,14 @@ import windowWrapper from "#hoc/windowWrapper";
 import useLocationStore from "#store/location";
 import useWindowsStore from "#store/window";
 import clsx from "clsx";
-import { Search, ChevronRight, Folder, FileText, Globe, Image as ImageIcon } from "lucide-react";
+import {
+  Search,
+  ChevronRight,
+  Folder,
+  FileText,
+  Globe,
+  Image as ImageIcon,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 
 const fileIconMap = {
@@ -249,7 +256,10 @@ const Finder = () => {
 
   return (
     <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden">
-      <div id="window-header" className="!bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2 shrink-0">
+      <div
+        id="window-header"
+        className="!bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2 shrink-0"
+      >
         <WindowControls target={"finder"} />
         <Search className="icon" />
       </div>
@@ -263,7 +273,7 @@ const Finder = () => {
                   key={item.id}
                   onClick={() => setActiveLocation(item)}
                   className={clsx(
-                    item.id === activeLocation.id ? "active" : "not-active"
+                    item.id === activeLocation.id ? "active" : "not-active",
                   )}
                 >
                   <img src={item.icon} alt={item.name} className="w-4" />
@@ -280,7 +290,7 @@ const Finder = () => {
                   key={item.id}
                   onClick={() => setActiveLocation(item)}
                   className={clsx(
-                    item.id === activeLocation.id ? "active" : "not-active"
+                    item.id === activeLocation.id ? "active" : "not-active",
                   )}
                 >
                   <img src={item.icon} alt={item.name} className="w-4" />
@@ -298,9 +308,15 @@ const Finder = () => {
               onClick={() => openItem(item)}
             >
               <div className="w-12 h-12 flex items-center justify-center transition-transform group-hover:scale-105">
-                <img src={item.icon} alt={item.name} className="max-w-full max-h-full object-contain" />
+                <img
+                  src={item.icon}
+                  alt={item.name}
+                  className="max-w-full max-h-full object-contain"
+                />
               </div>
-              <p className="text-xs font-medium text-center text-gray-800 line-clamp-2 break-words w-full px-1">{item.name}</p>
+              <p className="text-xs font-medium text-center text-gray-800 line-clamp-2 break-words w-full px-1">
+                {item.name}
+              </p>
             </li>
           ))}
         </ul>

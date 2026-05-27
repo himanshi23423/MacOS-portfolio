@@ -121,6 +121,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "chrome",
+    name: "Google Chrome",
+    icon: "chromee.png",
+    canOpen: true,
+  },
+  {
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
@@ -676,6 +682,7 @@ const WINDOW_CONFIG = {
   appstore: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   calendar: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   weather: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  chrome: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };
