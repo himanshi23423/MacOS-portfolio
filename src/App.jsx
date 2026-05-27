@@ -22,6 +22,7 @@ import Weather from "#windows/Weather";
 import Chrome from "#windows/Chrome";
 import VSCode from "#windows/VSCode";
 import Postman from "#windows/Postman";
+import Map from "#windows/Map";
 import MobileOS from "#components/MobileOS";
 import BootScreen from "#components/BootScreen";
 import LoginScreen from "#components/LoginScreen";
@@ -73,6 +74,7 @@ const App = () => {
             <Chrome />
             <VSCode />
             <Postman />
+            <Map />
           </main>
         )}
       </>
@@ -108,6 +110,7 @@ const App = () => {
           <Chrome />
           <VSCode />
           <Postman />
+          <Map />
           <Home />
         </main>
       )}

@@ -139,6 +139,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "map",
+    name: "Maps",
+    icon: "map.png",
+    canOpen: true,
+  },
+  {
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
@@ -697,6 +703,7 @@ const WINDOW_CONFIG = {
   chrome: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   vscode: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   postman: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  map: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };
