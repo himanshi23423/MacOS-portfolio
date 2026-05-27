@@ -23,6 +23,8 @@ import Chrome from "#windows/Chrome";
 import VSCode from "#windows/VSCode";
 import Postman from "#windows/Postman";
 import Map from "#windows/Map";
+import FontBook from "#windows/FontBook";
+import Telegram from "#windows/Telegram";
 import MobileOS from "#components/MobileOS";
 import Launchpad from "#components/Launchpad";
 import BootScreen from "#components/BootScreen";
@@ -76,6 +78,8 @@ const App = () => {
             <VSCode />
             <Postman />
             <Map />
+            <FontBook />
+            <Telegram />
             <Launchpad />
           </main>
         )}
@@ -113,6 +117,8 @@ const App = () => {
           <VSCode />
           <Postman />
           <Map />
+          <FontBook />
+          <Telegram />
           <Launchpad />
           <Home />
         </main>
