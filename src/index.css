@@ -939,7 +939,7 @@ body::before {
   background: black;
   pointer-events: none;
   z-index: 9998;
-  opacity: calc((100 - var(--system-brightness, 75)) / 130);
+  opacity: calc((100 - var(--system-brightness, 100)) / 130);
   transition: opacity 80ms ease-out;
 }
 

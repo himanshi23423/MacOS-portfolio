@@ -154,6 +154,7 @@ const WEATHER_DATA = {
     ]
   }
 };const Weather = () => {
+  const apiBase = import.meta.env.VITE_WEATHER_API_URL || "https://wttr.in";
   const [citiesData, setCitiesData] = useState(WEATHER_DATA);
   const [activeCityId, setActiveCityId] = useState("delhi");
   const [searchQuery, setSearchQuery] = useState("");
@@ -353,7 +354,7 @@ const WEATHER_DATA = {
     try {
       const formattedCity = cityName.trim();
       if (!formattedCity) return;
-      const response = await fetch(`https://wttr.in/${encodeURIComponent(formattedCity)}?format=%C+%t`);
+      const response = await fetch(`${apiBase}/${encodeURIComponent(formattedCity)}?format=%C+%t`);
       if (!response.ok) throw new Error("Failed to fetch weather data");
       let text = await response.text();
       if (!text || text.includes("Unknown location") || text.includes("Sorry")) {
@@ -365,7 +366,7 @@ const WEATHER_DATA = {
 
       // If wttr.in returned an HTML page (because of browser User-Agent), fall back to JSON format
       if (text.trim().startsWith("<")) {
-        const jsonResponse = await fetch(`https://wttr.in/${encodeURIComponent(formattedCity)}?format=j1`);
+        const jsonResponse = await fetch(`${apiBase}/${encodeURIComponent(formattedCity)}?format=j1`);
         if (!jsonResponse.ok) throw new Error("Failed to fetch weather JSON");
         const jsonData = await jsonResponse.json();
         const current = jsonData.current_condition?.[0];
@@ -416,7 +417,7 @@ const WEATHER_DATA = {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://wttr.in/${encodeURIComponent(trimmedQuery)}?format=%C+%t`);
+      const response = await fetch(`${apiBase}/${encodeURIComponent(trimmedQuery)}?format=%C+%t`);
       if (!response.ok) throw new Error("Failed to fetch weather data");
       let text = await response.text();
       if (!text || text.includes("Unknown location") || text.includes("Sorry")) {
@@ -427,7 +428,7 @@ const WEATHER_DATA = {
       let tempStr = "65°F";
 
       if (text.trim().startsWith("<")) {
-        const jsonResponse = await fetch(`https://wttr.in/${encodeURIComponent(trimmedQuery)}?format=j1`);
+        const jsonResponse = await fetch(`${apiBase}/${encodeURIComponent(trimmedQuery)}?format=j1`);
         if (!jsonResponse.ok) throw new Error("Failed to fetch weather JSON");
         const jsonData = await jsonResponse.json();
         const current = jsonData.current_condition?.[0];

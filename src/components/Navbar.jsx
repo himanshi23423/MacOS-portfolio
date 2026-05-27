@@ -85,7 +85,7 @@ const Navbar = () => {
     airdrop: false,
     volume: true,
     focusMode: false,
-    brightness: 75,
+    brightness: 100,
     soundLevel: 45,
     nightLight: false,
   });

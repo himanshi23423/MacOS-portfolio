@@ -100,6 +100,9 @@ const PRESET_PLACES = {
 };
 
 const Map = () => {
+  const nominatimApiBase = import.meta.env.VITE_NOMINATIM_API_URL || "https://nominatim.openstreetmap.org";
+  const openStreetMapBase = import.meta.env.VITE_OPENSTREETMAP_URL || "https://www.openstreetmap.org";
+
   const [activeTab, setActiveTab] = useState("explore"); // 'explore', 'directions'
   const [activeKey, setActiveKey] = useState("mumbai");
   const [searchQuery, setSearchQuery] = useState("");
@@ -125,7 +128,7 @@ const Map = () => {
     if (!searchQuery.trim()) return;
 
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=1`);
+      const response = await fetch(`${nominatimApiBase}/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=1`);
       const data = await response.json();
       
       if (data && data.length > 0) {
@@ -170,7 +173,7 @@ const Map = () => {
   const minLat = currentCity.lat - (bboxWidth * 0.6); // scale height slightly
   const maxLat = currentCity.lat + (bboxWidth * 0.6);
 
-  const iframeSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${minLon}%2C${minLat}%2C${maxLon}%2C${maxLat}&layer=mapnik&marker=${currentCity.lat}%2C${currentCity.lon}`;
+  const iframeSrc = `${openStreetMapBase}/export/embed.html?bbox=${minLon}%2C${minLat}%2C${maxLon}%2C${maxLat}&layer=mapnik&marker=${currentCity.lat}%2C${currentCity.lon}`;
 
   // Filter preset places based on search query
   const filteredKeys = Object.keys(PRESET_PLACES).filter(key => {

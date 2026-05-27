@@ -31,7 +31,7 @@ const MobileOS = () => {
     flashlight: false,
     airplane: false,
   });
-  const [brightness, setBrightness] = useState(75);
+  const [brightness, setBrightness] = useState(100);
   const [volume, setVolume] = useState(50);
   const controlCenterRef = useRef(null);
   const touchStartRef = useRef(null);

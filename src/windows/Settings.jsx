@@ -40,6 +40,7 @@ const SidebarItem = ({ icon, label, color, active, onClick }) => (
 );
 
 const Settings = () => {
+  const githubApiBase = import.meta.env.VITE_GITHUB_API_URL || "https://api.github.com";
   const { windows } = useWindowsStore();
   const windowData = windows.settings?.data;
 
@@ -63,8 +64,8 @@ const Settings = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch("https://api.github.com/users/kuldeeprajput-dev").then(res => res.json()),
-      fetch("https://api.github.com/users/kuldeeprajput-dev/repos?sort=updated&per_page=3").then(res => res.json())
+      fetch(`${githubApiBase}/users/kuldeeprajput-dev`).then(res => res.json()),
+      fetch(`${githubApiBase}/users/kuldeeprajput-dev/repos?sort=updated&per_page=3`).then(res => res.json())
     ])
     .then(([profile, repos]) => {
       setGithubData({ profile, repos });
