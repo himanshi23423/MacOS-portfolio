@@ -675,6 +675,10 @@ body.night-light-active::after {
     @apply w-[900px] h-[600px] absolute top-12 left-16 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
   }
 
+  #postman {
+    @apply w-[860px] h-[580px] absolute top-10 left-20 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+  }
+
   #txtfile {
     @apply w-[500px] h-[400px] absolute top-36 right-32 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
@@ -755,7 +759,8 @@ body.night-light-active::after {
   #appstore,
   #calendar,
   #chrome,
-  #vscode {
+  #vscode,
+  #postman {
     border-radius: 0 !important;
     box-shadow: none !important;
     max-width: none !important;

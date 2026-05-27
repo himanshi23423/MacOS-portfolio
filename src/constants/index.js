@@ -133,6 +133,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "postman",
+    name: "Postman",
+    icon: "postman.png",
+    canOpen: true,
+  },
+  {
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
@@ -690,6 +696,7 @@ const WINDOW_CONFIG = {
   weather: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   chrome: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   vscode: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  postman: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };
