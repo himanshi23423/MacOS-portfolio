@@ -265,13 +265,14 @@ body.night-light-active::after {
           height: 26px;
           border-radius: 9999px;
           background: white;
-          box-shadow: -400px 0 0 388px white, 0 1px 3px rgba(0, 0, 0, 0.25);
+          box-shadow:
+            -400px 0 0 388px white,
+            0 1px 3px rgba(0, 0, 0, 0.25);
           cursor: pointer;
           border: 1px solid rgba(0, 0, 0, 0.05);
         }
       }
     }
-
   }
 }
 
@@ -302,7 +303,6 @@ body.night-light-active::after {
     .dock-container {
       @apply bg-white/20 backdrop-blur-md justify-between rounded-2xl py-1.5 px-6 flex items-end gap-1.5 overflow-visible;
     }
-
 
     .dock-icon {
       @apply size-14 3xl:size-20 cursor-pointer overflow-visible;
@@ -916,10 +916,14 @@ body.night-light-active::after {
   -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
   color: rgba(255, 255, 255, 0.95) !important;
   border: 0.5px solid rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    0 1px 3px rgba(0, 0, 0, 0.12) !important;
   padding: 4px 10px !important;
   font-size: 11.5px !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif !important;
   font-weight: 500 !important;
   border-radius: 5px !important;
   pointer-events: none !important;
@@ -930,7 +934,7 @@ body.night-light-active::after {
 
 /* Screen brightness overlay */
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
@@ -942,4 +946,3 @@ body::before {
   opacity: calc((100 - var(--system-brightness, 100)) / 130);
   transition: opacity 80ms ease-out;
 }
-
