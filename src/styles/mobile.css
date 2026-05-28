@@ -1,0 +1,184 @@
+.mobile-os-container {
+  background-image: url("/images/wallpaper.png");
+  background-size: cover;
+  background-position: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mobile-os-container * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-os-container section::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  #finder,
+  #safari,
+  #terminal,
+  #contact,
+  #photos,
+  #resume,
+  #txtfile,
+  #imgfile,
+  #settings,
+  #notes,
+  #messages,
+  #appletv,
+  #call,
+  #appstore,
+  #calendar,
+  #chrome,
+  #vscode,
+  #postman,
+  #telegram,
+  #music {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    max-width: none !important;
+    width: 100dvw !important;
+    top: 0 !important;
+    left: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100dvh !important;
+  }
+
+  #window-header {
+    display: flex !important;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 14px 16px !important;
+    background: #f2f2f7 !important;
+    border-bottom: 0.5px solid #e5e5ea !important;
+    height: auto !important;
+    min-height: 52px;
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+
+  #finder .finder-main,
+  #photos .photos-main,
+  #terminal .techstack,
+  #contact > div:last-child {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: #f2f2f7;
+  }
+
+  #resume .resume-main {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f2f2f7;
+  }
+
+  #resume .resume-main .react-pdf__Document {
+    width: 100%;
+  }
+
+  #resume .resume-main .react-pdf__Page {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #resume .resume-main .react-pdf__Page__canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  #resume .resume-main .react-pdf__Page__textContent,
+  #resume .resume-main .react-pdf__Page__annotations {
+    width: 100% !important;
+  }
+
+  #photos {
+    margin-top: 330px;
+  }
+
+  #finder .finder-main {
+    background: #f2f2f7 !important;
+  }
+
+  #safari .safari-start-page {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #imgfile {
+    background: #fff !important;
+  }
+
+  #imgfile #window-header {
+    background: #fff !important;
+    border-bottom: 0.5px solid #e5e5ea !important;
+  }
+
+  #contact ul {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  #contact ul li {
+    width: 100% !important;
+  }
+
+  #terminal .techstack .label {
+    margin-left: 0 !important;
+    margin-top: 8px !important;
+  }
+
+  #terminal .techstack .content li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  #terminal .techstack .content li h3 {
+    margin-left: 0 !important;
+    width: 100% !important;
+    font-size: 12px;
+  }
+
+  #terminal .techstack .content li ul {
+    flex-wrap: wrap;
+    font-size: 11px;
+  }
+
+  #terminal .techstack .content li .check {
+    display: none;
+  }
+
+  #safari .search {
+    width: 100% !important;
+  }
+
+  #safari .blog-post {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  #safari .blog-post .col-span-2 img {
+    height: 160px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  #safari .blog-post .content {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}

@@ -1,0 +1,135 @@
+@layer base {
+  nav.mac-navbar {
+    @apply flex justify-between items-center bg-white/58 sm:bg-white/40 backdrop-blur-3xl sm:backdrop-blur-2xl p-2 px-5 sm:px-3 select-none z-[9999] relative;
+
+    @media (min-width: 640px) {
+      height: 28px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-left,
+    .nav-right {
+      @apply flex items-center h-full max-sm:w-full max-sm:justify-center gap-5 sm:gap-0;
+    }
+
+    .apple-logo {
+      @apply h-[17px] sm:h-[16px] sm:mr-3 sm:px-2 cursor-pointer;
+    }
+
+    .nav-links {
+      @apply flex items-center h-full gap-1;
+
+      li {
+        @apply px-3 h-full flex items-center text-[13.5px] font-[500] tracking-normal rounded cursor-pointer transition-colors;
+        color: #1d1d1f;
+      }
+      li.font-bold {
+        @apply font-bold tracking-normal;
+      }
+    }
+
+    .status-icons {
+      @apply flex items-center gap-4 h-full;
+
+      li {
+        @apply h-full flex items-center;
+      }
+
+      .icon-hover {
+        @apply h-3.5 px-1.5 cursor-pointer rounded transition-colors;
+      }
+    }
+
+    time {
+      @apply text-[13.5px] font-[500] tracking-normal ml-3 cursor-default;
+      color: #1d1d1f;
+    }
+
+    .battery-indicator {
+      @apply flex items-center gap-1.5 px-1 py-0.5 rounded cursor-pointer transition-colors;
+
+      .battery-text {
+        @apply text-[12px] font-[500] tracking-normal;
+        color: #1d1d1f;
+      }
+
+      .battery-icon-shell {
+        @apply relative w-[22px] h-[11px] rounded-[3px];
+        border: 1px solid rgba(29, 29, 31, 0.5);
+        padding: 1px;
+
+        .battery-level {
+          @apply h-full rounded-[1px];
+          background: #1d1d1f;
+          transition: width 240ms ease;
+        }
+
+        i {
+          @apply absolute right-[-2.5px] top-1/2 -translate-y-1/2 w-[1.5px] h-1 rounded-full;
+          background: rgba(29, 29, 31, 0.5);
+          font-style: normal;
+        }
+      }
+
+      svg {
+        @apply size-3;
+        fill: #1d1d1f;
+      }
+    }
+
+    .control-center-mac {
+      @apply absolute right-2.5 top-[36px] w-[350px] flex flex-col select-none z-[9999] p-3 font-sans;
+      background: rgba(40, 40, 42, 0.45);
+      border-radius: 20px;
+      color: white;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(40px) saturate(210%);
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      pointer-events: none;
+      transition:
+        opacity 160ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: top right;
+
+      &.is-open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+
+      input[type="range"].mac-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 26px;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.16);
+        outline: none;
+        overflow: hidden;
+
+        &::-webkit-slider-runnable-track {
+          width: 100%;
+          height: 26px;
+          border-radius: 9999px;
+          background: transparent;
+        }
+
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 26px;
+          height: 26px;
+          border-radius: 9999px;
+          background: white;
+          box-shadow:
+            -400px 0 0 388px white,
+            0 1px 3px rgba(0, 0, 0, 0.25);
+          cursor: pointer;
+          border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
+  }
+}

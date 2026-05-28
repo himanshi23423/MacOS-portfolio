@@ -1,35 +1,6 @@
-import Dock from "#components/Dock";
-import Navbar from "#components/Navbar";
-import Welcome from "#components/Welcome";
-import Finder from "#windows/Finder";
-import Resume from "#windows/Resume";
-import Safari from "#windows/Safari";
-import Terminal from "#windows/Terminal";
-import Text from "#windows/Text";
-import Image from "#windows/Image";
-import Contact from "#windows/Contact";
-import Home from "#components/Home";
-import Photos from "#windows/Photos";
-import Settings from "#windows/Settings";
-import Calculator from "#windows/Calculator";
-import Notes from "#windows/Notes";
-import Messages from "#windows/Messages";
-import AppleTV from "#windows/AppleTV";
-import Call from "#windows/Call";
-import AppStore from "#windows/AppStore";
-import Calendar from "#windows/Calendar";
-import Weather from "#windows/Weather";
-import Chrome from "#windows/Chrome";
-import VSCode from "#windows/VSCode";
-import Postman from "#windows/Postman";
-import Map from "#windows/Map";
-import FontBook from "#windows/FontBook";
-import Telegram from "#windows/Telegram";
-import Music from "#windows/Music";
-import MobileOS from "#components/MobileOS";
-import Launchpad from "#components/Launchpad";
-import BootScreen from "#components/BootScreen";
-import LoginScreen from "#components/LoginScreen";
+import LoadingView from "#module/loading/ui";
+import Desktop from "#module/desktop";
+import Mobile from "#module/mobile";
 import gsap from "gsap";
 import { useState, useEffect } from "react";
 
@@ -53,79 +24,26 @@ const App = () => {
   if (isMobile) {
     return (
       <>
-        {booting && <BootScreen onComplete={() => setBooting(false)} />}
-        {!booting && !isLoggedIn && <LoginScreen onLogin={() => setIsLoggedIn(true)} />}
-        {isLoggedIn && (
-          <main className="mobile-os">
-            <MobileOS />
-            <Terminal />
-            <Safari />
-            <Resume />
-            <Finder />
-            <Text />
-            <Image />
-            <Contact />
-            <Photos />
-            <Settings />
-            <Calculator />
-            <Notes />
-            <Messages />
-            <AppleTV />
-            <Call />
-            <AppStore />
-            <Calendar />
-            <Weather />
-            <Chrome />
-            <VSCode />
-            <Postman />
-            <Map />
-            <FontBook />
-            <Telegram />
-            <Music />
-            <Launchpad />
-          </main>
-        )}
+        <LoadingView
+          booting={booting}
+          isLoggedIn={isLoggedIn}
+          onBootComplete={() => setBooting(false)}
+          onLogin={() => setIsLoggedIn(true)}
+        />
+        {isLoggedIn && <Mobile />}
       </>
     );
   }
 
   return (
     <>
-      {booting && <BootScreen onComplete={() => setBooting(false)} />}
-      {!booting && !isLoggedIn && <LoginScreen onLogin={() => setIsLoggedIn(true)} />}
-      {isLoggedIn && (
-        <main>
-          <Navbar />
-          <Welcome />
-          <Dock />
-          <Terminal />
-          <Safari />
-          <Resume />
-          <Finder />
-          <Text />
-          <Image />
-          <Contact />
-          <Photos />
-          <Settings />
-          <Calculator />
-          <Notes />
-          <Messages />
-          <AppleTV />
-          <Call />
-          <AppStore />
-          <Calendar />
-          <Weather />
-          <Chrome />
-          <VSCode />
-          <Postman />
-          <Map />
-          <FontBook />
-          <Telegram />
-          <Music />
-          <Launchpad />
-          <Home />
-        </main>
-      )}
+      <LoadingView
+        booting={booting}
+        isLoggedIn={isLoggedIn}
+        onBootComplete={() => setBooting(false)}
+        onLogin={() => setIsLoggedIn(true)}
+      />
+      {isLoggedIn && <Desktop />}
     </>
   );
 };

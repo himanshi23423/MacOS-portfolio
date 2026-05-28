@@ -1,0 +1,38 @@
+body.theme-light {
+  filter: saturate(1.05) brightness(1.08);
+}
+
+body.theme-dark {
+  filter: saturate(1) brightness(1);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 170, 0, 0.15);
+  pointer-events: none;
+  z-index: 9999999;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+body.night-light-active::after {
+  opacity: 1;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: calc((100 - var(--system-brightness, 100)) / 130);
+  transition: opacity 80ms ease-out;
+}

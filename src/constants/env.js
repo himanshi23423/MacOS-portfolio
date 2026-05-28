@@ -1,0 +1,11 @@
+export const PROJECT_1_URL = import.meta.env.VITE_PROJECT_1_URL;
+export const PROJECT_1_GITHUB = import.meta.env.VITE_PROJECT_1_GITHUB;
+export const PROJECT_2_URL = import.meta.env.VITE_PROJECT_2_URL;
+export const PROJECT_2_GITHUB = import.meta.env.VITE_PROJECT_2_GITHUB;
+export const PROJECT_3_URL = import.meta.env.VITE_PROJECT_3_URL;
+export const PROJECT_3_GITHUB = import.meta.env.VITE_PROJECT_3_GITHUB;
+export const PROJECT_4_URL = import.meta.env.VITE_PROJECT_4_URL;
+export const PROJECT_4_GITHUB = import.meta.env.VITE_PROJECT_4_GITHUB;
+export const GITHUB_PROFILE = import.meta.env.VITE_GITHUB_PROFILE;
+export const TWITTER_URL = import.meta.env.VITE_TWITTER_URL;
+export const LINKEDIN_URL = import.meta.env.VITE_LINKEDIN_URL;

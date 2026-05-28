@@ -1,0 +1,36 @@
+import { GITHUB_PROFILE, TWITTER_URL, LINKEDIN_URL } from "./env";
+
+export const socials = [
+  {
+    id: 1,
+    text: "Github",
+    icon: "/icons/github.svg",
+    bg: "#f4656b",
+    link: GITHUB_PROFILE,
+    img: "/images/github.png",
+  },
+  {
+    id: 2,
+    text: "Platform",
+    icon: "/icons/atom.svg",
+    bg: "#4bcb63",
+    link: "#",
+    img: "/images/youtube.png",
+  },
+  {
+    id: 3,
+    text: "Twitter/X",
+    icon: "/icons/twitter.svg",
+    bg: "#ff866b",
+    link: TWITTER_URL,
+    img: "/images/x.png",
+  },
+  {
+    id: 4,
+    text: "LinkedIn",
+    icon: "/icons/linkedin.svg",
+    bg: "#05b6f6",
+    link: LINKEDIN_URL,
+    img: "/images/linkedin.png",
+  },
+];

@@ -21,7 +21,7 @@ export default defineConfig({
     alias: {
       "#components": resolve(
         dirname(fileURLToPath(import.meta.url)),
-        "src/components",
+        "src/module/loading/ui/components",
       ),
       "#constants": resolve(
         dirname(fileURLToPath(import.meta.url)),
@@ -29,9 +29,9 @@ export default defineConfig({
       ),
       "#store": resolve(dirname(fileURLToPath(import.meta.url)), "src/store"),
       "#hoc": resolve(dirname(fileURLToPath(import.meta.url)), "src/hoc"),
-      "#windows": resolve(
+      "#module": resolve(
         dirname(fileURLToPath(import.meta.url)),
-        "src/windows",
+        "src/module",
       ),
     },
   },

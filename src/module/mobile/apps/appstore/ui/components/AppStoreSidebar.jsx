@@ -1,0 +1,52 @@
+import { Search, Sparkles, Play as PlayIcon, Terminal as TerminalIcon, ArrowDownCircle } from "lucide-react";
+
+const NAV_ITEMS = [
+  { id: "discover", label: "Discover", icon: Sparkles },
+  { id: "play", label: "Play Games", icon: PlayIcon },
+  { id: "develop", label: "Work & Develop", icon: TerminalIcon },
+  { id: "updates", label: "Updates", icon: ArrowDownCircle },
+];
+
+const AppStoreSidebar = ({ searchQuery, onSearchChange, activeTab, onTabChange, onClose }) => {
+  return (
+    <aside
+      className={`
+        absolute sm:relative inset-y-0 left-0 w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col z-30 transition-transform duration-300
+      `}
+    >
+      <div className="relative flex items-center bg-gray-200/60 border border-gray-300/40 rounded-lg px-2.5 py-1.5 shrink-0">
+        <Search className="w-4 h-4 text-gray-400 mr-2 shrink-0" />
+        <input
+          type="text"
+          placeholder="Search Apps"
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="w-full bg-transparent text-xs focus:outline-none border-none outline-none text-gray-800 placeholder-gray-400"
+        />
+      </div>
+      <div className="space-y-4 flex-1">
+        <nav className="space-y-0.5">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                onTabChange(item.id);
+                onClose();
+              }}
+              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-left transition-colors cursor-pointer ${
+                activeTab === item.id
+                  ? "bg-gray-200 text-gray-900 shadow-sm"
+                  : "text-gray-600 hover:bg-gray-200/60 hover:text-gray-900"
+              }`}
+            >
+              <item.icon className="w-4 h-4" />
+              {item.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+    </aside>
+  );
+};
+
+export default AppStoreSidebar;

@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+.env
 dist-ssr
 *.local
 
@@ -22,3 +23,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.opencode
+.agents
+.codex
+graphify-out
