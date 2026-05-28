@@ -12,16 +12,23 @@ const scaleMap = {
   appletv: "scale-[0.80]",
   call: "scale-[0.71]",
   appstore: "scale-[0.90]",
-  weather: "scale-[0.81]",
-  chrome: "scale-[0.95]",
+  weather: "scale-[0.79]",
+  chrome: "scale-[0.90]",
   vscode: "scale-[0.95]",
   postman: "scale-[0.95]",
-  map: "scale-[0.72]",
-  font: "scale-[3]",
+  map: "scale-[0.73]",
+  font: "scale-[2.7]",
   telegram: "scale-[0.90]",
   music: "scale-[0.90]",
-  folder: "scale-[0.90]",
+  folder: "scale-[0.80]",
   trash: "scale-[0.80]",
+};
+
+const statusLabel = (name, state, canOpen) => {
+  if (!canOpen) return name;
+  if (state?.isMinimized) return `${name}, minimized`;
+  if (state?.isOpen) return `${name}, open`;
+  return name;
 };
 
 const CalendarIcon = () => {
@@ -39,15 +46,33 @@ const CalendarIcon = () => {
   );
 };
 
-const DockIcon = ({ app, isHovered, onMouseEnter, onMouseLeave, onClick }) => {
+const DockIcon = ({
+  app,
+  state,
+  isFocused,
+  isHovered,
+  onMouseEnter,
+  onMouseLeave,
+  onClick,
+}) => {
   const { id, name, icon, canOpen } = app;
+  const isOpen = Boolean(state?.isOpen);
+  const isMinimized = Boolean(state?.isMinimized);
 
   return (
-    <div className="relative flex justify-center">
+    <div
+      className={[
+        "dock-item relative flex justify-center",
+        isOpen ? "dock-item-open" : "",
+        isMinimized ? "dock-item-minimized" : "",
+        isFocused ? "dock-item-focused" : "",
+      ].filter(Boolean).join(" ")}
+    >
       <button
         type="button"
         className="dock-icon relative flex justify-center items-center overflow-visible"
-        aria-label={name}
+        aria-label={statusLabel(name, state, canOpen)}
+        aria-pressed={canOpen ? isOpen : undefined}
         disabled={!canOpen}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
@@ -70,6 +95,7 @@ const DockIcon = ({ app, isHovered, onMouseEnter, onMouseLeave, onClick }) => {
             />
           )}
         </span>
+        {isOpen && <span className="dock-running-dot" aria-hidden="true" />}
       </button>
     </div>
   );

@@ -12,7 +12,6 @@ const Launchpad = () => {
 
   useEffect(() => {
     if (isOpen) {
-      setSearchQuery("");
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
@@ -32,7 +31,8 @@ const Launchpad = () => {
   if (!isOpen) return null;
 
   const appItems = dockApps.filter(
-    (app) => app.id !== "launchpad" && app.id !== "trash" && app.canOpen
+    (app) =>
+      !["launchpad", "trash", "folder"].includes(app.id) && app.canOpen
   );
 
   const filteredApps = appItems.filter((app) =>
@@ -41,12 +41,18 @@ const Launchpad = () => {
 
   const handleLaunch = (appId) => {
     openWindow(appId);
+    setSearchQuery("");
+    closeWindow("launchpad");
+  };
+
+  const handleClose = () => {
+    setSearchQuery("");
     closeWindow("launchpad");
   };
 
   return (
     <div
-      onClick={() => closeWindow("launchpad")}
+      onClick={handleClose}
       className="fixed inset-0 w-screen h-screen z-[9980] backdrop-blur-3xl bg-black/15 flex flex-col items-center pt-16 pb-10 px-12 sm:px-20 md:px-32 lg:px-44 animate-fade-in select-none"
     >
       <LaunchpadSearch

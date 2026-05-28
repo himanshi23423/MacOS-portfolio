@@ -16,13 +16,13 @@ const useDockAnimation = () => {
         const { left: iconLeft, width } = icon.getBoundingClientRect();
         const center = iconLeft - left + width / 2;
         const distance = Math.abs(mouseX - center);
-        const intensity = Math.exp(-(distance ** 2.8) / 20000);
+        const intensity = Math.exp(-(distance ** 2.2) / 12000);
 
         gsap.to(icon, {
-          scale: 1 + 0.38 * intensity,
-          y: -28 * intensity,
-          duration: 0.2,
-          ease: "power1.out",
+          scale: 1 + 0.48 * intensity,
+          y: -34 * intensity,
+          duration: 0.24,
+          ease: "power2.out",
         });
       });
     };
@@ -37,17 +37,29 @@ const useDockAnimation = () => {
         gsap.to(icon, {
           scale: 1,
           y: 0,
-          duration: 0.3,
-          ease: "power1.out",
+          duration: 0.34,
+          ease: "elastic.out(1, 0.72)",
         }),
       );
     };
+    const handlePointerDown = (e) => {
+      const icon = e.target.closest(".dock-icon");
+      if (!icon || icon.disabled) return;
+      gsap.fromTo(
+        icon,
+        { y: -4 },
+        { y: -22, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.out" },
+      );
+    };
+
     dock.addEventListener("mousemove", handleMouseMove);
     dock.addEventListener("mouseleave", resetIcons);
+    dock.addEventListener("pointerdown", handlePointerDown);
 
     return () => {
       dock.removeEventListener("mousemove", handleMouseMove);
       dock.removeEventListener("mouseleave", resetIcons);
+      dock.removeEventListener("pointerdown", handlePointerDown);
     };
   }, []);
 

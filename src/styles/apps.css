@@ -79,7 +79,7 @@
     }
 
     .dock-container {
-      @apply bg-white/20 backdrop-blur-md justify-between rounded-2xl py-1.5 px-6 flex items-end gap-1.5 overflow-visible;
+      @apply justify-between flex items-end overflow-visible;
     }
 
     .dock-icon {
