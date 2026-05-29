@@ -2,7 +2,6 @@ import WindowControls from "#components/WindowControls";
 import windowWrapper from "#hoc/windowWrapper";
 import { Compass } from "lucide-react";
 import useMap from "./useMap";
-import MapSearchBar from "./MapSearchBar";
 import MapSection from "../section/MapSection";
 
 const Map = () => {
@@ -18,12 +17,6 @@ const Map = () => {
             <span>Maps</span>
           </div>
         </div>
-
-        <MapSearchBar
-          searchQuery={props.searchQuery}
-          setSearchQuery={props.setSearchQuery}
-          handleSearch={props.handleSearch}
-        />
 
         <div className="w-16 flex justify-end">
           <span className="text-[10px] bg-blue-500 text-white px-2 py-0.5 rounded font-bold">MAPS</span>
