@@ -109,10 +109,16 @@ const useMusic = () => {
   }, [isPlaying, activeTrack]);
 
   useEffect(() => {
+    const onNext = () => handleNext();
+    const onPrev = () => handlePrev();
+    window.addEventListener("macos-portfolio-next-track", onNext);
+    window.addEventListener("macos-portfolio-prev-track", onPrev);
     return () => {
+      window.removeEventListener("macos-portfolio-next-track", onNext);
+      window.removeEventListener("macos-portfolio-prev-track", onPrev);
       if (audioRef.current) { audioRef.current.pause(); }
     };
-  }, []);
+  }, [tracks, activeTrack, isShuffle]);
 
   const handleTimeUpdate = () => {
     if (audioRef.current) { setCurrentTime(audioRef.current.currentTime); }

@@ -38,7 +38,7 @@ const Chrome = () => {
     { title: "OpenStreetMap", url: "https://openstreetmap.org" }
   ]);
 
-  const { closeWindow } = useWindowsStore();
+  const { closeWindow, windows } = useWindowsStore();
   const [zoom, setZoom] = useState(100);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
   const [isAdBlockerActive, setIsAdBlockerActive] = useState(false);
@@ -305,6 +305,16 @@ const Chrome = () => {
       return tab;
     }));
   };
+
+  // Auto-navigate to URL passed via store data
+  useEffect(() => {
+    const targetData = windows.chrome?.data;
+    if (targetData && targetData.url) {
+      navigateTabTo(targetData.url);
+      // Clear data to prevent repeat navigation on reopening
+      useWindowsStore.getState().openWindow("chrome", null);
+    }
+  }, [windows.chrome?.data]);
 
   // Back/Forward controls
   const handleGoBack = () => {

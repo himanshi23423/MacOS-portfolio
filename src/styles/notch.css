@@ -1,0 +1,377 @@
+/* Premium macOS Notch & Siri Styles */
+
+@layer components {
+  /* Notch Container */
+  .macos-notch-container {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    pointer-events: none;
+  }
+
+  .macos-notch {
+    background: #000000;
+    color: #ffffff;
+    border-radius: 0 0 14px 14px;
+    width: 150px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    pointer-events: auto;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  }
+
+  /* Compact Mode */
+  .macos-notch.compact {
+    width: 150px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  /* Active Live Activity Mode */
+  .macos-notch.active-music {
+    width: 220px;
+    height: 30px;
+    padding: 0 12px;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  /* Fully Expanded Media Player Mode */
+  .macos-notch.expanded {
+    width: 320px;
+    height: 180px;
+    border-radius: 20px;
+    margin-top: 8px;
+    padding: 16px;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Notch Inner Layouts */
+  .notch-music-compact {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .notch-music-expanded {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 12px;
+  }
+
+  .notch-media-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .notch-album-art {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #3a3d40 0%, #181719 100%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+  }
+
+  .notch-track-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .notch-track-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .notch-track-artist {
+    font-size: 12px;
+    color: #a1a1a6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Progress Bar */
+  .notch-progress-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .notch-progress-bar {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .notch-progress-fill {
+    height: 100%;
+    background: #ffffff;
+    border-radius: 2px;
+    transition: width 0.1s linear;
+  }
+
+  .notch-time-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #86868b;
+  }
+
+  /* Media Controls */
+  .notch-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 8px;
+  }
+
+  .notch-btn {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .notch-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .notch-btn:active {
+    transform: scale(0.92);
+  }
+
+  .notch-siri-trigger {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #3b82f6 0%, #a855f7 50%, #ec4899 100%);
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .notch-siri-trigger:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.8);
+  }
+
+  /* Waveform Visualizer */
+  .notch-wave {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 14px;
+  }
+
+  .notch-wave-bar {
+    width: 2px;
+    height: 100%;
+    background: #1db954;
+    border-radius: 1px;
+    transform-origin: bottom;
+    animation: bounceVisualizer 1.2s ease-in-out infinite alternate;
+  }
+
+  .notch-wave-bar:nth-child(2) { animation-delay: 0.15s; }
+  .notch-wave-bar:nth-child(3) { animation-delay: 0.3s; }
+  .notch-wave-bar:nth-child(4) { animation-delay: 0.45s; }
+  .notch-wave-bar:nth-child(5) { animation-delay: 0.6s; }
+
+  /* Siri Active Dropdown Mode */
+  .macos-notch.siri-active {
+    width: 620px;
+    height: 150px;
+    border-radius: 28px;
+    margin-top: -5px;
+    padding: 20px 28px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    background: radial-gradient(circle at top left, rgba(28, 20, 36, 0.95), rgba(12, 12, 18, 0.97));
+    backdrop-filter: blur(50px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.7),
+      0 0 100px rgba(168, 85, 247, 0.15),
+      0 0 120px rgba(59, 130, 246, 0.1);
+    cursor: default;
+    gap: 24px;
+    position: relative;
+  }
+
+  /* Siri Image / GIF Container */
+  .notch-siri-gif-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+    filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.6)) drop-shadow(0 0 30px rgba(59, 130, 246, 0.4));
+    animation: siriGlowFloat 4s ease-in-out infinite alternate;
+  }
+
+  .notch-siri-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.65);
+    flex-shrink: 0;
+  }
+
+  @keyframes siriGlowFloat {
+    0% {
+      transform: translateY(0px) scale(1);
+      filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.6)) drop-shadow(0 0 30px rgba(59, 130, 246, 0.4));
+    }
+    100% {
+      transform: translateY(-4px) scale(1.03);
+      filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.6));
+    }
+  }
+
+  /* Siri Content Area */
+  .notch-siri-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .notch-siri-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    line-height: 1.45;
+    overflow-y: auto;
+    max-height: 80px;
+    padding-right: 8px;
+  }
+
+  .notch-siri-user-question {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: -0.01em;
+  }
+
+  .notch-siri-response {
+    font-size: 16.5px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.015em;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .notch-siri-text::-webkit-scrollbar {
+    width: 4px;
+  }
+  .notch-siri-text::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.15);
+    border-radius: 4px;
+  }
+
+  .notch-siri-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .notch-siri-status {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .notch-siri-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: siriPulseDot 1.5s infinite alternate;
+  }
+
+  .notch-siri-close {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: 0.5px;
+  }
+
+  .notch-siri-close:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: scale(1.02);
+  }
+
+  .notch-siri-close:active {
+    transform: scale(0.97);
+  }
+
+  @keyframes siriPulseDot {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+  }
+}

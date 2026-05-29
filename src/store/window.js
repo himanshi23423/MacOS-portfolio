@@ -23,10 +23,16 @@ const useWindowsStore = create(
       volume: 72,
       isMuted: false
     },
+    isSiriOpen: false,
 
     setMusicState: (musicData) =>
       set((state) => {
         state.music = { ...state.music, ...musicData };
+      }),
+
+    setSiriOpen: (isOpen) =>
+      set((state) => {
+        state.isSiriOpen = isOpen;
       }),
 
     toggleFavorite: (id) =>

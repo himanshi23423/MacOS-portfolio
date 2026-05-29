@@ -27,10 +27,12 @@ import Text from "#module/desktop/apps/text/ui";
 import VSCode from "#module/desktop/apps/vscode/ui";
 import Weather from "#module/desktop/apps/weather/ui";
 import Welcome from "#module/desktop/apps/welcome/ui";
+import Notch from "./components/Notch";
 
 const Desktop = () => (
   <main>
     <Navbar />
+    <Notch />
     <Welcome />
     <Dock />
     <Terminal />
