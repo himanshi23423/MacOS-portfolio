@@ -29,9 +29,9 @@ const CalendarEventModal = ({
           </button>
         </div>
 
-        <div className="p-4 space-y-3 flex-1 overflow-y-auto text-xs">
+        <div className="bg-white p-4 space-y-3 flex-1 overflow-y-auto text-xs">
           <div className="space-y-1">
-            <label className="font-bold text-gray-500">Event Title</label>
+            <label className="font-bold text-gray-700">Event Title</label>
             <input
               type="text"
               required
@@ -43,7 +43,7 @@ const CalendarEventModal = ({
           </div>
 
           <div className="space-y-1">
-            <label className="font-bold text-gray-500">Date</label>
+            <label className="font-bold text-gray-700">Date</label>
             <input
               type="date"
               required
@@ -55,7 +55,7 @@ const CalendarEventModal = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="font-bold text-gray-500 flex items-center gap-1">
+              <label className="font-bold text-gray-700 flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-gray-400" /> Start Time
               </label>
               <input
@@ -67,7 +67,7 @@ const CalendarEventModal = ({
               />
             </div>
             <div className="space-y-1">
-              <label className="font-bold text-gray-500 flex items-center gap-1">
+              <label className="font-bold text-gray-700 flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-gray-400" /> End Time
               </label>
               <input
@@ -81,7 +81,7 @@ const CalendarEventModal = ({
           </div>
 
           <div className="space-y-1">
-            <label className="font-bold text-gray-500 flex items-center gap-1">
+            <label className="font-bold text-gray-700 flex items-center gap-1">
               <Tag className="w-3.5 h-3.5 text-gray-400" /> Category
             </label>
             <select
@@ -96,7 +96,7 @@ const CalendarEventModal = ({
           </div>
 
           <div className="space-y-1">
-            <label className="font-bold text-gray-500 flex items-center gap-1">
+            <label className="font-bold text-gray-700 flex items-center gap-1">
               <AlignLeft className="w-3.5 h-3.5 text-gray-400" /> Description
             </label>
             <textarea
