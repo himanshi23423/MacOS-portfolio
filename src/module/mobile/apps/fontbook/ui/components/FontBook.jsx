@@ -51,8 +51,8 @@ const FontBook = () => {
   };
 
   const filteredFonts = fonts.filter(font => {
-    const matchesSearch = font.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = activeCategory === "All Fonts" || font.category === activeCategory;
+    const matchesSearch = font.name.toLowerCase().includes(searchQuery.trim().toLowerCase());
+    const matchesCategory = searchQuery.trim() ? true : (activeCategory === "All Fonts" || font.category === activeCategory);
     return matchesSearch && matchesCategory;
   });
 

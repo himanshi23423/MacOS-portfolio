@@ -2,6 +2,7 @@ import { Type, Search } from "lucide-react";
 import WindowControls from "#components/WindowControls";
 import FontBookSidebarSection from "./FontBookSidebarSection";
 import FontBookGallerySection from "./FontBookGallerySection";
+import useWindowsStore from "#store/window";
 
 const FontBookSection = ({ fonts, activeCategory, setActiveCategory, searchQuery, setSearchQuery, googleFontInput, setGoogleFontInput, handleInstallFont, filteredFonts, activeFont, setActiveFont, fontSize, setFontSize, isBold, setIsBold, isItalic, setIsItalic, specimenText, setSpecimenText }) => (
   <div className="flex flex-col h-full w-full bg-white text-gray-800 font-sans select-none rounded-xl overflow-hidden shadow-2xl border border-zinc-200/80">
@@ -19,6 +20,8 @@ const FontBookSection = ({ fonts, activeCategory, setActiveCategory, searchQuery
           placeholder="Search fonts..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onMouseDown={(e) => { e.stopPropagation(); useWindowsStore.getState().focusWindow("font"); e.currentTarget.focus(); }}
+          onPointerDown={(e) => { e.stopPropagation(); useWindowsStore.getState().focusWindow("font"); e.currentTarget.focus(); }}
           className="w-full bg-white border border-zinc-300 rounded-lg pl-8 pr-3 py-1 text-xs text-gray-800 outline-none focus:border-indigo-500 shadow-inner select-text"
         />
         <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
