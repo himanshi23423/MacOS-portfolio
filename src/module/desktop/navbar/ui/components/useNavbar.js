@@ -4,7 +4,10 @@ import html2canvas from "html2canvas";
 import { useEffect, useRef, useState } from "react";
 
 const useNavbar = () => {
-  const { windows, openWindow, music, setMusicState } = useWindowsStore();
+  const { 
+    windows, openWindow, music, setMusicState, 
+    systemSettings: settings, toggleSystemSetting, updateSystemSetting 
+  } = useWindowsStore();
   const [isControlOpen, setIsControlOpen] = useState(false);
   const [isAppleMenuOpen, setIsAppleMenuOpen] = useState(false);
   const [isShuttingDown, setIsShuttingDown] = useState(false);
@@ -14,17 +17,6 @@ const useNavbar = () => {
   const appleMenuRef = useRef(null);
   const controlCenterRef = useRef(null);
 
-  const [settings, setSettings] = useState({
-    darkMode: true,
-    wifi: true,
-    bluetooth: true,
-    airdrop: false,
-    volume: true,
-    focusMode: false,
-    brightness: 100,
-    soundLevel: 45,
-    nightLight: false,
-  });
   const [battery, setBattery] = useState({
     level: null,
     charging: false,
@@ -67,7 +59,7 @@ const useNavbar = () => {
 
   useEffect(() => {
     const currentVolume = music.isMuted ? 0 : music.volume;
-    setSettings((current) => ({ ...current, soundLevel: currentVolume }));
+    updateSystemSetting("soundLevel", currentVolume);
     document.documentElement.style.setProperty("--system-volume", currentVolume);
   }, [music.volume, music.isMuted]);
 
@@ -144,11 +136,11 @@ const useNavbar = () => {
   }, [isControlOpen]);
 
   const toggleSetting = (key) => {
-    setSettings((current) => ({ ...current, [key]: !current[key] }));
+    toggleSystemSetting(key);
   };
 
   const updateSlider = (key, value) => {
-    setSettings((current) => ({ ...current, [key]: Number(value) }));
+    updateSystemSetting(key, Number(value));
   };
 
   const takeScreenshot = () => {

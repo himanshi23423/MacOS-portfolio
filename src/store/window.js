@@ -24,6 +24,28 @@ const useWindowsStore = create(
       isMuted: false
     },
     isSiriOpen: false,
+    systemSettings: {
+      wifi: true,
+      bluetooth: true,
+      airdrop: false,
+      darkMode: true,
+      focusMode: false,
+      brightness: 100,
+      soundLevel: 45,
+      nightLight: false,
+      firewall: true,
+      activeWifiNetwork: "Home Network"
+    },
+
+    updateSystemSetting: (key, value) =>
+      set((state) => {
+        state.systemSettings[key] = value;
+      }),
+
+    toggleSystemSetting: (key) =>
+      set((state) => {
+        state.systemSettings[key] = !state.systemSettings[key];
+      }),
 
     setMusicState: (musicData) =>
       set((state) => {
