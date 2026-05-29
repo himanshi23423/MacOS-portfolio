@@ -3,20 +3,24 @@ import { Bluetooth, Loader2, Info, RefreshCw } from "lucide-react";
 import useWindowsStore from "#store/window";
 
 const SettingsBluetoothSection = () => {
-  const { systemSettings, toggleSystemSetting } = useWindowsStore();
-  const { bluetooth } = systemSettings;
+  const { systemSettings, toggleSystemSetting, updateSystemSetting } = useWindowsStore();
+  const { bluetooth, bluetoothDevices } = systemSettings;
   const [connectingDevice, setConnectingDevice] = useState(null);
   
   // Scanning and Prompt states
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [hasScanned, setHasScanned] = useState(false);
   const [promptingDevice, setPromptingDevice] = useState(null);
   
-  // Track device states locally or mock them
-  const [devices, setDevices] = useState([
-    { id: 1, name: "AirPods Pro", connected: true },
-    { id: 2, name: "Magic Keyboard", connected: false },
-    { id: 3, name: "Magic Mouse", connected: false }
-  ]);
+  const devices = [
+    { key: "airpods", name: "AirPods Pro", connected: bluetoothDevices?.airpods || false },
+    { key: "keyboard", name: "Magic Keyboard", connected: bluetoothDevices?.keyboard || false },
+    { key: "mouse", name: "Magic Mouse", connected: bluetoothDevices?.mouse || false }
+  ];
+
+  if (hasScanned) {
+    devices.push({ key: "headphones", name: "Sony WH-1000XM5", connected: bluetoothDevices?.headphones || false });
+  }
 
   const handleToggle = () => {
     toggleSystemSetting("bluetooth");
@@ -27,13 +31,7 @@ const SettingsBluetoothSection = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      // Discover a new device on scan
-      setDevices([
-        { id: 1, name: "AirPods Pro", connected: true },
-        { id: 2, name: "Magic Keyboard", connected: false },
-        { id: 3, name: "Magic Mouse", connected: false },
-        { id: 4, name: "Sony WH-1000XM5", connected: false }
-      ]);
+      setHasScanned(true);
     }, 1200);
   };
 
@@ -41,21 +39,23 @@ const SettingsBluetoothSection = () => {
     if (connectingDevice) return;
     
     if (device.connected) {
-      // Disconnect instantly when clicked if connected
-      setDevices(prev => prev.map(d => d.id === device.id ? { ...d, connected: false } : d));
+      // Disconnect instantly
+      const updated = { ...bluetoothDevices, [device.key]: false };
+      updateSystemSetting("bluetoothDevices", updated);
     } else {
-      // Open connection prompt for unconnected devices
+      // Open connection prompt
       setPromptingDevice(device);
     }
   };
 
   const confirmConnection = () => {
     if (!promptingDevice) return;
-    const targetId = promptingDevice.id;
+    const targetKey = promptingDevice.key;
     setPromptingDevice(null);
-    setConnectingDevice(targetId);
+    setConnectingDevice(targetKey);
     setTimeout(() => {
-      setDevices(prev => prev.map(d => d.id === targetId ? { ...d, connected: true } : d));
+      const updated = { ...bluetoothDevices, [targetKey]: true };
+      updateSystemSetting("bluetoothDevices", updated);
       setConnectingDevice(null);
     }, 1200);
   };
@@ -111,10 +111,10 @@ const SettingsBluetoothSection = () => {
             ) : (
               <div className="w-full bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm divide-y divide-gray-100">
                 {devices.map((device) => {
-                  const isConnecting = connectingDevice === device.id;
+                  const isConnecting = connectingDevice === device.key;
                   return (
                     <div 
-                      key={device.id}
+                      key={device.key}
                       onClick={() => handleDeviceClick(device)}
                       className="flex items-center justify-between p-3.5 px-4 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
                     >

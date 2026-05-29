@@ -37,7 +37,13 @@ const useWindowsStore = create(
       activeWifiNetwork: "Home Network",
       thunderbolt: false,
       vpn: false,
-      vpnConfig: null
+      vpnConfig: null,
+      bluetoothDevices: {
+        airpods: true,
+        keyboard: false,
+        mouse: false,
+        headphones: false
+      }
     },
 
     updateSystemSetting: (key, value) =>
