@@ -5,7 +5,7 @@ const TelegramChatList = ({
   filteredChats, activeChatId, setActiveChatId,
   searchQuery, setSearchQuery,
   nightMode, isSidebarOpen, setIsSidebarOpen,
-  setIsDrawerOpen, setDrawerSection
+  isDrawerOpen, setIsDrawerOpen, setDrawerSection
 }) => {
   return (
     <div className={`

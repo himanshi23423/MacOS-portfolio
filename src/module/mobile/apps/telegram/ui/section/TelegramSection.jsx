@@ -39,6 +39,7 @@ const TelegramSection = ({
         onToggleDrawer={() => { setDrawerSection("menu"); setIsDrawerOpen(!isDrawerOpen); }}
         onToggleProfile={() => setShowProfileDrawer(!showProfileDrawer)}
         setShowProfileDrawer={setShowProfileDrawer}
+        nightMode={nightMode}
       />
       <div className="flex-1 flex min-h-0 relative">
         <TelegramChatListSection

@@ -47,6 +47,7 @@ const TelegramChatViewSection = ({ activeChat, inputText, onInputChange, onSend,
               getThemeClass={rest.getThemeClass}
               isTyping={isTyping}
               messagesEndRef={messagesEndRef}
+              nightMode={nightMode}
             />
             <TelegramChatInput
               inputText={inputText}

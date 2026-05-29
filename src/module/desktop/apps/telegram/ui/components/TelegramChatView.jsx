@@ -1,10 +1,10 @@
 import React from "react";
 import { Check, CheckCheck } from "lucide-react";
 
-const TelegramChatView = ({ activeChat, getThemeClass, isTyping, messagesEndRef }) => {
+const TelegramChatView = ({ activeChat, getThemeClass, isTyping, messagesEndRef, nightMode }) => {
   return (
     <div className={`flex-1 overflow-y-auto p-4 space-y-3 min-h-0 transition-colors ${
-      isTyping ? "bg-[#0c0d14]" : "bg-[#e7ebf0]"
+      nightMode ? "bg-[#0c0d14]" : "bg-[#e7ebf0]"
     }`}>
       {activeChat.messages.map((msg) => {
         const isMe = msg.sender === "me";
