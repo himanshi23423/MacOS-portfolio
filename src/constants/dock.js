@@ -4,7 +4,7 @@ export const dockApps = [
   { id: "safari", name: "Safari", icon: "safari.png", canOpen: true },
   { id: "photos", name: "Gallery", icon: "photos.png", canOpen: true },
   { id: "contact", name: "Contact", icon: "contact.png", canOpen: true },
-  { id: "terminal", name: "Skills", icon: "terminal.png", canOpen: true },
+  { id: "terminal", name: "Terminal", icon: "terminal.png", canOpen: true },
   { id: "settings", name: "System Settings", icon: "settings.png", canOpen: true },
   { id: "calculator", name: "Calculator", icon: "calculator.png", canOpen: true },
   { id: "notes", name: "Notes", icon: "notes.png", canOpen: true },
