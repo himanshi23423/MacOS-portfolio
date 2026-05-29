@@ -15,14 +15,18 @@ const NotesSection = ({
   handleUpdateNote,
   handleCreateNote,
   handleDeleteNote,
+  handleCreateFolder,
+  handleDeleteFolder,
+  folders,
+  activeFolderId,
+  setActiveFolderId,
   filteredNotes,
   formatDate,
+  getFolderCount,
+  stripHtml,
 }) => {
-  const folders = [{ id: "all", name: "All Notes", count: filteredNotes.length }];
-  const [activeFolder, setActiveFolder] = useState("all");
-
   const wordCount = activeNote?.body
-    ? activeNote.body.trim().split(/\s+/).filter(Boolean).length
+    ? stripHtml(activeNote.body).trim().split(/\s+/).filter(Boolean).length
     : 0;
 
   const handleSelectNote = (id) => {
@@ -50,7 +54,7 @@ const NotesSection = ({
         <div className="flex items-center gap-3 md:gap-5">
           <button
             onClick={handleCreateNote}
-            className="p-1.5 rounded hover:bg-gray-200 active:scale-95 transition-all text-blue-500"
+            className="p-1.5 rounded hover:bg-gray-200 active:scale-95 transition-all text-[#e4a52e] hover:text-[#d89216]"
             title="New Note"
           >
             <Plus className="w-5 h-5" />
@@ -61,8 +65,8 @@ const NotesSection = ({
       <div className="flex-1 flex min-h-0 relative">
         <NotesSidebarSection
           folders={folders}
-          activeFolder={activeFolder}
-          onSelectFolder={setActiveFolder}
+          activeFolderId={activeFolderId}
+          onSelectFolder={setActiveFolderId}
           notes={filteredNotes}
           activeNoteId={activeNoteId}
           onSelectNote={handleSelectNote}
@@ -71,12 +75,17 @@ const NotesSection = ({
           isSidebarOpen={isSidebarOpen}
           onToggleSidebar={handleToggleSidebar}
           formatDate={formatDate}
+          getFolderCount={getFolderCount}
+          handleCreateFolder={handleCreateFolder}
+          handleDeleteFolder={handleDeleteFolder}
+          stripHtml={stripHtml}
         />
         <NotesEditorSection
           activeNote={activeNote}
           onUpdateNote={handleUpdateNote}
           onDeleteNote={handleDeleteNote}
           wordCount={wordCount}
+          onCreateNote={handleCreateNote}
         />
       </div>
     </div>

@@ -36,3 +36,21 @@ body::before {
   opacity: calc((100 - var(--system-brightness, 100)) / 130);
   transition: opacity 80ms ease-out;
 }
+
+/* Notes Rich Editor Lists Override */
+.notes-content-area ul {
+  list-style-type: disc !important;
+  margin-left: 1.5rem !important;
+  padding-left: 0.25rem !important;
+}
+
+.notes-content-area ol {
+  list-style-type: decimal !important;
+  margin-left: 1.5rem !important;
+  padding-left: 0.25rem !important;
+}
+
+.notes-content-area li {
+  margin-bottom: 0.25rem !important;
+  display: list-item !important;
+}
