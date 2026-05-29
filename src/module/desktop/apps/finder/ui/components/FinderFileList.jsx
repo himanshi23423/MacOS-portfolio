@@ -1,9 +1,9 @@
 import { FileText } from "lucide-react";
 import { fileIconMap } from "./finderData";
 
-const FinderFileList = ({ activeLocation, openItem }) => (
+const FinderFileList = ({ filteredChildren = [], openItem }) => (
   <ul className="flex-1 p-6 bg-white overflow-y-auto flex flex-wrap content-start gap-6">
-    {activeLocation?.children.map((item) => (
+    {filteredChildren.map((item) => (
       <li
         key={item.id}
         className="flex flex-col items-center gap-2 cursor-pointer group w-20"
@@ -21,6 +21,11 @@ const FinderFileList = ({ activeLocation, openItem }) => (
         </p>
       </li>
     ))}
+    {filteredChildren.length === 0 && (
+      <div className="w-full flex flex-col items-center justify-center py-20 text-zinc-400 text-xs italic">
+        No items found
+      </div>
+    )}
   </ul>
 );
 

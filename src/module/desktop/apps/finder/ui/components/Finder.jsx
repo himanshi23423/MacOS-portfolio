@@ -16,6 +16,11 @@ const Finder = () => {
   const { activeLocation, setActiveLocation } = useLocationStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [navStack, setNavStack] = useState([]);
+  
+  // History and Search States
+  const [history, setHistory] = useState([activeLocation]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -23,13 +28,51 @@ const Finder = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Sync initial location when store updates
+  useEffect(() => {
+    if (activeLocation && history.length === 1 && history[0]?.id !== activeLocation.id) {
+      setHistory([activeLocation]);
+      setHistoryIndex(0);
+    }
+  }, [activeLocation]);
+
+  const handleNavigate = (location) => {
+    const newHistory = history.slice(0, historyIndex + 1);
+    newHistory.push(location);
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+    setActiveLocation(location);
+    setSearchQuery(""); // Reset search query on folder change
+  };
+
+  const handleBack = () => {
+    if (historyIndex > 0) {
+      const nextIndex = historyIndex - 1;
+      setHistoryIndex(nextIndex);
+      setActiveLocation(history[nextIndex]);
+      setSearchQuery("");
+    }
+  };
+
+  const handleForward = () => {
+    if (historyIndex < history.length - 1) {
+      const nextIndex = historyIndex + 1;
+      setHistoryIndex(nextIndex);
+      setActiveLocation(history[nextIndex]);
+      setSearchQuery("");
+    }
+  };
+
   const openItem = (item) => {
     if (item.fileType === "pdf") return openWindow("resume");
     if (item.kind === "folder") {
       if (isMobile) {
         setNavStack((prev) => [...prev, activeLocation]);
+        setActiveLocation(item);
+      } else {
+        handleNavigate(item);
       }
-      return setActiveLocation(item);
+      return;
     }
     if (["fig", "url"].includes(item.fileType) && item.href)
       return window.open(item.href, "_blank");
@@ -240,11 +283,22 @@ const Finder = () => {
     );
   }
 
+  const filteredChildren = activeLocation?.children?.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
+
   return (
     <FinderSection
       activeLocation={activeLocation}
-      setActiveLocation={setActiveLocation}
+      setActiveLocation={handleNavigate}
       openItem={openItem}
+      canGoBack={historyIndex > 0}
+      canGoForward={historyIndex < history.length - 1}
+      onGoBack={handleBack}
+      onGoForward={handleForward}
+      searchQuery={searchQuery}
+      onSearchChange={setSearchQuery}
+      filteredChildren={filteredChildren}
     />
   );
 };
