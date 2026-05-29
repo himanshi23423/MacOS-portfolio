@@ -25,7 +25,7 @@ const Settings = () => {
           setMobileView={setMobileView}
         />
 
-        <div className={`${isMobile ? (mobileView !== "main" ? "flex w-full" : "hidden") : "flex-1 flex"} flex-col bg-white`}>
+        <div className={`${isMobile ? (mobileView !== "main" ? "flex w-full" : "hidden") : "flex-1 flex min-w-0"} flex-col bg-white`}>
           <SettingsPane
             activeTab={activeTab}
             setActiveTab={setActiveTab}

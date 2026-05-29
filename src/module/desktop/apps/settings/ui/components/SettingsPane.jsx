@@ -52,7 +52,7 @@ const SettingsPane = ({ activeTab, setActiveTab, githubData, isLoading, isMobile
           <div className="w-1/3"></div>
         </div>
       )}
-      <div className="flex-1 overflow-y-auto thin-scrollbar">
+      <div className="flex-1 overflow-y-auto thin-scrollbar min-w-0 w-full">
         {renderContent()}
       </div>
     </>
