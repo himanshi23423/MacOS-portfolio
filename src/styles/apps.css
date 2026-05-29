@@ -293,6 +293,10 @@
     @apply w-[860px] h-[560px] absolute top-10 left-28 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
   }
 
+  #weather {
+    @apply w-[860px] h-[560px] absolute top-10 left-32 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+  }
+
   #txtfile {
     @apply w-[500px] h-[400px] absolute top-36 right-32 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 

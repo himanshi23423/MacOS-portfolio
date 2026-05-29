@@ -6,7 +6,7 @@ import { UvIndexCard, WindCard, SunriseSunsetCard, AirQualityCard } from "./Weat
 
 const WeatherDashboard = ({ activeCity, unitMode, loading, error, setError }) => {
   return (
-    <main className={`flex-1 overflow-y-auto thin-scrollbar bg-gradient-to-b ${activeCity.bgClass} text-white p-6 space-y-6 flex flex-col justify-start relative`}>
+    <main className={`flex-1 h-full min-h-0 overflow-y-auto thin-scrollbar bg-gradient-to-b ${activeCity.bgClass} text-white p-6 space-y-6 flex flex-col justify-start relative`}>
 
       {loading && (
         <div className="absolute inset-0 bg-black/20 backdrop-blur-md flex items-center justify-center z-30 transition-all duration-300">
