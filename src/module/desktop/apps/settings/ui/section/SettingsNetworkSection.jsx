@@ -9,7 +9,7 @@ const SettingsNetworkSection = () => {
   return (
     <div className="max-w-2xl mx-auto p-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">Network Interfaces</h3>
-      <div className="w-full bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mb-6 divide-y divide-gray-150">
+      <div className="w-full bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mb-6 divide-y divide-gray-100">
         
         {/* Wi-Fi interface (Dynamic) */}
         <div className="flex items-center justify-between p-3.5 px-4">

@@ -116,7 +116,7 @@ const SettingsWiFiPane = () => {
                 <span className="text-[12px] font-semibold text-gray-500">Scanning for networks...</span>
               </div>
             ) : (
-              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm divide-y divide-gray-150">
+              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm divide-y divide-gray-100">
                 {networks.map((net) => {
                   const isCurrent = activeWifiNetwork === net.name;
                   const isConnecting = connectingTo === net.name;
