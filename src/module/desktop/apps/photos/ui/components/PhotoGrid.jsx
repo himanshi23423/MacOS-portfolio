@@ -12,19 +12,21 @@ const PhotoGrid = ({
 }) => {
   const { favorites, toggleFavorite } = useWindowsStore();
 
-  // Map zoom level (1 to 5) to Tailwind grid-cols classes
-  const colClasses = {
-    1: "grid-cols-8",
-    2: "grid-cols-6",
-    3: "grid-cols-4",
-    4: "grid-cols-3",
-    5: "grid-cols-2"
-  };
-  const colClass = colClasses[zoomLevel] || "grid-cols-6";
+  // Map zoom level (1 to 5) to columns count
+  const colCount = {
+    1: 8,
+    2: 6,
+    3: 4,
+    4: 3,
+    5: 2
+  }[zoomLevel] || 3;
 
   const renderGrid = (photosList) => {
     return (
-      <div className={`grid ${colClass} gap-1.5`}>
+      <div 
+        className="grid gap-1.5"
+        style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }}
+      >
         {photosList.map((photo) => {
           const { id, img, rotation = 0 } = photo;
           const isFav = favorites.includes(id);

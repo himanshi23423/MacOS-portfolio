@@ -159,8 +159,18 @@ const PhotosSection = ({
           <div className="flex-1" />
 
           {/* Zoom Slider */}
-          <div className="flex items-center gap-1.5 bg-[#e8e8e8]/50 px-2 py-0.5 rounded-md mr-2">
-            <ZoomOut size={11} className="text-gray-400" />
+          <div 
+            className="flex items-center gap-1.5 bg-[#e8e8e8]/50 px-2 py-0.5 rounded-md mr-2"
+            onMouseDownCapture={(e) => e.stopPropagation()}
+            onPointerDownCapture={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setZoomLevel(prev => Math.max(1, prev - 1))}
+              className="text-gray-400 hover:text-gray-600 transition-colors p-0.5 rounded cursor-pointer"
+              title="Zoom Out"
+            >
+              <ZoomOut size={11} />
+            </button>
             <input 
               type="range" 
               min="1" 
@@ -172,14 +182,21 @@ const PhotosSection = ({
               onMouseDown={(e) => e.stopPropagation()}
               onPointerDown={(e) => e.stopPropagation()}
             />
-            <ZoomIn size={11} className="text-gray-400" />
+            <button 
+              onClick={() => setZoomLevel(prev => Math.min(5, prev + 1))}
+              className="text-gray-400 hover:text-gray-600 transition-colors p-0.5 rounded cursor-pointer"
+              title="Zoom In"
+            >
+              <ZoomIn size={11} />
+            </button>
           </div>
 
           {/* Search Bar */}
           <div 
-            className="flex items-center gap-1.5 bg-[#e8e8e8] hover:bg-[#e0e0e0] border border-transparent focus-within:border-blue-400 focus-within:bg-white rounded-md px-2 py-0.5 transition-all w-44"
-            onMouseDown={(e) => e.stopPropagation()}
-            onPointerDown={(e) => e.stopPropagation()}
+            className="flex items-center gap-1.5 bg-[#e8e8e8] hover:bg-[#e0e0e0] border border-transparent focus-within:border-blue-400 focus-within:bg-white rounded-md px-2 py-0.5 transition-all w-44 cursor-text"
+            onMouseDownCapture={(e) => e.stopPropagation()}
+            onPointerDownCapture={(e) => e.stopPropagation()}
+            onClick={(e) => e.currentTarget.querySelector("input")?.focus()}
           >
             <Search size={12} className="text-gray-400 flex-shrink-0" />
             <input

@@ -45,15 +45,18 @@ const FinderToolbar = ({
     </div>
 
     {/* Search Input */}
-    <div className="w-48 relative flex items-center bg-zinc-200/50 border border-zinc-300/30 rounded-md px-2 py-0.5">
+    <div 
+      className="w-48 relative flex items-center bg-zinc-200/50 border border-zinc-300/30 rounded-md px-2 py-0.5 cursor-text"
+      onMouseDownCapture={(e) => e.stopPropagation()}
+      onPointerDownCapture={(e) => e.stopPropagation()}
+      onClick={(e) => e.currentTarget.querySelector("input")?.focus()}
+    >
       <Search className="w-3.5 h-3.5 text-gray-400 mr-1.5 shrink-0" />
       <input
         type="text"
         placeholder="Search"
         value={searchQuery}
         onChange={(e) => onSearchChange(e.target.value)}
-        onMouseDown={(e) => { e.stopPropagation(); useWindowsStore.getState().focusWindow("finder"); e.currentTarget.focus(); }}
-        onPointerDown={(e) => { e.stopPropagation(); useWindowsStore.getState().focusWindow("finder"); e.currentTarget.focus(); }}
         className="w-full bg-transparent border-none outline-none text-xs text-gray-800 placeholder-gray-400 select-text"
       />
     </div>
