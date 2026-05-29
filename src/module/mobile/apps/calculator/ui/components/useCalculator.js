@@ -26,25 +26,27 @@ export default function useCalculator() {
   };
 
   const toggleSign = () => {
-    const newValue = parseFloat(displayValue) * -1;
-    setDisplayValue(String(newValue));
+    const currentValue = parseFloat(displayValue);
+    if (isNaN(currentValue)) return;
+    setDisplayValue(String(currentValue * -1));
   };
 
   const inputPercent = () => {
     const currentValue = parseFloat(displayValue);
-    if (currentValue === 0) return;
-    const fixedDigits = displayValue.replace(/^-?\d*\.?/, "");
-    const newValue = parseFloat(displayValue) / 100;
-    setDisplayValue(String(newValue.toFixed(fixedDigits.length + 2)));
+    if (currentValue === 0 || isNaN(currentValue)) return;
+    setDisplayValue(String(currentValue / 100));
   };
 
   const inputDigit = (digit) => {
     if (waitingForOperand) {
       setDisplayValue(String(digit));
       setWaitingForOperand(false);
+      if (!operator) {
+        setValue(null);
+      }
     } else {
       setDisplayValue(
-        displayValue === "0" ? String(digit) : displayValue + digit
+        displayValue === "0" || displayValue === "Error" ? String(digit) : displayValue + digit
       );
     }
   };
@@ -53,7 +55,10 @@ export default function useCalculator() {
     if (waitingForOperand) {
       setDisplayValue("0.");
       setWaitingForOperand(false);
-    } else if (displayValue.indexOf(".") === -1) {
+      if (!operator) {
+        setValue(null);
+      }
+    } else if (displayValue.indexOf(".") === -1 && displayValue !== "Error") {
       setDisplayValue(displayValue + ".");
       setWaitingForOperand(false);
     }
@@ -62,18 +67,35 @@ export default function useCalculator() {
   const performOperation = (nextOperator) => {
     const inputValue = parseFloat(displayValue);
 
+    if (isNaN(inputValue)) {
+      clearAll();
+      return;
+    }
+
     if (value == null) {
       setValue(inputValue);
     } else if (operator) {
+      if (waitingForOperand) {
+        setOperator(nextOperator === "=" ? null : nextOperator);
+        return;
+      }
       const currentValue = value || 0;
       const newValue = CalculatorOperations[operator](currentValue, inputValue);
+
+      if (isNaN(newValue) || !isFinite(newValue)) {
+        setDisplayValue("Error");
+        setValue(null);
+        setOperator(null);
+        setWaitingForOperand(true);
+        return;
+      }
 
       setValue(newValue);
       setDisplayValue(String(newValue));
     }
 
     setWaitingForOperand(true);
-    setOperator(nextOperator);
+    setOperator(nextOperator === "=" ? null : nextOperator);
   };
 
   return {
