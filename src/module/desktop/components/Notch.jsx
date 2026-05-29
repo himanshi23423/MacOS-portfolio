@@ -1,12 +1,26 @@
 import React, { useState, useRef, useEffect } from "react";
 import useWindowsStore from "#store/window";
-import { Play, Pause, SkipForward, SkipBack } from "lucide-react";
+import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Mic, ExternalLink, Star, Cloud, Settings, Camera, Trash2, FileText } from "lucide-react";
 
 const Notch = () => {
   const { music, setMusicState, isSiriOpen, setSiriOpen, openWindow } = useWindowsStore();
-  const { activeTrack, isPlaying } = music;
+  const { activeTrack, isPlaying, volume, isMuted } = music;
 
   const [dragProgress, setDragProgress] = useState(0);
+  const [isMusicExpanded, setIsMusicExpanded] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  
+  const [activeTab, setActiveTab] = useState("nook"); // "nook" or "tray"
+  const [droppedFiles, setDroppedFiles] = useState([]);
+  const [cameraFlash, setCameraFlash] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [cameraError, setCameraError] = useState("");
+  const videoRef = useRef(null);
+  const cameraStreamRef = useRef(null);
+
+  const notchRef = useRef(null);
 
   // Siri specific states
   const [userQuestion, setUserQuestion] = useState("");
@@ -31,6 +45,20 @@ const Notch = () => {
   useEffect(() => {
     isSiriOpenRef.current = isSiriOpen;
   }, [isSiriOpen]);
+
+  // Click outside listener to collapse popups
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notchRef.current && !notchRef.current.contains(event.target)) {
+        setIsMusicExpanded(false);
+        setSiriOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Clean up on unmount
   useEffect(() => {
@@ -461,17 +489,141 @@ const Notch = () => {
     window.dispatchEvent(new CustomEvent("macos-portfolio-prev-track"));
   };
 
+  const getCalendarDays = () => {
+    const days = [];
+    const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
+    const today = new Date();
+    for (let i = -3; i <= 3; i++) {
+      const date = new Date();
+      date.setDate(today.getDate() + i);
+      days.push({
+        dayName: weekdays[date.getDay()],
+        dayNum: String(date.getDate()).padStart(2, '0'),
+        isToday: i === 0,
+      });
+    }
+    return days;
+  };
+
+  const getMonthName = () => {
+    const today = new Date();
+    return today.toLocaleString('default', { month: 'long' });
+  };
+
+  const openCamera = async (e) => {
+    e.stopPropagation();
+    setCameraError("");
+    setIsCameraOpen(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      cameraStreamRef.current = stream;
+      // videoRef may not be mounted yet; the useEffect below will wire it once rendered
+    } catch (err) {
+      setCameraError("Camera access denied. Please allow camera permission.");
+    }
+  };
+
+  // Wire the webcam stream to the <video> element once camera overlay is rendered
   useEffect(() => {
-    if (isSiriOpen) return;
-    const interval = setInterval(() => {
+    if (isCameraOpen && videoRef.current && cameraStreamRef.current) {
+      videoRef.current.srcObject = cameraStreamRef.current;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [isCameraOpen]);
+
+  const closeCamera = (e) => {
+    if (e) e.stopPropagation();
+    if (cameraStreamRef.current) {
+      cameraStreamRef.current.getTracks().forEach(t => t.stop());
+      cameraStreamRef.current = null;
+    }
+    setIsCameraOpen(false);
+    setCameraError("");
+  };
+
+  const takeSnapshot = (e) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      canvas.getContext("2d").drawImage(videoRef.current, 0, 0);
+      const link = document.createElement("a");
+      link.download = `snapshot-${Date.now()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      // Flash animation
+      setCameraFlash(true);
+      try {
+        const sound = new Audio("/sound/shutter.mp3");
+        sound.volume = 0.4;
+        sound.play().catch(() => {});
+      } catch(err) {}
+      setTimeout(() => setCameraFlash(false), 180);
+    } catch(err) {
+      console.error("Snapshot failed:", err);
+    }
+  };
+
+  // Close camera stream on unmount or isMusicExpanded change
+  useEffect(() => {
+    if (!isMusicExpanded) closeCamera(null);
+  }, [isMusicExpanded]);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const files = Array.from(e.dataTransfer.files).map(file => ({
+        name: file.name,
+        size: (file.size / 1024).toFixed(1) + " KB",
+        url: URL.createObjectURL(file),
+        type: file.type
+      }));
+      setDroppedFiles(prev => [...prev, ...files]);
+    }
+  };
+
+  const handleRemoveFile = (e, index) => {
+    e.stopPropagation();
+    setDroppedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const formatTime = (sec) => {
+    if (isNaN(sec) || sec === Infinity) return "0:00";
+    const minutes = Math.floor(sec / 60);
+    const seconds = Math.floor(sec % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
+  useEffect(() => {
+    const updateTime = () => {
       const audioEl = document.querySelector("audio");
-      if (audioEl && !audioEl.paused) {
+      if (audioEl) {
+        setCurrentTime(audioEl.currentTime || 0);
+        setDuration(audioEl.duration || 0);
         const progress = (audioEl.currentTime / audioEl.duration) * 100;
         setDragProgress(isNaN(progress) ? 0 : progress);
       }
-    }, 500);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 500);
     return () => clearInterval(interval);
-  }, [isSiriOpen]);
+  }, [isSiriOpen, isMusicExpanded]);
 
   const handleProgressClick = (e) => {
     e.stopPropagation();
@@ -483,42 +635,59 @@ const Notch = () => {
     const clickPercent = clickX / width;
     audioEl.currentTime = clickPercent * audioEl.duration;
     setDragProgress(clickPercent * 100);
+    setCurrentTime(clickPercent * audioEl.duration);
   };
 
   let notchClass = "macos-notch compact";
   if (isSiriOpen) {
     notchClass = "macos-notch siri-active";
+  } else if (isMusicExpanded) {
+    notchClass = "macos-notch expanded";
   } else if (isPlaying && hasSong) {
     notchClass = "macos-notch active-music";
   }
 
-  // Handle clicking compact notch to open Siri
-  const handleNotchClick = () => {
-    if (!isSiriOpen) {
-      setSiriOpen(true);
-      // Unlock Web Audio/Audio playback in Chrome/Safari (User Gesture requirement)
-      if (audioPlaybackRef.current) {
-        audioPlaybackRef.current.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
-        audioPlaybackRef.current.play().catch(e => console.log("Audio unlock failed:", e));
-      }
-      // Unlock SpeechSynthesis
-      if (window.speechSynthesis) {
-        const u = new SpeechSynthesisUtterance("");
-        window.speechSynthesis.speak(u);
-      }
-    } else {
-      // Toggle listening on click when Siri is active and not speaking
+  // Handle clicking notch: middle -> Siri, sides -> Music popup
+  const handleNotchClick = (e) => {
+    if (isSiriOpen) {
       if (!isListening && !isSpeaking) {
         startRecording();
       } else {
         stopRecording();
         setSiriStatus("IDLE");
       }
+      return;
+    }
+
+    if (isMusicExpanded) {
+      return;
+    }
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    const clickPercent = clickX / width;
+
+    if (clickPercent >= 0.35 && clickPercent <= 0.65) {
+      setSiriOpen(true);
+      setIsMusicExpanded(false);
+      if (audioPlaybackRef.current) {
+        audioPlaybackRef.current.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+        audioPlaybackRef.current.play().catch(e => console.log("Audio unlock failed:", e));
+      }
+      if (window.speechSynthesis) {
+        const u = new SpeechSynthesisUtterance("");
+        window.speechSynthesis.speak(u);
+      }
+    } else {
+      setIsMusicExpanded(true);
+      setSiriOpen(false);
     }
   };
 
   return (
     <div
+      ref={notchRef}
       className="macos-notch-container"
       onClick={handleNotchClick}
     >
@@ -558,44 +727,226 @@ const Notch = () => {
 
         {/* Fully Expanded Media Player State */}
         {notchClass === "macos-notch expanded" && (
-          <div className="notch-music-expanded">
-            <div className="flex justify-between items-start w-full">
-              <div className="notch-media-info">
-                <div className="notch-album-art flex items-center justify-center">
-                  {activeTrack.coverUrl ? (
-                    <img src={activeTrack.coverUrl} alt="album art" className="w-full h-full object-cover" />
+          <div className="notch-nook-expanded w-full h-full flex flex-col justify-between relative">
+            <div className="notch-ambient-glow" />
+            
+            {/* Header section */}
+            <div className="notch-nook-header flex justify-between items-center w-full select-none" onClick={(e) => e.stopPropagation()}>
+              <div className="notch-nook-tabs flex items-center gap-4">
+                <button 
+                  className={`notch-nook-tab flex items-center gap-1.5 text-xs font-semibold transition-all ${activeTab === 'nook' ? 'text-white active' : 'text-zinc-400 hover:text-zinc-200'}`}
+                  onClick={() => setActiveTab('nook')}
+                >
+                  <Star size={11} fill={activeTab === 'nook' ? "currentColor" : "none"} />
+                  Nook
+                </button>
+                <button 
+                  className={`notch-nook-tab flex items-center gap-1.5 text-xs font-semibold transition-all ${activeTab === 'tray' ? 'text-white active' : 'text-zinc-400 hover:text-zinc-200'}`}
+                  onClick={() => setActiveTab('tray')}
+                >
+                  <Cloud size={11} />
+                  Tray
+                </button>
+              </div>
+
+              <button 
+                className="notch-nook-settings text-zinc-400 hover:text-white transition-all"
+                onClick={() => {
+                  openWindow("settings");
+                  setIsMusicExpanded(false);
+                }}
+                title="System Settings"
+              >
+                <Settings size={14} />
+              </button>
+            </div>
+
+            {/* Divider line under header */}
+            <div className="w-full h-[1px] bg-zinc-800/60 my-1" />
+
+            {/* Camera flash screen animation */}
+            {cameraFlash && (
+              <div className="absolute inset-0 bg-white z-50 pointer-events-none rounded-[22px] animate-flash-shutter" />
+            )}
+
+            {/* Camera Live Feed Overlay */}
+            {isCameraOpen && (
+              <div className="absolute inset-0 z-40 bg-zinc-950/95 backdrop-blur-sm rounded-[22px] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                {cameraError ? (
+                  <div className="flex-1 flex flex-col items-center justify-center gap-2 text-center px-6">
+                    <Camera size={24} className="text-zinc-500" />
+                    <p className="text-zinc-400 text-[11px]">{cameraError}</p>
+                    <button
+                      className="mt-1 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-white text-[10px] font-semibold rounded-full transition-all"
+                      onClick={closeCamera}
+                    >Close</button>
+                  </div>
+                ) : (
+                  <>
+                    {/* Live video feed */}
+                    <div className="relative flex-1 overflow-hidden rounded-t-[24px] bg-black">
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        muted
+                        className="w-full h-full object-cover scale-x-[-1]"
+                      />
+                      {/* Green live indicator */}
+                      <div className="absolute top-2 left-3 flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                        <span className="text-[8px] text-white/70 font-medium tracking-widest">LIVE</span>
+                      </div>
+                    </div>
+                    {/* Controls bar */}
+                    <div className="flex items-center justify-between px-5 py-2 bg-zinc-950">
+                      <button
+                        className="text-zinc-400 hover:text-white text-[10px] font-semibold tracking-wide transition-colors"
+                        onClick={closeCamera}
+                      >✕ Close</button>
+                      {/* Shutter button */}
+                      <button
+                        className="w-10 h-10 rounded-full border-2 border-white bg-transparent flex items-center justify-center hover:bg-white/10 active:scale-90 transition-all group"
+                        onClick={takeSnapshot}
+                        title="Take snapshot"
+                      >
+                        <div className="w-7 h-7 rounded-full bg-white group-active:scale-90 transition-transform" />
+                      </button>
+                      <span className="text-[10px] text-zinc-500 w-14 text-right">Snapshot</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Tab content area */}
+            <div className="flex-1 w-full overflow-hidden flex flex-col justify-center">
+              {activeTab === 'nook' ? (
+                /* Nook Tab: Music | Calendar | Camera */
+                <div className="notch-nook-grid grid grid-cols-[1.2fr_1.5fr_0.9fr] items-center h-full w-full gap-2">
+                  
+                  {/* Column 1: Music */}
+                  <div className="nook-music-section flex items-center gap-2 pr-2 border-r border-zinc-800/40 h-[80%] min-w-0" onClick={(e) => e.stopPropagation()}>
+                    <div className={`nook-album-art w-12 h-12 rounded-lg flex-shrink-0 flex items-center justify-center relative overflow-hidden bg-zinc-800 ${isPlaying ? 'playing' : ''}`}>
+                      {hasSong && activeTrack.coverUrl ? (
+                        <img src={activeTrack.coverUrl} alt="album art" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-lg">{activeTrack.coverText || "🎵"}</span>
+                      )}
+                    </div>
+                    <div className="nook-music-info flex-1 min-w-0 flex flex-col justify-center gap-0.5">
+                      <span className="text-[11px] text-white font-semibold truncate block">
+                        {hasSong ? activeTrack.title : "Select a Song"}
+                      </span>
+                      <span className="text-[9px] text-zinc-400 truncate block">
+                        {hasSong ? formatTime(currentTime) : "JioSaavn"}
+                      </span>
+                      <div className="flex items-center gap-2 mt-1">
+                        <button className="text-zinc-400 hover:text-white transition-all" onClick={handlePrev}>
+                          <SkipBack size={10} fill="currentColor" />
+                        </button>
+                        <button className="text-zinc-400 hover:text-white transition-all" onClick={togglePlay}>
+                          {isPlaying ? <Pause size={12} fill="currentColor" /> : <Play size={12} fill="currentColor" />}
+                        </button>
+                        <button className="text-zinc-400 hover:text-white transition-all" onClick={handleNext}>
+                          <SkipForward size={10} fill="currentColor" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Column 2: Calendar */}
+                  <div className="nook-calendar-section px-2 border-r border-zinc-800/40 h-[80%] flex flex-col justify-center select-none" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[11px] text-white font-bold">{getMonthName()}</span>
+                      <div className="flex-1 flex justify-between text-[8px] font-bold text-zinc-500">
+                        {getCalendarDays().map((day, idx) => (
+                          <span key={idx} className={day.isToday ? "text-[#3b82f6]" : ""}>{day.dayName}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center text-[9px] text-zinc-400 mb-1">
+                      <div className="flex-1 flex justify-between">
+                        {getCalendarDays().map((day, idx) => (
+                          <span 
+                            key={idx} 
+                            className={`w-4 h-4 flex items-center justify-center rounded-full font-medium ${day.isToday ? 'bg-[#3b82f6] text-white font-bold shadow-md shadow-blue-500/20' : 'text-zinc-300'}`}
+                          >
+                            {day.dayNum}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 justify-center mt-1 text-[8px] text-zinc-500">
+                      <div className="w-1.5 h-1.5 rounded-sm border border-zinc-600 bg-zinc-800 flex-shrink-0" />
+                      <span>Nothing for today</span>
+                    </div>
+                  </div>
+
+                  {/* Column 3: Camera */}
+                  <div className="nook-camera-section flex justify-center items-center h-[80%] pl-2">
+                    <button 
+                      className="nook-camera-button w-14 h-14 rounded-full border border-zinc-700 bg-gradient-to-b from-zinc-700 to-zinc-900 flex items-center justify-center shadow-lg transition-all hover:scale-105 hover:border-zinc-500 active:scale-95 text-zinc-400 hover:text-white"
+                      onClick={openCamera}
+                      title="Open camera"
+                    >
+                      <div className="w-11 h-11 rounded-full border border-zinc-700 bg-zinc-950 flex items-center justify-center">
+                        <Camera size={16} className="opacity-80" />
+                      </div>
+                    </button>
+                  </div>
+
+                </div>
+              ) : (
+                /* Tray Tab: Drag & Drop files storage area */
+                <div 
+                  className="notch-tray-container flex flex-col h-full w-full overflow-hidden"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {droppedFiles.length === 0 ? (
+                    <div 
+                      className={`notch-tray-dropzone flex-1 border border-dashed rounded-lg flex flex-col items-center justify-center gap-1.5 transition-all text-zinc-500 p-2 ${isDragOver ? 'border-[#3b82f6] bg-[#3b82f6]/5 text-white scale-[0.98]' : 'border-zinc-800/80 hover:border-zinc-700'}`}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
+                    >
+                      <Cloud size={16} className={`transition-transform ${isDragOver ? 'translate-y-[-2px] text-[#3b82f6]' : ''}`} />
+                      <span className="text-[10px] font-medium tracking-wide">Drop files to store temporarily</span>
+                    </div>
                   ) : (
-                    <span className="text-xl">{activeTrack.coverText || "🎵"}</span>
+                    <div className="notch-tray-files flex-1 overflow-x-auto flex items-center gap-3 py-1 px-2 scrollbar-none">
+                      {droppedFiles.map((file, idx) => (
+                        <div key={idx} className="notch-tray-file-card relative group flex flex-col items-center justify-center p-1.5 bg-zinc-900/60 border border-zinc-800/40 rounded-lg w-16 h-16 flex-shrink-0 select-none">
+                          <FileText size={16} className="text-zinc-400 mb-0.5" />
+                          <span className="text-[7px] text-white truncate w-full text-center font-medium">{file.name}</span>
+                          <span className="text-[6px] text-zinc-500">{file.size}</span>
+                          
+                          <button 
+                            className="absolute -top-1 -right-1 p-0.5 bg-red-500/90 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={(e) => handleRemoveFile(e, idx)}
+                            title="Remove file"
+                          >
+                            <Trash2 size={7} />
+                          </button>
+                        </div>
+                      ))}
+                      
+                      {/* Dropzone Mini to add more files if files are already dropped */}
+                      <div 
+                        className={`w-16 h-16 flex-shrink-0 border border-dashed rounded-lg flex flex-col items-center justify-center gap-1 transition-all text-zinc-500 cursor-pointer ${isDragOver ? 'border-[#3b82f6] bg-[#3b82f6]/5 text-white' : 'border-zinc-800/80 hover:border-zinc-700'}`}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                      >
+                        <Cloud size={10} />
+                        <span className="text-[6px] font-medium">Add Files</span>
+                      </div>
+                    </div>
                   )}
                 </div>
-                <div className="notch-track-details">
-                  <span className="notch-track-title">{activeTrack.title}</span>
-                  <span className="notch-track-artist">{activeTrack.artist}</span>
-                </div>
-              </div>
-              <div
-                className="notch-siri-trigger"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSiriOpen(true);
-                }}
-                title="Ask Siri"
-              >
-                <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
-              </div>
+              )}
             </div>
-            <div className="notch-progress-container">
-              <div className="notch-progress-bar" onClick={handleProgressClick}>
-                <div className="notch-progress-fill" style={{ width: `${dragProgress}%` }} />
-              </div>
-            </div>
-            <div className="notch-controls">
-              <button className="notch-btn" onClick={handlePrev}><SkipBack size={14} fill="currentColor" /></button>
-              <button className="notch-btn" onClick={togglePlay}>
-                {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
-              </button>
-              <button className="notch-btn" onClick={handleNext}><SkipForward size={14} fill="currentColor" /></button>
-            </div>
+
           </div>
         )}
 
@@ -613,11 +964,11 @@ const Notch = () => {
               <div className="notch-siri-footer">
                 <div className="notch-siri-status">
                   <div 
-                    className="notch-siri-status-dot" 
-                    style={{ 
-                      background: siriStatus === "LISTENING" ? "#ef4444" : siriStatus === "SPEAKING" ? "#10b981" : "#f59e0b", 
-                      boxShadow: `0 0 6px ${siriStatus === "LISTENING" ? "#ef4444" : siriStatus === "SPEAKING" ? "#10b981" : "#f59e0b"}` 
-                    }} 
+                     className="notch-siri-status-dot" 
+                     style={{ 
+                       background: siriStatus === "LISTENING" ? "#ef4444" : siriStatus === "SPEAKING" ? "#10b981" : "#f59e0b", 
+                       boxShadow: `0 0 6px ${siriStatus === "LISTENING" ? "#ef4444" : siriStatus === "SPEAKING" ? "#10b981" : "#f59e0b"}` 
+                     }} 
                   />
                   {siriStatus === "LISTENING" ? "LISTENING..." : 
                    siriStatus === "TRANSCRIBING" ? "TRANSCRIBING..." : 
