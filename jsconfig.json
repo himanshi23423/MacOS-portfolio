@@ -1,10 +1,10 @@
 {
-    "compilerOptions": {        "ignoreDeprecations": "6.0",        "baseUrl": ".",
+    "compilerOptions": {
+        "baseUrl": ".",
         "paths": {
             "#*":["src/*"],
             "#module/*":["src/module/*"]
         }
-
     },
     "include": ["src"]
 }
