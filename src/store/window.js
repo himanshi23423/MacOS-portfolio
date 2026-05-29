@@ -34,7 +34,10 @@ const useWindowsStore = create(
       soundLevel: 45,
       nightLight: false,
       firewall: true,
-      activeWifiNetwork: "Home Network"
+      activeWifiNetwork: "Home Network",
+      thunderbolt: false,
+      vpn: false,
+      vpnConfig: null
     },
 
     updateSystemSetting: (key, value) =>
