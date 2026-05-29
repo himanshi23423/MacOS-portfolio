@@ -1,131 +1,348 @@
+import React from "react";
 import WindowControls from "#components/WindowControls";
-import { ChevronLeft, ChevronRight, ExternalLink, Layout, Plus, Search, Share, ShieldHalf, PanelLeft } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Search,
+  Share,
+  ShieldHalf,
+  PanelLeft,
+  RotateCw,
+  Star,
+  Download,
+  Layout,
+  AlignLeft
+} from "lucide-react";
 
-const SafariDesktopToolbar = ({ showSidebar, onToggleSidebar }) => {
+const SafariDesktopToolbar = ({
+  showSidebar,
+  onToggleSidebar,
+  activeTab,
+  addressInput,
+  setAddressInput,
+  navigateTabTo,
+  handleGoBack,
+  handleGoForward,
+  handleReload,
+  toggleReaderMode,
+  toggleBookmark,
+  isBookmarked,
+  showDownloads,
+  setShowDownloads,
+  showTabOverview,
+  setShowTabOverview,
+  handleNewTab,
+  openWindow
+}) => {
+  const canGoBack = activeTab.historyIndex > 0;
+  const canGoForward = activeTab.historyIndex < activeTab.history.length - 1;
+  const isReaderCompatible = activeTab.url.includes("wikipedia.org");
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      navigateTabTo(addressInput);
+      e.target.blur();
+    }
+  };
+
   return (
-    <div id="window-header" className="!bg-white !border-b-[#d1d1d1] !px-4 !py-2">
+    <div
+      id="window-header"
+      className="!bg-[#eef1f5] !border-b-[#c8cbd0] !px-4 !py-2 flex flex-col gap-1.5 select-none relative z-20 shrink-0"
+    >
       <div className="flex items-center gap-4 w-full">
-        <div className="flex items-center gap-2">
+        {/* Left Side: Window Controls & Sidebar toggle */}
+        <div className="flex items-center gap-3">
           <WindowControls target="safari" />
           <button
             onClick={onToggleSidebar}
-            className={`p-1 rounded hover:bg-black/5 transition-colors ${showSidebar ? "bg-black/5" : ""}`}
+            className={`p-1 rounded hover:bg-black/5 transition-colors ${
+              showSidebar ? "bg-black/8" : ""
+            }`}
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
           >
             <PanelLeft size={16} className="text-gray-600" />
           </button>
         </div>
-        <div className="flex items-center gap-1">
-          <ChevronLeft size={20} className="text-gray-400 cursor-not-allowed" />
-          <ChevronRight size={20} className="text-gray-400 cursor-not-allowed" />
+
+        {/* Navigation Arrows */}
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={handleGoBack}
+            disabled={!canGoBack}
+            className={`p-1 rounded hover:bg-black/5 transition-colors ${
+              canGoBack ? "text-gray-700 cursor-pointer" : "text-gray-300 cursor-not-allowed"
+            }`}
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <ChevronLeft size={17} />
+          </button>
+          <button
+            onClick={handleGoForward}
+            disabled={!canGoForward}
+            className={`p-1 rounded hover:bg-black/5 transition-colors ${
+              canGoForward ? "text-gray-700 cursor-pointer" : "text-gray-300 cursor-not-allowed"
+            }`}
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <ChevronRight size={17} />
+          </button>
         </div>
-        <div className="flex-1 max-w-2xl mx-auto">
-          <div className="flex items-center gap-2 bg-white/80 border border-black/5 rounded-lg px-3 py-1 text-sm text-gray-600 shadow-sm backdrop-blur-sm">
-            <ShieldHalf size={14} className="text-green-600" />
-            <div className="flex-1 flex items-center justify-center gap-1 overflow-hidden">
-              <Search size={12} className="text-gray-400" />
-              <span className="truncate">kuldeep.dev — Projects</span>
+
+        {/* Center: Address Bar */}
+        <div className="flex-1 max-w-2xl mx-auto w-full">
+          <div 
+            className="flex items-center gap-2 bg-white border border-[#c8cbd0] rounded-lg px-2.5 py-1 text-sm text-gray-700 shadow-inner focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/10"
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            {/* Padlock / Security report */}
+            <div className="flex items-center gap-1 cursor-pointer hover:bg-black/5 rounded p-0.5" title="Privacy Report">
+              <ShieldHalf size={13} className="text-green-600" />
             </div>
+
+            {/* Reader Mode Button */}
+            {isReaderCompatible && (
+              <button
+                onClick={toggleReaderMode}
+                className={`p-0.5 rounded transition-colors ${
+                  activeTab.isReaderMode ? "bg-blue-100 text-blue-600" : "text-gray-500 hover:bg-black/5"
+                }`}
+                title="Reader View"
+              >
+                <AlignLeft size={13} />
+              </button>
+            )}
+
+            {/* Search Icon */}
+            {!activeTab.isReaderMode && <Search size={12} className="text-gray-400" />}
+
+            {/* Address Input */}
+            <input
+              type="text"
+              value={addressInput}
+              onChange={(e) => setAddressInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Search or enter website name"
+              className="flex-1 bg-transparent border-none outline-none text-xs text-gray-800 placeholder-gray-400 text-center focus:text-left"
+            />
+
+            {/* Bookmark Star Button */}
+            <button
+              onClick={toggleBookmark}
+              className={`p-0.5 rounded transition-colors text-gray-400 hover:text-amber-500`}
+              title="Bookmark this page"
+            >
+              <Star size={13} className={isBookmarked ? "text-amber-500 fill-amber-500" : ""} />
+            </button>
+
+            {/* Reload Button */}
+            <button
+              onClick={handleReload}
+              className="p-0.5 rounded hover:bg-black/5 transition-colors text-gray-500"
+              title="Reload page"
+            >
+              <RotateCw size={12} />
+            </button>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <Share size={18} className="text-gray-600 cursor-pointer hover:text-black" />
-          <Plus size={18} className="text-gray-600 cursor-pointer hover:text-black" />
-          <Layout size={18} className="text-gray-600 cursor-pointer hover:text-black" />
+
+        {/* Right Side: Share, Downloads, Plus, Layout */}
+        <div className="flex items-center gap-3">
+          <button 
+            className="p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors"
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <Share size={16} />
+          </button>
+          
+          <div className="relative">
+            <button
+              onClick={() => setShowDownloads(!showDownloads)}
+              className={`p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors ${
+                showDownloads ? "bg-black/8" : ""
+              }`}
+              onMouseDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+            >
+              <Download size={16} />
+            </button>
+
+            {/* Downloads Popover */}
+            {showDownloads && (
+              <div 
+                className="absolute right-0 mt-2 w-72 bg-white border border-[#c8cbd0] rounded-xl shadow-xl p-4 text-xs z-50 text-gray-700 animate-in fade-in slide-in-from-top-2 duration-150"
+                onMouseDown={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between border-b pb-2 mb-3">
+                  <span className="font-bold">Downloads</span>
+                  <button 
+                    onClick={() => setShowDownloads(false)}
+                    className="text-blue-500 hover:underline font-medium"
+                  >
+                    Clear
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  <div 
+                    onClick={() => { openWindow("resume"); setShowDownloads(false); }}
+                    className="flex items-center gap-2.5 cursor-pointer hover:bg-black/5 p-1 rounded transition-colors"
+                  >
+                    <div className="w-8 h-8 rounded bg-red-100 flex items-center justify-center font-bold text-red-600 text-[10px]">PDF</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold truncate text-left">Kuldeep_Resume.pdf</p>
+                      <p className="text-[10px] text-gray-400 text-left">2.4 MB — Complete</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <div className="w-8 h-8 rounded bg-blue-100 flex items-center justify-center font-bold text-blue-600 text-[10px]">ZIP</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold truncate">Project_Portfolio_Source.zip</p>
+                      <p className="text-[10px] text-gray-400">14.8 MB — Complete</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={handleNewTab}
+            className="p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors"
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <Plus size={16} />
+          </button>
+          
+          <button
+            onClick={() => setShowTabOverview(!showTabOverview)}
+            className={`p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors ${
+              showTabOverview ? "bg-black/8" : ""
+            }`}
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <Layout size={16} />
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-const SafariMobileHeader = ({ socials, projects }) => {
+const SafariMobileHeader = ({
+  activeTab,
+  addressInput,
+  setAddressInput,
+  navigateTabTo,
+  handleGoBack,
+  handleGoForward,
+  handleReload,
+  handleNewTab,
+  showDownloads,
+  setShowDownloads,
+  openWindow
+}) => {
+  const canGoBack = activeTab.historyIndex > 0;
+  const canGoForward = activeTab.historyIndex < activeTab.history.length - 1;
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      navigateTabTo(addressInput);
+      e.target.blur();
+    }
+  };
+
   return (
-    <>
-      <div id="window-header" style={{ display: "flex", flexDirection: "column", padding: "10px 12px 8px", background: "#f8f8f8", borderBottom: "0.5px solid #d1d1d6", gap: 8, minHeight: "auto", flexShrink: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, width: "100%" }}>
-          <WindowControls target="safari" />
-          <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 6, background: "#e9e9eb", borderRadius: 10, padding: "7px 10px", minHeight: 34 }}>
-            <ShieldHalf size={13} className="text-green-600 flex-shrink-0" />
-            <Search size={12} className="text-gray-400 flex-shrink-0" />
-            <span style={{ fontSize: 14, color: "#3c3c43", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>kuldeep.dev</span>
-          </div>
-          <Share size={20} className="text-blue-500 flex-shrink-0" />
+    <div
+      id="window-header"
+      className="flex flex-col p-2.5 bg-[#f8f8f8] border-b border-[#d1d1d6] gap-2 shrink-0 select-none relative z-20"
+    >
+      <div className="flex items-center gap-2 w-full">
+        <WindowControls target="safari" />
+        <div className="flex-1 flex items-center gap-1.5 bg-[#e9e9eb] rounded-lg px-2 py-1.5 min-h-[34px]">
+          <ShieldHalf size={13} className="text-green-600 flex-shrink-0" />
+          <Search size={11} className="text-gray-400 flex-shrink-0" />
+          <input
+            type="text"
+            value={addressInput}
+            onChange={(e) => setAddressInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Search or enter website"
+            className="flex-1 bg-transparent border-none outline-none text-xs text-gray-800 placeholder-gray-400 focus:text-left text-center"
+          />
+          <button onClick={handleReload} className="text-gray-400 hover:text-gray-600">
+            <RotateCw size={12} />
+          </button>
         </div>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", paddingLeft: 4, paddingRight: 4 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <ChevronLeft size={22} className="text-gray-300" />
-            <ChevronRight size={22} className="text-gray-300" />
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <Layout size={18} className="text-blue-500" />
-            <Plus size={18} className="text-blue-500" />
-          </div>
-        </div>
+        <button
+          onClick={() => setShowDownloads(!showDownloads)}
+          className="text-blue-500 relative p-1"
+        >
+          <Download size={18} />
+        </button>
       </div>
 
-      <div style={{ flex: 1, overflow: "auto", WebkitOverflowScrolling: "touch", background: "#fff", display: "flex", flexDirection: "column" }}>
-        <div style={{ padding: "24px 20px 0" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: "#000", marginBottom: 16 }}>Favorites</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
-            {socials.map((favorite) => (
-              <a key={favorite.id} href={favorite.id === 2 ? "https://www.youtube.com" : favorite.link} target="_blank" rel="noopener noreferrer" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, textDecoration: "none" }}>
-                <div style={{ width: 52, height: 52, borderRadius: 12, background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <img src={favorite.img} alt={favorite.text} style={{ width: 26, height: 26, objectFit: "contain" }} />
-                </div>
-                <span style={{ fontSize: 11, fontWeight: 500, color: "#3c3c43", textAlign: "center" }}>
-                  {favorite.id === 1 ? "Github" : favorite.id === 2 ? "Youtube" : favorite.id === 3 ? "Twitter/X" : "LinkedIn"}
-                </span>
-              </a>
-            ))}
-          </div>
+      <div className="flex items-center justify-between w-full px-2 relative">
+        <div className="flex items-center gap-5">
+          <button
+            onClick={handleGoBack}
+            disabled={!canGoBack}
+            className={canGoBack ? "text-blue-500" : "text-gray-300"}
+          >
+            <ChevronLeft size={22} />
+          </button>
+          <button
+            onClick={handleGoForward}
+            disabled={!canGoForward}
+            className={canGoForward ? "text-blue-500" : "text-gray-300"}
+          >
+            <ChevronRight size={22} />
+          </button>
+        </div>
+        <div className="flex items-center gap-5">
+          <button onClick={handleNewTab} className="text-blue-500">
+            <Plus size={20} />
+          </button>
         </div>
 
-        <div style={{ padding: "20px 20px 0" }}>
-          <div style={{ background: "#f2f2f7", borderRadius: 14, padding: 14, display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 8, background: "#dbeafe", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <ShieldHalf className="text-blue-600" size={18} />
+        {/* Mobile Downloads Popover */}
+        {showDownloads && (
+          <div 
+            className="absolute right-2 top-0 mt-8 w-64 bg-white border border-[#c8cbd0] rounded-xl shadow-xl p-3.5 text-xs z-50 text-gray-700 animate-in fade-in"
+          >
+            <div className="flex items-center justify-between border-b pb-1.5 mb-2">
+              <span className="font-bold">Downloads</span>
+              <button 
+                onClick={() => setShowDownloads(false)}
+                className="text-blue-500 hover:underline font-medium"
+              >
+                Clear
+              </button>
             </div>
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 15, fontWeight: 600, color: "#000" }}>Privacy Report</p>
-              <p style={{ fontSize: 13, color: "#8e8e93" }}>Safari has protected your projects from 14 trackers.</p>
-            </div>
-            <ChevronRight size={18} className="text-gray-300" />
-          </div>
-        </div>
-
-        <div style={{ padding: "20px 20px 32px" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: "#000", marginBottom: 16 }}>Featured Projects</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {projects.map((project) => (
-              <div key={project.id} style={{ background: "#f2f2f7", borderRadius: 14, overflow: "hidden" }}>
-                <div style={{ height: 140, background: "#e5e5ea", overflow: "hidden" }}>
-                  <img src={project.image} alt={project.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                </div>
-                <div style={{ padding: 14 }}>
-                  <h3 style={{ fontSize: 17, fontWeight: 600, color: "#000", marginBottom: 6 }}>{project.title}</h3>
-                  <p style={{ fontSize: 14, color: "#8e8e93", marginBottom: 12, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{project.description}</p>
-                  <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                    <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 15, fontWeight: 500, color: "#007AFF", textDecoration: "none" }}>
-                      <ExternalLink size={14} /> Live Demo
-                    </a>
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 15, fontWeight: 500, color: "#007AFF", textDecoration: "none" }}>
-                      Source
-                    </a>
-                  </div>
+            <div className="space-y-2">
+              <div 
+                onClick={() => { openWindow("resume"); setShowDownloads(false); }}
+                className="flex items-center gap-2.5 cursor-pointer hover:bg-black/5 p-1 rounded transition-colors"
+              >
+                <div className="w-7 h-7 rounded bg-red-100 flex items-center justify-center font-bold text-red-600 text-[9px]">PDF</div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold truncate text-left">Kuldeep_Resume.pdf</p>
+                  <p className="text-[9px] text-gray-400 text-left">2.4 MB — Complete</p>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
-
-      <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", padding: "8px 16px 28px", background: "rgba(248,248,248,0.97)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "0.5px solid #d1d1d6", flexShrink: 0 }}>
-        <ChevronLeft size={22} className="text-gray-300" />
-        <ChevronRight size={22} className="text-gray-300" />
-        <Share size={20} className="text-blue-500" />
-        <Plus size={20} className="text-blue-500" />
-        <Layout size={20} className="text-blue-500" />
-      </div>
-    </>
+    </div>
   );
 };
 
