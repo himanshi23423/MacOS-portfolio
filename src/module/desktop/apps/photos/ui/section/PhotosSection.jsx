@@ -52,9 +52,14 @@ const PhotosSection = ({
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
+  const [toastMessage, setToastMessage] = useState("");
+
   const handleShareOption = (method) => {
-    alert(`Shared "${selectedPhoto?.title || 'Photo'}" successfully via ${method}!`);
+    setToastMessage(`Shared "${selectedPhoto?.title || 'Photo'}" successfully via ${method}!`);
     setShowShareDropdown(false);
+    setTimeout(() => {
+      setToastMessage("");
+    }, 2500);
   };
 
   const currentIdx = filteredGallery.findIndex(p => p.id === inAppViewerPhoto?.id);
@@ -393,6 +398,13 @@ const PhotosSection = ({
           onPrev={handlePrevPhoto}
           onNext={handleNextPhoto}
         />
+      )}
+      {/* Toast Notification Popup */}
+      {toastMessage && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-900/90 text-white text-[12px] font-semibold px-4 py-2 rounded-full shadow-lg flex items-center gap-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold">✓</div>
+          <span>{toastMessage}</span>
+        </div>
       )}
     </div>
   );
