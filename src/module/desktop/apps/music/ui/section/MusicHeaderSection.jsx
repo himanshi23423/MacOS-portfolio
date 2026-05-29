@@ -1,7 +1,27 @@
+import { useEffect } from "react";
 import WindowControls from "#components/WindowControls";
 import { Search, ChevronLeft } from "lucide-react";
 
 const MusicHeaderSection = ({ searchQuery, onSearchChange, onToggleSidebar, isSidebarOpen, searchInputRef, onFocusWindow }) => {
+  useEffect(() => {
+    const input = searchInputRef.current;
+    if (!input) return;
+
+    const stopPropagation = (e) => {
+      e.stopPropagation();
+    };
+
+    input.addEventListener("mousedown", stopPropagation);
+    input.addEventListener("pointerdown", stopPropagation);
+    input.addEventListener("click", stopPropagation);
+
+    return () => {
+      input.removeEventListener("mousedown", stopPropagation);
+      input.removeEventListener("pointerdown", stopPropagation);
+      input.removeEventListener("click", stopPropagation);
+    };
+  }, [searchInputRef]);
+
   return (
     <div id="window-header" className="shrink-0 bg-[#f4f4f6] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600">
       <div className="flex items-center gap-4">
@@ -24,8 +44,6 @@ const MusicHeaderSection = ({ searchQuery, onSearchChange, onToggleSidebar, isSi
           placeholder="Search songs, artists..."
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          onMouseDown={(e) => { e.stopPropagation(); onFocusWindow("music"); }}
-          onPointerDown={(e) => { e.stopPropagation(); onFocusWindow("music"); }}
           className="w-full bg-white border border-zinc-300 rounded-lg pl-8 pr-3 py-1 text-xs text-gray-800 outline-none focus:border-red-500 shadow-inner select-text"
         />
         <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
