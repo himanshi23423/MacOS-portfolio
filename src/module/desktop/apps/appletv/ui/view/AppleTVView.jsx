@@ -9,7 +9,7 @@ const AppleTVView = () => {
   const [activeTab, setActiveTab] = useState("watchNow");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeVideo, setActiveVideo] = useState(null);
-  const [upNext, setUpNext] = useState(["sintel", "bbb"]);
+  const [upNext, setUpNext] = useState(["ted_lasso", "morning_show"]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -30,12 +30,38 @@ const AppleTVView = () => {
   const openVideo = (video) => setActiveVideo(video);
 
   const playFeatured = (video = FEATURED_SHOW) => {
-    openVideo({ title: video.title, url: video.videoUrl ?? video.url });
+    openVideo({
+      title: video.title,
+      url: video.videoUrl ?? video.url,
+      tmdbId: video.tmdbId,
+      type: video.type || "movie",
+      season: video.season || 1,
+      episode: video.episode || 1,
+    });
   };
 
   const playMovie = (movie) => {
-    openVideo({ title: movie.title, url: movie.videoUrl });
+    openVideo({
+      title: movie.title,
+      url: movie.videoUrl,
+      tmdbId: movie.tmdbId,
+      type: movie.type || "movie",
+      season: movie.season || 1,
+      episode: movie.episode || 1,
+    });
   };
+
+  const changeEpisode = (season, episode) => {
+    setActiveVideo((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        season,
+        episode,
+      };
+    });
+  };
+
 
   const closePlayer = () => {
     if (videoRef.current) videoRef.current.pause();
@@ -123,6 +149,7 @@ const AppleTVView = () => {
         onPause={() => setIsPlaying(false)}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
+        onChangeEpisode={changeEpisode}
       />
       <AppleTVHeaderSection
         isSidebarOpen={isSidebarOpen}

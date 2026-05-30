@@ -35,8 +35,9 @@ const TVPlusSection = ({ onPlayFeatured }) => (
         className="h-32 rounded-xl bg-gradient-to-tr from-amber-900 to-orange-950 border border-black/5 p-4 flex flex-col justify-between cursor-pointer"
         onClick={() =>
           onPlayFeatured({
-            title: "Sintel",
-            url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+            title: "Ghosted",
+            tmdbId: "868759",
+            type: "movie",
           })
         }
       >
@@ -44,12 +45,13 @@ const TVPlusSection = ({ onPlayFeatured }) => (
           Movie
         </span>
         <div>
-          <h3 className="font-extrabold text-sm text-white">Sintel</h3>
+          <h3 className="font-extrabold text-sm text-white">Ghosted</h3>
           <p className="text-[10px] text-neutral-300 mt-1 line-clamp-1">
-            A dragon rider's fantasy adventure.
+            A romantic action adventure.
           </p>
         </div>
       </div>
+
     </div>
   </div>
 );
