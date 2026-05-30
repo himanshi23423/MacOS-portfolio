@@ -32,12 +32,32 @@ const CallOverlay = ({
             ) : (
               <>
                 <div className="absolute inset-0 bg-gradient-to-tr from-neutral-800 via-indigo-950 to-neutral-900 animate-pulse opacity-60" />
-                <div className={`w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-2xl z-10 shadow-lg ${activeChat.avatarColor} ${callState.status === "ringing" ? "animate-ping opacity-75 absolute" : ""}`}>
-                  {activeChat.initials}
+                <div className={`w-20 h-20 rounded-full overflow-hidden z-10 shadow-lg relative flex items-center justify-center bg-gray-50 border border-gray-100/20 ${callState.status === "ringing" ? "animate-pulse" : ""}`}>
+                  {activeChat.avatar ? (
+                    <img 
+                      src={activeChat.avatar} 
+                      alt={activeChat.name} 
+                      className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-4.5 bg-gray-100 object-contain" : ""}`} 
+                    />
+                  ) : (
+                    <div className={`w-full h-full flex items-center justify-center text-white font-bold text-2xl ${activeChat.avatarColor}`}>
+                      {activeChat.initials}
+                    </div>
+                  )}
                 </div>
                 {callState.status !== "ringing" && (
-                  <div className={`w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-2xl z-10 shadow-lg ${activeChat.avatarColor}`}>
-                    {activeChat.initials}
+                  <div className="w-20 h-20 rounded-full overflow-hidden z-10 shadow-lg relative flex items-center justify-center bg-gray-50 border border-gray-100/20">
+                    {activeChat.avatar ? (
+                      <img 
+                        src={activeChat.avatar} 
+                        alt={activeChat.name} 
+                        className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-4.5 bg-gray-100 object-contain" : ""}`} 
+                      />
+                    ) : (
+                      <div className={`w-full h-full flex items-center justify-center text-white font-bold text-2xl ${activeChat.avatarColor}`}>
+                        {activeChat.initials}
+                      </div>
+                    )}
                   </div>
                 )}
                 <div className="absolute bottom-3 right-3 w-20 h-28 bg-neutral-800 rounded-lg border border-white/20 shadow-md flex flex-col items-center justify-center overflow-hidden">
@@ -48,9 +68,19 @@ const CallOverlay = ({
             )}
           </div>
         ) : (
-          <div className="relative col-center">
-            <div className={`w-28 h-28 rounded-full flex items-center justify-center text-white font-bold text-3xl shadow-xl ${activeChat.avatarColor} ${callState.status === "ringing" ? "animate-pulse" : ""}`}>
-              {activeChat.initials}
+          <div className="relative col-center flex flex-col items-center">
+            <div className={`w-28 h-28 rounded-full overflow-hidden shadow-xl relative flex items-center justify-center bg-gray-50 border border-gray-100/20 ${callState.status === "ringing" ? "animate-pulse" : ""}`}>
+              {activeChat.avatar ? (
+                <img 
+                  src={activeChat.avatar} 
+                  alt={activeChat.name} 
+                  className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-6 bg-gray-100 object-contain" : ""}`} 
+                />
+              ) : (
+                <div className={`w-full h-full flex items-center justify-center text-white font-bold text-3xl ${activeChat.avatarColor}`}>
+                  {activeChat.initials}
+                </div>
+              )}
             </div>
             {callState.status === "connected" && (
               <div className="flex gap-1.5 items-center justify-center mt-6">

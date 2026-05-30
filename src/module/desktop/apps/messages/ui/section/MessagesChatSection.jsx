@@ -17,7 +17,7 @@ const MessagesChatSection = ({
 }) => (
   <div className="flex-1 flex min-h-0 relative">
     <div className={`
-      absolute md:relative inset-y-0 left-0 z-20 transition-transform duration-300
+      absolute md:relative inset-y-0 left-0 z-20 transition-transform duration-300 h-full
       ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
     `}>
       <MessageList

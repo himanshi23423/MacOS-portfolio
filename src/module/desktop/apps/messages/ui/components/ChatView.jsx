@@ -6,10 +6,10 @@ const ChatView = ({ messages, isTyping, messagesEndRef }) => {
         return (
           <div key={msg.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
             <div
-              className={`max-w-[70%] rounded-2xl px-3.5 py-1.5 text-sm leading-relaxed shadow-sm ${
+              className={`max-w-[70%] text-[13px] leading-snug px-3.5 py-2 shadow-sm ${
                 isMe
-                  ? "bg-blue-500 text-white rounded-br-sm"
-                  : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                  ? "bg-[#0b84ff] text-white rounded-[18px] rounded-br-[4px] font-medium"
+                  : "bg-[#e9e9eb] text-black rounded-[18px] rounded-bl-[4px] font-medium"
               }`}
             >
               {msg.text}

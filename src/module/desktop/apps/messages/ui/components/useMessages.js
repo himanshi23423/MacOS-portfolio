@@ -5,7 +5,22 @@ const useMessages = () => {
   const [conversations, setConversations] = useState(() => {
     const saved = localStorage.getItem("macos_portfolio_messages");
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { console.error(e); }
+      try {
+        const parsed = JSON.parse(saved);
+        return INITIAL_CONVERSATIONS.map((initial) => {
+          const savedConv = parsed.find((c) => c.id === initial.id);
+          if (savedConv) {
+            return {
+              ...initial,
+              messages: savedConv.messages || initial.messages,
+              unread: savedConv.unread !== undefined ? savedConv.unread : initial.unread,
+            };
+          }
+          return initial;
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
     return INITIAL_CONVERSATIONS;
   });
@@ -42,12 +57,34 @@ const useMessages = () => {
     }
   }, [activeChatId]);
 
+  const ringtoneRef = useRef(null);
+
+  useEffect(() => {
+    if (callState.isOpen && callState.status === "ringing") {
+      if (!ringtoneRef.current) {
+        ringtoneRef.current = new Audio("/sound/callertune.mp3");
+        ringtoneRef.current.loop = true;
+      }
+      ringtoneRef.current.play().catch((e) => console.error("Ringtone playback blocked/failed:", e));
+    } else {
+      if (ringtoneRef.current) {
+        ringtoneRef.current.pause();
+        ringtoneRef.current.currentTime = 0;
+      }
+    }
+    return () => {
+      if (ringtoneRef.current) {
+        ringtoneRef.current.pause();
+      }
+    };
+  }, [callState.isOpen, callState.status]);
+
   useEffect(() => {
     let ringTimer;
     if (callState.isOpen && callState.status === "ringing") {
       ringTimer = setTimeout(() => {
         setCallState((prev) => ({ ...prev, status: "connected" }));
-      }, 2500);
+      }, 6000);
     }
     return () => clearTimeout(ringTimer);
   }, [callState.isOpen, callState.status]);

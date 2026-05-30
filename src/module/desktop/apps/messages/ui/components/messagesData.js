@@ -2,6 +2,7 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "kuldeep",
     name: "Kuldeep (Developer)",
+    avatar: "/images/profile.jpg",
     avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-500",
     initials: "K",
     unread: true,
@@ -15,11 +16,12 @@ export const INITIAL_CONVERSATIONS = [
   },
   {
     id: "john",
-    name: "John Doe",
+    name: "Akash",
+    avatar: "/images/people/5.jpeg",
     avatarColor: "bg-gradient-to-tr from-green-400 to-teal-600",
-    initials: "JD",
+    initials: "A",
     unread: false,
-    email: "john.doe@example.com",
+    email: "akash@example.com",
     github: "https://github.com",
     messages: [
       { id: 1, text: "Hey Kuldeep, did you check the new desktop mockup?", sender: "them", time: "Yesterday" },
@@ -30,7 +32,8 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "apple",
     name: "Apple Support",
-    avatarColor: "bg-gradient-to-tr from-gray-700 to-slate-900",
+    avatar: "/icons/appleLogo.svg",
+    avatarColor: "bg-gray-100 border border-gray-250 flex items-center justify-center p-2.5",
     initials: "",
     unread: false,
     email: "developer@apple.com",

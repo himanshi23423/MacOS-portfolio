@@ -17,8 +17,18 @@ const ContactInfoPanel = ({
         <X className="w-4 h-4 text-gray-500" />
       </button>
 
-      <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-md mt-4 ${activeChat.avatarColor}`}>
-        {activeChat.initials}
+      <div className="w-16 h-16 rounded-full shadow-md mt-4 overflow-hidden relative flex items-center justify-center bg-gray-50 border border-gray-100">
+        {activeChat.avatar ? (
+          <img 
+            src={activeChat.avatar} 
+            alt={activeChat.name} 
+            className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-3.5 bg-gray-100 object-contain" : ""}`} 
+          />
+        ) : (
+          <div className={`w-full h-full flex items-center justify-center text-white font-bold text-2xl ${activeChat.avatarColor}`}>
+            {activeChat.initials}
+          </div>
+        )}
       </div>
 
       <h3 className="font-bold text-gray-900 text-base mt-3 leading-tight">{activeChat.name}</h3>
