@@ -89,7 +89,11 @@
   bottom: -9px;
   height: 16px;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.38), transparent 70%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.38),
+    transparent 70%
+  );
   opacity: 0.42;
   transform: scaleX(0.82);
   pointer-events: none;
