@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
 import { FEATURED_SHOW, MOVIES } from "../components/appleTvCatalog";
 
-const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, watchNowMovies }) => {
+const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, watchNowMovies, isCompact }) => {
   const queuedMovies = MOVIES.filter((movie) => upNext.includes(movie.id));
   const [backdropUrl, setBackdropUrl] = useState(null);
 
@@ -83,7 +83,7 @@ const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, 
 
       <section className="space-y-3">
         <h2 className="text-sm font-bold text-gray-800 px-1">Up Next</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
           {queuedMovies.map((movie) => (
             <MovieCard
               key={movie.id}
@@ -102,7 +102,7 @@ const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, 
 
       <section className="space-y-3">
         <h2 className="text-sm font-bold text-gray-800 px-1">Apple Originals</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
           {MOVIES.map((movie) => (
             <MovieCard
               key={movie.id}
@@ -120,7 +120,7 @@ const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, 
       {watchNowMovies && watchNowMovies.length > 0 && (
         <section className="space-y-3 pt-4 border-t border-gray-100">
           <h2 className="text-sm font-bold text-gray-800 px-1">Trending Movies</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
             {watchNowMovies.map((movie) => (
               <MovieCard
                 key={movie.id}

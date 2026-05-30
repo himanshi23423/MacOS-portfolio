@@ -1,7 +1,7 @@
 import WindowControls from "#components/WindowControls";
 import { ChevronLeft } from "lucide-react";
 
-const AppleTVHeaderSection = ({ isSidebarOpen, onToggleSidebar }) => (
+const AppleTVHeaderSection = ({ isSidebarOpen, onToggleSidebar, isCompact }) => (
   <div
     id="window-header"
     className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2.5"
@@ -10,7 +10,7 @@ const AppleTVHeaderSection = ({ isSidebarOpen, onToggleSidebar }) => (
       <WindowControls target="appletv" />
       <button
         onClick={onToggleSidebar}
-        className="sm:hidden p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors"
+        className={`${!isCompact ? "hidden" : ""} p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors`}
         aria-label="Toggle Sidebar"
       >
         <ChevronLeft
@@ -20,7 +20,7 @@ const AppleTVHeaderSection = ({ isSidebarOpen, onToggleSidebar }) => (
         />
       </button>
     </div>
-    <div className="flex-1 text-center font-bold text-gray-700 text-sm hidden sm:block">
+    <div className={`flex-1 text-center font-bold text-gray-700 text-sm ${isCompact ? "hidden" : "block"}`}>
       TV
     </div>
     <div className="w-14" />

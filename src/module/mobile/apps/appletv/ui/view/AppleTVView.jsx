@@ -99,6 +99,7 @@ const AppleTVView = () => {
 
   const selectTab = (tab) => {
     setActiveTab(tab);
+    setSearchQuery("");
     setIsSidebarOpen(false);
   };
 

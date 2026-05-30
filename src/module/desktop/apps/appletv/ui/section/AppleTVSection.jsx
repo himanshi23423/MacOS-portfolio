@@ -22,6 +22,7 @@ const AppleTVSection = ({
   onPlayFeatured,
   onPlayMovie,
   onToggleUpNext,
+  isCompact = false,
 }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -146,10 +147,10 @@ const AppleTVSection = ({
 
   return (
     <div className="flex-1 flex min-h-0 relative">
-      {isSidebarOpen && (
+      {isSidebarOpen && isCompact && (
         <div
           onClick={onCloseSidebar}
-          className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-20 sm:hidden"
+          className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-20"
         />
       )}
       <SidebarNavigation
@@ -158,6 +159,7 @@ const AppleTVSection = ({
         isSidebarOpen={isSidebarOpen}
         onSearch={onSearch}
         onSelectTab={onSelectTab}
+        isCompact={isCompact}
       />
       <main
         onScroll={handleScroll}
@@ -227,7 +229,7 @@ const AppleTVSection = ({
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                   Movies & TV Shows online
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
+                <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4 md:grid-cols-5"}`}>
                   {searchResults.map((item) => {
                     const title = item.title || item.name;
                     const date = item.release_date || item.first_air_date || "";
@@ -309,7 +311,7 @@ const AppleTVSection = ({
                 {matchedMovies.length > 0 && (
                   <div className="space-y-3">
                     <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Library</h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
                       {matchedMovies.map((movie) => (
                         <MovieCard
                           key={movie.id}
@@ -327,7 +329,7 @@ const AppleTVSection = ({
                 {matchedStoreMovies.length > 0 && (
                   <div className="space-y-3">
                     <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Movie Store</h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
                       {matchedStoreMovies.map((movie) => (
                         <StoreMovieCard
                           key={movie.title}
@@ -356,13 +358,22 @@ const AppleTVSection = ({
                 onPlayMovie={onPlayMovie}
                 onToggleUpNext={onToggleUpNext}
                 watchNowMovies={watchNowMovies}
+                isCompact={isCompact}
               />
             )}
-            {activeTab === "tvPlus" && <TVPlusSection onPlayFeatured={onPlayFeatured} />}
-            {activeTab === "store" && <StoreSection onPlayMovie={onPlayMovie} />}
+            {activeTab === "tvPlus" && (
+              <TVPlusSection
+                onPlayFeatured={onPlayFeatured}
+                onPlayMovie={onPlayMovie}
+                upNext={upNext}
+                onToggleUpNext={onToggleUpNext}
+                isCompact={isCompact}
+              />
+            )}
+            {activeTab === "store" && <StoreSection onPlayMovie={onPlayMovie} isCompact={isCompact} />}
             {activeTab === "library" && <LibrarySection onOpenStore={onOpenStore} />}
             {activeTab === "favorites" && (
-              <FavoritesSection upNext={upNext} onPlayMovie={onPlayMovie} />
+              <FavoritesSection upNext={upNext} onPlayMovie={onPlayMovie} isCompact={isCompact} />
             )}
           </>
         )}

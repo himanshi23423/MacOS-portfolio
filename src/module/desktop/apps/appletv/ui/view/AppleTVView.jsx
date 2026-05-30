@@ -123,13 +123,31 @@ const AppleTVView = () => {
     );
   };
 
+  const containerRef = useRef(null);
+  const [isCompact, setIsCompact] = useState(false);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setIsCompact(entry.contentRect.width < 685);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const selectTab = (tab) => {
     setActiveTab(tab);
+    setSearchQuery("");
     setIsSidebarOpen(false);
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative">
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative"
+    >
       <PlayerOverlay
         activeVideo={activeVideo}
         videoRef={videoRef}
@@ -154,6 +172,7 @@ const AppleTVView = () => {
       <AppleTVHeaderSection
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen((open) => !open)}
+        isCompact={isCompact}
       />
       <AppleTVSection
         activeTab={activeTab}
@@ -167,6 +186,7 @@ const AppleTVView = () => {
         onPlayFeatured={playFeatured}
         onPlayMovie={playMovie}
         onToggleUpNext={toggleUpNext}
+        isCompact={isCompact}
       />
     </div>
   );

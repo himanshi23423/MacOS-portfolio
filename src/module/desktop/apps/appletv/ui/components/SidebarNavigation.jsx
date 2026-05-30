@@ -41,11 +41,12 @@ const SidebarNavigation = ({
   isSidebarOpen,
   onSearch,
   onSelectTab,
+  isCompact,
 }) => (
   <aside
     className={`
-      absolute sm:relative inset-y-0 left-0 w-48 bg-gray-50/90 backdrop-blur-md border-r border-gray-300/40 p-4 space-y-6 flex flex-col z-30 transition-transform duration-300
-      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}
+      ${isCompact ? "absolute" : "relative"} inset-y-0 left-0 w-48 bg-gray-50/90 backdrop-blur-md border-r border-gray-300/40 p-4 space-y-6 flex flex-col z-30 transition-transform duration-300 h-full
+      ${isSidebarOpen || !isCompact ? "translate-x-0" : "-translate-x-full"}
     `}
   >
     {/* macOS Search bar styling */}

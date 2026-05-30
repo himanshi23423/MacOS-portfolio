@@ -41,7 +41,14 @@ const AppleTVSection = ({
           onToggleUpNext={onToggleUpNext}
         />
       )}
-      {activeTab === "tvPlus" && <TVPlusSection onPlayFeatured={onPlayFeatured} />}
+      {activeTab === "tvPlus" && (
+        <TVPlusSection
+          onPlayFeatured={onPlayFeatured}
+          onPlayMovie={onPlayMovie}
+          upNext={upNext}
+          onToggleUpNext={onToggleUpNext}
+        />
+      )}
       {activeTab === "store" && <StoreSection />}
       {activeTab === "library" && <LibrarySection onOpenStore={onOpenStore} />}
       {activeTab === "favorites" && (
