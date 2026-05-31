@@ -30,12 +30,18 @@
 }
 
 .dock-container {
+  --dock-icon-size: clamp(34px, calc((94vw - 156px) / 24), 56px);
+  --dock-item-height: calc(var(--dock-icon-size) + 6px);
+  --dock-padding-x: clamp(10px, 1.25vw, 24px);
+  --dock-gap: clamp(2px, 0.25vw, 4px);
+  --dock-separator-width: clamp(8px, 0.75vw, 12px);
+
   position: relative;
   isolation: isolate;
-  min-height: 68px;
-  max-width: min(94vw, 1540px);
-  padding: 6px 24px;
-  gap: 4px;
+  min-height: calc(var(--dock-item-height) + 6px);
+  max-width: calc(100vw - 16px);
+  padding: 6px var(--dock-padding-x);
+  gap: var(--dock-gap);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.2);
   border: none;
@@ -53,18 +59,26 @@
 }
 
 .dock-item {
-  width: 56px;
-  height: 62px;
+  width: var(--dock-icon-size);
+  height: var(--dock-item-height);
   align-items: flex-end;
+  flex: 0 0 var(--dock-icon-size);
 }
 
 .dock-icon {
+  width: var(--dock-icon-size);
+  height: var(--dock-icon-size);
   transform-origin: center bottom;
   border-radius: 18px;
   transition:
     filter 180ms ease,
     opacity 180ms ease;
   will-change: transform;
+}
+
+#dock .dock-icon {
+  width: var(--dock-icon-size);
+  height: var(--dock-icon-size);
 }
 
 .dock-icon:focus-visible {
@@ -89,11 +103,7 @@
   bottom: -9px;
   height: 16px;
   border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.38),
-    transparent 70%
-  );
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.38), transparent 70%);
   opacity: 0.42;
   transform: scaleX(0.82);
   pointer-events: none;
@@ -132,8 +142,8 @@
 }
 
 .dock-separator-wrap {
-  width: 12px;
-  height: 62px;
+  width: var(--dock-separator-width);
+  height: var(--dock-item-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,8 +179,7 @@
   padding: 4px 10px !important;
   font-size: 11.5px !important;
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif !important;
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
   font-weight: 500 !important;
   border-radius: 5px !important;
   pointer-events: none !important;
@@ -194,29 +203,14 @@
 
 @media (min-width: 1920px) {
   .dock-container {
-    min-height: 90px;
-    padding: 8px 24px;
-    gap: 6px;
-    border-radius: 16px;
-  }
-
-  .dock-item {
-    width: 80px;
-    height: 84px;
+    --dock-icon-size: 56px;
+    --dock-item-height: 62px;
+    --dock-padding-x: 24px;
+    --dock-gap: 4px;
+    --dock-separator-width: 12px;
   }
 
   .dock-running-dot {
-    bottom: -10px;
-    width: 5px;
-    height: 5px;
-  }
-
-  .dock-separator-wrap {
-    width: 16px;
-    height: 84px;
-  }
-
-  .dock-separator {
-    height: 46px;
+    bottom: -8px;
   }
 }
