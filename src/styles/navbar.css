@@ -1,4 +1,15 @@
 @layer base {
+  @keyframes appleMenuIn {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
   nav.mac-navbar {
     @apply flex justify-between items-center bg-white/58 sm:bg-white/40 backdrop-blur-3xl sm:backdrop-blur-2xl p-2 px-5 sm:px-3 select-none z-[9999] relative;
 
@@ -75,6 +86,94 @@
         @apply size-3;
         fill: #1d1d1f;
       }
+    }
+
+    .apple-menu {
+      position: absolute;
+      top: 30px;
+      left: 2px;
+      z-index: 99999;
+      width: 265px;
+      padding: 6px;
+      color: rgba(255, 255, 255, 0.94);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      font-size: 13px;
+      line-height: 1.2;
+      border: 0.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 10px;
+      background:
+        linear-gradient(180deg, rgba(58, 58, 60, 0.78), rgba(32, 32, 34, 0.72)),
+        rgba(28, 28, 30, 0.74);
+      box-shadow:
+        0 22px 50px rgba(0, 0, 0, 0.36),
+        0 8px 18px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(34px) saturate(190%);
+      -webkit-backdrop-filter: blur(34px) saturate(190%);
+      transform-origin: top left;
+      animation: appleMenuIn 130ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .apple-menu-section {
+      padding: 3px 0;
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .apple-menu-section:first-child {
+      padding-top: 0;
+    }
+
+    .apple-menu-section:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .apple-menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-height: 26px;
+      padding: 4px 9px 4px 10px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      letter-spacing: 0;
+      text-align: left;
+      cursor: default;
+      outline: none;
+      transition:
+        background-color 90ms ease,
+        color 90ms ease;
+    }
+
+    .apple-menu-item:hover,
+    .apple-menu-item:focus-visible {
+      color: #ffffff;
+      background: linear-gradient(180deg, #1687ff, #0071e3);
+    }
+
+    .apple-menu-item:disabled {
+      color: rgba(255, 255, 255, 0.42);
+    }
+
+    .apple-menu-item:disabled:hover {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.42);
+    }
+
+    .apple-menu-meta {
+      margin-left: 18px;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .apple-menu-item:hover .apple-menu-meta,
+    .apple-menu-item:focus-visible .apple-menu-meta {
+      color: rgba(255, 255, 255, 0.94);
     }
 
     .control-center-mac {

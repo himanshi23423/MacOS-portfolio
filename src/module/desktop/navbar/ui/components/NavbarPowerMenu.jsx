@@ -1,7 +1,8 @@
 const NavbarPowerMenu = ({ setIsAppleMenuOpen, setIsAsleep, setIsShuttingDown }) => (
-  <>
+  <div className="apple-menu-section">
     <button
-      className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
+      type="button"
+      className="apple-menu-item"
       onClick={() => {
         setIsAppleMenuOpen(false);
         setIsAsleep(true);
@@ -10,7 +11,8 @@ const NavbarPowerMenu = ({ setIsAppleMenuOpen, setIsAsleep, setIsShuttingDown })
       Sleep
     </button>
     <button
-      className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
+      type="button"
+      className="apple-menu-item"
       onClick={() => {
         setIsAppleMenuOpen(false);
         window.location.reload();
@@ -19,7 +21,8 @@ const NavbarPowerMenu = ({ setIsAppleMenuOpen, setIsAsleep, setIsShuttingDown })
       Restart...
     </button>
     <button
-      className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
+      type="button"
+      className="apple-menu-item"
       onClick={() => {
         setIsAppleMenuOpen(false);
         setIsShuttingDown(true);
@@ -30,7 +33,7 @@ const NavbarPowerMenu = ({ setIsAppleMenuOpen, setIsAsleep, setIsShuttingDown })
     >
       Shut Down...
     </button>
-  </>
+  </div>
 );
 
 export default NavbarPowerMenu;

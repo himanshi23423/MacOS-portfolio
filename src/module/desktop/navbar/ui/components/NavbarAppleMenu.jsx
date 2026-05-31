@@ -1,39 +1,65 @@
 import NavbarPowerMenu from "./NavbarPowerMenu";
 
-const NavbarAppleMenu = ({ isAppleMenuOpen, setIsAppleMenuOpen, openWindow, setIsAsleep, setIsShuttingDown }) => {
+const NavbarAppleMenu = ({
+  isAppleMenuOpen,
+  setIsAppleMenuOpen,
+  openWindow,
+  setIsAsleep,
+  setIsShuttingDown,
+}) => {
   if (!isAppleMenuOpen) return null;
 
+  const closeMenu = () => setIsAppleMenuOpen(false);
+  const menuSections = [
+    [
+      {
+        label: "About This Mac",
+        action: "about",
+      },
+    ],
+    [
+      { label: "System Settings...", onClick: () => openWindow("settings") },
+      { label: "App Store...", onClick: () => openWindow("appstore") },
+    ],
+    [
+      { label: "Recent Items", meta: "›", disabled: true },
+      { label: "Force Quit...", meta: "⌥⌘⎋", onClick: () => openWindow("launchpad") },
+    ],
+    [
+      { label: "Lock Screen", meta: "⌃⌘Q", onClick: () => setIsAsleep(true) },
+      { label: "Log Out Kuldeep...", meta: "⇧⌘Q", onClick: () => setIsAsleep(true) },
+    ],
+  ];
+
+  const handleItemClick = (item) => {
+    if (item.disabled || (!item.onClick && !item.action)) return;
+    closeMenu();
+    if (item.action === "about") {
+      openWindow("settings", { tab: "General" });
+      return;
+    }
+    item.onClick();
+  };
+
   return (
-    <div className="absolute left-2.5 top-[28px] w-56 bg-[#2a2a2a]/90 backdrop-blur-3xl border border-white/10 rounded-lg shadow-2xl py-1 z-[99999] select-none text-[13.5px] text-white/95">
-      <button
-        className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
-        onClick={() => {
-          setIsAppleMenuOpen(false);
-          openWindow("settings", { tab: "General", time: Date.now() });
-        }}
-      >
-        About This Mac
-      </button>
-      <div className="h-[1px] bg-white/10 my-1 mx-2" />
-      <button
-        className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
-        onClick={() => {
-          setIsAppleMenuOpen(false);
-          openWindow("settings");
-        }}
-      >
-        System Settings...
-      </button>
-      <button
-        className="w-full text-left px-4 py-1 hover:bg-[#007aff] hover:text-white transition-colors cursor-default text-[13px] font-sans"
-        onClick={() => {
-          setIsAppleMenuOpen(false);
-          openWindow("appstore");
-        }}
-      >
-        App Store...
-      </button>
-      <div className="h-[1px] bg-white/10 my-1 mx-2" />
+    <div className="apple-menu" role="menu" aria-label="Apple menu">
+      {menuSections.map((section, sectionIndex) => (
+        <div className="apple-menu-section" key={sectionIndex}>
+          {section.map((item) => (
+            <button
+              type="button"
+              className="apple-menu-item"
+              disabled={item.disabled}
+              key={item.label}
+              onClick={() => handleItemClick(item)}
+              role="menuitem"
+            >
+              <span>{item.label}</span>
+              {item.meta && <span className="apple-menu-meta">{item.meta}</span>}
+            </button>
+          ))}
+        </div>
+      ))}
       <NavbarPowerMenu
         setIsAppleMenuOpen={setIsAppleMenuOpen}
         setIsAsleep={setIsAsleep}
