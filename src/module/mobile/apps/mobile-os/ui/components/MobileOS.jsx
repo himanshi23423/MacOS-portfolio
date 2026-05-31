@@ -1,5 +1,5 @@
-import { dockApps } from "#constants";
-import useWindowsStore from "#store/window";
+import { dockApps } from "@constants";
+import useWindowsStore from "@store/window";
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import MobileOSStatusBar from "./MobileOSStatusBar";
@@ -30,8 +30,7 @@ const MobileOS = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const toggle = (key) =>
-    setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
+  const toggle = (key) => setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
 
   return (
     <div className="mobile-os-container text-white font-sans select-none fixed top-0 left-0 w-dvw h-dvh overflow-hidden z-[1]">

@@ -1,20 +1,29 @@
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import useMessages from "./useMessages";
 import MessagesSection from "../section/MessagesSection";
 
 const Messages = () => {
   const {
     conversations,
-    activeChat, activeChatId, setActiveChatId,
-    inputText, setInputText,
-    searchQuery, setSearchQuery,
-    isSidebarOpen, setIsSidebarOpen,
+    activeChat,
+    activeChatId,
+    setActiveChatId,
+    inputText,
+    setInputText,
+    searchQuery,
+    setSearchQuery,
+    isSidebarOpen,
+    setIsSidebarOpen,
     isTyping,
-    showInfo, setShowInfo,
-    mutedChats, setMutedChats,
-    callState, callDuration,
+    showInfo,
+    setShowInfo,
+    mutedChats,
+    setMutedChats,
+    callState,
+    callDuration,
     messagesEndRef,
-    triggerCall, endCall,
+    triggerCall,
+    endCall,
     handleSend,
     formatCallTime,
     setCallState,
@@ -42,8 +51,8 @@ const Messages = () => {
       messagesEndRef={messagesEndRef}
       triggerCall={triggerCall}
       onEndCall={endCall}
-      onMicToggle={() => setCallState(prev => ({ ...prev, micMuted: !prev.micMuted }))}
-      onCameraToggle={() => setCallState(prev => ({ ...prev, cameraOff: !prev.cameraOff }))}
+      onMicToggle={() => setCallState((prev) => ({ ...prev, micMuted: !prev.micMuted }))}
+      onCameraToggle={() => setCallState((prev) => ({ ...prev, cameraOff: !prev.cameraOff }))}
       handleSend={handleSend}
       formatCallTime={formatCallTime}
     />

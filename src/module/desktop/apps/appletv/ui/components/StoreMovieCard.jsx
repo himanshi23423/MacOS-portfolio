@@ -7,9 +7,11 @@ const StoreMovieCard = ({ movie, onPlayMovie }) => {
     if (!movie.tmdbId) return;
     const fetchPoster = async () => {
       try {
-        const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
         const type = movie.type || "movie";
-        const res = await fetch(`https://api.themoviedb.org/3/${type}/${movie.tmdbId}?api_key=${apiKey}`);
+        const res = await fetch(
+          `https://api.themoviedb.org/3/${type}/${movie.tmdbId}?api_key=${apiKey}`,
+        );
         const data = await res.json();
         if (data.poster_path) {
           setPosterUrl(`https://image.tmdb.org/t/p/w500${data.poster_path}`);
@@ -31,10 +33,7 @@ const StoreMovieCard = ({ movie, onPlayMovie }) => {
   };
 
   return (
-    <div 
-      className="group cursor-pointer space-y-2"
-      onClick={handlePlay}
-    >
+    <div className="group cursor-pointer space-y-2" onClick={handlePlay}>
       <div
         className={`aspect-[2/3] w-full rounded-lg bg-gradient-to-b ${movie.posterBg || "from-neutral-800 to-zinc-900"} border border-black/5 flex flex-col items-center justify-center p-4 text-center shadow-lg relative overflow-hidden`}
       >
@@ -68,7 +67,5 @@ const StoreMovieCard = ({ movie, onPlayMovie }) => {
     </div>
   );
 };
-
-
 
 export default StoreMovieCard;

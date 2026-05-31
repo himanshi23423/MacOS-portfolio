@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { projects, socials } from "#constants";
+import { projects, socials } from "@constants";
 import useSafari from "../components/useSafari";
 import { SafariDesktopToolbar, SafariMobileHeader } from "../components/SafariToolbar";
 import SafariTabBar from "../components/SafariTabBar";

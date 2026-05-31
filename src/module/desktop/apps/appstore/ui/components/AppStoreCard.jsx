@@ -38,8 +38,7 @@ const ActionButton = ({ app, installState, onStartDownload, onOpenApp }) => {
   if (installState?.status === "downloading") {
     const radius = 10;
     const circumference = 2 * Math.PI * radius;
-    const strokeDashoffset =
-      circumference - (installState.progress / 100) * circumference;
+    const strokeDashoffset = circumference - (installState.progress / 100) * circumference;
 
     return (
       <div className="relative w-8 h-8 flex items-center justify-center">
@@ -94,17 +93,11 @@ const AppStoreCard = ({ app, installState, onStartDownload, onOpenApp, variant =
           />
         )}
         <div className="min-w-0">
-          <h4 className="text-xs font-bold text-gray-800 truncate">
-            {app.name}
-          </h4>
-          <p className="text-[10px] text-gray-400 truncate">
-            {app.desc}
-          </p>
+          <h4 className="text-xs font-bold text-gray-800 truncate">{app.name}</h4>
+          <p className="text-[10px] text-gray-400 truncate">{app.desc}</p>
           <div className="flex items-center gap-0.5 mt-0.5 text-amber-500">
             <Star className="w-2.5 h-2.5 fill-current" />
-            <span className="text-[9px] font-bold text-gray-500">
-              {app.rating}
-            </span>
+            <span className="text-[9px] font-bold text-gray-500">{app.rating}</span>
           </div>
         </div>
       </div>
@@ -120,7 +113,7 @@ const AppStoreCard = ({ app, installState, onStartDownload, onOpenApp, variant =
   );
 };
 
-const UpdateItem = ({ update, progressVal, onUpdate, updatingAll }) => {
+const UpdateItem = ({ update, progressVal, onUpdate, _updatingAll }) => {
   const isUpdating = progressVal !== undefined && progressVal < 100;
   const isUpdated = progressVal === 100;
 
@@ -133,9 +126,7 @@ const UpdateItem = ({ update, progressVal, onUpdate, updatingAll }) => {
             {update.ver}
           </span>
         </div>
-        <p className="text-[11px] text-gray-500 leading-relaxed max-w-xl">
-          {update.details}
-        </p>
+        <p className="text-[11px] text-gray-500 leading-relaxed max-w-xl">{update.details}</p>
         {isUpdating && (
           <div className="w-full max-w-[200px] h-1 bg-gray-200 rounded-full overflow-hidden">
             <div

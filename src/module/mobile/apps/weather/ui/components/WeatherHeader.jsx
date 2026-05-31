@@ -1,10 +1,13 @@
 import React from "react";
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 import { ChevronLeft } from "lucide-react";
 
 const WeatherHeader = ({ activeCity, unitMode, setUnitMode, isSidebarOpen, setIsSidebarOpen }) => {
   return (
-    <div id="window-header" className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2.5 z-20">
+    <div
+      id="window-header"
+      className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2.5 z-20"
+    >
       <div className="flex items-center gap-4">
         <WindowControls target="weather" />
         <button
@@ -12,7 +15,9 @@ const WeatherHeader = ({ activeCity, unitMode, setUnitMode, isSidebarOpen, setIs
           className="sm:hidden p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors"
           aria-label="Toggle Sidebar"
         >
-          <ChevronLeft className={`w-5 h-5 transition-transform duration-200 ${isSidebarOpen ? "rotate-0" : "rotate-180"}`} />
+          <ChevronLeft
+            className={`w-5 h-5 transition-transform duration-200 ${isSidebarOpen ? "rotate-0" : "rotate-180"}`}
+          />
         </button>
       </div>
       <div className="flex-1 text-center font-bold text-gray-700 text-sm hidden sm:block">

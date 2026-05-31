@@ -1,11 +1,8 @@
-const PhotoGrid = ({ photos = [], onPhotoClick, activeTab }) => (
+const PhotoGrid = ({ photos = [], onPhotoClick }) => (
   <div className="gallery flex-1 overflow-y-auto p-2 @sm:p-5">
     <ul className="flex flex-col @sm:grid @sm:grid-cols-5 @sm:grid-rows-5 gap-2.5">
       {photos.map(({ id, img }) => (
-        <li
-          key={id}
-          onClick={() => onPhotoClick({ id, img })}
-        >
+        <li key={id} onClick={() => onPhotoClick({ id, img })}>
           <img src={img} alt={`Gallery image ${id}`} />
         </li>
       ))}
@@ -16,12 +13,8 @@ const PhotoGrid = ({ photos = [], onPhotoClick, activeTab }) => (
 const PhotoGridMobile = ({ photos = [], onPhotoClick, activeTab }) => (
   <>
     <div style={{ padding: "16px 16px 6px" }}>
-      <p style={{ fontSize: 22, fontWeight: 700, color: "#000" }}>
-        {activeTab}
-      </p>
-      <p style={{ fontSize: 15, color: "#8e8e93", marginTop: 2 }}>
-        {photos.length} Photos
-      </p>
+      <p style={{ fontSize: 22, fontWeight: 700, color: "#000" }}>{activeTab}</p>
+      <p style={{ fontSize: 15, color: "#8e8e93", marginTop: 2 }}>{photos.length} Photos</p>
     </div>
 
     <div style={{ padding: "4px 2px" }}>

@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import WindowControls from "#components/WindowControls";
-import windowWrapper from "#hoc/windowWrapper";
-import { projects } from "#constants";
+import { useState } from "react";
+import WindowControls from "@components/WindowControls";
+import windowWrapper from "@hoc/windowWrapper";
+import { projects } from "@constants";
 import PostmanSection from "../section/PostmanSection";
 
 const Postman = () => {
@@ -11,7 +11,10 @@ const Postman = () => {
   const [reqBody, setReqBody] = useState("");
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [expandedFolders, setExpandedFolders] = useState({ "User API": true, "Portfolio API": true });
+  const [expandedFolders, setExpandedFolders] = useState({
+    "User API": true,
+    "Portfolio API": true,
+  });
 
   const loadRequest = (req) => {
     setMethod(req.method);
@@ -27,7 +30,7 @@ const Postman = () => {
     setTimeout(() => {
       let status = 200;
       let statusText = "OK";
-      let data = {};
+      let data;
 
       const cleanUrl = url.trim().replace(/\/$/, "");
 
@@ -38,7 +41,7 @@ const Postman = () => {
             role: "Full Stack Developer",
             location: "Mumbai, India",
             github: "https://github.com/kuldeeprajput-dev",
-            skills: ["React", "Node.js", "Bun", "Tailwind CSS", "GSAP"]
+            skills: ["React", "Node.js", "Bun", "Tailwind CSS", "GSAP"],
           };
         } else if (cleanUrl.endsWith("/v1/login") && method === "POST") {
           let parsed = {};
@@ -50,26 +53,26 @@ const Postman = () => {
             data = {
               message: "Login successful!",
               token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mockTokenForTesting",
-              expiresIn: "24h"
+              expiresIn: "24h",
             };
           } else {
             status = 401;
             statusText = "Unauthorized";
             data = {
               error: "Invalid credentials",
-              message: "Please double check your request payload username and password values."
+              message: "Please double check your request payload username and password values.",
             };
           }
         } else if (cleanUrl.endsWith("/v1/projects") && method === "GET") {
           data = {
             count: projects.length,
-            results: projects.map(p => ({
+            results: projects.map((p) => ({
               id: p.id,
               title: p.title,
               description: p.description,
               demo_url: p.link,
-              github_url: p.github
-            }))
+              github_url: p.github,
+            })),
           };
         } else if (cleanUrl.endsWith("/v1/contact") && method === "POST") {
           let parsed = {};
@@ -83,14 +86,14 @@ const Postman = () => {
               status: "success",
               received: parsed,
               timestamp: new Date().toISOString(),
-              notification: "Thank you for getting in touch! Your message was received."
+              notification: "Thank you for getting in touch! Your message was received.",
             };
           } else {
             status = 400;
             statusText = "Bad Request";
             data = {
               error: "Missing required fields",
-              required: ["name", "email", "message"]
+              required: ["name", "email", "message"],
             };
           }
         } else {
@@ -99,7 +102,7 @@ const Postman = () => {
           data = {
             error: "Not Found",
             message: `Cannot ${method} ${url}`,
-            hint: "Try loading one of the preconfigured requests in the sidebar collections!"
+            hint: "Try loading one of the preconfigured requests in the sidebar collections!",
           };
         }
       } catch (err) {
@@ -108,7 +111,7 @@ const Postman = () => {
         data = {
           error: "JSON Parsing Error",
           details: err.message,
-          message: "Please ensure your Request Body is valid JSON format."
+          message: "Please ensure your Request Body is valid JSON format.",
         };
       }
 
@@ -117,7 +120,7 @@ const Postman = () => {
         statusText,
         time: Math.floor(Math.random() * 80) + 40 + " ms",
         size: (JSON.stringify(data).length / 1000).toFixed(2) + " KB",
-        body: JSON.stringify(data, null, 2)
+        body: JSON.stringify(data, null, 2),
       });
       setLoading(false);
     }, 600);
@@ -125,16 +128,23 @@ const Postman = () => {
 
   return (
     <div className="flex flex-col h-full w-full bg-white text-gray-800 font-sans select-none rounded-xl overflow-hidden shadow-2xl border border-zinc-200/80">
-      <div id="window-header" className="shrink-0 bg-[#f3f3f3] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600">
+      <div
+        id="window-header"
+        className="shrink-0 bg-[#f3f3f3] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600"
+      >
         <div className="flex items-center gap-2">
           <WindowControls target="postman" />
-          <span className="font-semibold pl-4 hidden md:inline">Postman Agent (Desktop client)</span>
+          <span className="font-semibold pl-4 hidden md:inline">
+            Postman Agent (Desktop client)
+          </span>
         </div>
         <div className="flex-1 text-center font-medium text-[11px] truncate px-4">
           API Request Workspace
         </div>
         <div className="w-16 flex justify-end">
-          <span className="text-[10px] bg-orange-500 text-white px-2 py-0.5 rounded font-bold">POSTMAN</span>
+          <span className="text-[10px] bg-orange-500 text-white px-2 py-0.5 rounded font-bold">
+            POSTMAN
+          </span>
         </div>
       </div>
 

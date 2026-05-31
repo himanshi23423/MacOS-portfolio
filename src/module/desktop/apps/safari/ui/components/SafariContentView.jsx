@@ -12,7 +12,7 @@ import {
   Globe,
   Settings,
   Minimize2,
-  Search
+  Search,
 } from "lucide-react";
 import { TRACKERS, WALLPAPERS } from "./safariData";
 
@@ -26,13 +26,13 @@ const SafariContentView = ({
   setShowTabOverview,
   addressInput,
   navigateTabTo,
-  bookmarks,
+  bookmarks = [],
   setBookmarks,
-  projects,
-  socials,
+  projects = [],
+  socials = [],
   backgroundImage,
   setBackgroundImage,
-  enabledSections,
+  enabledSections = {},
   setEnabledSections,
   isIframeable,
   readerFont,
@@ -41,20 +41,19 @@ const SafariContentView = ({
   setReaderTheme,
   readerFontSize,
   setReaderFontSize,
-  toggleReaderMode
+  toggleReaderMode,
 }) => {
-
   // If Tab Overview is active, render the Grid of tabs
   if (showTabOverview) {
     return (
-      <div 
+      <div
         className="flex-1 bg-gray-100 p-6 overflow-y-auto select-none"
         onMouseDown={(e) => e.stopPropagation()}
         onPointerDown={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6 max-w-5xl mx-auto">
           <h2 className="text-xl font-bold text-gray-800">Tabs Overview</h2>
-          <button 
+          <button
             onClick={() => setShowTabOverview(false)}
             className="px-3 py-1 bg-white border border-[#c8cbd0] text-xs font-semibold rounded-md shadow-sm hover:bg-gray-50 flex items-center gap-1"
           >
@@ -63,7 +62,7 @@ const SafariContentView = ({
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {tabs.map((tab) => (
-            <div 
+            <div
               key={tab.id}
               onClick={() => {
                 setActiveTabId(tab.id);
@@ -90,7 +89,7 @@ const SafariContentView = ({
               </div>
             </div>
           ))}
-          <div 
+          <div
             onClick={handleNewTab}
             className="border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center p-6 text-gray-400 hover:text-gray-600 hover:border-gray-400 cursor-pointer h-[154px]"
           >
@@ -118,7 +117,7 @@ const SafariContentView = ({
     return (
       <div className={`flex-1 flex flex-col min-h-0 select-text overflow-hidden ${bgClass}`}>
         {/* Reader Mode Tooling Bar */}
-        <div 
+        <div
           className="border-b px-6 py-2.5 flex items-center justify-between shrink-0 select-none bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10"
           onMouseDown={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
@@ -126,14 +125,14 @@ const SafariContentView = ({
           <div className="flex items-center gap-4 text-xs font-semibold">
             {/* Font switcher */}
             <div className="flex bg-black/5 dark:bg-white/5 rounded p-0.5">
-              <button 
-                onClick={() => setReaderFont("serif")} 
+              <button
+                onClick={() => setReaderFont("serif")}
                 className={`px-2 py-0.5 rounded ${readerFont === "serif" ? "bg-white text-gray-800 shadow-sm" : "opacity-60"}`}
               >
                 Serif
               </button>
-              <button 
-                onClick={() => setReaderFont("sans")} 
+              <button
+                onClick={() => setReaderFont("sans")}
                 className={`px-2 py-0.5 rounded ${readerFont === "sans" ? "bg-white text-gray-800 shadow-sm" : "opacity-60"}`}
               >
                 Sans
@@ -142,15 +141,15 @@ const SafariContentView = ({
 
             {/* Font Resizing */}
             <div className="flex items-center gap-2">
-              <button 
-                onClick={() => setReaderFontSize(Math.max(12, readerFontSize - 2))} 
+              <button
+                onClick={() => setReaderFontSize(Math.max(12, readerFontSize - 2))}
                 className="w-6 h-6 rounded bg-black/5 dark:bg-white/5 flex items-center justify-center text-xs"
               >
                 A-
               </button>
               <span>{readerFontSize}px</span>
-              <button 
-                onClick={() => setReaderFontSize(Math.min(24, readerFontSize + 2))} 
+              <button
+                onClick={() => setReaderFontSize(Math.min(24, readerFontSize + 2))}
                 className="w-6 h-6 rounded bg-black/5 dark:bg-white/5 flex items-center justify-center text-xs"
               >
                 A+
@@ -164,7 +163,7 @@ const SafariContentView = ({
               { id: "white", color: "bg-white border-gray-300" },
               { id: "sepia", color: "bg-[#f4ebd0] border-[#d4c5a0]" },
               { id: "gray", color: "bg-zinc-600 border-zinc-500" },
-              { id: "night", color: "bg-zinc-900 border-zinc-800" }
+              { id: "night", color: "bg-zinc-900 border-zinc-800" },
             ].map((theme) => (
               <button
                 key={theme.id}
@@ -174,7 +173,7 @@ const SafariContentView = ({
                 }`}
               />
             ))}
-            <button 
+            <button
               onClick={toggleReaderMode}
               className="text-xs font-semibold text-blue-500 hover:underline ml-2"
             >
@@ -188,35 +187,52 @@ const SafariContentView = ({
           <div className={`${fontStyle}`} style={{ fontSize: `${readerFontSize}px` }}>
             <h1 className="text-3xl font-bold leading-tight mb-4">React (JavaScript library)</h1>
             <p className="opacity-70 text-xs mb-8">From Wikipedia, the free encyclopedia</p>
-            
+
             <p className="leading-relaxed mb-6">
-              React is a free and open-source front-end JavaScript library for building user interfaces based on components. It is maintained by Meta (formerly Facebook) and a community of individual developers and companies.
-            </p>
-            
-            <p className="leading-relaxed mb-6">
-              React can be used as a base in the development of single-page, mobile, or server-rendered applications with frameworks like Next.js. Because React is only concerned with state management and rendering that state to the DOM, creating React applications usually requires the use of additional libraries for routing, as well as certain client-side functionality.
+              React is a free and open-source front-end JavaScript library for building user
+              interfaces based on components. It is maintained by Meta (formerly Facebook) and a
+              community of individual developers and companies.
             </p>
 
-            <h2 className="text-xl font-bold border-b border-black/10 dark:border-white/10 pb-1.5 mt-8 mb-4">Notable features</h2>
-            
+            <p className="leading-relaxed mb-6">
+              React can be used as a base in the development of single-page, mobile, or
+              server-rendered applications with frameworks like Next.js. Because React is only
+              concerned with state management and rendering that state to the DOM, creating React
+              applications usually requires the use of additional libraries for routing, as well as
+              certain client-side functionality.
+            </p>
+
+            <h2 className="text-xl font-bold border-b border-black/10 dark:border-white/10 pb-1.5 mt-8 mb-4">
+              Notable features
+            </h2>
+
             <h3 className="text-base font-bold mt-4 mb-2">Components</h3>
             <p className="leading-relaxed mb-6">
-              React code is made of entities called components. These components can be rendered to a particular element in the DOM using the React DOM library. When rendering a component, one can pass in values that are known as "props".
+              React code is made of entities called components. These components can be rendered to
+              a particular element in the DOM using the React DOM library. When rendering a
+              component, one can pass in values that are known as "props".
             </p>
 
             <h3 className="text-base font-bold mt-4 mb-2">Virtual DOM</h3>
             <p className="leading-relaxed mb-6">
-              Another notable feature is the use of a virtual Document Object Model, or virtual DOM. React creates an in-memory data structure cache, computes the differences, and then updates the browser's displayed DOM efficiently.
+              Another notable feature is the use of a virtual Document Object Model, or virtual DOM.
+              React creates an in-memory data structure cache, computes the differences, and then
+              updates the browser's displayed DOM efficiently.
             </p>
 
             <h3 className="text-base font-bold mt-4 mb-2">JSX</h3>
             <p className="leading-relaxed mb-6">
-              JSX (JavaScript XML) is an extension to the JavaScript language syntax. Write elements using HTML-like syntax inside React components.
+              JSX (JavaScript XML) is an extension to the JavaScript language syntax. Write elements
+              using HTML-like syntax inside React components.
             </p>
 
-            <h2 className="text-xl font-bold border-b border-black/10 dark:border-white/10 pb-1.5 mt-8 mb-4">History</h2>
+            <h2 className="text-xl font-bold border-b border-black/10 dark:border-white/10 pb-1.5 mt-8 mb-4">
+              History
+            </h2>
             <p className="leading-relaxed mb-6">
-              React was created by Jordan Walke, a software engineer at Facebook. It was first deployed on Facebook's News Feed in 2011 and later on Instagram in 2012. It was open-sourced at JSConf US in May 2013.
+              React was created by Jordan Walke, a software engineer at Facebook. It was first
+              deployed on Facebook's News Feed in 2011 and later on Instagram in 2012. It was
+              open-sourced at JSConf US in May 2013.
             </p>
           </div>
         </div>
@@ -226,21 +242,24 @@ const SafariContentView = ({
 
   // 1. Start Page (safari://start)
   if (activeTab.url === "safari://start") {
-    const isLightBg = backgroundImage === "#ffffff" || backgroundImage.includes("#ffffff") || backgroundImage.includes("glass") || backgroundImage.includes("#ece9e6");
+    const isLightBg =
+      backgroundImage === "#ffffff" ||
+      backgroundImage.includes("#ffffff") ||
+      backgroundImage.includes("glass") ||
+      backgroundImage.includes("#ece9e6");
     const textClass = isLightBg ? "text-gray-800" : "text-white";
-    const textMutedClass = isLightBg ? "text-gray-500" : "text-white/70";
-    const cardBgClass = isLightBg ? "bg-[#f5f6f8] border-black/5" : "bg-black/20 border-white/10";
-    const innerCardBgClass = isLightBg ? "bg-white border-gray-150 shadow-sm" : "bg-white/10 border-white/5";
+    const subTextClass = isLightBg ? "text-gray-500" : "text-white/70";
     const shadowClass = isLightBg ? "" : "drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]";
-    const headerShadowClass = isLightBg ? "" : "drop-shadow-[0_1px_3px_rgba(0,0,0,0.2)]";
+    const cardClass = isLightBg
+      ? "bg-white/80 backdrop-blur-md border border-[#c8cbd0]/50 shadow-sm"
+      : "bg-black/40 backdrop-blur-md border border-white/10 shadow-lg text-white";
 
     return (
-      <div 
-        className="flex-1 overflow-y-auto relative transition-all duration-300 min-h-0"
+      <div
+        className="flex-1 overflow-y-auto relative transition-all duration-300 min-h-0 select-none pb-16"
         style={{ background: backgroundImage }}
       >
         <div className="relative z-10 max-w-4xl mx-auto px-8 py-14">
-          
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className={`text-4xl font-extrabold ${textClass} ${shadowClass} tracking-wide`}>
@@ -249,9 +268,9 @@ const SafariContentView = ({
           </div>
 
           {/* Central Search Bar */}
-          <div 
-            className="max-w-md mx-auto mb-10" 
-            onMouseDown={(e) => e.stopPropagation()} 
+          <div
+            className="max-w-md mx-auto mb-12"
+            onMouseDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-2 bg-white/95 border border-[#c8cbd0] rounded-full px-4.5 py-2.5 text-sm text-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20">
@@ -259,153 +278,175 @@ const SafariContentView = ({
               <input
                 type="text"
                 placeholder="Search with Google"
-                className="flex-1 bg-transparent border-none outline-none text-xs text-gray-800"
+                className="w-full bg-transparent border-none outline-none text-gray-800 placeholder-zinc-400"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && e.target.value.trim()) {
-                    navigateTabTo(e.target.value);
+                    navigateTabTo(
+                      `https://www.google.com/search?q=${encodeURIComponent(e.target.value)}`,
+                    );
+                    e.target.value = "";
                   }
                 }}
               />
             </div>
           </div>
 
-          {/* Favorites */}
-          {enabledSections.favorites && (
-            <section className={`mb-12 ${cardBgClass} backdrop-blur-md rounded-2xl p-6 border`}>
-              <h2 className={`text-sm font-bold ${textClass} mb-4 tracking-wider uppercase opacity-90 ${headerShadowClass}`}>
-                Favorites
-              </h2>
-              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-5">
-                {bookmarks.map((favorite) => (
-                  <div
-                    key={favorite.id}
-                    onClick={() => navigateTabTo(favorite.url)}
-                    className="flex flex-col items-center gap-2 group cursor-pointer"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center transition-all duration-200 group-hover:scale-105">
-                      {favorite.img ? (
-                        <img src={favorite.img} alt="" className="w-6 h-6 object-contain" />
-                      ) : (
-                        <span className="text-xs font-bold text-gray-500">{favorite.title[0]}</span>
-                      )}
+          <div className="space-y-10">
+            {/* Favorites / Bookmarks Section */}
+            {enabledSections.favorites && (
+              <section>
+                <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>Favorites</h2>
+                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-6">
+                  {bookmarks.map((fav) => (
+                    <div
+                      key={fav.id}
+                      onClick={() => navigateTabTo(fav.url)}
+                      className="flex flex-col items-center gap-2 cursor-pointer group"
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onPointerDown={(e) => e.stopPropagation()}
+                    >
+                      <div
+                        className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-200 group-hover:scale-105 group-hover:shadow-md ${cardClass}`}
+                      >
+                        {fav.img ? (
+                          <img
+                            src={fav.img}
+                            alt={fav.title}
+                            className="w-8 h-8 object-contain rounded-md"
+                            onError={(e) => {
+                              e.target.src = "";
+                            }}
+                          />
+                        ) : (
+                          <Globe size={20} className={isLightBg ? "text-gray-600" : "text-white"} />
+                        )}
+                      </div>
+                      <span
+                        className={`text-[10px] font-semibold truncate max-w-full text-center ${isLightBg ? "text-gray-600" : "text-white/90"} group-hover:underline`}
+                      >
+                        {fav.title}
+                      </span>
                     </div>
-                    <span className={`text-[10px] font-bold ${textClass} text-center truncate w-14 ${shadowClass}`}>
-                      {favorite.title}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
+                  ))}
+                </div>
+              </section>
+            )}
 
-          {/* Privacy Report card */}
-          {enabledSections.privacyReport && (
-            <section className="mb-12">
-              <div 
+            {/* Privacy Report Section */}
+            {enabledSections.privacyReport && (
+              <section
+                className="cursor-pointer"
                 onClick={() => navigateTabTo("safari://privacy-report")}
-                className={`${cardBgClass} backdrop-blur-md rounded-2xl p-5 border cursor-pointer hover:opacity-90 transition-all flex items-center justify-between`}
+                onMouseDown={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
               >
-                <div className="flex items-center gap-4">
-                  <div className="p-2.5 bg-blue-500/20 rounded-xl text-blue-500 dark:text-blue-300">
-                    <ShieldHalf size={24} />
-                  </div>
-                  <div>
-                    <h3 className={`font-bold ${textClass} ${shadowClass}`}>Privacy Report</h3>
-                    <p className={`text-xs ${textMutedClass} mt-1`}>
-                      Safari has prevented {TRACKERS.reduce((acc, curr) => acc + curr.count, 0)} tracker attempts. Click to view analysis.
-                    </p>
+                <div
+                  className={`rounded-2xl p-5 transition-all duration-200 hover:scale-[1.01] ${cardClass}`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="p-2.5 bg-blue-500/10 rounded-xl text-blue-500">
+                        <ShieldHalf size={24} />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-sm">Privacy Report</h3>
+                        <p className={`text-[11px] ${subTextClass} mt-0.5`}>
+                          Safari has prevented 14 trackers from profiling you across your portfolio
+                          visit.
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight size={18} className="text-gray-400" />
                   </div>
                 </div>
-                <ChevronRight className={`${textMutedClass}`} size={18} />
-              </div>
-            </section>
-          )}
+              </section>
+            )}
 
-          {/* Reading List / Projects */}
-          {enabledSections.readingList && (
-            <section className={`mb-12 ${cardBgClass} backdrop-blur-md rounded-2xl p-6 border`}>
-              <h2 className={`text-sm font-bold ${textClass} mb-5 tracking-wider uppercase opacity-90 ${headerShadowClass}`}>
-                Featured Reading List
+            {/* Featured Projects Section */}
+            <section>
+              <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>
+                Featured Projects
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {projects.map((project) => (
-                  <div 
-                    key={project.id} 
-                    className={`${innerCardBgClass} rounded-xl overflow-hidden flex flex-col justify-between`}
+                  <div
+                    key={project.id}
+                    className={`rounded-2xl overflow-hidden shadow-sm transition-all duration-200 hover:-translate-y-1 ${cardClass}`}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onPointerDown={(e) => e.stopPropagation()}
                   >
-                    <div className="h-36 bg-black/10 overflow-hidden">
-                      <img src={project.image} alt="" className="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform" />
+                    <div className="h-44 bg-gray-200/50 relative overflow-hidden">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <div className="p-4">
-                      <h3 className={`text-sm font-extrabold ${isLightBg ? "text-gray-800" : "text-white"}`}>{project.title}</h3>
-                      <p className={`text-[11px] ${isLightBg ? "text-gray-500" : "text-white/70"} line-clamp-2 mt-1 leading-relaxed`}>
+                    <div className="p-5">
+                      <h3 className="text-sm font-bold mb-1">{project.title}</h3>
+                      <p
+                        className={`text-[11px] ${subTextClass} mb-4 line-clamp-2 leading-relaxed`}
+                      >
                         {project.description}
                       </p>
-                      <div className="flex gap-4 mt-3">
-                        <button 
-                          onClick={() => navigateTabTo(project.link || "https://github.com/kuldeeprajput-dev")}
-                          className="flex items-center gap-1 text-[11px] font-bold text-blue-500 hover:underline"
+                      <div className="flex items-center gap-4">
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-blue-600 transition-colors"
                         >
-                          <ExternalLink size={12} /> Open Page
-                        </button>
+                          <ExternalLink size={14} /> Live Demo
+                        </a>
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center gap-1.5 text-xs font-bold ${isLightBg ? "text-gray-600 hover:text-black" : "text-white/80 hover:text-white"} transition-colors`}
+                        >
+                          Source
+                        </a>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             </section>
-          )}
 
-          {/* Customize options */}
-          <section className="mt-14 flex flex-col items-center">
-            <div className="flex bg-[#e3e4e6] dark:bg-black/45 backdrop-blur-md rounded-full px-4 py-2 border border-[#c8cbd0] dark:border-white/15 items-center gap-4 shadow-sm">
-              <div className={`flex items-center gap-1.5 text-[11px] ${isLightBg ? "text-gray-700" : "text-white/90"} font-bold border-r border-[#c8cbd0] dark:border-white/10 pr-3`}>
-                <SlidersHorizontal size={12} /> Wallpaper
-              </div>
-              <div className="flex gap-2">
-                {WALLPAPERS.map((wp) => (
-                  <button
-                    key={wp.id}
-                    onClick={() => setBackgroundImage(wp.value)}
-                    className={`w-5.5 h-5.5 rounded-full border border-white/20 transition-transform hover:scale-110 ${
-                      backgroundImage === wp.value ? "ring-2 ring-blue-500 scale-105" : ""
-                    }`}
-                    style={{ background: wp.value }}
-                    title={wp.name}
+            {/* Wallpaper Selection Section */}
+            {enabledSections.background && (
+              <section>
+                <div className="flex items-center gap-1.5 mb-4">
+                  <SlidersHorizontal
+                    size={14}
+                    className={isLightBg ? "text-gray-600" : "text-white"}
                   />
-                ))}
-              </div>
-            </div>
-
-            {/* Custom section checkboxes */}
-            <div className={`flex gap-6 mt-4 text-[10px] ${textMutedClass} select-none`}>
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <input 
-                  type="checkbox" 
-                  checked={enabledSections.favorites} 
-                  onChange={(e) => setEnabledSections(prev => ({ ...prev, favorites: e.target.checked }))} 
-                />
-                Favorites
-              </label>
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <input 
-                  type="checkbox" 
-                  checked={enabledSections.privacyReport} 
-                  onChange={(e) => setEnabledSections(prev => ({ ...prev, privacyReport: e.target.checked }))} 
-                />
-                Privacy
-              </label>
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <input 
-                  type="checkbox" 
-                  checked={enabledSections.readingList} 
-                  onChange={(e) => setEnabledSections(prev => ({ ...prev, readingList: e.target.checked }))} 
-                />
-                Reading List
-              </label>
-            </div>
-          </section>
-
+                  <h2 className={`text-sm font-bold ${textClass} ${shadowClass}`}>
+                    Customize Start Page
+                  </h2>
+                </div>
+                <div
+                  className="flex flex-wrap gap-3.5"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
+                >
+                  {WALLPAPERS.map((wp) => (
+                    <button
+                      key={wp.id}
+                      onClick={() => setBackgroundImage(wp.value)}
+                      className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 active:scale-95 ${
+                        backgroundImage === wp.value
+                          ? "border-blue-500 ring-2 ring-blue-500/25 scale-105"
+                          : "border-transparent shadow-sm"
+                      }`}
+                      style={{ background: wp.value }}
+                      title={wp.name}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -414,7 +455,7 @@ const SafariContentView = ({
   // 2. Detailed Privacy Report (safari://privacy-report)
   if (activeTab.url === "safari://privacy-report") {
     return (
-      <div 
+      <div
         className="flex-1 bg-[#f5f6f8] overflow-y-auto p-8 select-text text-gray-800"
         onMouseDown={(e) => e.stopPropagation()}
         onPointerDown={(e) => e.stopPropagation()}
@@ -424,18 +465,25 @@ const SafariContentView = ({
             <ShieldHalf size={32} className="text-blue-600" />
             <div>
               <h1 className="text-2xl font-bold">Privacy Report</h1>
-              <p className="text-xs text-gray-500">How Safari protects your privacy when compiling portfolios</p>
+              <p className="text-xs text-gray-500">
+                How Safari protects your privacy when compiling portfolios
+              </p>
             </div>
           </div>
 
           {/* Mini Tracker Charts (SVG graph) */}
           <div className="bg-white border border-[#c8cbd0]/60 rounded-xl p-5 shadow-sm space-y-3">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Blocked Trackers (Past 7 Days)</h3>
+            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+              Blocked Trackers (Past 7 Days)
+            </h3>
             <div className="h-40 w-full flex items-end justify-between gap-2 pt-4">
               {[12, 18, 14, 25, 9, 32, 14].map((count, idx) => (
-                <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+                <div
+                  key={idx}
+                  className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end"
+                >
                   <span className="text-[10px] text-gray-500 font-bold">{count}</span>
-                  <div 
+                  <div
                     className="w-full bg-blue-500 hover:bg-blue-600 transition-all rounded-t-sm"
                     style={{ height: `${(count / 35) * 100}%` }}
                   />
@@ -447,7 +495,9 @@ const SafariContentView = ({
 
           {/* Tracker list */}
           <div className="bg-white border border-[#c8cbd0]/60 rounded-xl p-5 shadow-sm">
-            <h2 className="text-sm font-bold text-gray-800 mb-4">Trackers Prevented from Profiling You</h2>
+            <h2 className="text-sm font-bold text-gray-800 mb-4">
+              Trackers Prevented from Profiling You
+            </h2>
             <div className="divide-y divide-[#c8cbd0]/45">
               {TRACKERS.map((tracker, idx) => (
                 <div key={idx} className="flex items-center justify-between py-2.5 text-xs">
@@ -471,14 +521,14 @@ const SafariContentView = ({
   if (activeTab.url.includes("google.com/search")) {
     const query = new URL(activeTab.url).searchParams.get("q") || "Search";
     return (
-      <div 
+      <div
         className="flex-1 bg-white select-text overflow-y-auto p-6 text-gray-800"
         onMouseDown={(e) => e.stopPropagation()}
         onPointerDown={(e) => e.stopPropagation()}
       >
         <div className="max-w-2xl w-full space-y-6">
           <div className="flex items-center gap-4 border-b pb-4 border-gray-150">
-            <span 
+            <span
               onClick={() => navigateTabTo("safari://start")}
               className="font-bold text-2xl tracking-tight cursor-pointer text-blue-600 hover:opacity-85 select-none"
             >
@@ -493,40 +543,44 @@ const SafariContentView = ({
           <div className="space-y-6 pt-2">
             <div className="space-y-1">
               <span className="text-[10px] text-gray-500">https://wikipedia.org</span>
-              <h4 
-                onClick={() => navigateTabTo("https://en.wikipedia.org")} 
+              <h4
+                onClick={() => navigateTabTo("https://en.wikipedia.org")}
                 className="text-base text-blue-600 hover:underline cursor-pointer font-medium leading-tight"
               >
                 React - The Free Encyclopedia
               </h4>
               <p className="text-xs text-gray-600 leading-normal">
-                React (also known as React.js or ReactJS) is a free and open-source front-end JavaScript library. Click here to read Jordan Walke's component history page in Reader View.
+                React (also known as React.js or ReactJS) is a free and open-source front-end
+                JavaScript library. Click here to read Jordan Walke's component history page in
+                Reader View.
               </p>
             </div>
 
             <div className="space-y-1">
               <span className="text-[10px] text-gray-500">https://openstreetmap.org</span>
-              <h4 
-                onClick={() => navigateTabTo("https://openstreetmap.org")} 
+              <h4
+                onClick={() => navigateTabTo("https://openstreetmap.org")}
                 className="text-base text-blue-600 hover:underline cursor-pointer font-medium leading-tight"
               >
                 OpenStreetMap - Free Wiki World Map
               </h4>
               <p className="text-xs text-gray-600 leading-normal">
-                OpenStreetMap is a map of the world, created by volunteers and free to use under an open license.
+                OpenStreetMap is a map of the world, created by volunteers and free to use under an
+                open license.
               </p>
             </div>
 
             <div className="space-y-1">
               <span className="text-[10px] text-gray-500">https://example.com</span>
-              <h4 
-                onClick={() => navigateTabTo("https://example.com")} 
+              <h4
+                onClick={() => navigateTabTo("https://example.com")}
                 className="text-base text-blue-600 hover:underline cursor-pointer font-medium leading-tight"
               >
                 Example Domain
               </h4>
               <p className="text-xs text-gray-600 leading-normal">
-                This domain is for use in illustrative examples in documents. You can write your custom mock pages.
+                This domain is for use in illustrative examples in documents. You can write your
+                custom mock pages.
               </p>
             </div>
           </div>
@@ -553,7 +607,7 @@ const SafariContentView = ({
 
   // 5. Fallback warning layout (Sandbox Fallback)
   return (
-    <div 
+    <div
       className="flex-1 bg-slate-50 flex items-center justify-center p-6 overflow-y-auto"
       onMouseDown={(e) => e.stopPropagation()}
       onPointerDown={(e) => e.stopPropagation()}
@@ -565,7 +619,9 @@ const SafariContentView = ({
         <div className="space-y-2">
           <h3 className="text-lg font-bold text-gray-800">Connection Sandboxed</h3>
           <p className="text-xs text-gray-500 leading-relaxed">
-            To protect your security, <span className="font-semibold text-gray-700">{activeTab.title}</span> prohibits rendering its contents inside other windows.
+            To protect your security,{" "}
+            <span className="font-semibold text-gray-700">{activeTab.title}</span> prohibits
+            rendering its contents inside other windows.
           </p>
         </div>
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center justify-center gap-2">
@@ -573,15 +629,15 @@ const SafariContentView = ({
           <span className="text-xs font-semibold text-slate-600 truncate">{activeTab.url}</span>
         </div>
         <div className="flex flex-col gap-2 pt-2">
-          <a 
-            href={activeTab.url} 
-            target="_blank" 
+          <a
+            href={activeTab.url}
+            target="_blank"
             rel="noopener noreferrer"
             className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5"
           >
             Open in New Window <ArrowRight className="w-3.5 h-3.5" />
           </a>
-          <button 
+          <button
             onClick={() => navigateTabTo("safari://start")}
             className="w-full py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition-all"
           >

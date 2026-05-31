@@ -1,0 +1,72 @@
+# Dependencies
+node_modules
+.next
+dist
+dist-ssr
+
+# Build artifacts
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+*.suo
+*.ntvs*
+*.njsproj
+.DS_Store
+
+# Framework
+.next/
+
+# Generated
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Documentation
+*.md
+*.mdx
+
+# Data
+*.json
+*.csv
+*.xml
+
+# Assets
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.webp
+*.avif
+*.mp4
+*.webm
+*.ogg
+*.mp3
+*.wav
+*.woff
+*.woff2
+*.eot
+*.ttf
+*.otf
+
+# Config
+.opencode
+.agents
+.codex
+graphify-out

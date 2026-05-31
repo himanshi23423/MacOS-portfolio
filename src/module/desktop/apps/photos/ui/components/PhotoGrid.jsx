@@ -1,29 +1,30 @@
 import { Heart } from "lucide-react";
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 
-const PhotoGrid = ({ 
-  photos = [], 
-  onPhotoClick, 
-  activeTab, 
-  zoomLevel = 4, 
-  viewMode = "All Photos", 
-  selectedPhotoId, 
-  onDoubleClick 
+const PhotoGrid = ({
+  photos = [],
+  onPhotoClick,
+  activeTab,
+  zoomLevel = 4,
+  viewMode = "All Photos",
+  selectedPhotoId,
+  onDoubleClick,
 }) => {
   const { favorites, toggleFavorite } = useWindowsStore();
 
   // Map zoom level (1 to 5) to columns count
-  const colCount = {
-    1: 8,
-    2: 6,
-    3: 4,
-    4: 3,
-    5: 2
-  }[zoomLevel] || 3;
+  const colCount =
+    {
+      1: 8,
+      2: 6,
+      3: 4,
+      4: 3,
+      5: 2,
+    }[zoomLevel] || 3;
 
   const renderGrid = (photosList) => {
     return (
-      <div 
+      <div
         className="grid gap-1.5"
         style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }}
       >
@@ -35,8 +36,8 @@ const PhotoGrid = ({
             <div
               key={id}
               className={`relative group aspect-square overflow-hidden bg-gray-100 border border-gray-200/50 cursor-pointer transition-all duration-150 ${
-                isSelected 
-                  ? "ring-[3px] ring-blue-500 ring-offset-1 rounded scale-[0.97] z-10 shadow-md" 
+                isSelected
+                  ? "ring-[3px] ring-blue-500 ring-offset-1 rounded scale-[0.97] z-10 shadow-md"
                   : "hover:scale-[1.02] hover:shadow-sm"
               }`}
               onClick={() => onPhotoClick(photo)}
@@ -60,8 +61,8 @@ const PhotoGrid = ({
                   toggleFavorite(id);
                 }}
                 className={`absolute bottom-1.5 left-1.5 p-1 rounded-full transition-all duration-150 ${
-                  isFav 
-                    ? "bg-white/95 text-red-500 shadow-sm opacity-100" 
+                  isFav
+                    ? "bg-white/95 text-red-500 shadow-sm opacity-100"
                     : "bg-black/30 text-white opacity-0 group-hover:opacity-100"
                 }`}
               >
@@ -83,12 +84,14 @@ const PhotoGrid = ({
       <div className="flex flex-col items-center justify-center h-64 text-gray-400">
         <Heart size={36} className="mb-3 opacity-30 animate-pulse" />
         <p className="text-sm font-semibold text-gray-600">No Photos</p>
-        <p className="text-xs mt-1 text-gray-400">No photos match the selected criteria or search.</p>
+        <p className="text-xs mt-1 text-gray-400">
+          No photos match the selected criteria or search.
+        </p>
       </div>
     );
   } else if (viewMode === "Days") {
     const groups = {};
-    photos.forEach(p => {
+    photos.forEach((p) => {
       if (!groups[p.date]) groups[p.date] = [];
       groups[p.date].push(p);
     });
@@ -107,7 +110,7 @@ const PhotoGrid = ({
     );
   } else if (viewMode === "Months") {
     const groups = {};
-    photos.forEach(p => {
+    photos.forEach((p) => {
       const parts = p.date.split(" ");
       const monthYear = parts.length >= 3 ? `${parts[0]} ${parts[2]}` : p.date;
       if (!groups[monthYear]) groups[monthYear] = [];
@@ -117,7 +120,9 @@ const PhotoGrid = ({
       <div className="space-y-6 p-4">
         {Object.entries(groups).map(([month, list]) => (
           <div key={month} className="space-y-2">
-            <h3 className="text-sm font-extrabold text-gray-900 border-b border-gray-200/60 pb-1">{month}</h3>
+            <h3 className="text-sm font-extrabold text-gray-900 border-b border-gray-200/60 pb-1">
+              {month}
+            </h3>
             {renderGrid(list)}
           </div>
         ))}
@@ -125,7 +130,7 @@ const PhotoGrid = ({
     );
   } else if (viewMode === "Years") {
     const groups = {};
-    photos.forEach(p => {
+    photos.forEach((p) => {
       const parts = p.date.split(" ");
       const year = parts.length >= 3 ? parts[2] : "Other";
       if (!groups[year]) groups[year] = [];
@@ -135,7 +140,9 @@ const PhotoGrid = ({
       <div className="space-y-6 p-4">
         {Object.entries(groups).map(([year, list]) => (
           <div key={year} className="space-y-2">
-            <h3 className="text-lg font-black text-gray-900 tracking-tight border-b border-gray-200/60 pb-1">{year}</h3>
+            <h3 className="text-lg font-black text-gray-900 tracking-tight border-b border-gray-200/60 pb-1">
+              {year}
+            </h3>
             {renderGrid(list)}
           </div>
         ))}
@@ -156,7 +163,7 @@ const PhotoGrid = ({
           </p>
         </div>
       </div>
-      
+
       {content}
     </div>
   );
@@ -168,12 +175,8 @@ const PhotoGridMobile = ({ photos = [], onPhotoClick, activeTab }) => {
   return (
     <>
       <div style={{ padding: "16px 16px 6px" }}>
-        <p style={{ fontSize: 22, fontWeight: 700, color: "#000" }}>
-          {activeTab}
-        </p>
-        <p style={{ fontSize: 15, color: "#8e8e93", marginTop: 2 }}>
-          {photos.length} Photos
-        </p>
+        <p style={{ fontSize: 22, fontWeight: 700, color: "#000" }}>{activeTab}</p>
+        <p style={{ fontSize: 15, color: "#8e8e93", marginTop: 2 }}>{photos.length} Photos</p>
       </div>
 
       <div style={{ padding: "4px 2px" }}>
@@ -211,15 +214,17 @@ const PhotoGridMobile = ({ photos = [], onPhotoClick, activeTab }) => {
                   }}
                 />
                 {favorites.includes(id) && (
-                  <div style={{
-                    position: "absolute",
-                    bottom: 4,
-                    left: 4,
-                    background: "rgba(255,255,255,0.9)",
-                    borderRadius: "50%",
-                    padding: 3,
-                    display: "flex",
-                  }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 4,
+                      left: 4,
+                      background: "rgba(255,255,255,0.9)",
+                      borderRadius: "50%",
+                      padding: 3,
+                      display: "flex",
+                    }}
+                  >
                     <Heart size={10} style={{ color: "#ff3b30", fill: "#ff3b30" }} />
                   </div>
                 )}

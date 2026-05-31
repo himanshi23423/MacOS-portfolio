@@ -1,6 +1,23 @@
 import MusicPlayerBar from "../components/MusicPlayerBar";
 
-const MusicPlayerSection = ({ activeTrack, currentTime, isPlaying, volume, isMuted, isShuffle, isRepeat, onPlayPause, onNext, onPrev, onShuffleToggle, onRepeatToggle, onProgressChange, onMuteToggle, onVolumeChange, formatTime }) => {
+const MusicPlayerSection = ({
+  activeTrack,
+  currentTime,
+  isPlaying,
+  volume,
+  isMuted,
+  isShuffle,
+  isRepeat,
+  onPlayPause,
+  onNext,
+  onPrev,
+  onShuffleToggle,
+  onRepeatToggle,
+  onProgressChange,
+  onMuteToggle,
+  onVolumeChange,
+  formatTime,
+}) => {
   return (
     <MusicPlayerBar
       activeTrack={activeTrack}

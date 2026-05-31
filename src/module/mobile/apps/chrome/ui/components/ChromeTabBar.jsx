@@ -1,10 +1,21 @@
 import React from "react";
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 import { Globe, X, Plus } from "lucide-react";
 
-const ChromeTabBar = ({ tabs, activeTabId, setActiveTabId, handleNewTab, handleCloseTab, theme, themeClasses }) => {
+const ChromeTabBar = ({
+  tabs,
+  activeTabId,
+  setActiveTabId,
+  handleNewTab,
+  handleCloseTab,
+  theme,
+  themeClasses,
+}) => {
   return (
-    <div id="window-header" className={`shrink-0 px-3 pt-2.5 pb-1 flex items-center justify-between z-20 border-b gap-4 select-none ${themeClasses.header}`}>
+    <div
+      id="window-header"
+      className={`shrink-0 px-3 pt-2.5 pb-1 flex items-center justify-between z-20 border-b gap-4 select-none ${themeClasses.header}`}
+    >
       <div className="flex items-center gap-6 shrink-0">
         <WindowControls target="chrome" />
       </div>
@@ -18,14 +29,25 @@ const ChromeTabBar = ({ tabs, activeTabId, setActiveTabId, handleNewTab, handleC
               onClick={() => setActiveTabId(tab.id)}
               className={`
                 group flex items-center gap-2 h-[28px] max-w-[160px] min-w-[100px] px-3 rounded-t-lg text-xs leading-none transition-all duration-150 cursor-pointer relative shrink-0
-                ${isActive
-                  ? (isIncognitoTab ? "bg-[#202124] text-zinc-100 shadow-[0_-1px_3px_rgba(0,0,0,0.3)] z-10" : themeClasses.tabActive)
-                  : (isIncognitoTab ? "text-zinc-400 hover:bg-[#323336]" : themeClasses.tabInactive)
+                ${
+                  isActive
+                    ? isIncognitoTab
+                      ? "bg-[#202124] text-zinc-100 shadow-[0_-1px_3px_rgba(0,0,0,0.3)] z-10"
+                      : themeClasses.tabActive
+                    : isIncognitoTab
+                      ? "text-zinc-400 hover:bg-[#323336]"
+                      : themeClasses.tabInactive
                 }
               `}
             >
               {isIncognitoTab ? (
-                <svg className="w-3.5 h-3.5 shrink-0 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  className="w-3.5 h-3.5 shrink-0 text-zinc-400"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <circle cx="8" cy="15" r="2" />
                   <circle cx="16" cy="15" r="2" />
                   <path d="M10 15h4M2 11a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v1H2z" />

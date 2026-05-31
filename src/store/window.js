@@ -1,6 +1,6 @@
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand";
-import { INITIAL_Z_INDEX, WINDOW_CONFIG } from "#constants";
+import { INITIAL_Z_INDEX, WINDOW_CONFIG } from "@constants";
 
 const useWindowsStore = create(
   immer((set) => ({
@@ -17,11 +17,11 @@ const useWindowsStore = create(
         coverColor: "from-zinc-400 to-zinc-600",
         coverText: "🎵",
         coverUrl: "",
-        url: ""
+        url: "",
       },
       isPlaying: false,
       volume: 72,
-      isMuted: false
+      isMuted: false,
     },
     isSiriOpen: false,
     systemSettings: {
@@ -42,8 +42,8 @@ const useWindowsStore = create(
         airpods: true,
         keyboard: false,
         mouse: false,
-        headphones: false
-      }
+        headphones: false,
+      },
     },
 
     updateSystemSetting: (key, value) =>
@@ -119,7 +119,7 @@ const useWindowsStore = create(
         if (!win) return;
         win.isMaximized = !win.isMaximized;
       }),
-  }))
+  })),
 );
 
 export default useWindowsStore;

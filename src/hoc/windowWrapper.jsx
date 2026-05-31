@@ -1,4 +1,4 @@
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
@@ -21,7 +21,7 @@ const windowWrapper = (Component, windowKey) => {
     useGSAP(() => {
       const el = ref.current;
       if (!el || isMobile || !isOpen) return;
-      
+
       const headers = el.querySelectorAll("#window-header, .window-header");
       const dragTrigger = headers.length > 0 ? Array.from(headers) : el;
       const [instance] = Draggable.create(el, {
@@ -29,7 +29,7 @@ const windowWrapper = (Component, windowKey) => {
         cursor: "default",
         onPress: () => focusWindow(windowKey),
       });
-      
+
       return () => instance.kill();
     }, [isMobile, isOpen]);
 
@@ -41,7 +41,7 @@ const windowWrapper = (Component, windowKey) => {
         gsap.fromTo(
           el,
           { scale: 0.88, opacity: 0, y: 30 },
-          { scale: 1, opacity: 1, y: 0, duration: 0.38, ease: "power3.out" }
+          { scale: 1, opacity: 1, y: 0, duration: 0.38, ease: "power3.out" },
         );
       } else if (!isOpen) {
         el.style.display = "none";
@@ -63,8 +63,7 @@ const windowWrapper = (Component, windowKey) => {
       opacity: isOpen ? 1 : 0,
       pointerEvents: isOpen ? "auto" : "none",
       transform: isOpen ? "translateY(0)" : "translateY(100%)",
-      transition:
-        "transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.35s ease",
+      transition: "transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.35s ease",
       border: "none",
       outline: "none",
       boxShadow: "none",
@@ -79,32 +78,32 @@ const windowWrapper = (Component, windowKey) => {
     const handleResizeStart = (e, direction) => {
       e.stopPropagation();
       e.preventDefault();
-      
+
       const el = ref.current;
       if (!el) return;
-      
+
       // Ensure the window comes to front when resizing
       focusWindow(windowKey);
 
       const startX = e.clientX;
       const startY = e.clientY;
       const startRect = el.getBoundingClientRect();
-      
+
       const startGsapX = gsap.getProperty(el, "x") || 0;
       const startGsapY = gsap.getProperty(el, "y") || 0;
-      
+
       const handlePointerMove = (moveEvent) => {
         const deltaX = moveEvent.clientX - startX;
         const deltaY = moveEvent.clientY - startY;
-        
+
         let newWidth = startRect.width;
         let newHeight = startRect.height;
         let newX = startGsapX;
         let newY = startGsapY;
-        
-        if (direction.includes('e')) {
+
+        if (direction.includes("e")) {
           newWidth = Math.max(300, startRect.width + deltaX);
-        } else if (direction.includes('w')) {
+        } else if (direction.includes("w")) {
           const possibleWidth = startRect.width - deltaX;
           if (possibleWidth >= 300) {
             newWidth = possibleWidth;
@@ -114,16 +113,16 @@ const windowWrapper = (Component, windowKey) => {
             newX = startGsapX + (startRect.width - 300);
           }
         }
-        
-        if (direction.includes('s')) {
+
+        if (direction.includes("s")) {
           newHeight = Math.max(200, startRect.height + deltaY);
-        } else if (direction.includes('n')) {
+        } else if (direction.includes("n")) {
           let clampedDeltaY = deltaY;
           // Navbar is ~35px tall. Don't let the window's top edge go above it.
           if (startRect.top + clampedDeltaY < 35) {
             clampedDeltaY = 35 - startRect.top;
           }
-          
+
           const possibleHeight = startRect.height - clampedDeltaY;
           if (possibleHeight >= 200) {
             newHeight = possibleHeight;
@@ -133,22 +132,22 @@ const windowWrapper = (Component, windowKey) => {
             newY = startGsapY + (startRect.height - 200);
           }
         }
-        
+
         el.style.width = `${newWidth}px`;
         el.style.height = `${newHeight}px`;
-        el.style.maxWidth = 'none';
-        el.style.maxHeight = 'none';
-        
+        el.style.maxWidth = "none";
+        el.style.maxHeight = "none";
+
         if (newX !== startGsapX || newY !== startGsapY) {
           gsap.set(el, { x: newX, y: newY });
         }
       };
-      
+
       const handlePointerUp = () => {
         window.removeEventListener("pointermove", handlePointerMove);
         window.removeEventListener("pointerup", handlePointerUp);
       };
-      
+
       window.addEventListener("pointermove", handlePointerMove);
       window.addEventListener("pointerup", handlePointerUp);
     };
@@ -163,23 +162,45 @@ const windowWrapper = (Component, windowKey) => {
         <Component {...props} />
         {!isMobile && !windows[windowKey]?.isMaximized && !windows[windowKey]?.isMinimized && (
           <>
-            <div className="resize-handle resize-n" onPointerDown={(e) => handleResizeStart(e, 'n')} />
-            <div className="resize-handle resize-s" onPointerDown={(e) => handleResizeStart(e, 's')} />
-            <div className="resize-handle resize-e" onPointerDown={(e) => handleResizeStart(e, 'e')} />
-            <div className="resize-handle resize-w" onPointerDown={(e) => handleResizeStart(e, 'w')} />
-            <div className="resize-handle resize-ne" onPointerDown={(e) => handleResizeStart(e, 'ne')} />
-            <div className="resize-handle resize-nw" onPointerDown={(e) => handleResizeStart(e, 'nw')} />
-            <div className="resize-handle resize-se" onPointerDown={(e) => handleResizeStart(e, 'se')} />
-            <div className="resize-handle resize-sw" onPointerDown={(e) => handleResizeStart(e, 'sw')} />
+            <div
+              className="resize-handle resize-n"
+              onPointerDown={(e) => handleResizeStart(e, "n")}
+            />
+            <div
+              className="resize-handle resize-s"
+              onPointerDown={(e) => handleResizeStart(e, "s")}
+            />
+            <div
+              className="resize-handle resize-e"
+              onPointerDown={(e) => handleResizeStart(e, "e")}
+            />
+            <div
+              className="resize-handle resize-w"
+              onPointerDown={(e) => handleResizeStart(e, "w")}
+            />
+            <div
+              className="resize-handle resize-ne"
+              onPointerDown={(e) => handleResizeStart(e, "ne")}
+            />
+            <div
+              className="resize-handle resize-nw"
+              onPointerDown={(e) => handleResizeStart(e, "nw")}
+            />
+            <div
+              className="resize-handle resize-se"
+              onPointerDown={(e) => handleResizeStart(e, "se")}
+            />
+            <div
+              className="resize-handle resize-sw"
+              onPointerDown={(e) => handleResizeStart(e, "sw")}
+            />
           </>
         )}
       </section>
     );
   };
 
-  Wrapped.displayName = `WindowWrapper(${
-    Component.displayName || Component.name || "Component"
-  })`;
+  Wrapped.displayName = `WindowWrapper(${Component.displayName || Component.name || "Component"})`;
 
   return Wrapped;
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import useWindowsStore from "#store/window";
-import { dockApps } from "#constants";
+import useWindowsStore from "@store/window";
+import { dockApps } from "@constants";
 import LaunchpadSearch from "./LaunchpadSearch";
 import LaunchpadGrid from "./LaunchpadGrid";
 
@@ -31,12 +31,11 @@ const Launchpad = () => {
   if (!isOpen) return null;
 
   const appItems = dockApps.filter(
-    (app) =>
-      !["launchpad", "trash", "folder"].includes(app.id) && app.canOpen
+    (app) => !["launchpad", "trash", "folder"].includes(app.id) && app.canOpen,
   );
 
   const filteredApps = appItems.filter((app) =>
-    app.name.toLowerCase().includes(searchQuery.toLowerCase())
+    app.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleLaunch = (appId) => {

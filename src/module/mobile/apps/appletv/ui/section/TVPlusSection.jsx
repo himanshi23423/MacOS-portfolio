@@ -7,7 +7,8 @@ const CAROUSEL_ITEMS = [
     id: "severance",
     title: "Severance",
     category: "Sci-Fi Thriller • Apple TV+",
-    description: "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs.",
+    description:
+      "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs.",
     tmdbId: "95396",
     type: "tv",
     season: 1,
@@ -18,7 +19,8 @@ const CAROUSEL_ITEMS = [
     id: "ted_lasso",
     title: "Ted Lasso",
     category: "Comedy • Apple TV+",
-    description: "Small-time American football coach Ted Lasso is hired to coach a professional soccer team in England, despite having no experience coaching soccer.",
+    description:
+      "Small-time American football coach Ted Lasso is hired to coach a professional soccer team in England, despite having no experience coaching soccer.",
     tmdbId: "97546",
     type: "tv",
     season: 1,
@@ -29,7 +31,8 @@ const CAROUSEL_ITEMS = [
     id: "foundation",
     title: "Foundation",
     category: "Sci-Fi Fantasy • Apple TV+",
-    description: "Based on the award-winning novels by Isaac Asimov, Foundation chronicles a band of exiles on their monumental journey to save humanity and rebuild civilization amid the fall of the Galactic Empire.",
+    description:
+      "Based on the award-winning novels by Isaac Asimov, Foundation chronicles a band of exiles on their monumental journey to save humanity and rebuild civilization amid the fall of the Galactic Empire.",
     tmdbId: "91363",
     type: "tv",
     season: 1,
@@ -40,13 +43,14 @@ const CAROUSEL_ITEMS = [
     id: "silo",
     title: "Silo",
     category: "Sci-Fi Drama • Apple TV+",
-    description: "In a ruined and toxic future, a community exists in a giant underground silo that plunges hundreds of stories deep. There, people live in a society full of regulations they believe are meant to protect them.",
+    description:
+      "In a ruined and toxic future, a community exists in a giant underground silo that plunges hundreds of stories deep. There, people live in a society full of regulations they believe are meant to protect them.",
     tmdbId: "125988",
     type: "tv",
     season: 1,
     episode: 1,
     bgFallback: "bg-gradient-to-tr from-stone-900 to-amber-950",
-  }
+  },
 ];
 
 const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNext }) => {
@@ -60,12 +64,12 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
   // Fetch Carousel Backdrops
   useEffect(() => {
     const fetchBackdrops = async () => {
-      const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
       const backdrops = {};
       for (const item of CAROUSEL_ITEMS) {
         try {
           const res = await fetch(
-            `https://api.themoviedb.org/3/${item.type}/${item.tmdbId}?api_key=${apiKey}`
+            `https://api.themoviedb.org/3/${item.type}/${item.tmdbId}?api_key=${apiKey}`,
           );
           const data = await res.json();
           if (data.backdrop_path) {
@@ -92,17 +96,17 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
   useEffect(() => {
     const fetchAppleContent = async () => {
       setIsLoading(true);
-      const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
       try {
         // Popular Apple TV Shows (Network 2552)
         const tvRes = await fetch(
-          `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_networks=2552&sort_by=popularity.desc`
+          `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_networks=2552&sort_by=popularity.desc`,
         );
         const tvData = await tvRes.json();
 
         // Popular Apple TV Movies (Watch Provider 350, US region)
         const movieRes = await fetch(
-          `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_watch_providers=350&watch_region=US&sort_by=popularity.desc`
+          `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_watch_providers=350&watch_region=US&sort_by=popularity.desc`,
         );
         const movieData = await movieRes.json();
 
@@ -120,7 +124,11 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
           }));
 
           setPopularSeries(formattedTv.slice(0, 8));
-          setSciFiSeries(formattedTv.filter((s) => s.genres.includes(10765) || s.genres.includes(18)).slice(0, 8));
+          setSciFiSeries(
+            formattedTv
+              .filter((s) => s.genres.includes(10765) || s.genres.includes(18))
+              .slice(0, 8),
+          );
         }
 
         if (movieData.results) {
@@ -157,10 +165,45 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
 
   // Fallback static listings for mobile
   const fallbackSeries = [
-    { id: "sintel", title: "Sintel", category: "Fantasy • Apple TV+", duration: "15 min", tmdbId: "sintel", type: "movie", videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" },
-    { id: "bbb", title: "Big Buck Bunny", category: "Comedy • Apple TV+", duration: "10 min", tmdbId: "bbb", type: "movie", videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" },
-    { id: "elephants", title: "Elephant's Dream", category: "Sci-Fi • Apple TV+", duration: "11 min", tmdbId: "elephants", type: "movie", videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" },
-    { id: "tos", title: "Tears of Steel", category: "Action • Apple TV+", duration: "12 min", tmdbId: "tos", type: "movie", videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" },
+    {
+      id: "sintel",
+      title: "Sintel",
+      category: "Fantasy • Apple TV+",
+      duration: "15 min",
+      tmdbId: "sintel",
+      type: "movie",
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+    },
+    {
+      id: "bbb",
+      title: "Big Buck Bunny",
+      category: "Comedy • Apple TV+",
+      duration: "10 min",
+      tmdbId: "bbb",
+      type: "movie",
+      videoUrl:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    },
+    {
+      id: "elephants",
+      title: "Elephant's Dream",
+      category: "Sci-Fi • Apple TV+",
+      duration: "11 min",
+      tmdbId: "elephants",
+      type: "movie",
+      videoUrl:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    },
+    {
+      id: "tos",
+      title: "Tears of Steel",
+      category: "Action • Apple TV+",
+      duration: "12 min",
+      tmdbId: "tos",
+      type: "movie",
+      videoUrl:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+    },
   ];
 
   const finalSeries = popularSeries.length > 0 ? popularSeries : fallbackSeries;

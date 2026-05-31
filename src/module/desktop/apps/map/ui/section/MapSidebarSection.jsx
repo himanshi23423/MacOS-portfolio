@@ -4,8 +4,8 @@ import InfoPanel from "../components/InfoPanel";
 const MapSidebarSection = ({
   searchQuery,
   onSearchChange,
-  searchResults,
-  onSelectResult,
+  _searchResults,
+  _onSelectResult,
   isSidebarOpen,
   onToggleSidebar,
   activeTab,

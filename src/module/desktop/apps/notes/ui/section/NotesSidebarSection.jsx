@@ -16,7 +16,7 @@ const NotesSidebarSection = ({
   getFolderCount,
   handleCreateFolder,
   handleDeleteFolder,
-  stripHtml,
+  _stripHtml,
 }) => {
   const [newFolderName, setNewFolderName] = useState("");
   const [isAddingFolder, setIsAddingFolder] = useState(false);
@@ -31,11 +31,14 @@ const NotesSidebarSection = ({
   };
 
   return (
-    <div className={`absolute md:relative inset-y-0 left-0 w-64 md:w-60 lg:w-64 bg-[#f4f3ef] border-r border-[#d1d1d1] flex flex-col z-20 transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}>
-      
+    <div
+      className={`absolute md:relative inset-y-0 left-0 w-64 md:w-60 lg:w-64 bg-[#f4f3ef] border-r border-[#d1d1d1] flex flex-col z-20 transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+    >
       {/* Mobile Header Toggle */}
       <div className="flex items-center justify-between px-3 pt-3 pb-1 md:hidden">
-        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Folders</span>
+        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+          Folders
+        </span>
         <button onClick={onToggleSidebar} className="p-1 rounded hover:bg-gray-200">
           <X className="w-4 h-4 text-gray-500" />
         </button>
@@ -44,9 +47,11 @@ const NotesSidebarSection = ({
       {/* Folders List */}
       <div className="px-2.5 pt-2.5 pb-0 flex-1 overflow-y-auto min-h-0 flex flex-col">
         <div className="flex items-center justify-between px-2.5 py-1">
-          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Folders</span>
-          <button 
-            onClick={() => setIsAddingFolder(!isAddingFolder)} 
+          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+            Folders
+          </span>
+          <button
+            onClick={() => setIsAddingFolder(!isAddingFolder)}
             className="text-[#e4a52e] hover:text-[#d89216] p-0.5 rounded hover:bg-gray-200 transition-colors"
             title="New Folder"
           >
@@ -56,15 +61,20 @@ const NotesSidebarSection = ({
 
         {isAddingFolder && (
           <form onSubmit={onSubmitFolder} className="px-2.5 py-1.5 flex gap-1">
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Folder Name"
               value={newFolderName}
               onChange={(e) => setNewFolderName(e.target.value)}
               className="flex-1 text-xs px-2 py-1 border border-gray-300 rounded focus:border-[#e4a52e] outline-none bg-white text-gray-800"
               autoFocus
             />
-            <button type="submit" className="text-xs font-bold text-white bg-[#e4a52e] hover:bg-[#d89216] px-2 py-1 rounded">Add</button>
+            <button
+              type="submit"
+              className="text-xs font-bold text-white bg-[#e4a52e] hover:bg-[#d89216] px-2 py-1 rounded"
+            >
+              Add
+            </button>
           </form>
         )}
 
@@ -73,7 +83,7 @@ const NotesSidebarSection = ({
             const isCustom = folder.id !== "all" && folder.id !== "notes" && folder.id !== "quick";
             const isActive = activeFolderId === folder.id;
             return (
-              <div 
+              <div
                 key={folder.id}
                 className={`group flex items-center justify-between px-2.5 py-1.5 rounded-md text-sm transition-colors cursor-pointer ${
                   isActive
@@ -87,9 +97,11 @@ const NotesSidebarSection = ({
                   <span className="truncate">{folder.name}</span>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
-                  <span className="text-xs text-gray-400 group-hover:hidden">{getFolderCount(folder.id)}</span>
+                  <span className="text-xs text-gray-400 group-hover:hidden">
+                    {getFolderCount(folder.id)}
+                  </span>
                   {isCustom && (
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteFolder(folder.id);
@@ -142,7 +154,9 @@ const NotesSidebarSection = ({
                 >
                   <h4 className="font-bold text-xs truncate text-gray-900">{note.title}</h4>
                   <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-gray-500">
-                    <span className="shrink-0 font-bold text-[#e4a52e]">{formatDate(note.updatedAt)}</span>
+                    <span className="shrink-0 font-bold text-[#e4a52e]">
+                      {formatDate(note.updatedAt)}
+                    </span>
                     <span className="truncate text-gray-400 font-medium">{preview}</span>
                   </div>
                 </div>
@@ -151,7 +165,6 @@ const NotesSidebarSection = ({
           )}
         </div>
       </div>
-      
     </div>
   );
 };

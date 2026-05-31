@@ -4,16 +4,25 @@ import CallDialPad from "../components/CallDialPad";
 import { CONTACTS } from "../components/callData";
 
 const CallSidebarSection = ({
-  sidebarTab, setSidebarTab,
-  searchQuery, setSearchQuery,
+  sidebarTab,
+  setSidebarTab,
+  searchQuery,
+  setSearchQuery,
   onInitiateCall,
-  dialNumber, onDialPress, onBackspace, onClear, onInputChange,
-  isSidebarOpen, onCloseSidebar,
+  dialNumber,
+  onDialPress,
+  onBackspace,
+  onClear,
+  onInputChange,
+  isSidebarOpen,
+  _onCloseSidebar,
 }) => (
-  <aside className={`
+  <aside
+    className={`
     absolute sm:relative inset-y-0 left-0 w-64 bg-gray-100 border-r border-[#d1d1d1] flex flex-col z-30 transition-transform duration-300
     ${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}
-  `}>
+  `}
+  >
     <div className="p-3.5 flex justify-center border-b border-gray-200/60 bg-gray-100 shrink-0">
       <div className="flex bg-gray-200/80 p-0.5 rounded-lg w-full max-w-[200px]">
         <button

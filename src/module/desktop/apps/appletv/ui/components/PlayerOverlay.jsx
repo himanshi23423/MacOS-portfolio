@@ -14,8 +14,12 @@ import { useState } from "react";
 
 const formatTime = (timeInSecs) => {
   if (Number.isNaN(timeInSecs)) return "00:00";
-  const minutes = Math.floor(timeInSecs / 60).toString().padStart(2, "0");
-  const seconds = Math.floor(timeInSecs % 60).toString().padStart(2, "0");
+  const minutes = Math.floor(timeInSecs / 60)
+    .toString()
+    .padStart(2, "0");
+  const seconds = Math.floor(timeInSecs % 60)
+    .toString()
+    .padStart(2, "0");
   return `${minutes}:${seconds}`;
 };
 
@@ -40,15 +44,15 @@ const PlayerOverlay = ({
   onLoadedMetadata,
   onChangeEpisode, // Added callback to change episode/season
 }) => {
-  const [selectedSeason, setSelectedSeason] = useState(activeVideo?.season || 1);
-  const [selectedEpisode, setSelectedEpisode] = useState(activeVideo?.episode || 1);
+  const [_selectedSeason, setSelectedSeason] = useState(activeVideo?.season || 1);
+  const [_selectedEpisode, setSelectedEpisode] = useState(activeVideo?.episode || 1);
 
   if (!activeVideo) return null;
 
   const isStreaming = !!activeVideo.tmdbId;
   const isTvShow = isStreaming && activeVideo.type === "tv";
 
-  const apiBaseUrl = import.meta.env.VITE_VIDLINK_API_URL || "https://vidlink.pro";
+  const apiBaseUrl = process.env.NEXT_PUBLIC_VIDLINK_API_URL || "https://vidlink.pro";
 
   // Build the embed URL based on type
   const embedUrl = isTvShow
@@ -131,7 +135,8 @@ const PlayerOverlay = ({
               {isStreaming ? "Streaming via VidLink" : "Local Playback"}
             </span>
             <h2 className="text-lg font-bold text-white leading-tight">
-              {activeVideo.title} {isTvShow && `• S${activeVideo.season || 1} E${activeVideo.episode || 1}`}
+              {activeVideo.title}{" "}
+              {isTvShow && `• S${activeVideo.season || 1} E${activeVideo.episode || 1}`}
             </h2>
           </div>
           <button
@@ -228,10 +233,7 @@ const PlayerOverlay = ({
                 >
                   <RotateCcw className="w-5 h-5" />
                 </button>
-                <button
-                  onClick={onTogglePlay}
-                  className="text-neutral-300 hover:text-white"
-                >
+                <button onClick={onTogglePlay} className="text-neutral-300 hover:text-white">
                   {isPlaying ? (
                     <Pause className="w-5 h-5 fill-neutral-300" />
                   ) : (
@@ -248,15 +250,8 @@ const PlayerOverlay = ({
               </div>
 
               <div className="flex items-center gap-4">
-                <button
-                  onClick={onToggleMute}
-                  className="text-neutral-300 hover:text-white"
-                >
-                  {isMuted ? (
-                    <VolumeX className="w-5 h-5" />
-                  ) : (
-                    <Volume2 className="w-5 h-5" />
-                  )}
+                <button onClick={onToggleMute} className="text-neutral-300 hover:text-white">
+                  {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
                 </button>
                 <button
                   onClick={() => {

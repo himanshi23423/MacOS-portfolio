@@ -1,4 +1,4 @@
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 
 const ImageToolbar = ({ name }) => (
   <div

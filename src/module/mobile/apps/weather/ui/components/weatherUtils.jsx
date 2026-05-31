@@ -2,25 +2,62 @@ import React from "react";
 import { Sun, Cloud, CloudRain, CloudFog } from "lucide-react";
 
 export const getSafeTemp = (cityObj) => {
-  if (!cityObj) return { tempC: "--", tempF: "--", highC: "--", highF: "--", lowC: "--", lowF: "--" };
+  if (!cityObj)
+    return { tempC: "--", tempF: "--", highC: "--", highF: "--", lowC: "--", lowF: "--" };
 
-  const tempC = cityObj.tempC !== undefined ? cityObj.tempC :
-                (cityObj.temp !== undefined ? (cityObj.temp <= 45 ? cityObj.temp : Math.round((cityObj.temp - 32) * 5 / 9)) : "--");
+  const tempC =
+    cityObj.tempC !== undefined
+      ? cityObj.tempC
+      : cityObj.temp !== undefined
+        ? cityObj.temp <= 45
+          ? cityObj.temp
+          : Math.round(((cityObj.temp - 32) * 5) / 9)
+        : "--";
 
-  const tempF = cityObj.tempF !== undefined ? cityObj.tempF :
-                (cityObj.temp !== undefined ? (cityObj.temp > 45 ? cityObj.temp : Math.round((cityObj.temp * 9 / 5) + 32)) : "--");
+  const tempF =
+    cityObj.tempF !== undefined
+      ? cityObj.tempF
+      : cityObj.temp !== undefined
+        ? cityObj.temp > 45
+          ? cityObj.temp
+          : Math.round((cityObj.temp * 9) / 5 + 32)
+        : "--";
 
-  const highC = cityObj.highC !== undefined ? cityObj.highC :
-                (cityObj.high !== undefined ? (cityObj.high <= 45 ? cityObj.high : Math.round((cityObj.high - 32) * 5 / 9)) : "--");
+  const highC =
+    cityObj.highC !== undefined
+      ? cityObj.highC
+      : cityObj.high !== undefined
+        ? cityObj.high <= 45
+          ? cityObj.high
+          : Math.round(((cityObj.high - 32) * 5) / 9)
+        : "--";
 
-  const highF = cityObj.highF !== undefined ? cityObj.highF :
-                (cityObj.high !== undefined ? (cityObj.high > 45 ? cityObj.high : Math.round((cityObj.high * 9 / 5) + 32)) : "--");
+  const highF =
+    cityObj.highF !== undefined
+      ? cityObj.highF
+      : cityObj.high !== undefined
+        ? cityObj.high > 45
+          ? cityObj.high
+          : Math.round((cityObj.high * 9) / 5 + 32)
+        : "--";
 
-  const lowC = cityObj.lowC !== undefined ? cityObj.lowC :
-                (cityObj.low !== undefined ? (cityObj.low <= 45 ? cityObj.low : Math.round((cityObj.low - 32) * 5 / 9)) : "--");
+  const lowC =
+    cityObj.lowC !== undefined
+      ? cityObj.lowC
+      : cityObj.low !== undefined
+        ? cityObj.low <= 45
+          ? cityObj.low
+          : Math.round(((cityObj.low - 32) * 5) / 9)
+        : "--";
 
-  const lowF = cityObj.lowF !== undefined ? cityObj.lowF :
-                (cityObj.low !== undefined ? (cityObj.low > 45 ? cityObj.low : Math.round((cityObj.low * 9 / 5) + 32)) : "--");
+  const lowF =
+    cityObj.lowF !== undefined
+      ? cityObj.lowF
+      : cityObj.low !== undefined
+        ? cityObj.low > 45
+          ? cityObj.low
+          : Math.round((cityObj.low * 9) / 5 + 32)
+        : "--";
 
   return { tempC, tempF, highC, highF, lowC, lowF };
 };
@@ -28,7 +65,7 @@ export const getSafeTemp = (cityObj) => {
 export const parseWttrResponse = (text) => {
   const trimmed = text.trim();
   const match = trimmed.match(/^(.*?)\s+([+-]?\d+°[CF])$/i);
-  let condition = "Clear";
+  let condition;
   let tempStr = "65°F";
   if (match) {
     condition = match[1].trim();
@@ -58,10 +95,10 @@ export const generateWeatherData = (cityName, condition, tempStr) => {
     const unit = tempMatch[2].toUpperCase();
     if (unit.includes("C")) {
       tempC = val;
-      tempF = Math.round((val * 9/5) + 32);
+      tempF = Math.round((val * 9) / 5 + 32);
     } else {
       tempF = val;
-      tempC = Math.round((val - 32) * 5/9);
+      tempC = Math.round(((val - 32) * 5) / 9);
     }
   } else {
     const numMatch = tempStr.match(/([+-]?\d+)/);
@@ -69,10 +106,10 @@ export const generateWeatherData = (cityName, condition, tempStr) => {
       const val = parseInt(numMatch[1], 10);
       if (val <= 45) {
         tempC = val;
-        tempF = Math.round((val * 9/5) + 32);
+        tempF = Math.round((val * 9) / 5 + 32);
       } else {
         tempF = val;
-        tempC = Math.round((val - 32) * 5/9);
+        tempC = Math.round(((val - 32) * 5) / 9);
       }
     }
   }
@@ -83,13 +120,28 @@ export const generateWeatherData = (cityName, condition, tempStr) => {
   if (condLower.includes("cloud") || condLower.includes("overcast")) {
     icon = "cloudy";
     bgClass = "from-zinc-400 to-zinc-600";
-  } else if (condLower.includes("rain") || condLower.includes("drizzle") || condLower.includes("shower") || condLower.includes("precip")) {
+  } else if (
+    condLower.includes("rain") ||
+    condLower.includes("drizzle") ||
+    condLower.includes("shower") ||
+    condLower.includes("precip")
+  ) {
     icon = "rain";
     bgClass = "from-slate-500 to-slate-700";
-  } else if (condLower.includes("fog") || condLower.includes("haze") || condLower.includes("mist") || condLower.includes("smoke")) {
+  } else if (
+    condLower.includes("fog") ||
+    condLower.includes("haze") ||
+    condLower.includes("mist") ||
+    condLower.includes("smoke")
+  ) {
     icon = "haze";
     bgClass = "from-amber-600/70 to-orange-700/80";
-  } else if (condLower.includes("snow") || condLower.includes("ice") || condLower.includes("sleet") || condLower.includes("frost")) {
+  } else if (
+    condLower.includes("snow") ||
+    condLower.includes("ice") ||
+    condLower.includes("sleet") ||
+    condLower.includes("frost")
+  ) {
     icon = "cloudy";
     bgClass = "from-blue-200 to-sky-400";
   } else if (condLower.includes("sunny") || condLower.includes("clear")) {
@@ -115,20 +167,20 @@ export const generateWeatherData = (cityName, condition, tempStr) => {
   const windAngle = Math.floor(Math.random() * 360);
   const humidity = Math.floor(Math.random() * 35) + 45;
   const visibility = Math.floor(Math.random() * 5) + 6;
-  const sunrise = `05:${String(Math.floor(Math.random() * 30) + 20).padStart(2, '0')} AM`;
-  const sunset = `08:${String(Math.floor(Math.random() * 30) + 10).padStart(2, '0')} PM`;
+  const sunrise = `05:${String(Math.floor(Math.random() * 30) + 20).padStart(2, "0")} AM`;
+  const sunset = `08:${String(Math.floor(Math.random() * 30) + 10).padStart(2, "0")} PM`;
 
   const currentHour = new Date().getHours();
   const hourly = Array.from({ length: 12 }).map((_, i) => {
     const hr = (currentHour + i) % 24;
     const timeLabel = i === 0 ? "Now" : `${hr % 12 || 12} ${hr >= 12 ? "PM" : "AM"}`;
-    const offsetC = Math.round(Math.sin((hr - 6) / 24 * 2 * Math.PI) * 3);
+    const offsetC = Math.round(Math.sin(((hr - 6) / 24) * 2 * Math.PI) * 3);
     const offsetF = Math.round(offsetC * 1.8);
     return {
       time: timeLabel,
       tempC: tempC + offsetC,
       tempF: tempF + offsetF,
-      icon: offsetC > 1 ? "sunny" : offsetC < -1 ? "cloudy" : icon
+      icon: offsetC > 1 ? "sunny" : offsetC < -1 ? "cloudy" : icon,
     };
   });
 
@@ -145,18 +197,33 @@ export const generateWeatherData = (cityName, condition, tempStr) => {
       tempMaxC: tempC + offsetMaxC,
       tempMaxF: tempF + Math.round(offsetMaxC * 1.8),
       icon: i % 3 === 0 ? icon : i % 3 === 1 ? "mostly-sunny" : "cloudy",
-      label: condition
+      label: condition,
     };
   });
 
   return {
     name: cityName,
-    tempC, tempF, condition, bgClass,
-    highC, highF, lowC, lowF,
-    aqi, aqiLabel, uv, uvLabel,
-    windSpeed, windDir, windAngle,
-    humidity, visibility, sunrise, sunset,
-    hourly, forecast
+    tempC,
+    tempF,
+    condition,
+    bgClass,
+    highC,
+    highF,
+    lowC,
+    lowF,
+    aqi,
+    aqiLabel,
+    uv,
+    uvLabel,
+    windSpeed,
+    windDir,
+    windAngle,
+    humidity,
+    visibility,
+    sunrise,
+    sunset,
+    hourly,
+    forecast,
   };
 };
 

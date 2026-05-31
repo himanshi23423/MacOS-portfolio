@@ -1,5 +1,5 @@
 import React from "react";
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import useCalendar from "./useCalendar";
 import CalendarSection from "../section/CalendarSection";
 

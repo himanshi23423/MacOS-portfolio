@@ -1,10 +1,21 @@
 import React, { useState } from "react";
-import { Bell, Shield, Info, Check, ToggleLeft, ToggleRight, ArrowLeft, Volume2, Monitor, MessageSquare } from "lucide-react";
-import useWindowsStore from "#store/window";
+import {
+  Bell,
+  Shield,
+  Info,
+  Check,
+  ToggleLeft,
+  ToggleRight,
+  ArrowLeft,
+  Volume2,
+  Monitor,
+  MessageSquare,
+} from "lucide-react";
+import useWindowsStore from "@store/window";
 
 const SettingsNotificationsSection = () => {
-  const { systemSettings, updateSystemSetting } = useWindowsStore();
-  
+  const { _systemSettings, _updateSystemSetting } = useWindowsStore();
+
   // Selected app for detailed configuration (null means show main list)
   const [selectedApp, setSelectedApp] = useState(null);
 
@@ -15,26 +26,26 @@ const SettingsNotificationsSection = () => {
     System: { enabled: true, style: "alerts", sound: true, badge: true, lockscreen: true },
     Mail: { enabled: true, style: "banners", sound: true, badge: true, lockscreen: false },
     Telegram: { enabled: false, style: "banners", sound: true, badge: false, lockscreen: false },
-    "App Store": { enabled: true, style: "banners", sound: false, badge: true, lockscreen: true }
+    "App Store": { enabled: true, style: "banners", sound: false, badge: true, lockscreen: true },
   });
 
   const toggleAppSetting = (appName, key) => {
-    setAppConfigs(prev => ({
+    setAppConfigs((prev) => ({
       ...prev,
       [appName]: {
         ...prev[appName],
-        [key]: !prev[appName][key]
-      }
+        [key]: !prev[appName][key],
+      },
     }));
   };
 
   const setAppStyle = (appName, styleName) => {
-    setAppConfigs(prev => ({
+    setAppConfigs((prev) => ({
       ...prev,
       [appName]: {
         ...prev[appName],
-        style: styleName
-      }
+        style: styleName,
+      },
     }));
   };
 
@@ -44,17 +55,17 @@ const SettingsNotificationsSection = () => {
     { name: "System", icon: "System", isSvg: true },
     { name: "Mail", icon: "✉️", isEmoji: true },
     { name: "Telegram", icon: "✈️", isEmoji: true },
-    { name: "App Store", icon: "🌐", isEmoji: true }
+    { name: "App Store", icon: "🌐", isEmoji: true },
   ];
 
   if (selectedApp) {
     const config = appConfigs[selectedApp];
-    const appData = apps.find(a => a.name === selectedApp);
-    
+    const appData = apps.find((a) => a.name === selectedApp);
+
     return (
       <div className="max-w-2xl mx-auto p-8 animate-in fade-in slide-in-from-left-2 duration-200">
         {/* Header Navigation */}
-        <button 
+        <button
           onClick={() => setSelectedApp(null)}
           className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-[#007aff] transition-colors focus:outline-none mb-6 p-1 rounded hover:bg-gray-150"
         >
@@ -76,7 +87,9 @@ const SettingsNotificationsSection = () => {
           )}
           <div>
             <h2 className="text-base font-extrabold text-gray-900 leading-tight">{selectedApp}</h2>
-            <p className="text-[11px] text-gray-400 font-semibold mt-0.5">Customize alerts and banners for this app</p>
+            <p className="text-[11px] text-gray-400 font-semibold mt-0.5">
+              Customize alerts and banners for this app
+            </p>
           </div>
         </div>
 
@@ -84,9 +97,11 @@ const SettingsNotificationsSection = () => {
         <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6 shadow-sm flex justify-between items-center">
           <div>
             <span className="text-[13px] font-bold text-gray-900 block">Allow Notifications</span>
-            <span className="text-[11px] text-gray-400 font-semibold">Enable alerts from this application</span>
+            <span className="text-[11px] text-gray-400 font-semibold">
+              Enable alerts from this application
+            </span>
           </div>
-          <button 
+          <button
             onClick={() => toggleAppSetting(selectedApp, "enabled")}
             className="focus:outline-none"
           >
@@ -102,13 +117,17 @@ const SettingsNotificationsSection = () => {
           <div className="space-y-6 animate-in fade-in duration-200">
             {/* Visual Notification Style Selector */}
             <div>
-              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-3">Alert Style</h3>
+              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-3">
+                Alert Style
+              </h3>
               <div className="grid grid-cols-3 gap-4">
                 {/* None Style */}
-                <div 
+                <div
                   onClick={() => setAppStyle(selectedApp, "none")}
                   className={`border rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer transition-all ${
-                    config.style === "none" ? "border-[#007aff] bg-blue-50/20 ring-1 ring-blue-500" : "border-gray-200 hover:bg-gray-50"
+                    config.style === "none"
+                      ? "border-[#007aff] bg-blue-50/20 ring-1 ring-blue-500"
+                      : "border-gray-200 hover:bg-gray-50"
                   }`}
                 >
                   <div className="w-full h-16 bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200 shadow-inner">
@@ -118,10 +137,12 @@ const SettingsNotificationsSection = () => {
                 </div>
 
                 {/* Banners Style */}
-                <div 
+                <div
                   onClick={() => setAppStyle(selectedApp, "banners")}
                   className={`border rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer transition-all ${
-                    config.style === "banners" ? "border-[#007aff] bg-blue-50/20 ring-1 ring-blue-500" : "border-gray-200 hover:bg-gray-50"
+                    config.style === "banners"
+                      ? "border-[#007aff] bg-blue-50/20 ring-1 ring-blue-500"
+                      : "border-gray-200 hover:bg-gray-50"
                   }`}
                 >
                   <div className="w-full h-16 bg-gray-100 rounded-lg relative border border-gray-200 shadow-inner overflow-hidden flex items-start justify-end p-1.5">
@@ -135,10 +156,12 @@ const SettingsNotificationsSection = () => {
                 </div>
 
                 {/* Alerts Style */}
-                <div 
+                <div
                   onClick={() => setAppStyle(selectedApp, "alerts")}
                   className={`border rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer transition-all ${
-                    config.style === "alerts" ? "border-[#007aff] bg-blue-50/20 ring-1 ring-blue-500" : "border-gray-200 hover:bg-gray-50"
+                    config.style === "alerts"
+                      ? "border-[#007aff] bg-blue-50/20 ring-1 ring-blue-500"
+                      : "border-gray-200 hover:bg-gray-50"
                   }`}
                 >
                   <div className="w-full h-16 bg-gray-100 rounded-lg relative border border-gray-200 shadow-inner overflow-hidden flex items-start justify-end p-1.5">
@@ -158,7 +181,9 @@ const SettingsNotificationsSection = () => {
 
             {/* Custom checkboxes / toggles */}
             <div>
-              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">Options</h3>
+              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">
+                Options
+              </h3>
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm divide-y divide-gray-100 text-xs text-gray-700">
                 <div className="flex items-center justify-between p-3.5 px-4">
                   <div className="flex items-center gap-2.5">
@@ -209,16 +234,17 @@ const SettingsNotificationsSection = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
-      
       {/* Global Config Panel */}
-      <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">Global Settings</h3>
+      <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">
+        Global Settings
+      </h3>
       <div className="w-full bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm p-4 mb-6 text-xs text-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bell size={15} className="text-[#007aff]" />
             <span className="font-semibold">Show Previews</span>
           </div>
-          <select 
+          <select
             className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded px-2.5 py-1 text-gray-700 font-semibold focus:outline-none"
             defaultValue="always"
           >
@@ -229,21 +255,24 @@ const SettingsNotificationsSection = () => {
         </div>
       </div>
 
-      <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">Notification Style</h3>
+      <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">
+        Notification Style
+      </h3>
       <div className="w-full bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm divide-y divide-gray-100">
         {apps.map((app) => {
           const config = appConfigs[app.name];
           let subText = "Off";
           if (config.enabled) {
             const parts = [];
-            if (config.style !== "none") parts.push(config.style.charAt(0).toUpperCase() + config.style.slice(1));
+            if (config.style !== "none")
+              parts.push(config.style.charAt(0).toUpperCase() + config.style.slice(1));
             if (config.sound) parts.push("Sounds");
             if (config.badge) parts.push("Badges");
             subText = parts.length > 0 ? parts.join(", ") : "None";
           }
-          
+
           return (
-            <div 
+            <div
               key={app.name}
               onClick={() => setSelectedApp(app.name)}
               className="flex items-center justify-between p-3.5 px-4 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
@@ -274,14 +303,30 @@ const SettingsNotificationsSection = () => {
 };
 
 const ToggleRightActive = ({ size, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className={className}
+  >
     <rect x="1" y="5" width="22" height="14" rx="7" fill="currentColor" fillOpacity="0.15" />
     <circle cx="16" cy="12" r="5" fill="currentColor" />
   </svg>
 );
 
 const ToggleRightInactive = ({ size, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className={className}
+  >
     <rect x="1" y="5" width="22" height="14" rx="7" fill="none" stroke="currentColor" />
     <circle cx="8" cy="12" r="5" fill="currentColor" />
   </svg>

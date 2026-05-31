@@ -1,6 +1,6 @@
-import WindowControls from "#components/WindowControls";
-import windowWrapper from "#hoc/windowWrapper";
-import useWindowsStore from "#store/window";
+import WindowControls from "@components/WindowControls";
+import windowWrapper from "@hoc/windowWrapper";
+import useWindowsStore from "@store/window";
 import { useState, useEffect } from "react";
 import ImageToolbar from "./ImageToolbar";
 import ImageViewer from "./ImageViewer";
@@ -50,7 +50,13 @@ const Image = () => {
           </p>
           <div style={{ width: 60 }} />
         </div>
-        <ImageViewer imageUrl={imageUrl} imageMobUrl={imageMobUrl} name={name} id={id} isMobile={true} />
+        <ImageViewer
+          imageUrl={imageUrl}
+          imageMobUrl={imageMobUrl}
+          name={name}
+          id={id}
+          isMobile={true}
+        />
       </>
     );
   }
@@ -58,7 +64,13 @@ const Image = () => {
   return (
     <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden">
       <ImageToolbar name={name} />
-      <ImageViewer imageUrl={imageUrl} imageMobUrl={imageMobUrl} name={name} id={id} isMobile={false} />
+      <ImageViewer
+        imageUrl={imageUrl}
+        imageMobUrl={imageMobUrl}
+        name={name}
+        id={id}
+        isMobile={false}
+      />
     </div>
   );
 };

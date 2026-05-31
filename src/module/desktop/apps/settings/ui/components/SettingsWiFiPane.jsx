@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Wifi, Lock, Check, Loader2, Info, RefreshCw } from "lucide-react";
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 
 const SettingsWiFiPane = () => {
   const { systemSettings, updateSystemSetting, toggleSystemSetting } = useWindowsStore();
   const { wifi, activeWifiNetwork } = systemSettings;
   const [connectingTo, setConnectingTo] = useState(null);
-  
+
   // Scanning & refreshing states
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [promptingNetwork, setPromptingNetwork] = useState(null);
@@ -70,22 +70,25 @@ const SettingsWiFiPane = () => {
       {/* Toggle Wifi Card */}
       <div className="flex items-center justify-between bg-white rounded-xl border border-gray-200/80 p-4 mb-6 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-300 ${
-            wifi ? "bg-[#007aff]" : "bg-gray-400"
-          }`}>
+          <div
+            className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-300 ${
+              wifi ? "bg-[#007aff]" : "bg-gray-400"
+            }`}
+          >
             <Wifi size={20} />
           </div>
           <div>
             <h3 className="font-semibold text-gray-900">Wi-Fi</h3>
             <p className="text-[12px] text-gray-500">
-              {wifi ? (activeWifiNetwork ? `Connected to ${activeWifiNetwork}` : "On, Not Connected") : "Off"}
+              {wifi
+                ? activeWifiNetwork
+                  ? `Connected to ${activeWifiNetwork}`
+                  : "On, Not Connected"
+                : "Off"}
             </p>
           </div>
         </div>
-        <button 
-          onClick={handleToggle}
-          className="focus:outline-none"
-        >
+        <button onClick={handleToggle} className="focus:outline-none">
           {wifi ? (
             <ToggleRightActive size={36} className="text-[#007aff] cursor-pointer" />
           ) : (
@@ -99,13 +102,18 @@ const SettingsWiFiPane = () => {
           {/* Available Networks */}
           <div>
             <div className="flex items-center justify-between ml-1 mb-2">
-              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Available Networks</h3>
-              <button 
+              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                Available Networks
+              </h3>
+              <button
                 onClick={handleRefresh}
                 disabled={isRefreshing}
                 className="flex items-center gap-1 text-[10px] font-bold text-gray-500 hover:text-[#007aff] disabled:text-gray-300 transition-colors focus:outline-none p-1 rounded hover:bg-gray-100"
               >
-                <RefreshCw size={11} className={isRefreshing ? "animate-spin text-[#007aff]" : ""} />
+                <RefreshCw
+                  size={11}
+                  className={isRefreshing ? "animate-spin text-[#007aff]" : ""}
+                />
                 <span>{isRefreshing ? "Scanning..." : "Scan"}</span>
               </button>
             </div>
@@ -113,7 +121,9 @@ const SettingsWiFiPane = () => {
             {isRefreshing ? (
               <div className="bg-white border border-gray-200 rounded-xl p-8 text-center text-gray-400 shadow-sm flex flex-col items-center justify-center">
                 <Loader2 size={24} className="animate-spin text-[#007aff] mb-2" />
-                <span className="text-[12px] font-semibold text-gray-500">Scanning for networks...</span>
+                <span className="text-[12px] font-semibold text-gray-500">
+                  Scanning for networks...
+                </span>
               </div>
             ) : (
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm divide-y divide-gray-100">
@@ -121,21 +131,26 @@ const SettingsWiFiPane = () => {
                   const isCurrent = activeWifiNetwork === net.name;
                   const isConnecting = connectingTo === net.name;
                   return (
-                    <div 
+                    <div
                       key={net.name}
                       onClick={() => !isCurrent && connectToNetwork(net)}
                       className={`flex items-center justify-between p-3.5 px-4 transition-all duration-150 ${
-                        isCurrent 
-                          ? "bg-blue-50/30" 
-                          : "hover:bg-gray-50 cursor-pointer"
+                        isCurrent ? "bg-blue-50/30" : "hover:bg-gray-50 cursor-pointer"
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <Wifi size={15} className={isCurrent ? "text-[#007aff]" : "text-gray-600"} />
-                        <span className={`text-[13px] font-semibold ${isCurrent ? "text-[#007aff]" : "text-gray-700"}`}>
+                        <Wifi
+                          size={15}
+                          className={isCurrent ? "text-[#007aff]" : "text-gray-600"}
+                        />
+                        <span
+                          className={`text-[13px] font-semibold ${isCurrent ? "text-[#007aff]" : "text-gray-700"}`}
+                        >
                           {net.name}
                         </span>
-                        {isConnecting && <Loader2 size={13} className="animate-spin text-[#007aff]" />}
+                        {isConnecting && (
+                          <Loader2 size={13} className="animate-spin text-[#007aff]" />
+                        )}
                       </div>
                       <div className="flex items-center gap-3">
                         {net.locked && <Lock size={12} className="text-gray-400" />}
@@ -178,7 +193,9 @@ const SettingsWiFiPane = () => {
         <div className="bg-white border border-gray-200 rounded-xl p-8 text-center text-gray-400 shadow-sm">
           <Wifi size={32} className="mx-auto mb-3 opacity-30" />
           <p className="text-[13px] font-semibold text-gray-500">Wi-Fi is turned off.</p>
-          <p className="text-[11px] text-gray-400 mt-1">Enable Wi-Fi to scan and connect to local wireless networks.</p>
+          <p className="text-[11px] text-gray-400 mt-1">
+            Enable Wi-Fi to scan and connect to local wireless networks.
+          </p>
         </div>
       )}
 
@@ -189,9 +206,12 @@ const SettingsWiFiPane = () => {
             <div className="w-10 h-10 rounded-full bg-[#007aff]/10 text-[#007aff] flex items-center justify-center mx-auto mb-3">
               <Wifi size={20} />
             </div>
-            <h4 className="text-[14px] font-bold text-gray-900 leading-tight">Wi-Fi Password Required</h4>
+            <h4 className="text-[14px] font-bold text-gray-900 leading-tight">
+              Wi-Fi Password Required
+            </h4>
             <p className="text-[11px] text-gray-500 mt-1 mb-4 font-medium">
-              Enter the security password for <br /><strong>&ldquo;{promptingNetwork.name}&rdquo;</strong>
+              Enter the security password for <br />
+              <strong>&ldquo;{promptingNetwork.name}&rdquo;</strong>
             </p>
             <form onSubmit={handlePasswordSubmit} className="space-y-3.5">
               <input
@@ -227,14 +247,30 @@ const SettingsWiFiPane = () => {
 };
 
 const ToggleRightActive = ({ size, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className={className}
+  >
     <rect x="1" y="5" width="22" height="14" rx="7" fill="currentColor" fillOpacity="0.15" />
     <circle cx="16" cy="12" r="5" fill="currentColor" />
   </svg>
 );
 
 const ToggleRightInactive = ({ size, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className={className}
+  >
     <rect x="1" y="5" width="22" height="14" rx="7" fill="none" stroke="currentColor" />
     <circle cx="8" cy="12" r="5" fill="currentColor" />
   </svg>

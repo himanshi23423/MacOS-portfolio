@@ -2,13 +2,22 @@ import { Plus } from "lucide-react";
 import { CATEGORIES, DAYS_SHORT } from "./calendarData";
 
 const CalendarGrid = ({
-  gridCells, getEventsForDate, isToday, isSelected,
-  selectedDate, setSelectedDate, triggerAddEventOnDate, setDayEventsPopover
+  gridCells,
+  getEventsForDate,
+  isToday,
+  isSelected,
+  _selectedDate,
+  setSelectedDate,
+  triggerAddEventOnDate,
+  setDayEventsPopover,
 }) => (
   <main className="flex-1 flex flex-col bg-white overflow-hidden h-full min-w-0">
     <div className="grid grid-cols-7 border-b border-gray-100 py-2 shrink-0 bg-gray-50/50">
       {DAYS_SHORT.map((day) => (
-        <div key={day} className="text-center text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+        <div
+          key={day}
+          className="text-center text-[10px] font-bold text-gray-400 uppercase tracking-wider"
+        >
           {day}
         </div>
       ))}
@@ -56,7 +65,7 @@ const CalendarGrid = ({
             <div className="flex-1 overflow-y-auto thin-scrollbar space-y-1 mt-0.5">
               <div className="hidden md:block space-y-0.5">
                 {cellEvents.map((ev) => {
-                  const cat = CATEGORIES.find(c => c.id === ev.category);
+                  const cat = CATEGORIES.find((c) => c.id === ev.category);
                   return (
                     <div
                       key={ev.id}
@@ -79,7 +88,7 @@ const CalendarGrid = ({
 
               <div className="flex md:hidden flex-wrap gap-0.5 justify-center mt-1">
                 {cellEvents.map((ev) => {
-                  const cat = CATEGORIES.find(c => c.id === ev.category);
+                  const cat = CATEGORIES.find((c) => c.id === ev.category);
                   return (
                     <span
                       key={ev.id}

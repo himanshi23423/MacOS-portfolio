@@ -25,8 +25,8 @@ body {
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build"
+    "dev": "next",
+    "build": "next build"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -48,12 +48,27 @@ Run the dev server:
 \`\`\`bash
 bun run dev
 \`\`\`
-`
+`,
 };
 
 export const extensionsList = [
-  { name: "GitHub Copilot", desc: "Your AI pair programmer", publisher: "GitHub", version: "v1.254" },
+  {
+    name: "GitHub Copilot",
+    desc: "Your AI pair programmer",
+    publisher: "GitHub",
+    version: "v1.254",
+  },
   { name: "Prettier", desc: "Opinionated code formatter", publisher: "Prettier", version: "v10.2" },
-  { name: "Tailwind CSS IntelliSense", desc: "Intelligent Tailwind CSS tooling", publisher: "Tailwind Labs", version: "v0.11" },
-  { name: "GitLens", desc: "Supercharge Git within VS Code", publisher: "GitKraken", version: "v15.0" },
+  {
+    name: "Tailwind CSS IntelliSense",
+    desc: "Intelligent Tailwind CSS tooling",
+    publisher: "Tailwind Labs",
+    version: "v0.11",
+  },
+  {
+    name: "GitLens",
+    desc: "Supercharge Git within VS Code",
+    publisher: "GitKraken",
+    version: "v15.0",
+  },
 ];

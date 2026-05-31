@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { projects, socials } from "#constants";
+import { projects, socials } from "@constants";
 import { SafariMobileHeader } from "../components/SafariToolbar";
 import SafariToolbarSection from "./SafariToolbarSection";
 import SafariSidebarSection from "./SafariSidebarSection";

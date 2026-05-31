@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Volume, Volume1, Volume2, VolumeX, Info, Check } from "lucide-react";
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 
 const SettingsSoundSection = () => {
   const { music, setMusicState, systemSettings } = useWindowsStore();
@@ -19,20 +19,18 @@ const SettingsSoundSection = () => {
     const val = Number(e.target.value);
     setMusicState({
       volume: val,
-      isMuted: val === 0
+      isMuted: val === 0,
     });
   };
 
   const toggleMute = () => {
     setMusicState({
-      isMuted: !isMuted
+      isMuted: !isMuted,
     });
   };
 
   // Compile active outputs dynamically based on Bluetooth connection states
-  const outputDevices = [
-    { name: "MacBook Pro Speakers", type: "Built-in", available: true }
-  ];
+  const outputDevices = [{ name: "MacBook Pro Speakers", type: "Built-in", available: true }];
 
   if (bluetoothDevices?.airpods) {
     outputDevices.push({ name: "AirPods Pro", type: "Bluetooth", available: true });
@@ -43,14 +41,14 @@ const SettingsSoundSection = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-8 animate-in fade-in slide-in-from-bottom-2 duration-300 space-y-6">
-      
       {/* Volume Control Card */}
-      <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">Volume & Output</h3>
+      <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">
+        Volume & Output
+      </h3>
       <div className="w-full bg-white rounded-xl border border-gray-200 p-5 shadow-sm space-y-4">
-        
         {/* Slider row */}
         <div className="flex items-center gap-4">
-          <button 
+          <button
             onClick={toggleMute}
             className="text-gray-500 hover:text-gray-700 transition-colors focus:outline-none p-1 rounded hover:bg-gray-100"
           >
@@ -62,9 +60,9 @@ const SettingsSoundSection = () => {
               <Volume2 size={18} />
             )}
           </button>
-          
-          <input 
-            type="range" 
+
+          <input
+            type="range"
             min="0"
             max="100"
             value={isMuted ? 0 : volume}
@@ -72,7 +70,7 @@ const SettingsSoundSection = () => {
             className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
             style={{ outline: "none" }}
           />
-          
+
           <span className="text-[12px] font-mono text-gray-500 w-8 text-right font-semibold">
             {isMuted ? "Mute" : `${volume}%`}
           </span>
@@ -80,7 +78,9 @@ const SettingsSoundSection = () => {
 
         {/* Output Device list */}
         <div className="border-t border-gray-100 pt-3">
-          <span className="text-[10px] font-bold text-gray-400 uppercase block mb-2">Select Output Device</span>
+          <span className="text-[10px] font-bold text-gray-400 uppercase block mb-2">
+            Select Output Device
+          </span>
           <div className="border border-gray-200 rounded-lg overflow-hidden divide-y divide-gray-100 bg-gray-50/40">
             {outputDevices.map((device) => {
               const isSelected = activeOutput === device.name;
@@ -94,7 +94,9 @@ const SettingsSoundSection = () => {
                 >
                   <div className="flex items-center gap-2.5">
                     <Volume size={14} className={isSelected ? "text-[#007aff]" : "text-gray-400"} />
-                    <span className={`text-[12.5px] font-semibold ${isSelected ? "text-[#007aff]" : "text-gray-800"}`}>
+                    <span
+                      className={`text-[12.5px] font-semibold ${isSelected ? "text-[#007aff]" : "text-gray-800"}`}
+                    >
                       {device.name}
                     </span>
                   </div>
@@ -119,7 +121,7 @@ const SettingsSoundSection = () => {
         </div>
         <div className="flex items-center gap-3">
           <span className="text-[10px] font-bold text-gray-400">L</span>
-          <input 
+          <input
             type="range"
             min="0"
             max="100"
@@ -132,20 +134,24 @@ const SettingsSoundSection = () => {
       </div>
 
       {/* Alert Sound Picker */}
-      <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">Alert Sounds</h3>
+      <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">
+        Alert Sounds
+      </h3>
       <div className="w-full bg-white rounded-xl border border-gray-200 p-4 shadow-sm space-y-4">
         <div className="border border-gray-200 rounded-lg overflow-hidden divide-y divide-gray-100 max-h-36 overflow-y-auto">
           {alertSounds.map((sound) => {
             const isSelected = selectedAlertSound === sound;
             return (
-              <div 
+              <div
                 key={sound}
                 onClick={() => setSelectedAlertSound(sound)}
                 className={`flex items-center justify-between p-2.5 px-4 cursor-pointer transition-colors duration-150 ${
                   isSelected ? "bg-blue-50/20" : "hover:bg-gray-50"
                 }`}
               >
-                <span className={`text-[12px] font-semibold ${isSelected ? "text-[#007aff]" : "text-gray-700"}`}>
+                <span
+                  className={`text-[12px] font-semibold ${isSelected ? "text-[#007aff]" : "text-gray-700"}`}
+                >
                   {sound}
                 </span>
                 {isSelected && <Check size={14} className="text-[#007aff] font-bold" />}
@@ -158,12 +164,11 @@ const SettingsSoundSection = () => {
         <div className="flex justify-between items-center text-[12.5px] border-t border-gray-100 pt-3.5">
           <div>
             <span className="text-gray-900 font-bold block">Play user interface sound effects</span>
-            <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">Hear sound effects when executing interface actions</span>
+            <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+              Hear sound effects when executing interface actions
+            </span>
           </div>
-          <button 
-            onClick={() => setUiSoundEffects(!uiSoundEffects)}
-            className="focus:outline-none"
-          >
+          <button onClick={() => setUiSoundEffects(!uiSoundEffects)} className="focus:outline-none">
             {uiSoundEffects ? (
               <ToggleRightActive size={32} className="text-[#007aff] cursor-pointer" />
             ) : (
@@ -172,20 +177,35 @@ const SettingsSoundSection = () => {
           </button>
         </div>
       </div>
-
     </div>
   );
 };
 
 const ToggleRightActive = ({ size, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className={className}
+  >
     <rect x="1" y="5" width="22" height="14" rx="7" fill="currentColor" fillOpacity="0.15" />
     <circle cx="16" cy="12" r="5" fill="currentColor" />
   </svg>
 );
 
 const ToggleRightInactive = ({ size, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className={className}
+  >
     <rect x="1" y="5" width="22" height="14" rx="7" fill="none" stroke="currentColor" />
     <circle cx="8" cy="12" r="5" fill="currentColor" />
   </svg>

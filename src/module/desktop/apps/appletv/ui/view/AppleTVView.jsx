@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import PlayerOverlay from "../components/PlayerOverlay";
 import { FEATURED_SHOW } from "../components/appleTvCatalog";
 import AppleTVHeaderSection from "../section/AppleTVHeaderSection";
@@ -62,7 +62,6 @@ const AppleTVView = () => {
     });
   };
 
-
   const closePlayer = () => {
     if (videoRef.current) videoRef.current.pause();
     setActiveVideo(null);
@@ -118,9 +117,7 @@ const AppleTVView = () => {
   };
 
   const toggleUpNext = (id) => {
-    setUpNext((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-    );
+    setUpNext((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
 
   const containerRef = useRef(null);

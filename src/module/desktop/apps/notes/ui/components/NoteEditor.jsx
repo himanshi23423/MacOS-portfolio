@@ -11,7 +11,7 @@ const NoteEditor = ({ activeNote, onUpdateNote, onCreateNote }) => {
         editorRef.current.innerHTML = activeNote.body || "";
       }
     }
-  }, [activeNote?.id]);
+  }, [activeNote]);
 
   const handleInput = () => {
     if (editorRef.current) {

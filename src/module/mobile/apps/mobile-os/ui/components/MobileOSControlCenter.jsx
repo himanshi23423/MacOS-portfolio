@@ -1,10 +1,31 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import gsap from "gsap";
 import {
-  X, Wifi, Bluetooth, Flashlight, Clock, Sun, Moon, Battery, Calculator, Camera, Search,
+  X,
+  Wifi,
+  Bluetooth,
+  Flashlight,
+  Clock,
+  Sun,
+  Moon,
+  Battery,
+  Calculator,
+  Camera,
+  Search,
 } from "lucide-react";
 
-const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now, toggle, brightness, setBrightness, volume, setVolume, controlCenterRef }) => {
+const MobileOSControlCenter = ({
+  isControlOpen,
+  setIsControlOpen,
+  settings,
+  now,
+  toggle,
+  brightness,
+  setBrightness,
+  volume,
+  setVolume,
+  controlCenterRef,
+}) => {
   useEffect(() => {
     if (!controlCenterRef.current) return;
     if (isControlOpen) {
@@ -21,15 +42,13 @@ const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now,
         ease: "power3.in",
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isControlOpen]);
 
   useEffect(() => {
     if (!isControlOpen) return;
     const handleOutside = (e) => {
-      if (
-        controlCenterRef.current &&
-        !controlCenterRef.current.contains(e.target)
-      ) {
+      if (controlCenterRef.current && !controlCenterRef.current.contains(e.target)) {
         setIsControlOpen(false);
       }
     };
@@ -39,7 +58,8 @@ const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now,
       document.removeEventListener("mousedown", handleOutside);
       document.removeEventListener("touchstart", handleOutside);
     };
-  }, [isControlOpen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isControlOpen, setIsControlOpen]);
 
   return (
     <aside
@@ -61,9 +81,7 @@ const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now,
                 onClick={() => toggle("airplane")}
                 className="flex items-center justify-center transition-all w-[46px] h-[46px] rounded-full"
                 style={{
-                  background: settings.airplane
-                    ? "#f59e0b"
-                    : "rgba(255,255,255,0.12)",
+                  background: settings.airplane ? "#f59e0b" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <span className="text-xl">✈︎</span>
@@ -72,9 +90,7 @@ const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now,
                 onClick={() => toggle("wifi")}
                 className="flex items-center justify-center transition-all w-[46px] h-[46px] rounded-full"
                 style={{
-                  background: settings.wifi
-                    ? "#007AFF"
-                    : "rgba(255,255,255,0.12)",
+                  background: settings.wifi ? "#007AFF" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <Wifi size={20} />
@@ -83,9 +99,7 @@ const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now,
                 onClick={() => toggle("bluetooth")}
                 className="flex items-center justify-center transition-all w-[46px] h-[46px] rounded-full"
                 style={{
-                  background: settings.bluetooth
-                    ? "#007AFF"
-                    : "rgba(255,255,255,0.12)",
+                  background: settings.bluetooth ? "#007AFF" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <Bluetooth size={20} />
@@ -96,9 +110,7 @@ const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now,
                 onClick={() => toggle("flashlight")}
                 className="flex items-center justify-center transition-all w-[46px] h-[46px] rounded-full"
                 style={{
-                  background: settings.flashlight
-                    ? "#007AFF"
-                    : "rgba(255,255,255,0.12)",
+                  background: settings.flashlight ? "#007AFF" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <Flashlight size={20} />
@@ -113,12 +125,8 @@ const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now,
             <p className="text-[11px] text-white/60 text-center leading-tight">
               {now.format("dddd")}
             </p>
-            <p className="text-[22px] font-bold text-white leading-none">
-              {now.format("h:mm")}
-            </p>
-            <p className="text-[11px] text-white/50">
-              {now.format("MMMM D")}
-            </p>
+            <p className="text-[22px] font-bold text-white leading-none">{now.format("h:mm")}</p>
+            <p className="text-[11px] text-white/50">{now.format("MMMM D")}</p>
           </div>
         </div>
 
@@ -149,9 +157,7 @@ const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now,
               <div
                 className="flex items-center justify-center w-8 h-8 rounded-2xl"
                 style={{
-                  background: settings.darkMode
-                    ? "#007AFF"
-                    : "rgba(255,255,255,0.12)",
+                  background: settings.darkMode ? "#007AFF" : "rgba(255,255,255,0.12)",
                 }}
               >
                 {settings.darkMode ? <Moon size={15} /> : <Sun size={15} />}
@@ -191,9 +197,7 @@ const MobileOSControlCenter = ({ isControlOpen, setIsControlOpen, settings, now,
               <div
                 className="flex items-center justify-center w-8 h-8 rounded-2xl"
                 style={{
-                  background: settings.lowPower
-                    ? "#f59e0b"
-                    : "rgba(255,255,255,0.12)",
+                  background: settings.lowPower ? "#f59e0b" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <Battery size={15} />

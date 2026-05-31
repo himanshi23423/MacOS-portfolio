@@ -1,4 +1,4 @@
-import { locations } from "#constants";
+import { locations } from "@constants";
 import clsx from "clsx";
 
 const FinderSidebar = ({ activeLocation, setActiveLocation }) => (
@@ -10,9 +10,7 @@ const FinderSidebar = ({ activeLocation, setActiveLocation }) => (
           <li
             key={item.id}
             onClick={() => setActiveLocation(item)}
-            className={clsx(
-              item.id === activeLocation.id ? "active" : "not-active",
-            )}
+            className={clsx(item.id === activeLocation.id ? "active" : "not-active")}
           >
             <img src={item.icon} alt={item.name} className="w-4" />
             <p className="text-sm font-medium truncate">{item.name}</p>
@@ -27,9 +25,7 @@ const FinderSidebar = ({ activeLocation, setActiveLocation }) => (
           <li
             key={item.id}
             onClick={() => setActiveLocation(item)}
-            className={clsx(
-              item.id === activeLocation.id ? "active" : "not-active",
-            )}
+            className={clsx(item.id === activeLocation.id ? "active" : "not-active")}
           >
             <img src={item.icon} alt={item.name} className="w-4" />
             <p className="text-sm font-medium truncate">{item.name}</p>

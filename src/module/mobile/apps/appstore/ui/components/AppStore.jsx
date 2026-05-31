@@ -1,4 +1,4 @@
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import AppStoreSection from "../section/AppStoreSection";
 
 const AppStore = () => <AppStoreSection />;

@@ -1,6 +1,6 @@
-import { locations } from "#constants";
-import useLocationStore from "#store/location";
-import useWindowsStore from "#store/window";
+import { locations } from "@constants";
+import useLocationStore from "@store/location";
+import useWindowsStore from "@store/window";
 import { useGSAP } from "@gsap/react";
 import { Draggable } from "gsap/Draggable";
 import HomeFolder from "./HomeFolder";

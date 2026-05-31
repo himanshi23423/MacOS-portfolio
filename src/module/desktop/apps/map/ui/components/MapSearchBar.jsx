@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 
 const MapSearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
   <div className="w-64 max-w-xs relative flex items-center">
@@ -8,8 +8,16 @@ const MapSearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
       placeholder="Search city (e.g. Paris, Tokyo)..."
       value={searchQuery}
       onChange={(e) => setSearchQuery(e.target.value)}
-      onMouseDown={(e) => { e.stopPropagation(); useWindowsStore.getState().focusWindow("map"); e.currentTarget.focus(); }}
-      onPointerDown={(e) => { e.stopPropagation(); useWindowsStore.getState().focusWindow("map"); e.currentTarget.focus(); }}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        useWindowsStore.getState().focusWindow("map");
+        e.currentTarget.focus();
+      }}
+      onPointerDown={(e) => {
+        e.stopPropagation();
+        useWindowsStore.getState().focusWindow("map");
+        e.currentTarget.focus();
+      }}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           handleSearch();

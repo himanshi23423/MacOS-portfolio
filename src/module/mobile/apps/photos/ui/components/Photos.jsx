@@ -1,6 +1,6 @@
-import windowWrapper from "#hoc/windowWrapper";
-import useWindowsStore from "#store/window";
-import { gallery } from "#constants";
+import windowWrapper from "@hoc/windowWrapper";
+import useWindowsStore from "@store/window";
+import { gallery } from "@constants";
 import { useState, useEffect } from "react";
 import PhotosSection from "../section/PhotosSection";
 
@@ -35,9 +35,9 @@ const Photos = () => {
     <PhotosSection
       isMobile={isMobile}
       filteredGallery={filteredGallery}
-        activeTab={activeTab}
-        onSelectPhoto={handlePhotoClick}
-        onSelectAlbum={setActiveTab}
+      activeTab={activeTab}
+      onSelectPhoto={handlePhotoClick}
+      onSelectAlbum={setActiveTab}
     />
   );
 };

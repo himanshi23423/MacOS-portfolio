@@ -1,16 +1,25 @@
 import React, { useState } from "react";
-import { Monitor, RefreshCw, HardDrive, Clock, ArrowLeft, ChevronRight, Loader2, Info } from "lucide-react";
+import {
+  Monitor,
+  RefreshCw,
+  HardDrive,
+  Clock,
+  ArrowLeft,
+  ChevronRight,
+  Loader2,
+  Info,
+} from "lucide-react";
 
 const SettingsGeneralPane = () => {
   const [subPage, setSubPage] = useState(null); // 'about', 'update', 'storage', 'datetime', null
-  
+
   // Software update state
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateStatus, setUpdateStatus] = useState("Your Mac is up to date.");
 
   // Date & Time state
   const [autoTime, setAutoTime] = useState(true);
-  const [timeZone, setTimeZone] = useState("India Standard Time (IST)");
+  const [timeZone, _setTimeZone] = useState("India Standard Time (IST)");
 
   const checkUpdates = () => {
     if (checkingUpdate) return;
@@ -24,7 +33,7 @@ const SettingsGeneralPane = () => {
   if (subPage === "about") {
     return (
       <div className="animate-in fade-in slide-in-from-left-2 duration-200">
-        <button 
+        <button
           onClick={() => setSubPage(null)}
           className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-[#007aff] transition-colors focus:outline-none mb-6 p-1 rounded hover:bg-gray-100"
         >
@@ -34,7 +43,9 @@ const SettingsGeneralPane = () => {
 
         <div className="flex flex-col items-center mb-8 pb-4 border-b border-gray-150">
           <Monitor size={64} className="text-[#007aff] mb-4 drop-shadow-md" />
-          <h2 className="text-[24px] font-extrabold text-gray-900 tracking-tight leading-tight">macOS Ventura</h2>
+          <h2 className="text-[24px] font-extrabold text-gray-900 tracking-tight leading-tight">
+            macOS Ventura
+          </h2>
           <p className="text-[12px] text-gray-400 font-semibold mt-1">Version 13.5.2</p>
         </div>
 
@@ -67,7 +78,7 @@ const SettingsGeneralPane = () => {
   if (subPage === "update") {
     return (
       <div className="animate-in fade-in slide-in-from-left-2 duration-200">
-        <button 
+        <button
           onClick={() => setSubPage(null)}
           className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-[#007aff] transition-colors focus:outline-none mb-6 p-1 rounded hover:bg-gray-150"
         >
@@ -80,14 +91,18 @@ const SettingsGeneralPane = () => {
             <RefreshCw size={20} />
           </div>
           <div>
-            <h2 className="text-base font-extrabold text-gray-900 leading-tight font-sans">Software Update</h2>
-            <p className="text-[11.5px] text-gray-400 font-semibold mt-0.5">Check and deploy system revisions</p>
+            <h2 className="text-base font-extrabold text-gray-900 leading-tight font-sans">
+              Software Update
+            </h2>
+            <p className="text-[11.5px] text-gray-400 font-semibold mt-0.5">
+              Check and deploy system revisions
+            </p>
           </div>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-6 text-center shadow-sm flex flex-col items-center justify-center space-y-4">
           <Monitor size={48} className="text-[#007aff] opacity-20" />
-          
+
           {checkingUpdate ? (
             <div className="flex flex-col items-center gap-1.5">
               <Loader2 size={24} className="animate-spin text-[#007aff]" />
@@ -96,11 +111,13 @@ const SettingsGeneralPane = () => {
           ) : (
             <div className="space-y-1">
               <h3 className="text-[13px] font-bold text-gray-800">{updateStatus}</h3>
-              <p className="text-[11px] text-gray-400 font-semibold">Last Checked: Today at 21:50</p>
+              <p className="text-[11px] text-gray-400 font-semibold">
+                Last Checked: Today at 21:50
+              </p>
             </div>
           )}
 
-          <button 
+          <button
             onClick={checkUpdates}
             disabled={checkingUpdate}
             className="px-4 py-1.5 rounded-md bg-[#007aff] text-white hover:bg-[#0062cc] disabled:bg-gray-300 disabled:cursor-not-allowed text-[12px] font-bold transition-colors"
@@ -115,7 +132,7 @@ const SettingsGeneralPane = () => {
   if (subPage === "storage") {
     return (
       <div className="animate-in fade-in slide-in-from-left-2 duration-200">
-        <button 
+        <button
           onClick={() => setSubPage(null)}
           className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-[#007aff] transition-colors focus:outline-none mb-6 p-1 rounded hover:bg-gray-150"
         >
@@ -129,7 +146,9 @@ const SettingsGeneralPane = () => {
           </div>
           <div>
             <h2 className="text-base font-extrabold text-gray-900 leading-tight">Storage</h2>
-            <p className="text-[11.5px] text-gray-400 font-semibold mt-0.5">Macintosh HD disk space status</p>
+            <p className="text-[11.5px] text-gray-400 font-semibold mt-0.5">
+              Macintosh HD disk space status
+            </p>
           </div>
         </div>
 
@@ -149,10 +168,22 @@ const SettingsGeneralPane = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-y-3.5 text-[11.5px] font-bold text-gray-500 border-t border-gray-100 pt-4">
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-blue-500" /><span className="text-gray-700">Apps (92 GB)</span></div>
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-indigo-400" /><span className="text-gray-700">Developer (52 GB)</span></div>
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-yellow-500" /><span className="text-gray-700">macOS System Data (38 GB)</span></div>
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-cyan-400" /><span className="text-gray-700">Other (26 GB)</span></div>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded bg-blue-500" />
+              <span className="text-gray-700">Apps (92 GB)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded bg-indigo-400" />
+              <span className="text-gray-700">Developer (52 GB)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded bg-yellow-500" />
+              <span className="text-gray-700">macOS System Data (38 GB)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded bg-cyan-400" />
+              <span className="text-gray-700">Other (26 GB)</span>
+            </div>
           </div>
         </div>
       </div>
@@ -162,7 +193,7 @@ const SettingsGeneralPane = () => {
   if (subPage === "datetime") {
     return (
       <div className="animate-in fade-in slide-in-from-left-2 duration-200">
-        <button 
+        <button
           onClick={() => setSubPage(null)}
           className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-[#007aff] transition-colors focus:outline-none mb-6 p-1 rounded hover:bg-gray-150"
         >
@@ -175,20 +206,23 @@ const SettingsGeneralPane = () => {
             <Clock size={20} />
           </div>
           <div>
-            <h2 className="text-base font-extrabold text-gray-900 leading-tight font-sans">Date & Time</h2>
-            <p className="text-[11.5px] text-gray-400 font-semibold mt-0.5">Sync system clock and locations</p>
+            <h2 className="text-base font-extrabold text-gray-900 leading-tight font-sans">
+              Date & Time
+            </h2>
+            <p className="text-[11.5px] text-gray-400 font-semibold mt-0.5">
+              Sync system clock and locations
+            </p>
           </div>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-4 mb-5 shadow-sm flex justify-between items-center text-xs text-gray-700">
           <div>
             <span className="font-bold text-gray-900 block">Set date and time automatically</span>
-            <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">Use Apple network time servers (time.apple.com)</span>
+            <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+              Use Apple network time servers (time.apple.com)
+            </span>
           </div>
-          <button 
-            onClick={() => setAutoTime(!autoTime)}
-            className="focus:outline-none"
-          >
+          <button onClick={() => setAutoTime(!autoTime)} className="focus:outline-none">
             {autoTime ? (
               <ToggleRightActive size={32} className="text-[#007aff] cursor-pointer" />
             ) : (
@@ -215,13 +249,14 @@ const SettingsGeneralPane = () => {
     <div className="w-full">
       <div className="flex flex-col items-center mb-6 pb-4 border-b border-gray-150/80">
         <Monitor size={56} className="text-[#007aff] mb-3 drop-shadow-sm animate-pulse" />
-        <h2 className="text-[20px] font-black text-gray-900 tracking-tight leading-tight">General settings</h2>
+        <h2 className="text-[20px] font-black text-gray-900 tracking-tight leading-tight">
+          General settings
+        </h2>
       </div>
 
       <div className="w-full bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm divide-y divide-gray-100">
-        
         {/* About */}
-        <div 
+        <div
           onClick={() => setSubPage("about")}
           className="flex justify-between items-center p-3.5 px-4 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
         >
@@ -235,7 +270,7 @@ const SettingsGeneralPane = () => {
         </div>
 
         {/* Software Update */}
-        <div 
+        <div
           onClick={() => setSubPage("update")}
           className="flex justify-between items-center p-3.5 px-4 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
         >
@@ -249,7 +284,7 @@ const SettingsGeneralPane = () => {
         </div>
 
         {/* Storage */}
-        <div 
+        <div
           onClick={() => setSubPage("storage")}
           className="flex justify-between items-center p-3.5 px-4 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
         >
@@ -263,7 +298,7 @@ const SettingsGeneralPane = () => {
         </div>
 
         {/* Date & Time */}
-        <div 
+        <div
           onClick={() => setSubPage("datetime")}
           className="flex justify-between items-center p-3.5 px-4 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
         >
@@ -275,21 +310,36 @@ const SettingsGeneralPane = () => {
           </div>
           <ChevronRight size={14} className="text-gray-400" />
         </div>
-
       </div>
     </div>
   );
 };
 
 const ToggleRightActive = ({ size, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className={className}
+  >
     <rect x="1" y="5" width="22" height="14" rx="7" fill="currentColor" fillOpacity="0.15" />
     <circle cx="16" cy="12" r="5" fill="currentColor" />
   </svg>
 );
 
 const ToggleRightInactive = ({ size, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className={className}
+  >
     <rect x="1" y="5" width="22" height="14" rx="7" fill="none" stroke="currentColor" />
     <circle cx="8" cy="12" r="5" fill="currentColor" />
   </svg>

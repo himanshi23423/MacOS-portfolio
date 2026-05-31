@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Terminal as XTerm } from "xterm";
 import "xterm/css/xterm.css";
 import { FitAddon } from "@xterm/addon-fit";
-import { techStack, projects } from "#constants";
+import { techStack, projects } from "@constants";
 
 const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
   useEffect(() => {
@@ -59,11 +59,8 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
       return `\x1b[38;2;${r};${g};${b}m${char}`;
     };
     const gradientLine = (str) =>
-      [...str]
-        .map((c, i, a) =>
-          gradientChar(c, a.length > 1 ? i / (a.length - 1) : 0),
-        )
-        .join("") + "\x1b[0m";
+      [...str].map((c, i, a) => gradientChar(c, a.length > 1 ? i / (a.length - 1) : 0)).join("") +
+      "\x1b[0m";
 
     const hulkLines = [
       "██╗  ██╗██╗   ██╗██╗     ██████╗ ███████╗███████╗██████╗ ",
@@ -116,9 +113,7 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
             println("kuldeep");
             break;
           case "sudo":
-            println(
-              "kuldeep is not in the sudoers file. This incident will be reported.",
-            );
+            println("kuldeep is not in the sudoers file. This incident will be reported.");
             break;
           case "techstack":
             println("=== Tech Stack ===");
@@ -154,10 +149,13 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
     });
 
     const resizeObserver = new ResizeObserver(() => {
-      if (fitAddonRef.current) {
+      const fit = fitAddonRef.current;
+      if (fit) {
         try {
-          fitAddonRef.current.fit();
-        } catch (e) {}
+          fit.fit();
+        } catch {
+          // ignore fit error
+        }
       }
     });
 
@@ -165,19 +163,24 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
       resizeObserver.observe(terminalRef.current);
     }
 
-    setTimeout(() => {
-      if (fitAddonRef.current) {
+    const timer = setTimeout(() => {
+      const fit = fitAddonRef.current;
+      if (fit) {
         try {
-          fitAddonRef.current.fit();
-        } catch (e) {}
+          fit.fit();
+        } catch {
+          // ignore fit error
+        }
       }
     }, 150);
 
     return () => {
+      clearTimeout(timer);
       resizeObserver.disconnect();
       term.dispose();
     };
-  }, []);
+    // Refs are stable and don't need to be in dependencies, but adding them/ignoring correctly to satisfy ESLint
+  }, [commandRef, fitAddonRef, terminalRef, xtermRef]);
 
   return (
     <div

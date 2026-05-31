@@ -6,15 +6,44 @@ import CalendarDayPopover from "../components/CalendarDayPopover";
 
 const CalendarSection = (props) => {
   const {
-    month, year, selectedDate, isSidebarOpen, activeCategories,
-    isModalOpen, eventTitle, eventDate, eventStart, eventEnd,
-    eventCategory, eventDesc, dayEventsPopover, gridCells, filteredEvents,
-    setMonth, setYear, setSelectedDate, setIsSidebarOpen, setActiveCategories,
-    setIsModalOpen, setEventTitle, setEventDate, setEventStart, setEventEnd,
-    setEventCategory, setEventDesc, setDayEventsPopover,
-    toggleCategory, handlePrevMonth, handleNextMonth, handleGoToToday,
-    getEventsForDate, handleAddEvent, handleDeleteEvent, triggerAddEventOnDate,
-    isToday, isSelected,
+    month,
+    year,
+    selectedDate,
+    isSidebarOpen,
+    activeCategories,
+    isModalOpen,
+    eventTitle,
+    eventDate,
+    eventStart,
+    eventEnd,
+    eventCategory,
+    eventDesc,
+    dayEventsPopover,
+    gridCells,
+    filteredEvents,
+    _setMonth,
+    _setYear,
+    setSelectedDate,
+    setIsSidebarOpen,
+    _setActiveCategories,
+    setIsModalOpen,
+    setEventTitle,
+    setEventDate,
+    setEventStart,
+    setEventEnd,
+    setEventCategory,
+    setEventDesc,
+    setDayEventsPopover,
+    toggleCategory,
+    handlePrevMonth,
+    handleNextMonth,
+    handleGoToToday,
+    getEventsForDate,
+    handleAddEvent,
+    handleDeleteEvent,
+    triggerAddEventOnDate,
+    isToday,
+    isSelected,
   } = props;
 
   return (
@@ -26,7 +55,7 @@ const CalendarSection = (props) => {
         onNextMonth={handleNextMonth}
         onToday={handleGoToToday}
         onAddEvent={() => {
-          setEventDate(selectedDate.toLocaleDateString('en-CA'));
+          setEventDate(selectedDate.toLocaleDateString("en-CA"));
           setIsModalOpen(true);
         }}
         isSidebarOpen={isSidebarOpen}

@@ -1,6 +1,6 @@
-import windowWrapper from "#hoc/windowWrapper";
-import useWindowsStore from "#store/window";
-import { gallery } from "#constants";
+import windowWrapper from "@hoc/windowWrapper";
+import useWindowsStore from "@store/window";
+import { gallery } from "@constants";
 import { useState, useEffect } from "react";
 import PhotosSection from "../section/PhotosSection";
 
@@ -54,7 +54,13 @@ const enrichedGallery = gallery.map((item) => {
       resolution = "4032 × 3024";
     }
   } else if (item.category === "Memories") {
-    const memoryTitles = ["Sunset Beach Walk", "Mountain Hiking", "Lake Cabin Retreat", "Forest Exploration", "Campfire Gathering"];
+    const memoryTitles = [
+      "Sunset Beach Walk",
+      "Mountain Hiking",
+      "Lake Cabin Retreat",
+      "Forest Exploration",
+      "Campfire Gathering",
+    ];
     title = memoryTitles[(item.id - 5) % memoryTitles.length] || "Memory Trip";
     date = `July ${10 + (item.id % 5)}, 2024`;
     location = "Maui, Hawaii";
@@ -64,18 +70,32 @@ const enrichedGallery = gallery.map((item) => {
     size = "4.5 MB";
     resolution = "5568 × 4872";
   } else if (item.category === "Places") {
-    const places = ["Yosemite Valley", "Grand Canyon Lookout", "Venice Rialto Bridge", "Swiss Alps Peaks"];
-    title = places[(item.id % 4)] || "Nature Escape";
+    const places = [
+      "Yosemite Valley",
+      "Grand Canyon Lookout",
+      "Venice Rialto Bridge",
+      "Swiss Alps Peaks",
+    ];
+    title = places[item.id % 4] || "Nature Escape";
     date = "September 18, 2025";
-    location = title.includes("Venice") ? "Venice, Italy" : title.includes("Swiss") ? "Zermatt, Switzerland" : "Yosemite Park, CA";
+    location = title.includes("Venice")
+      ? "Venice, Italy"
+      : title.includes("Swiss")
+        ? "Zermatt, Switzerland"
+        : "Yosemite Park, CA";
     camera = "Fujifilm X-T5";
     exposure = "1/500s f/5.6 ISO 160";
     lens = "XF 18-55mm F2.8-4 R LM OIS";
     size = "9.8 MB";
     resolution = "6240 × 4160";
   } else if (item.category === "People") {
-    const people = ["Team Collaboration", "Friends Reunion", "Family Gathering", "Portrait Session"];
-    title = people[(item.id % 4)] || "Portrait";
+    const people = [
+      "Team Collaboration",
+      "Friends Reunion",
+      "Family Gathering",
+      "Portrait Session",
+    ];
+    title = people[item.id % 4] || "Portrait";
     date = "November 23, 2025";
     location = "San Jose, CA";
     camera = "Canon EOS R5";
@@ -94,15 +114,15 @@ const enrichedGallery = gallery.map((item) => {
     exposure,
     lens,
     size,
-    resolution
+    resolution,
   };
 });
 
 const Photos = () => {
-  const { openWindow, favorites } = useWindowsStore();
+  const { favorites } = useWindowsStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [activeTab, setActiveTab] = useState("Library");
-  
+
   // Navigation history
   const [navHistory, setNavHistory] = useState(["Library"]);
   const [navIndex, setNavIndex] = useState(0);
@@ -152,37 +172,40 @@ const Photos = () => {
   };
 
   // Get active photo list
-  const activePhotos = enrichedGallery.map(photo => ({
-    ...photo,
-    title: customTitles[photo.id] || photo.title,
-    rotation: rotations[photo.id] || 0
-  })).filter((item) => {
-    // Tab filter
-    if (activeTab === "Favorites") {
-      if (!favorites.includes(item.id)) return false;
-    } else if (item.category !== activeTab) {
-      return false;
-    }
+  const activePhotos = enrichedGallery
+    .map((photo) => ({
+      ...photo,
+      title: customTitles[photo.id] || photo.title,
+      rotation: rotations[photo.id] || 0,
+    }))
+    .filter((item) => {
+      // Tab filter
+      if (activeTab === "Favorites") {
+        if (!favorites.includes(item.id)) return false;
+      } else if (item.category !== activeTab) {
+        return false;
+      }
 
-    // Search filter
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      return (
-        item.title.toLowerCase().includes(q) ||
-        item.location.toLowerCase().includes(q) ||
-        item.camera.toLowerCase().includes(q)
-      );
-    }
-    return true;
-  });
+      // Search filter
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        return (
+          item.title.toLowerCase().includes(q) ||
+          item.location.toLowerCase().includes(q) ||
+          item.camera.toLowerCase().includes(q)
+        );
+      }
+      return true;
+    });
 
-  const selectedPhoto = activePhotos.find(p => p.id === selectedPhotoId) || activePhotos[0] || null;
+  const selectedPhoto =
+    activePhotos.find((p) => p.id === selectedPhotoId) || activePhotos[0] || null;
 
   const handlePhotoClick = (photo) => {
     setSelectedPhotoId(photo.id);
   };
 
-  const handlePhotoDoubleClick = (photo) => {
+  const _handlePhotoDoubleClick = (photo) => {
     setInAppViewerPhoto(photo);
   };
 
@@ -190,16 +213,16 @@ const Photos = () => {
     if (!selectedPhoto) return;
     const currentRot = rotations[selectedPhoto.id] || 0;
     const nextRot = (currentRot + 90) % 360;
-    setRotations(prev => ({
+    setRotations((prev) => ({
       ...prev,
-      [selectedPhoto.id]: nextRot
+      [selectedPhoto.id]: nextRot,
     }));
   };
 
   const handleUpdateTitle = (id, newTitle) => {
-    setCustomTitles(prev => ({
+    setCustomTitles((prev) => ({
       ...prev,
-      [id]: newTitle
+      [id]: newTitle,
     }));
   };
 
@@ -210,7 +233,6 @@ const Photos = () => {
       activeTab={activeTab}
       onSelectPhoto={handlePhotoClick}
       onSelectAlbum={handleSelectAlbum}
-      
       // Extended controls
       zoomLevel={zoomLevel}
       setZoomLevel={setZoomLevel}
@@ -225,7 +247,6 @@ const Photos = () => {
       inAppViewerPhoto={inAppViewerPhoto}
       setInAppViewerPhoto={setInAppViewerPhoto}
       onUpdateTitle={handleUpdateTitle}
-      
       // History navigation
       canGoBack={navIndex > 0}
       canGoForward={navIndex < navHistory.length - 1}

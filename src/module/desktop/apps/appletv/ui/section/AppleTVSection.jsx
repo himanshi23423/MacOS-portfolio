@@ -36,9 +36,9 @@ const AppleTVSection = ({
   useEffect(() => {
     const fetchWatchNowMovies = async () => {
       try {
-        const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
         const res = await fetch(
-          `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&page=${watchNowPage}`
+          `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&page=${watchNowPage}`,
         );
         const data = await res.json();
         if (data.results) {
@@ -82,16 +82,16 @@ const AppleTVSection = ({
     const fetchMovies = async () => {
       setIsLoading(true);
       try {
-        const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
         const res = await fetch(
-          `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${encodeURIComponent(query)}&page=${page}`
+          `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${encodeURIComponent(query)}&page=${page}`,
         );
         const data = await res.json();
         if (data.results) {
           const filtered = data.results.filter(
-            (item) => item.media_type === "movie" || item.media_type === "tv"
+            (item) => item.media_type === "movie" || item.media_type === "tv",
           );
-          
+
           if (page === 1) {
             setSearchResults(filtered);
           } else {
@@ -101,7 +101,7 @@ const AppleTVSection = ({
               return [...prev, ...uniques];
             });
           }
-          
+
           if (data.page >= data.total_pages) {
             setHasMore(false);
           }
@@ -136,14 +136,17 @@ const AppleTVSection = ({
     }
   };
 
-
-
   const normalizedQuery = searchQuery.trim().toLowerCase();
-  const matchedMovies = MOVIES.filter(m => m.title.toLowerCase().includes(normalizedQuery));
-  const matchedStoreMovies = STORE_MOVIES.filter(m => m.title.toLowerCase().includes(normalizedQuery));
-  const featuredMatch = FEATURED_SHOW.title.toLowerCase().includes(normalizedQuery) ? FEATURED_SHOW : null;
+  const matchedMovies = MOVIES.filter((m) => m.title.toLowerCase().includes(normalizedQuery));
+  const matchedStoreMovies = STORE_MOVIES.filter((m) =>
+    m.title.toLowerCase().includes(normalizedQuery),
+  );
+  const featuredMatch = FEATURED_SHOW.title.toLowerCase().includes(normalizedQuery)
+    ? FEATURED_SHOW
+    : null;
 
-  const hasLocalResults = matchedMovies.length > 0 || matchedStoreMovies.length > 0 || featuredMatch;
+  const hasLocalResults =
+    matchedMovies.length > 0 || matchedStoreMovies.length > 0 || featuredMatch;
 
   return (
     <div className="flex-1 flex min-h-0 relative">
@@ -170,24 +173,24 @@ const AppleTVSection = ({
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-base font-bold text-gray-800">Search Results</h2>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  Results for "{searchQuery}"
-                </p>
+                <p className="text-xs text-gray-500 mt-0.5">Results for "{searchQuery}"</p>
               </div>
-              {isLoading && (
-                <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
-              )}
+              {isLoading && <Loader2 className="w-4 h-4 animate-spin text-gray-400" />}
             </div>
 
             {/* Direct TMDB ID Match (if query is purely digits) */}
             {/^\d+$/.test(normalizedQuery) && (
               <div className="bg-gradient-to-tr from-neutral-900 to-indigo-950 rounded-xl p-6 text-white space-y-4 shadow-xl border border-white/10 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 opacity-10 font-bold text-7xl select-none">TMDB</div>
+                <div className="absolute top-0 right-0 p-8 opacity-10 font-bold text-7xl select-none">
+                  TMDB
+                </div>
                 <div className="max-w-md space-y-1.5">
                   <span className="text-[10px] font-bold text-indigo-400 tracking-widest uppercase">
                     Custom Stream Launcher
                   </span>
-                  <h3 className="text-lg font-bold leading-none">Stream TMDB ID: {normalizedQuery}</h3>
+                  <h3 className="text-lg font-bold leading-none">
+                    Stream TMDB ID: {normalizedQuery}
+                  </h3>
                   <p className="text-xs text-neutral-300 leading-relaxed">
                     Directly stream this movie or TV show using the VidLink embed player.
                   </p>
@@ -229,7 +232,9 @@ const AppleTVSection = ({
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                   Movies & TV Shows online
                 </h3>
-                <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4 md:grid-cols-5"}`}>
+                <div
+                  className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4 md:grid-cols-5"}`}
+                >
                   {searchResults.map((item) => {
                     const title = item.title || item.name;
                     const date = item.release_date || item.first_air_date || "";
@@ -280,7 +285,8 @@ const AppleTVSection = ({
                             {title}
                           </h4>
                           <span className="text-[10px] text-gray-500 font-semibold">
-                            {year ? `${year} • ` : ""}{typeLabel}
+                            {year ? `${year} • ` : ""}
+                            {typeLabel}
                           </span>
                         </div>
                       </div>
@@ -293,25 +299,35 @@ const AppleTVSection = ({
             {/* Local Catalog matches */}
             {hasLocalResults && (
               <div className="space-y-6 pt-4 border-t border-gray-100">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Local Results</h3>
-                
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                  Local Results
+                </h3>
+
                 {featuredMatch && (
                   <div className="space-y-3">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Featured Match</h3>
-                    <div 
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                      Featured Match
+                    </h3>
+                    <div
                       onClick={() => onPlayFeatured(featuredMatch)}
                       className={`relative rounded-xl overflow-hidden border border-black/5 p-5 flex flex-col justify-end min-h-[140px] shadow-lg cursor-pointer ${featuredMatch.bgImage}`}
                     >
                       <h4 className="text-lg font-bold text-white">{featuredMatch.title}</h4>
-                      <p className="text-[10px] text-neutral-300 mt-1 max-w-md line-clamp-2">{featuredMatch.description}</p>
+                      <p className="text-[10px] text-neutral-300 mt-1 max-w-md line-clamp-2">
+                        {featuredMatch.description}
+                      </p>
                     </div>
                   </div>
                 )}
 
                 {matchedMovies.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Library</h3>
-                    <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                      Library
+                    </h3>
+                    <div
+                      className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}
+                    >
                       {matchedMovies.map((movie) => (
                         <MovieCard
                           key={movie.id}
@@ -328,14 +344,14 @@ const AppleTVSection = ({
 
                 {matchedStoreMovies.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Movie Store</h3>
-                    <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                      Movie Store
+                    </h3>
+                    <div
+                      className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}
+                    >
                       {matchedStoreMovies.map((movie) => (
-                        <StoreMovieCard
-                          key={movie.title}
-                          movie={movie}
-                          onPlayMovie={onPlayMovie}
-                        />
+                        <StoreMovieCard key={movie.title} movie={movie} onPlayMovie={onPlayMovie} />
                       ))}
                     </div>
                   </div>
@@ -345,7 +361,8 @@ const AppleTVSection = ({
 
             {!isLoading && searchResults.length === 0 && !hasLocalResults && (
               <div className="py-12 text-center text-xs text-gray-500 italic">
-                No titles matching "{searchQuery}" were found. Try searching for a popular movie title (e.g. "Oppenheimer" or "Avengers").
+                No titles matching "{searchQuery}" were found. Try searching for a popular movie
+                title (e.g. "Oppenheimer" or "Avengers").
               </div>
             )}
           </div>
@@ -370,7 +387,9 @@ const AppleTVSection = ({
                 isCompact={isCompact}
               />
             )}
-            {activeTab === "store" && <StoreSection onPlayMovie={onPlayMovie} isCompact={isCompact} />}
+            {activeTab === "store" && (
+              <StoreSection onPlayMovie={onPlayMovie} isCompact={isCompact} />
+            )}
             {activeTab === "library" && <LibrarySection onOpenStore={onOpenStore} />}
             {activeTab === "favorites" && (
               <FavoritesSection upNext={upNext} onPlayMovie={onPlayMovie} isCompact={isCompact} />
@@ -383,5 +402,3 @@ const AppleTVSection = ({
 };
 
 export default AppleTVSection;
-
-

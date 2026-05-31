@@ -1,5 +1,5 @@
 import { useState } from "react";
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 import { Plus, ChevronLeft } from "lucide-react";
 import NotesSidebarSection from "./NotesSidebarSection";
 import NotesEditorSection from "./NotesEditorSection";
@@ -36,7 +36,10 @@ const NotesSection = ({
 
   return (
     <div className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800">
-      <div id="window-header" className="shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2">
+      <div
+        id="window-header"
+        className="shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2"
+      >
         <div className="flex items-center gap-4">
           <WindowControls target="notes" />
           <button
@@ -44,7 +47,9 @@ const NotesSection = ({
             className="md:hidden p-1 rounded hover:bg-gray-200"
             aria-label="Toggle Sidebar"
           >
-            <ChevronLeft className={`w-5 h-5 transition-transform ${isSidebarOpen ? "rotate-0" : "rotate-180"}`} />
+            <ChevronLeft
+              className={`w-5 h-5 transition-transform ${isSidebarOpen ? "rotate-0" : "rotate-180"}`}
+            />
           </button>
         </div>
         <div className="flex items-center gap-3 md:gap-5">

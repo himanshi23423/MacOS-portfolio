@@ -1,5 +1,5 @@
 import { useState } from "react";
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import INITIAL_FONTS from "./fontData";
 import FontBookSection from "../section/FontBookSection";
 
@@ -11,7 +11,7 @@ const FontBook = () => {
   const [fontSize, setFontSize] = useState(36);
   const [googleFontInput, setGoogleFontInput] = useState("");
   const [specimenText, setSpecimenText] = useState(
-    "The quick brown fox jumps over the lazy dog.\nAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz\n1234567890"
+    "The quick brown fox jumps over the lazy dog.\nAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz\n1234567890",
   );
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
@@ -20,12 +20,15 @@ const FontBook = () => {
     const name = googleFontInput.trim();
     if (!name) return;
 
-    if (fonts.some(f => f.name.toLowerCase() === name.toLowerCase())) {
+    if (fonts.some((f) => f.name.toLowerCase() === name.toLowerCase())) {
       alert("This font is already loaded in Font Book!");
       return;
     }
 
-    const formattedName = name.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+    const formattedName = name
+      .split(" ")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(" ");
     const googleFontUrlName = formattedName.replace(/ /g, "+");
 
     const link = document.createElement("link");
@@ -33,7 +36,9 @@ const FontBook = () => {
     link.href = `https://fonts.googleapis.com/css2?family=${googleFontUrlName}&display=swap`;
 
     link.onerror = () => {
-      alert(`Could not load font "${formattedName}" from Google Fonts. Please verify the family name.`);
+      alert(
+        `Could not load font "${formattedName}" from Google Fonts. Please verify the family name.`,
+      );
     };
 
     document.head.appendChild(link);
@@ -42,17 +47,19 @@ const FontBook = () => {
       name: formattedName,
       category: "Google Fonts",
       designer: "Google Fonts Contributor",
-      desc: "Dynamically installed web font loaded directly via Google Fonts API."
+      desc: "Dynamically installed web font loaded directly via Google Fonts API.",
     };
 
-    setFonts(prev => [...prev, newFont]);
+    setFonts((prev) => [...prev, newFont]);
     setActiveFont(newFont);
     setGoogleFontInput("");
   };
 
-  const filteredFonts = fonts.filter(font => {
+  const filteredFonts = fonts.filter((font) => {
     const matchesSearch = font.name.toLowerCase().includes(searchQuery.trim().toLowerCase());
-    const matchesCategory = searchQuery.trim() ? true : (activeCategory === "All Fonts" || font.category === activeCategory);
+    const matchesCategory = searchQuery.trim()
+      ? true
+      : activeCategory === "All Fonts" || font.category === activeCategory;
     return matchesSearch && matchesCategory;
   });
 

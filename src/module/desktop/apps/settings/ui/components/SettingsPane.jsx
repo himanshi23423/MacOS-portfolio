@@ -13,27 +13,50 @@ import SettingsAccessibilitySection from "../section/SettingsAccessibilitySectio
 import SettingsControlCenterSection from "../section/SettingsControlCenterSection";
 import SettingsAppleIDSection from "../section/SettingsAppleIDSection";
 
-const SettingsPane = ({ activeTab, setActiveTab, githubData, isLoading, isMobile, mobileView, setMobileView }) => {
+const SettingsPane = ({
+  activeTab,
+  _setActiveTab,
+  githubData,
+  _isLoading,
+  isMobile,
+  _mobileView,
+  setMobileView,
+}) => {
   const renderContent = () => {
     switch (activeTab) {
-      case "Wi-Fi": return <SettingsWiFiSection />;
-      case "General": return <SettingsGeneralSection />;
-      case "Appearance": return <SettingsAppearanceSection />;
-      case "Bluetooth": return <SettingsBluetoothSection />;
-      case "Network": return <SettingsNetworkSection />;
-      case "Notifications": return <SettingsNotificationsSection />;
-      case "Sound": return <SettingsSoundSection />;
-      case "Focus": return <SettingsFocusSection />;
-      case "Screen Time": return <SettingsScreenTimeSection />;
-      case "Accessibility": return <SettingsAccessibilitySection />;
-      case "Control Center": return <SettingsControlCenterSection />;
-      case "Apple ID": return <SettingsAppleIDSection githubData={githubData} />;
-      default: return (
-        <div className="flex flex-col items-center justify-center h-full text-gray-400 animate-in fade-in duration-300">
-          <SettingsIcon size={48} className="mb-4 opacity-20" />
-          <p className="text-[14px] font-medium text-gray-500">Settings for {activeTab} are not available yet.</p>
-        </div>
-      );
+      case "Wi-Fi":
+        return <SettingsWiFiSection />;
+      case "General":
+        return <SettingsGeneralSection />;
+      case "Appearance":
+        return <SettingsAppearanceSection />;
+      case "Bluetooth":
+        return <SettingsBluetoothSection />;
+      case "Network":
+        return <SettingsNetworkSection />;
+      case "Notifications":
+        return <SettingsNotificationsSection />;
+      case "Sound":
+        return <SettingsSoundSection />;
+      case "Focus":
+        return <SettingsFocusSection />;
+      case "Screen Time":
+        return <SettingsScreenTimeSection />;
+      case "Accessibility":
+        return <SettingsAccessibilitySection />;
+      case "Control Center":
+        return <SettingsControlCenterSection />;
+      case "Apple ID":
+        return <SettingsAppleIDSection githubData={githubData} />;
+      default:
+        return (
+          <div className="flex flex-col items-center justify-center h-full text-gray-400 animate-in fade-in duration-300">
+            <SettingsIcon size={48} className="mb-4 opacity-20" />
+            <p className="text-[14px] font-medium text-gray-500">
+              Settings for {activeTab} are not available yet.
+            </p>
+          </div>
+        );
     }
   };
 
@@ -48,13 +71,13 @@ const SettingsPane = ({ activeTab, setActiveTab, githubData, isLoading, isMobile
             <ChevronLeft size={22} />
             <span className="text-[16px]">Settings</span>
           </div>
-          <h2 className="text-[16px] font-semibold text-black text-center w-1/3 truncate">{activeTab}</h2>
+          <h2 className="text-[16px] font-semibold text-black text-center w-1/3 truncate">
+            {activeTab}
+          </h2>
           <div className="w-1/3"></div>
         </div>
       )}
-      <div className="flex-1 overflow-y-auto thin-scrollbar min-w-0 w-full">
-        {renderContent()}
-      </div>
+      <div className="flex-1 overflow-y-auto thin-scrollbar min-w-0 w-full">{renderContent()}</div>
     </>
   );
 };

@@ -1,7 +1,14 @@
 import { Trash2 } from "lucide-react";
 import { CATEGORIES } from "./calendarData";
 
-const CalendarSidebar = ({ activeCategories, toggleCategory, filteredEvents, handleDeleteEvent, isSidebarOpen, setIsSidebarOpen }) => (
+const CalendarSidebar = ({
+  activeCategories,
+  toggleCategory,
+  filteredEvents,
+  handleDeleteEvent,
+  isSidebarOpen,
+  setIsSidebarOpen,
+}) => (
   <>
     {isSidebarOpen && (
       <div
@@ -9,13 +16,17 @@ const CalendarSidebar = ({ activeCategories, toggleCategory, filteredEvents, han
         className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-10 sm:hidden animate-fade-in"
       />
     )}
-    <aside className={`
+    <aside
+      className={`
       absolute sm:relative inset-y-0 left-0 w-56 bg-gray-50 border-r border-[#d1d1d1] p-4 flex flex-col z-20 transition-transform duration-300 shrink-0
       ${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}
-    `}>
+    `}
+    >
       <div className="space-y-4 flex-1 overflow-y-auto thin-scrollbar">
         <div className="space-y-2">
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">Calendars</h3>
+          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
+            Calendars
+          </h3>
           <nav className="space-y-1">
             {CATEGORIES.map((cat) => (
               <label
@@ -38,7 +49,9 @@ const CalendarSidebar = ({ activeCategories, toggleCategory, filteredEvents, han
         </div>
 
         <div className="space-y-2.5 pt-4 border-t border-gray-200">
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">Upcoming Events</h3>
+          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
+            Upcoming Events
+          </h3>
           <div className="space-y-2 divide-y divide-gray-150">
             {filteredEvents.length === 0 ? (
               <p className="text-[11px] text-gray-400 italic px-1">No upcoming events scheduled.</p>
@@ -47,16 +60,26 @@ const CalendarSidebar = ({ activeCategories, toggleCategory, filteredEvents, han
                 .sort((a, b) => a.date.localeCompare(b.date) || a.start.localeCompare(b.start))
                 .slice(0, 5)
                 .map((ev) => {
-                  const cat = CATEGORIES.find(c => c.id === ev.category);
+                  const _cat = CATEGORIES.find((c) => c.id === ev.category);
                   const eventDateObj = new Date(ev.date + "T00:00:00");
                   return (
-                    <div key={ev.id} className="pt-2 first:pt-0 group relative flex justify-between items-start">
+                    <div
+                      key={ev.id}
+                      className="pt-2 first:pt-0 group relative flex justify-between items-start"
+                    >
                       <div className="space-y-0.5 min-w-0 pr-6">
                         <h4 className="text-[11px] font-bold text-gray-800 truncate">{ev.title}</h4>
                         <p className="text-[9px] text-gray-400 flex items-center gap-1 font-semibold">
-                          <span>{eventDateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                          <span>
+                            {eventDateObj.toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </span>
                           <span>•</span>
-                          <span>{ev.start} - {ev.end}</span>
+                          <span>
+                            {ev.start} - {ev.end}
+                          </span>
                         </p>
                       </div>
                       <button

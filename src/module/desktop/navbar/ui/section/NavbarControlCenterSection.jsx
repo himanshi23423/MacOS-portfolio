@@ -1,4 +1,4 @@
-import { navIcons } from "#constants/index";
+import { navIcons } from "@constants/index";
 import NavbarBatteryMenu from "../components/NavbarBatteryMenu";
 import NavbarDateTime from "../components/NavbarDateTime";
 import NavbarControlCenter from "../components/NavbarControlCenter";

@@ -6,17 +6,34 @@ import MusicPlayerSection from "./MusicPlayerSection";
 
 const MusicSection = (props) => {
   const {
-    tracks, activeTrack, isPlaying, volume, isMuted, currentTime,
-    searchQuery, setSearchQuery,
-    activeCategory, setActiveCategory,
-    isShuffle, setIsShuffle,
-    isRepeat, setIsRepeat,
+    tracks,
+    activeTrack,
+    isPlaying,
+    volume,
+    isMuted,
+    currentTime,
+    searchQuery,
+    setSearchQuery,
+    activeCategory,
+    setActiveCategory,
+    isShuffle,
+    setIsShuffle,
+    isRepeat,
+    setIsRepeat,
     isLoading,
-    audioRef, searchInputRef,
-    handleTimeUpdate, handleLoadedMetadata, handleAudioEnded,
-    handleSelectTrack, handlePlayPause, handleNext, handlePrev,
-    formatTime, handleProgressChange,
-    focusWindow, setMusicState,
+    audioRef,
+    searchInputRef,
+    handleTimeUpdate,
+    handleLoadedMetadata,
+    handleAudioEnded,
+    handleSelectTrack,
+    handlePlayPause,
+    handleNext,
+    handlePrev,
+    formatTime,
+    handleProgressChange,
+    focusWindow,
+    setMusicState,
   } = props;
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -26,7 +43,7 @@ const MusicSection = (props) => {
       <MusicHeaderSection
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
+        onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
         isSidebarOpen={isSidebarOpen}
         searchInputRef={searchInputRef}
         onFocusWindow={focusWindow}
@@ -53,7 +70,7 @@ const MusicSection = (props) => {
 
       <audio
         ref={audioRef}
-        src={activeTrack.url}
+        src={activeTrack?.url || null}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleAudioEnded}

@@ -1,10 +1,14 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "#*":["src/*"],
-            "#module/*":["src/module/*"]
-        }
-    },
-    "include": ["src"]
+  "compilerOptions": {
+    "baseUrl": ".",
+    // "ignoreDeprecations": "6.0",
+    "paths": {
+      "@components/*": ["src/module/loading/ui/components/*"],
+      "@constants/*": ["src/constants/*"],
+      "@constants": ["src/constants/index.js"],
+      "@store/*": ["src/store/*"],
+      "@hoc/*": ["src/hoc/*"],
+      "@module/*": ["src/module/*"]
+    }
+  }
 }

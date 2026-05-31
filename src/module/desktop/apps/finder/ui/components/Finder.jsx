@@ -1,9 +1,9 @@
-import WindowControls from "#components/WindowControls";
-import { locations } from "#constants";
-import windowWrapper from "#hoc/windowWrapper";
-import useLocationStore from "#store/location";
-import useWindowsStore from "#store/window";
-import { Search, ChevronRight } from "lucide-react";
+import WindowControls from "@components/WindowControls";
+import { locations } from "@constants";
+import windowWrapper from "@hoc/windowWrapper";
+import useLocationStore from "@store/location";
+import useWindowsStore from "@store/window";
+import { Search, ChevronRight, FileText } from "lucide-react";
 import { useState, useEffect } from "react";
 import { fileIconMap } from "./finderData";
 import FinderToolbar from "./FinderToolbar";
@@ -16,7 +16,7 @@ const Finder = () => {
   const { activeLocation, setActiveLocation } = useLocationStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [navStack, setNavStack] = useState([]);
-  
+
   // History and Search States
   const [history, setHistory] = useState([activeLocation]);
   const [historyIndex, setHistoryIndex] = useState(0);
@@ -34,7 +34,7 @@ const Finder = () => {
       setHistory([activeLocation]);
       setHistoryIndex(0);
     }
-  }, [activeLocation]);
+  }, [activeLocation, history]);
 
   const handleNavigate = (location) => {
     const newHistory = history.slice(0, historyIndex + 1);
@@ -79,7 +79,7 @@ const Finder = () => {
     openWindow(`${item.fileType}${item.kind}`, item);
   };
 
-  const goBack = () => {
+  const _goBack = () => {
     if (navStack.length > 0) {
       const prev = navStack[navStack.length - 1];
       setNavStack((s) => s.slice(0, -1));
@@ -158,14 +158,9 @@ const Finder = () => {
                     alignItems: "center",
                     width: "100%",
                     padding: "12px 16px",
-                    background:
-                      item.id === activeLocation?.id
-                        ? "#e8f0fe"
-                        : "transparent",
+                    background: item.id === activeLocation?.id ? "#e8f0fe" : "transparent",
                     borderBottom:
-                      index < Object.values(locations).length - 1
-                        ? "0.5px solid #e5e5ea"
-                        : "none",
+                      index < Object.values(locations).length - 1 ? "0.5px solid #e5e5ea" : "none",
                     gap: 14,
                     textAlign: "left",
                   }}
@@ -224,9 +219,7 @@ const Finder = () => {
                       padding: "12px 16px",
                       background: "transparent",
                       borderBottom:
-                        index < activeLocation.children.length - 1
-                          ? "0.5px solid #e5e5ea"
-                          : "none",
+                        index < activeLocation.children.length - 1 ? "0.5px solid #e5e5ea" : "none",
                       gap: 14,
                       textAlign: "left",
                     }}
@@ -270,9 +263,7 @@ const Finder = () => {
                         </p>
                       )}
                     </div>
-                    {item.kind === "folder" && (
-                      <ChevronRight size={18} className="text-gray-300" />
-                    )}
+                    {item.kind === "folder" && <ChevronRight size={18} className="text-gray-300" />}
                   </button>
                 ))}
               </div>
@@ -283,9 +274,10 @@ const Finder = () => {
     );
   }
 
-  const filteredChildren = activeLocation?.children?.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  const filteredChildren =
+    activeLocation?.children?.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    ) || [];
 
   return (
     <FinderSection

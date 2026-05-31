@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AppWindow } from "lucide-react";
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 import { STORE_APPS } from "../components/appStoreData";
 import AppStoreNavSection from "./AppStoreNavSection";
 import AppStoreSidebarSection from "./AppStoreSidebarSection";
@@ -68,7 +68,9 @@ const AppStoreSection = () => {
     setUpdatingAll(true);
     const appsToUpdate = ["figma", "vscode", "slack"];
     const initialProgress = {};
-    appsToUpdate.forEach((id) => { initialProgress[id] = 0; });
+    appsToUpdate.forEach((id) => {
+      initialProgress[id] = 0;
+    });
     setUpdateProgresses(initialProgress);
     const interval = setInterval(() => {
       setUpdateProgresses((prev) => {
@@ -148,7 +150,8 @@ const AppStoreSection = () => {
             <div className="space-y-1">
               <h3 className="text-sm font-bold text-gray-800">{alertApp.name} Installed</h3>
               <p className="text-xs text-gray-400 leading-relaxed">
-                {alertApp.name} is successfully installed on your desktop! You can now access and run it via custom command simulations inside the Terminal application.
+                {alertApp.name} is successfully installed on your desktop! You can now access and
+                run it via custom command simulations inside the Terminal application.
               </p>
             </div>
             <button

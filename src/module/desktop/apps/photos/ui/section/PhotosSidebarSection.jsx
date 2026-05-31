@@ -1,6 +1,6 @@
 import { PhotoSidebarDesktop, PhotoSidebarMobile } from "../components/PhotoSidebar";
 
-const PhotosSidebarSection = ({ albums, activeAlbum, onSelectAlbum, isSidebarOpen, isMobile }) => {
+const PhotosSidebarSection = ({ _albums, activeAlbum, onSelectAlbum, isSidebarOpen, isMobile }) => {
   if (isMobile) {
     return <PhotoSidebarMobile activeTab={activeAlbum} onTabChange={onSelectAlbum} />;
   }

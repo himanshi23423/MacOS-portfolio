@@ -1,16 +1,10 @@
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 import { Search } from "lucide-react";
 import PhotosSidebarSection from "./PhotosSidebarSection";
 import PhotosGridSection from "./PhotosGridSection";
-import { photosLinks } from "#constants";
+import { photosLinks } from "@constants";
 
-const PhotosSection = ({
-  isMobile,
-  filteredGallery,
-  activeTab,
-  onSelectPhoto,
-  onSelectAlbum,
-}) => {
+const PhotosSection = ({ isMobile, filteredGallery, activeTab, onSelectPhoto, onSelectAlbum }) => {
   if (isMobile) {
     return (
       <>

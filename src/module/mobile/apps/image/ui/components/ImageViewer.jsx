@@ -1,5 +1,5 @@
 import { Heart } from "lucide-react";
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 
 const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
   const { favorites, toggleFavorite } = useWindowsStore();
@@ -30,7 +30,7 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
               }}
             />
             {id && (
-              <button 
+              <button
                 onClick={() => toggleFavorite(id)}
                 style={{
                   position: "absolute",
@@ -48,7 +48,12 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
                   zIndex: 10,
                 }}
               >
-                <Heart size={24} fill={isFavorite ? "#ff3b30" : "transparent"} color={isFavorite ? "#ff3b30" : "white"} strokeWidth={2} />
+                <Heart
+                  size={24}
+                  fill={isFavorite ? "#ff3b30" : "transparent"}
+                  color={isFavorite ? "#ff3b30" : "white"}
+                  strokeWidth={2}
+                />
               </button>
             )}
           </>
@@ -67,11 +72,16 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
             className="w-full h-full object-contain drop-shadow-md rounded-md"
           />
           {id && (
-            <button 
+            <button
               onClick={() => toggleFavorite(id)}
               className="absolute top-6 right-6 p-2 rounded-full bg-black/30 hover:bg-black/50 transition-colors backdrop-blur-sm shadow-xl z-10"
             >
-              <Heart size={24} fill={isFavorite ? "#ff3b30" : "transparent"} color={isFavorite ? "#ff3b30" : "white"} strokeWidth={2} />
+              <Heart
+                size={24}
+                fill={isFavorite ? "#ff3b30" : "transparent"}
+                color={isFavorite ? "#ff3b30" : "white"}
+                strokeWidth={2}
+              />
             </button>
           )}
         </>

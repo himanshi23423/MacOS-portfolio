@@ -1,8 +1,14 @@
 import { useEffect } from "react";
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 import { Search, ChevronLeft } from "lucide-react";
 
-const MusicHeaderSection = ({ searchQuery, onSearchChange, onToggleSidebar, isSidebarOpen, searchInputRef, onFocusWindow }) => {
+const MusicHeaderSection = ({
+  searchQuery,
+  onSearchChange,
+  onToggleSidebar,
+  isSidebarOpen,
+  searchInputRef,
+}) => {
   useEffect(() => {
     const input = searchInputRef.current;
     if (!input) return;
@@ -23,7 +29,10 @@ const MusicHeaderSection = ({ searchQuery, onSearchChange, onToggleSidebar, isSi
   }, [searchInputRef]);
 
   return (
-    <div id="window-header" className="shrink-0 bg-[#f4f4f6] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600">
+    <div
+      id="window-header"
+      className="shrink-0 bg-[#f4f4f6] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600"
+    >
       <div className="flex items-center gap-4">
         <WindowControls target="music" />
         <button
@@ -31,7 +40,10 @@ const MusicHeaderSection = ({ searchQuery, onSearchChange, onToggleSidebar, isSi
           className="md:hidden p-1 hover:bg-zinc-200 rounded text-gray-500 transition-transform"
           title={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
         >
-          <ChevronLeft size={16} className={`transition-transform ${isSidebarOpen ? "" : "rotate-180"}`} />
+          <ChevronLeft
+            size={16}
+            className={`transition-transform ${isSidebarOpen ? "" : "rotate-180"}`}
+          />
         </button>
         <span className="font-bold text-gray-700 hidden md:flex pl-3 items-center gap-1.5">
           <span className="text-red-500 text-lg leading-none">♪</span> Music
@@ -49,7 +61,9 @@ const MusicHeaderSection = ({ searchQuery, onSearchChange, onToggleSidebar, isSi
         <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
       </div>
       <div className="w-14 flex justify-end">
-        <span className="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider">Hifi</span>
+        <span className="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+          Hifi
+        </span>
       </div>
     </div>
   );

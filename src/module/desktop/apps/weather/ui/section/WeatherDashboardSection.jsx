@@ -6,7 +6,7 @@ const WeatherDashboardSection = ({
   weatherData,
   isLoading,
   unit: unitMode = "both",
-  onToggleUnit,
+  _onToggleUnit,
 }) => {
   const city = weatherData || activeCity;
   const [error, setError] = useState(null);

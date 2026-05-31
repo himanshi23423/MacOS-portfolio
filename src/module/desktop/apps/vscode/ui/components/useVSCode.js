@@ -19,35 +19,41 @@ const useVSCode = () => {
   const [terminalInput, setTerminalInput] = useState("");
   const terminalBottomRef = useRef(null);
 
-  const handleContentChange = useCallback((newVal) => {
-    setFiles(prev => ({ ...prev, [activeFile]: newVal }));
-    const initialContent = INITIAL_FILES[activeFile];
-    if (newVal !== initialContent) {
-      setModifiedFiles(prev => ({ ...prev, [activeFile]: initialContent }));
-    } else {
-      setModifiedFiles(prev => {
-        const next = { ...prev };
-        delete next[activeFile];
-        return next;
-      });
-    }
-  }, [activeFile]);
+  const handleContentChange = useCallback(
+    (newVal) => {
+      setFiles((prev) => ({ ...prev, [activeFile]: newVal }));
+      const initialContent = INITIAL_FILES[activeFile];
+      if (newVal !== initialContent) {
+        setModifiedFiles((prev) => ({ ...prev, [activeFile]: initialContent }));
+      } else {
+        setModifiedFiles((prev) => {
+          const next = { ...prev };
+          delete next[activeFile];
+          return next;
+        });
+      }
+    },
+    [activeFile],
+  );
 
   const selectFile = useCallback((filePath) => {
     setActiveFile(filePath);
-    setOpenTabs(prev => prev.includes(filePath) ? prev : [...prev, filePath]);
+    setOpenTabs((prev) => (prev.includes(filePath) ? prev : [...prev, filePath]));
   }, []);
 
-  const closeTab = useCallback((filePath, e) => {
-    e.stopPropagation();
-    setOpenTabs(prev => {
-      const next = prev.filter(t => t !== filePath);
-      if (activeFile === filePath && next.length > 0) {
-        setActiveFile(next[next.length - 1]);
-      }
-      return next;
-    });
-  }, [activeFile]);
+  const closeTab = useCallback(
+    (filePath, e) => {
+      e.stopPropagation();
+      setOpenTabs((prev) => {
+        const next = prev.filter((t) => t !== filePath);
+        if (activeFile === filePath && next.length > 0) {
+          setActiveFile(next[next.length - 1]);
+        }
+        return next;
+      });
+    },
+    [activeFile],
+  );
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -67,104 +73,120 @@ const useVSCode = () => {
     setSearchResults(results);
   }, [searchQuery, files]);
 
-  const runCommand = useCallback((cmdStr) => {
-    const trimmed = cmdStr.trim();
-    if (!trimmed) return;
-    const parts = trimmed.split(" ");
-    const command = parts[0].toLowerCase();
-    const args = parts.slice(1);
-    let output = [];
+  const runCommand = useCallback(
+    (cmdStr) => {
+      const trimmed = cmdStr.trim();
+      if (!trimmed) return;
+      const parts = trimmed.split(" ");
+      const command = parts[0].toLowerCase();
+      const args = parts.slice(1);
+      let output = [];
 
-    switch (command) {
-      case "help":
-        output = [
-          "Available commands:",
-          "  help           - Show list of commands",
-          "  ls             - List workspace files",
-          "  cat [file]     - Display file contents",
-          "  git status     - Show git repository status",
-          "  git diff       - Show file changes compared to original",
-          "  bun run dev    - Spin up the Vite development server",
-          "  clear          - Clear the terminal screen"
-        ];
-        break;
-      case "ls":
-        output = [
-          "Directory: /workspace",
-          "Mode          LastWriteTime     Length Name",
-          "----          -------------     ------ ----",
-          "-a---   2026-05-27  13:50:00        253 package.json",
-          "-a---   2026-05-27  13:50:00        415 README.md",
-          "d----   2026-05-27  13:50:00          - src"
-        ];
-        break;
-      case "cat":
-        if (!args[0]) {
-          output = ["Error: cat requires a file argument. (e.g. cat README.md)"];
-        } else {
-          let target = args[0];
-          if (target === "App.jsx" || target === "index.css") target = "src/" + target;
-          if (files[target] !== undefined) {
-            output = files[target].split("\n");
+      switch (command) {
+        case "help":
+          output = [
+            "Available commands:",
+            "  help           - Show list of commands",
+            "  ls             - List workspace files",
+            "  cat [file]     - Display file contents",
+            "  git status     - Show git repository status",
+            "  git diff       - Show file changes compared to original",
+            "  bun run dev    - Spin up the Vite development server",
+            "  clear          - Clear the terminal screen",
+          ];
+          break;
+        case "ls":
+          output = [
+            "Directory: /workspace",
+            "Mode          LastWriteTime     Length Name",
+            "----          -------------     ------ ----",
+            "-a---   2026-05-27  13:50:00        253 package.json",
+            "-a---   2026-05-27  13:50:00        415 README.md",
+            "d----   2026-05-27  13:50:00          - src",
+          ];
+          break;
+        case "cat":
+          if (!args[0]) {
+            output = ["Error: cat requires a file argument. (e.g. cat README.md)"];
           } else {
-            output = [`cat: ${args[0]}: No such file or directory`];
+            let target = args[0];
+            if (target === "App.jsx" || target === "index.css") target = "src/" + target;
+            if (files[target] !== undefined) {
+              output = files[target].split("\n");
+            } else {
+              output = [`cat: ${args[0]}: No such file or directory`];
+            }
           }
-        }
-        break;
-      case "clear":
-        setTerminalHistory([]);
-        return;
-      case "git":
-        const sub = args[0] ? args[0].toLowerCase() : "";
-        if (sub === "status") {
-          const modifiedList = Object.keys(modifiedFiles);
-          if (modifiedList.length === 0) {
-            output = ["On branch main", "Your branch is up to date with 'origin/main'.", "", "nothing to commit, working tree clean"];
+          break;
+        case "clear":
+          setTerminalHistory([]);
+          return;
+        case "git": {
+          const sub = args[0] ? args[0].toLowerCase() : "";
+          if (sub === "status") {
+            const modifiedList = Object.keys(modifiedFiles);
+            if (modifiedList.length === 0) {
+              output = [
+                "On branch main",
+                "Your branch is up to date with 'origin/main'.",
+                "",
+                "nothing to commit, working tree clean",
+              ];
+            } else {
+              output = [
+                "On branch main",
+                "Changes not staged for commit:",
+                ...modifiedList.map((f) => `\tmodified:   ${f}`),
+                "",
+                'no changes added to commit (use "git add" and/or "git commit -a")',
+              ];
+            }
+          } else if (sub === "diff") {
+            const modifiedList = Object.keys(modifiedFiles);
+            if (modifiedList.length === 0) {
+              output = ["No changes to diff."];
+            } else {
+              output = [];
+              modifiedList.forEach((file) => {
+                output.push(`diff --git a/${file} b/${file}`);
+                output.push(`--- a/${file}`);
+                output.push(`+++ b/${file}`);
+                output.push(`@@ -1,5 +1,5 @@`);
+                output.push(`- [original lines]`);
+                output.push(`+ [modified lines]`);
+                output.push(`\n${files[file]}`);
+              });
+            }
           } else {
+            output = ["git subcommands supported: status, diff"];
+          }
+          break;
+        }
+        case "bun":
+          if (args[0] === "run" && args[1] === "dev") {
             output = [
-              "On branch main",
-              "Changes not staged for commit:",
-              ...modifiedList.map(f => `\tmodified:   ${f}`),
-              "", "no changes added to commit (use \"git add\" and/or \"git commit -a\")"
+              "  bun x next dev",
+              "  ▲ Next.js 16.2.6  ready in 254 ms",
+              "",
+              "  ➜  Local:   http://localhost:3000/",
+              "  ➜  press h + enter to show help",
             ];
-          }
-        } else if (sub === "diff") {
-          const modifiedList = Object.keys(modifiedFiles);
-          if (modifiedList.length === 0) {
-            output = ["No changes to diff."];
           } else {
-            output = [];
-            modifiedList.forEach(file => {
-              output.push(`diff --git a/${file} b/${file}`);
-              output.push(`--- a/${file}`);
-              output.push(`+++ b/${file}`);
-              output.push(`@@ -1,5 +1,5 @@`);
-              output.push(`- [original lines]`);
-              output.push(`+ [modified lines]`);
-              output.push(`\n${files[file]}`);
-            });
+            output = ["Command supports 'bun run dev'"];
           }
-        } else {
-          output = ["git subcommands supported: status, diff"];
-        }
-        break;
-      case "bun":
-        if (args[0] === "run" && args[1] === "dev") {
-          output = ["  bun x --bun vite", "  VITE v7.2.4  ready in 254 ms", "", "  ➜  Local:   http://localhost:5173/", "  ➜  Network: use --host to expose", "  ➜  press h + enter to show help"];
-        } else {
-          output = ["Command supports 'bun run dev'"];
-        }
-        break;
-      default:
-        output = [`bash: ${command}: command not found. Try 'help'.`];
-    }
+          break;
+        default:
+          output = [`bash: ${command}: command not found. Try 'help'.`];
+      }
 
-    setTerminalHistory(prev => [
-      ...prev,
-      { type: "input", text: cmdStr },
-      ...output.map(line => ({ type: "output", text: line }))
-    ]);
-  }, [files, modifiedFiles]);
+      setTerminalHistory((prev) => [
+        ...prev,
+        { type: "input", text: cmdStr },
+        ...output.map((line) => ({ type: "output", text: line })),
+      ]);
+    },
+    [files, modifiedFiles],
+  );
 
   useEffect(() => {
     if (terminalBottomRef.current) {
@@ -173,18 +195,26 @@ const useVSCode = () => {
   }, [terminalHistory]);
 
   return {
-    files, setFiles,
+    files,
+    setFiles,
     activeFile,
     openTabs,
-    activeSidebarTab, setActiveSidebarTab,
-    explorerExpanded, setExplorerExpanded,
-    searchQuery, setSearchQuery,
+    activeSidebarTab,
+    setActiveSidebarTab,
+    explorerExpanded,
+    setExplorerExpanded,
+    searchQuery,
+    setSearchQuery,
     searchResults,
-    commitMessage, setCommitMessage,
-    modifiedFiles, setModifiedFiles,
-    installedExtensions, setInstalledExtensions,
+    commitMessage,
+    setCommitMessage,
+    modifiedFiles,
+    setModifiedFiles,
+    installedExtensions,
+    setInstalledExtensions,
     terminalHistory,
-    terminalInput, setTerminalInput,
+    terminalInput,
+    setTerminalInput,
     terminalBottomRef,
     handleContentChange,
     selectFile,

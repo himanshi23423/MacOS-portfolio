@@ -1,6 +1,5 @@
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-import useWindowsStore from "#store/window";
 
 const FinderToolbar = ({
   title,
@@ -17,7 +16,7 @@ const FinderToolbar = ({
   >
     <div className="flex items-center gap-6">
       <WindowControls target="finder" />
-      
+
       {/* Navigation Arrows */}
       <div className="flex items-center gap-1">
         <button
@@ -40,12 +39,10 @@ const FinderToolbar = ({
     </div>
 
     {/* Center Title */}
-    <div className="flex-1 text-center font-bold text-gray-700 text-xs truncate">
-      {title}
-    </div>
+    <div className="flex-1 text-center font-bold text-gray-700 text-xs truncate">{title}</div>
 
     {/* Search Input */}
-    <div 
+    <div
       className="w-48 relative flex items-center bg-zinc-200/50 border border-zinc-300/30 rounded-md px-2 py-0.5 cursor-text"
       onMouseDownCapture={(e) => e.stopPropagation()}
       onPointerDownCapture={(e) => e.stopPropagation()}

@@ -1,9 +1,21 @@
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { MONTHS } from "../components/calendarData";
 
-const CalendarHeaderSection = ({ month, year, onPrevMonth, onNextMonth, onToday, onAddEvent, isSidebarOpen, onToggleSidebar }) => (
-  <div id="window-header" className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2.5 z-20">
+const CalendarHeaderSection = ({
+  month,
+  year,
+  onPrevMonth,
+  onNextMonth,
+  onToday,
+  onAddEvent,
+  isSidebarOpen,
+  onToggleSidebar,
+}) => (
+  <div
+    id="window-header"
+    className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2.5 z-20"
+  >
     <div className="flex items-center gap-4">
       <WindowControls target="calendar" />
       <button
@@ -11,7 +23,9 @@ const CalendarHeaderSection = ({ month, year, onPrevMonth, onNextMonth, onToday,
         className="sm:hidden p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors"
         aria-label="Toggle Sidebar"
       >
-        <ChevronLeft className={`w-5 h-5 transition-transform duration-200 ${isSidebarOpen ? "rotate-0" : "rotate-180"}`} />
+        <ChevronLeft
+          className={`w-5 h-5 transition-transform duration-200 ${isSidebarOpen ? "rotate-0" : "rotate-180"}`}
+        />
       </button>
     </div>
 

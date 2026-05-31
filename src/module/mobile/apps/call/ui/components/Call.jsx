@@ -1,4 +1,4 @@
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import useCall from "./useCall";
 import CallSection from "../section/CallSection";
 

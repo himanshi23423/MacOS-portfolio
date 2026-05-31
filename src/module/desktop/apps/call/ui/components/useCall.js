@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 
 const useCall = () => {
   const { windows } = useWindowsStore();
@@ -35,10 +35,18 @@ const useCall = () => {
   const playDTMFTone = useCallback((digit) => {
     try {
       const dtmfFrequencies = {
-        '1': [697, 1209], '2': [697, 1336], '3': [697, 1477],
-        '4': [770, 1209], '5': [770, 1336], '6': [770, 1477],
-        '7': [852, 1209], '8': [852, 1336], '9': [852, 1477],
-        '*': [941, 1209], '0': [941, 1336], '#': [941, 1477]
+        1: [697, 1209],
+        2: [697, 1336],
+        3: [697, 1477],
+        4: [770, 1209],
+        5: [770, 1336],
+        6: [770, 1477],
+        7: [852, 1209],
+        8: [852, 1336],
+        9: [852, 1477],
+        "*": [941, 1209],
+        0: [941, 1336],
+        "#": [941, 1477],
       };
       const freqs = dtmfFrequencies[digit];
       if (!freqs) return;
@@ -48,8 +56,8 @@ const useCall = () => {
       const gain = ctx.createGain();
       osc1.frequency.value = freqs[0];
       osc2.frequency.value = freqs[1];
-      osc1.type = 'sine';
-      osc2.type = 'sine';
+      osc1.type = "sine";
+      osc2.type = "sine";
       gain.gain.setValueAtTime(0, ctx.currentTime);
       gain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 0.01);
       gain.gain.setValueAtTime(0.08, ctx.currentTime + 0.12);
@@ -71,14 +79,14 @@ const useCall = () => {
       ringbackAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
       const playRingCycle = () => {
         const ctx = ringbackAudioCtxRef.current;
-        if (!ctx || ctx.state === 'closed') return;
+        if (!ctx || ctx.state === "closed") return;
         const osc1 = ctx.createOscillator();
         const osc2 = ctx.createOscillator();
         const gain = ctx.createGain();
         osc1.frequency.value = 440;
         osc2.frequency.value = 480;
-        osc1.type = 'sine';
-        osc2.type = 'sine';
+        osc1.type = "sine";
+        osc2.type = "sine";
         gain.gain.setValueAtTime(0, ctx.currentTime);
         gain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.05);
         gain.gain.setValueAtTime(0.05, ctx.currentTime + 1.5);
@@ -104,35 +112,45 @@ const useCall = () => {
       ringIntervalRef.current = null;
     }
     if (ringbackAudioCtxRef.current) {
-      try { ringbackAudioCtxRef.current.close(); } catch(e) {}
+      try {
+        ringbackAudioCtxRef.current.close();
+      } catch {
+        /* ignore */
+      }
       ringbackAudioCtxRef.current = null;
     }
   }, []);
 
-  const handleDialPress = useCallback((val) => {
-    playDTMFTone(val);
-    setDialNumber((prev) => prev + val);
-  }, [playDTMFTone]);
+  const handleDialPress = useCallback(
+    (val) => {
+      playDTMFTone(val);
+      setDialNumber((prev) => prev + val);
+    },
+    [playDTMFTone],
+  );
 
   const handleBackspace = useCallback(() => {
     setDialNumber((prev) => prev.slice(0, -1));
   }, []);
 
-  const initiateCall = useCallback((name, type = "video") => {
-    setActiveCall({ name, type, status: "ringing" });
-    setCallTimer(0);
-    startRingbackSound();
-    setTimeout(() => {
-      setActiveCall((prev) => {
-        if (!prev || prev.status !== "ringing") return prev;
-        stopRingbackSound();
-        timerIntervalRef.current = setInterval(() => {
-          setCallTimer((t) => t + 1);
-        }, 1000);
-        return { ...prev, status: "connected" };
-      });
-    }, 4500);
-  }, [startRingbackSound, stopRingbackSound]);
+  const initiateCall = useCallback(
+    (name, type = "video") => {
+      setActiveCall({ name, type, status: "ringing" });
+      setCallTimer(0);
+      startRingbackSound();
+      setTimeout(() => {
+        setActiveCall((prev) => {
+          if (!prev || prev.status !== "ringing") return prev;
+          stopRingbackSound();
+          timerIntervalRef.current = setInterval(() => {
+            setCallTimer((t) => t + 1);
+          }, 1000);
+          return { ...prev, status: "connected" };
+        });
+      }, 4500);
+    },
+    [startRingbackSound, stopRingbackSound],
+  );
 
   const endCall = useCallback(() => {
     stopRingbackSound();
@@ -158,7 +176,11 @@ const useCall = () => {
         }
         return;
       }
-      if (document.activeElement && document.activeElement.tagName === 'INPUT' && !document.activeElement.readOnly) {
+      if (
+        document.activeElement &&
+        document.activeElement.tagName === "INPUT" &&
+        !document.activeElement.readOnly
+      ) {
         if (key === "Enter" && dialNumber) {
           e.preventDefault();
           initiateCall(dialNumber, "video");
@@ -182,7 +204,16 @@ const useCall = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [sidebarTab, activeCall, dialNumber, isWindowFocused, initiateCall, endCall, handleDialPress, handleBackspace]);
+  }, [
+    sidebarTab,
+    activeCall,
+    dialNumber,
+    isWindowFocused,
+    initiateCall,
+    endCall,
+    handleDialPress,
+    handleBackspace,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -192,21 +223,30 @@ const useCall = () => {
   }, [stopRingbackSound]);
 
   const formatTimer = (secs) => {
-    const mins = Math.floor(secs / 60).toString().padStart(2, "0");
+    const mins = Math.floor(secs / 60)
+      .toString()
+      .padStart(2, "0");
     const seconds = (secs % 60).toString().padStart(2, "0");
     return `${mins}:${seconds}`;
   };
 
   return {
-    sidebarTab, setSidebarTab,
-    searchQuery, setSearchQuery,
-    dialNumber, setDialNumber,
-    isSidebarOpen, setIsSidebarOpen,
+    sidebarTab,
+    setSidebarTab,
+    searchQuery,
+    setSearchQuery,
+    dialNumber,
+    setDialNumber,
+    isSidebarOpen,
+    setIsSidebarOpen,
     activeCall,
     callTimer,
-    micMuted, setMicMuted,
-    cameraMuted, setCameraMuted,
-    speakerMuted, setSpeakerMuted,
+    micMuted,
+    setMicMuted,
+    cameraMuted,
+    setCameraMuted,
+    speakerMuted,
+    setSpeakerMuted,
     handleDialPress,
     handleBackspace,
     initiateCall,

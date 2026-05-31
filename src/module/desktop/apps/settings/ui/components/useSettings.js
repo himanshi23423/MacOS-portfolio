@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 
 const useSettings = () => {
-  const githubApiBase = import.meta.env.VITE_GITHUB_API_URL || "https://api.github.com";
+  const githubApiBase = process.env.NEXT_PUBLIC_GITHUB_API_URL || "https://api.github.com";
   const { windows } = useWindowsStore();
   const windowData = windows.settings?.data;
 
@@ -27,23 +27,29 @@ const useSettings = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch(`${githubApiBase}/users/kuldeeprajput-dev`).then(res => res.json()),
-      fetch(`${githubApiBase}/users/kuldeeprajput-dev/repos?sort=updated&per_page=3`).then(res => res.json())
+      fetch(`${githubApiBase}/users/kuldeeprajput-dev`).then((res) => res.json()),
+      fetch(`${githubApiBase}/users/kuldeeprajput-dev/repos?sort=updated&per_page=3`).then((res) =>
+        res.json(),
+      ),
     ])
-    .then(([profile, repos]) => {
-      setGithubData({ profile, repos });
-      setIsLoading(false);
-    })
-    .catch((err) => {
-      console.error("Error fetching web details:", err);
-      setIsLoading(false);
-    });
-  }, []);
+      .then(([profile, repos]) => {
+        setGithubData({ profile, repos });
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching web details:", err);
+        setIsLoading(false);
+      });
+  }, [githubApiBase]);
 
   return {
-    activeTab, setActiveTab,
-    githubData, isLoading,
-    isMobile, mobileView, setMobileView,
+    activeTab,
+    setActiveTab,
+    githubData,
+    isLoading,
+    isMobile,
+    mobileView,
+    setMobileView,
   };
 };
 

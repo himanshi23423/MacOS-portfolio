@@ -1,4 +1,4 @@
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import useNotes from "./useNotes";
 import NotesSection from "../section/NotesSection";
 

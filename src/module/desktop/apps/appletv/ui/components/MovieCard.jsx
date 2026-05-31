@@ -15,9 +15,11 @@ const MovieCard = ({
     if (!movie.tmdbId) return;
     const fetchPoster = async () => {
       try {
-        const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
         const type = movie.type || "movie";
-        const res = await fetch(`https://api.themoviedb.org/3/${type}/${movie.tmdbId}?api_key=${apiKey}`);
+        const res = await fetch(
+          `https://api.themoviedb.org/3/${type}/${movie.tmdbId}?api_key=${apiKey}`,
+        );
         const data = await res.json();
         if (data.poster_path) {
           setPosterUrl(`https://image.tmdb.org/t/p/w500${data.poster_path}`);
@@ -85,4 +87,3 @@ const MovieCard = ({
 };
 
 export default MovieCard;
-

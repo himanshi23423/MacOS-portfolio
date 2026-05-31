@@ -1,5 +1,5 @@
-import WindowControls from "#components/WindowControls";
-import windowWrapper from "#hoc/windowWrapper";
+import WindowControls from "@components/WindowControls";
+import windowWrapper from "@hoc/windowWrapper";
 import useCalculator from "./useCalculator";
 import CalculatorDisplay from "./CalculatorDisplay";
 import CalculatorKeypad from "./CalculatorKeypad";

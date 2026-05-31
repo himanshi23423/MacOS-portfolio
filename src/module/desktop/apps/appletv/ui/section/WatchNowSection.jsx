@@ -3,7 +3,14 @@ import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
 import { FEATURED_SHOW, MOVIES } from "../components/appleTvCatalog";
 
-const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, watchNowMovies, isCompact }) => {
+const WatchNowSection = ({
+  upNext,
+  onPlayFeatured,
+  onPlayMovie,
+  onToggleUpNext,
+  watchNowMovies,
+  isCompact,
+}) => {
   const queuedMovies = MOVIES.filter((movie) => upNext.includes(movie.id));
   const [backdropUrl, setBackdropUrl] = useState(null);
 
@@ -11,9 +18,11 @@ const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, 
     if (!FEATURED_SHOW.tmdbId) return;
     const fetchBackdrop = async () => {
       try {
-        const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
         const type = FEATURED_SHOW.type || "tv";
-        const res = await fetch(`https://api.themoviedb.org/3/${type}/${FEATURED_SHOW.tmdbId}?api_key=${apiKey}`);
+        const res = await fetch(
+          `https://api.themoviedb.org/3/${type}/${FEATURED_SHOW.tmdbId}?api_key=${apiKey}`,
+        );
         const data = await res.json();
         if (data.backdrop_path) {
           setBackdropUrl(`https://image.tmdb.org/t/p/original${data.backdrop_path}`);
@@ -80,17 +89,11 @@ const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, 
         </div>
       </section>
 
-
       <section className="space-y-3">
         <h2 className="text-sm font-bold text-gray-800 px-1">Up Next</h2>
         <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
           {queuedMovies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              compactMeta
-              onPlay={() => onPlayMovie(movie)}
-            />
+            <MovieCard key={movie.id} movie={movie} compactMeta onPlay={() => onPlayMovie(movie)} />
           ))}
           {queuedMovies.length === 0 && (
             <div className="col-span-full py-6 text-center text-xs text-gray-500 italic">
@@ -122,11 +125,7 @@ const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, 
           <h2 className="text-sm font-bold text-gray-800 px-1">Trending Movies</h2>
           <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
             {watchNowMovies.map((movie) => (
-              <MovieCard
-                key={movie.id}
-                movie={movie}
-                onPlay={() => onPlayMovie(movie)}
-              />
+              <MovieCard key={movie.id} movie={movie} onPlay={() => onPlayMovie(movie)} />
             ))}
           </div>
         </section>
@@ -136,4 +135,3 @@ const WatchNowSection = ({ upNext, onPlayFeatured, onPlayMovie, onToggleUpNext, 
 };
 
 export default WatchNowSection;
-

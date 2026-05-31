@@ -1,12 +1,17 @@
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 import dayjs from "dayjs";
 import html2canvas from "html2canvas";
 import { useEffect, useRef, useState } from "react";
 
 const useNavbar = () => {
-  const { 
-    windows, openWindow, music, setMusicState, 
-    systemSettings: settings, toggleSystemSetting, updateSystemSetting 
+  const {
+    windows,
+    openWindow,
+    music,
+    setMusicState,
+    systemSettings: settings,
+    toggleSystemSetting,
+    updateSystemSetting,
   } = useWindowsStore();
   const [isControlOpen, setIsControlOpen] = useState(false);
   const [isAppleMenuOpen, setIsAppleMenuOpen] = useState(false);
@@ -61,7 +66,7 @@ const useNavbar = () => {
     const currentVolume = music.isMuted ? 0 : music.volume;
     updateSystemSetting("soundLevel", currentVolume);
     document.documentElement.style.setProperty("--system-volume", currentVolume);
-  }, [music.volume, music.isMuted]);
+  }, [music.volume, music.isMuted, updateSystemSetting]);
 
   useEffect(() => {
     let batteryManager;
@@ -109,11 +114,7 @@ const useNavbar = () => {
         setIsControlOpen(false);
         setIsPowerMenuOpen(false);
       }
-      if (
-        isAppleMenuOpen &&
-        appleMenuRef.current &&
-        !appleMenuRef.current.contains(event.target)
-      ) {
+      if (isAppleMenuOpen && appleMenuRef.current && !appleMenuRef.current.contains(event.target)) {
         setIsAppleMenuOpen(false);
       }
     };
@@ -133,7 +134,7 @@ const useNavbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isControlOpen]);
+  }, [isControlOpen, isAppleMenuOpen]);
 
   const toggleSetting = (key) => {
     toggleSystemSetting(key);

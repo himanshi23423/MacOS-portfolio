@@ -1,4 +1,4 @@
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import SafariSection from "../section/SafariSection";
 
 const Safari = () => <SafariSection />;

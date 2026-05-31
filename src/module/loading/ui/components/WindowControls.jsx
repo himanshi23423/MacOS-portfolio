@@ -1,4 +1,4 @@
-import useWindowsStore from "#store/window";
+import useWindowsStore from "@store/window";
 import { ChevronLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 

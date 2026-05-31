@@ -1,6 +1,6 @@
 import { useState } from "react";
-import WindowControls from "#components/WindowControls";
-import windowWrapper from "#hoc/windowWrapper";
+import WindowControls from "@components/WindowControls";
+import windowWrapper from "@hoc/windowWrapper";
 import ContactCard from "./ContactCard";
 import ContactList from "./ContactList";
 

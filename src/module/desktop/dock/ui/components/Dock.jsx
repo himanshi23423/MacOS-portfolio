@@ -1,12 +1,11 @@
-import { dockApps } from "#constants";
-import useWindowsStore from "#store/window";
+import { dockApps } from "@constants";
+import useWindowsStore from "@store/window";
 import { Fragment, useMemo, useState } from "react";
 import DockIcon from "./DockIcon";
 import useDockAnimation from "./useDockAnimation";
 
 const Dock = () => {
-  const { openWindow, closeWindow, unminimizeWindow, windows } =
-    useWindowsStore();
+  const { openWindow, closeWindow, unminimizeWindow, windows } = useWindowsStore();
   const [hoveredAppId, setHoveredAppId] = useState(null);
   const dockRef = useDockAnimation();
 
@@ -35,15 +34,11 @@ const Dock = () => {
   };
 
   const isAnyWindowMaximized = Object.values(windows).some(
-    (win) => win.isOpen && win.isMaximized && !win.isMinimized
+    (win) => win.isOpen && win.isMaximized && !win.isMinimized,
   );
 
   return (
-    <section
-      id="dock"
-      className={isAnyWindowMaximized ? "dock-hidden" : ""}
-      aria-label="Dock"
-    >
+    <section id="dock" className={isAnyWindowMaximized ? "dock-hidden" : ""} aria-label="Dock">
       <div ref={dockRef} className="dock-container">
         {dockApps.map(({ id, name, icon, canOpen }) => (
           <Fragment key={id}>

@@ -1,4 +1,4 @@
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import useMusic from "./useMusic";
 import MusicSection from "../section/MusicSection";
 

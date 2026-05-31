@@ -1,11 +1,11 @@
-import WindowControls from "#components/WindowControls";
-import { locations } from "#constants";
-import windowWrapper from "#hoc/windowWrapper";
-import useLocationStore from "#store/location";
-import useWindowsStore from "#store/window";
-import { Search, ChevronRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import WindowControls from "@components/WindowControls";
+import { locations } from "@constants";
 import { fileIconMap } from "./finderData";
+import windowWrapper from "@hoc/windowWrapper";
+import useLocationStore from "@store/location";
+import useWindowsStore from "@store/window";
+import { Search, ChevronRight, FileText } from "lucide-react";
+import { useState, useEffect } from "react";
 import FinderToolbar from "./FinderToolbar";
 import FinderSidebar from "./FinderSidebar";
 import FinderFileList from "./FinderFileList";
@@ -36,7 +36,7 @@ const Finder = () => {
     openWindow(`${item.fileType}${item.kind}`, item);
   };
 
-  const goBack = () => {
+  const _goBack = () => {
     if (navStack.length > 0) {
       const prev = navStack[navStack.length - 1];
       setNavStack((s) => s.slice(0, -1));
@@ -115,14 +115,9 @@ const Finder = () => {
                     alignItems: "center",
                     width: "100%",
                     padding: "12px 16px",
-                    background:
-                      item.id === activeLocation?.id
-                        ? "#e8f0fe"
-                        : "transparent",
+                    background: item.id === activeLocation?.id ? "#e8f0fe" : "transparent",
                     borderBottom:
-                      index < Object.values(locations).length - 1
-                        ? "0.5px solid #e5e5ea"
-                        : "none",
+                      index < Object.values(locations).length - 1 ? "0.5px solid #e5e5ea" : "none",
                     gap: 14,
                     textAlign: "left",
                   }}
@@ -181,9 +176,7 @@ const Finder = () => {
                       padding: "12px 16px",
                       background: "transparent",
                       borderBottom:
-                        index < activeLocation.children.length - 1
-                          ? "0.5px solid #e5e5ea"
-                          : "none",
+                        index < activeLocation.children.length - 1 ? "0.5px solid #e5e5ea" : "none",
                       gap: 14,
                       textAlign: "left",
                     }}
@@ -227,9 +220,7 @@ const Finder = () => {
                         </p>
                       )}
                     </div>
-                    {item.kind === "folder" && (
-                      <ChevronRight size={18} className="text-gray-300" />
-                    )}
+                    {item.kind === "folder" && <ChevronRight size={18} className="text-gray-300" />}
                   </button>
                 ))}
               </div>

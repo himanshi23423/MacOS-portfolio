@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
-import useWindowsStore from "#store/window";
-import {
-  DEFAULT_BOOKMARKS,
-  WALLPAPERS,
-  IFRAME_COMPATIBLE_SITES,
-  MOCK_HISTORY
-} from "./safariData";
+import useWindowsStore from "@store/window";
+import { DEFAULT_BOOKMARKS, WALLPAPERS, IFRAME_COMPATIBLE_SITES, MOCK_HISTORY } from "./safariData";
 
 const useSafari = () => {
   const [tabs, setTabs] = useState([
@@ -15,8 +10,8 @@ const useSafari = () => {
       url: "safari://start",
       history: ["safari://start"],
       historyIndex: 0,
-      isReaderMode: false
-    }
+      isReaderMode: false,
+    },
   ]);
   const [activeTabId, setActiveTabId] = useState("tab-1");
   const [addressInput, setAddressInput] = useState("");
@@ -30,11 +25,11 @@ const useSafari = () => {
     favorites: true,
     privacyReport: true,
     readingList: true,
-    background: true
+    background: true,
   });
   const [bookmarks, setBookmarks] = useState(DEFAULT_BOOKMARKS);
   const [historyList, setHistoryList] = useState(MOCK_HISTORY);
-  
+
   // Custom reading settings
   const [readerFont, setReaderFont] = useState("serif"); // serif, sans
   const [readerTheme, setReaderTheme] = useState("sepia"); // white, sepia, gray, night
@@ -54,7 +49,7 @@ const useSafari = () => {
         setAddressInput(activeTab.url);
       }
     }
-  }, [activeTab?.url, activeTabId]);
+  }, [activeTab, activeTabId]);
 
   // Log history
   useEffect(() => {
@@ -68,7 +63,7 @@ const useSafari = () => {
         return [{ title, url, time: timeStr }, ...prev];
       });
     }
-  }, [activeTab?.url, activeTab?.title]);
+  }, [activeTab]);
 
   const handleNewTab = () => {
     const newId = `tab-${Date.now()}`;
@@ -78,7 +73,7 @@ const useSafari = () => {
       url: "safari://start",
       history: ["safari://start"],
       historyIndex: 0,
-      isReaderMode: false
+      isReaderMode: false,
     };
     setTabs((prev) => [...prev, newTabObj]);
     setActiveTabId(newId);
@@ -96,8 +91,8 @@ const useSafari = () => {
           url: "safari://start",
           history: ["safari://start"],
           historyIndex: 0,
-          isReaderMode: false
-        }
+          isReaderMode: false,
+        },
       ]);
       setActiveTabId("tab-1");
       return;
@@ -123,7 +118,7 @@ const useSafari = () => {
           lowerUrl.startsWith("127.0.0.1") ||
           lowerUrl.startsWith(window.location.host.toLowerCase()) ||
           lowerUrl.startsWith(window.location.hostname.toLowerCase());
-        
+
         if (isLocal) {
           let protocol = "http://";
           if (
@@ -148,7 +143,7 @@ const useSafari = () => {
           const nextHistory = tab.history.slice(0, tab.historyIndex + 1);
           nextHistory.push(targetUrl);
 
-          let newTitle = "Web Page";
+          let newTitle;
           if (targetUrl === "safari://start") {
             newTitle = "Start Page";
           } else if (targetUrl === "safari://privacy-report") {
@@ -161,14 +156,14 @@ const useSafari = () => {
             try {
               const qParam = new URL(targetUrl).searchParams.get("q");
               newTitle = qParam ? `${qParam} - Google Search` : "Google Search";
-            } catch (e) {
+            } catch {
               newTitle = "Google Search";
             }
           } else {
             try {
               const hostname = new URL(targetUrl).hostname;
               newTitle = hostname.replace("www.", "");
-            } catch (e) {
+            } catch {
               newTitle = targetUrl;
             }
           }
@@ -179,11 +174,11 @@ const useSafari = () => {
             title: newTitle,
             history: nextHistory,
             historyIndex: nextHistory.length - 1,
-            isReaderMode: false // Reset reader mode on navigation
+            isReaderMode: false, // Reset reader mode on navigation
           };
         }
         return tab;
-      })
+      }),
     );
   };
 
@@ -199,11 +194,11 @@ const useSafari = () => {
               url: nextUrl,
               historyIndex: nextIndex,
               title: getTitleForUrl(nextUrl),
-              isReaderMode: false
+              isReaderMode: false,
             };
           }
           return tab;
-        })
+        }),
       );
     }
   };
@@ -220,11 +215,11 @@ const useSafari = () => {
               url: nextUrl,
               historyIndex: nextIndex,
               title: getTitleForUrl(nextUrl),
-              isReaderMode: false
+              isReaderMode: false,
             };
           }
           return tab;
-        })
+        }),
       );
     }
   };
@@ -238,13 +233,13 @@ const useSafari = () => {
       try {
         const q = new URL(url).searchParams.get("q");
         return q ? `${q} - Google` : "Google Search";
-      } catch (e) {
+      } catch {
         return "Google Search";
       }
     }
     try {
       return new URL(url).hostname.replace("www.", "");
-    } catch (e) {
+    } catch {
       return "Web Page";
     }
   };
@@ -265,7 +260,7 @@ const useSafari = () => {
           return { ...tab, isReaderMode: !tab.isReaderMode };
         }
         return tab;
-      })
+      }),
     );
   };
 
@@ -280,8 +275,8 @@ const useSafari = () => {
           id: Date.now(),
           title: activeTab.title,
           url: activeTab.url,
-          img: `https://www.google.com/s2/favicons?domain=${new URL(activeTab.url).hostname}&sz=32`
-        }
+          img: `https://www.google.com/s2/favicons?domain=${new URL(activeTab.url).hostname}&sz=32`,
+        },
       ]);
     }
   };
@@ -296,7 +291,9 @@ const useSafari = () => {
       if (host === "localhost" || host === "127.0.0.1" || host === currentHost) {
         return true;
       }
-    } catch (e) {}
+    } catch {
+      /* empty */
+    }
     return IFRAME_COMPATIBLE_SITES.some((site) => urlLower.includes(site));
   };
 
@@ -343,7 +340,7 @@ const useSafari = () => {
     toggleBookmark,
     isIframeable,
     closeWindow,
-    openWindow
+    openWindow,
   };
 };
 

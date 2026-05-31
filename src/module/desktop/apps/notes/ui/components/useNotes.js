@@ -11,7 +11,8 @@ const defaultNotes = [
     id: "1",
     folderId: "notes",
     title: "Welcome to Notes",
-    preview: "This is a macOS-style Notes application integrated into this interactive desktop portfolio.",
+    preview:
+      "This is a macOS-style Notes application integrated into this interactive desktop portfolio.",
     body: "<div><strong>Welcome to Notes</strong></div><div><br></div><div>This is a macOS-style Notes application integrated into this interactive desktop portfolio.</div><div><br></div><div><strong>Features:</strong></div><ul><li>Add new notes using the compose button</li><li>Delete notes when they are no longer needed</li><li>Real-time search to quickly find what you're looking for</li><li>Automated persistence so your thoughts are saved locally!</li></ul>",
     updatedAt: new Date().toISOString(),
   },
@@ -29,7 +30,11 @@ export default function useNotes() {
   const [folders, setFolders] = useState(() => {
     const saved = localStorage.getItem("macos_portfolio_note_folders");
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { console.error(e); }
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
     }
     return defaultFolders;
   });
@@ -37,7 +42,11 @@ export default function useNotes() {
   const [notes, setNotes] = useState(() => {
     const saved = localStorage.getItem("macos_portfolio_notes");
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { console.error(e); }
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
     }
     return defaultNotes;
   });
@@ -55,17 +64,12 @@ export default function useNotes() {
     localStorage.setItem("macos_portfolio_notes", JSON.stringify(notes));
   }, [notes]);
 
-  // Set default active note if none is set
-  useEffect(() => {
-    const currentFiltered = getFilteredNotes();
-    if (currentFiltered.length > 0 && !currentFiltered.some(n => n.id === activeNoteId)) {
-      setActiveNoteId(currentFiltered[0].id);
-    }
-  }, [activeFolderId]);
-
   const stripHtml = (html) => {
     if (!html) return "";
-    const clean = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    const clean = html
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
     // Decode common entities
     return clean
       .replace(/&amp;/g, "&")
@@ -78,7 +82,7 @@ export default function useNotes() {
 
   const parseNoteTitleAndBody = (html) => {
     if (!html) return { title: "New Note", preview: "No additional text" };
-    
+
     // Replace common block tags with newlines to split correctly
     let text = html
       .replace(/<\/div>/gi, "\n")
@@ -86,7 +90,7 @@ export default function useNotes() {
       .replace(/<br\s*\/?>/gi, "\n")
       .replace(/<\/li>/gi, "\n")
       .replace(/<[^>]*>/g, ""); // Strip all tags
-    
+
     // Decode entities
     text = text
       .replace(/&amp;/g, "&")
@@ -96,7 +100,10 @@ export default function useNotes() {
       .replace(/&#39;/g, "'")
       .replace(/&nbsp;/g, " ");
 
-    const lines = text.split("\n").map(line => line.trim()).filter(line => line.length > 0);
+    const lines = text
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
     const title = lines[0] || "New Note";
     const preview = lines.slice(1).join(" ").trim() || "No additional text";
     return { title, preview };
@@ -145,7 +152,7 @@ export default function useNotes() {
     setNotes(newNotes);
     if (activeNoteId === id) {
       const remainingFiltered = newNotes.filter(
-        (n) => activeFolderId === "all" || n.folderId === activeFolderId
+        (n) => activeFolderId === "all" || n.folderId === activeFolderId,
       );
       setActiveNoteId(remainingFiltered[0]?.id || "");
     }
@@ -155,7 +162,7 @@ export default function useNotes() {
     if (!name.trim()) return;
     const newFolder = {
       id: Date.now().toString(),
-      name: name.trim()
+      name: name.trim(),
     };
     setFolders((prev) => [...prev, newFolder]);
     setActiveFolderId(newFolder.id);
@@ -163,23 +170,25 @@ export default function useNotes() {
 
   const handleDeleteFolder = (folderId) => {
     if (folderId === "all" || folderId === "notes" || folderId === "quick") return;
-    setFolders((prev) => prev.filter(f => f.id !== folderId));
+    setFolders((prev) => prev.filter((f) => f.id !== folderId));
     // Move notes in deleted folder to general "notes"
-    setNotes((prev) => prev.map(n => n.folderId === folderId ? { ...n, folderId: "notes" } : n));
+    setNotes((prev) =>
+      prev.map((n) => (n.folderId === folderId ? { ...n, folderId: "notes" } : n)),
+    );
     setActiveFolderId("all");
   };
 
   const getFilteredNotes = () => {
     let result = notes;
     if (activeFolderId !== "all") {
-      result = notes.filter(n => n.folderId === activeFolderId);
+      result = notes.filter((n) => n.folderId === activeFolderId);
     }
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
         (note) =>
           note.title.toLowerCase().includes(query) ||
-          stripHtml(note.body).toLowerCase().includes(query)
+          stripHtml(note.body).toLowerCase().includes(query),
       );
     }
     return result;
@@ -191,15 +200,15 @@ export default function useNotes() {
     const date = new Date(isoStr);
     const now = new Date();
     if (date.toDateString() === now.toDateString()) {
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     }
-    return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString([], { month: "short", day: "numeric" });
   };
 
   // Get counts for sidebar folder listing
   const getFolderCount = (folderId) => {
     if (folderId === "all") return notes.length;
-    return notes.filter(n => n.folderId === folderId).length;
+    return notes.filter((n) => n.folderId === folderId).length;
   };
 
   return {

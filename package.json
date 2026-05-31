@@ -4,39 +4,53 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint src",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,json}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,scss,json}\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{css,scss,json}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@tailwindcss/vite": "^4.1.17",
-    "@xterm/addon-fit": "^0.10.0",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@xterm/addon-fit": "^0.11.0",
     "clsx": "^2.1.1",
-    "dayjs": "^1.11.19",
-    "gsap": "^3.13.0",
+    "dayjs": "^1.11.21",
+    "gsap": "^3.15.0",
     "html2canvas": "^1.4.1",
-    "immer": "^11.0.1",
-    "lucide-react": "^1.8.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-pdf": "^10.2.0",
-    "react-tooltip": "^5.30.0",
-    "tailwindcss": "^4.1.17",
+    "immer": "^11.1.8",
+    "lucide-react": "^1.17.0",
+    "next": "16.2.6",
+    "postcss": "^8.5.15",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-pdf": "^10.4.1",
+    "react-tooltip": "^6.0.4",
+    "tailwindcss": "^4.3.0",
     "xterm": "^5.3.0",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "baseline-browser-mapping": "^2.10.32",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
+    "baseline-browser-mapping": "^2.10.33",
+    "eslint": "^10.4.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^16.5.0",
-    "vite": "^7.2.4"
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.6",
+    "prettier": "^3.8.3"
   }
 }

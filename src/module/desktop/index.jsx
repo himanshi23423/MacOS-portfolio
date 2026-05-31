@@ -1,33 +1,38 @@
-import AppleTV from "#module/desktop/apps/appletv/ui";
-import AppStore from "#module/desktop/apps/appstore/ui";
-import Calculator from "#module/desktop/apps/calculator/ui";
-import Calendar from "#module/desktop/apps/calendar/ui";
-import Call from "#module/desktop/apps/call/ui";
-import Chrome from "#module/desktop/apps/chrome/ui";
-import Contact from "#module/desktop/apps/contact/ui";
-import Dock from "#module/desktop/dock/ui";
-import Finder from "#module/desktop/apps/finder/ui";
-import FontBook from "#module/desktop/apps/fontbook/ui";
-import Home from "#module/desktop/home/ui";
-import Image from "#module/desktop/apps/image/ui";
-import Launchpad from "#module/desktop/apps/launchpad/ui";
-import Map from "#module/desktop/apps/map/ui";
-import Messages from "#module/desktop/apps/messages/ui";
-import Music from "#module/desktop/apps/music/ui";
-import Navbar from "#module/desktop/navbar/ui";
-import Notes from "#module/desktop/apps/notes/ui";
-import Photos from "#module/desktop/apps/photos/ui";
-import Postman from "#module/desktop/apps/postman/ui";
-import Resume from "#module/desktop/apps/resume/ui";
-import Safari from "#module/desktop/apps/safari/ui";
-import Settings from "#module/desktop/apps/settings/ui";
-import Telegram from "#module/desktop/apps/telegram/ui";
-import Terminal from "#module/desktop/apps/terminal/ui";
-import Text from "#module/desktop/apps/text/ui";
-import VSCode from "#module/desktop/apps/vscode/ui";
-import Weather from "#module/desktop/apps/weather/ui";
-import Welcome from "#module/desktop/apps/welcome/ui";
-import Notch from "./components/Notch";
+import AppleTV from "@module/desktop/apps/appletv/ui/view/AppleTVView";
+import AppStore from "@module/desktop/apps/appstore/ui/view/AppStoreView";
+import Calculator from "@module/desktop/apps/calculator/ui/view/CalculatorView";
+import Calendar from "@module/desktop/apps/calendar/ui/view/CalendarView";
+import Call from "@module/desktop/apps/call/ui/view/CallView";
+import Chrome from "@module/desktop/apps/chrome/ui/components/Chrome";
+import Contact from "@module/desktop/apps/contact/ui/view/ContactView";
+import Dock from "@module/desktop/dock/ui/view/DockView";
+import Finder from "@module/desktop/apps/finder/ui/view/FinderView";
+import FontBook from "@module/desktop/apps/fontbook/ui/view/FontBookView";
+import Home from "@module/desktop/home/ui/view/HomeView";
+import Image from "@module/desktop/apps/image/ui/view/ImageView";
+import Launchpad from "@module/desktop/apps/launchpad/ui/view/LaunchpadView";
+import Map from "@module/desktop/apps/map/ui/view/MapView";
+import Messages from "@module/desktop/apps/messages/ui/view/MessagesView";
+import Music from "@module/desktop/apps/music/ui/view/MusicView";
+import Navbar from "@module/desktop/navbar/ui/view/NavbarView";
+import Notes from "@module/desktop/apps/notes/ui/view/NotesView";
+import Photos from "@module/desktop/apps/photos/ui/view/PhotosView";
+import dynamic from "next/dynamic";
+import Postman from "@module/desktop/apps/postman/ui/view/PostmanView";
+const Resume = dynamic(() => import("@module/desktop/apps/resume/ui/view/ResumeView"), {
+  ssr: false,
+});
+import Safari from "@module/desktop/apps/safari/ui/view/SafariView";
+import Settings from "@module/desktop/apps/settings/ui/view/SettingsView";
+import Telegram from "@module/desktop/apps/telegram/ui/view/TelegramView";
+const Terminal = dynamic(() => import("@module/desktop/apps/terminal/ui/view/TerminalView"), {
+  ssr: false,
+});
+import Text from "@module/desktop/apps/text/ui/view/TextView";
+import VSCode from "@module/desktop/apps/vscode/ui/view/VSCodeView";
+import Weather from "@module/desktop/apps/weather/ui/view/WeatherView";
+import Welcome from "@module/desktop/apps/welcome/ui/view/WelcomeView";
+import Notch from "./notch/ui/view/NotchView";
 
 const Desktop = () => (
   <main>

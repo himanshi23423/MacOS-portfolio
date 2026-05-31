@@ -1,4 +1,4 @@
-import { socials } from "#constants";
+import { socials } from "@constants";
 
 const ContactList = () => (
   <ul className="flex flex-wrap items-center gap-3">

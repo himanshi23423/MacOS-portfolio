@@ -1,4 +1,4 @@
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 import { ChevronLeft } from "lucide-react";
 
 const AppleTVHeaderSection = ({ isSidebarOpen, onToggleSidebar, isCompact }) => (
@@ -20,7 +20,9 @@ const AppleTVHeaderSection = ({ isSidebarOpen, onToggleSidebar, isCompact }) => 
         />
       </button>
     </div>
-    <div className={`flex-1 text-center font-bold text-gray-700 text-sm ${isCompact ? "hidden" : "block"}`}>
+    <div
+      className={`flex-1 text-center font-bold text-gray-700 text-sm ${isCompact ? "hidden" : "block"}`}
+    >
       TV
     </div>
     <div className="w-14" />

@@ -6,7 +6,7 @@ const WeatherSidebarSection = ({
   activeCity: activeCityId,
   onSelectCity,
   onAddCity,
-  onRemoveCity,
+  _onRemoveCity,
   isLoading,
   isSidebarOpen,
   onToggleSidebar,

@@ -7,7 +7,8 @@ const CAROUSEL_ITEMS = [
     id: "severance",
     title: "Severance",
     category: "Sci-Fi Thriller • Apple TV+",
-    description: "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs.",
+    description:
+      "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs.",
     tmdbId: "95396",
     type: "tv",
     season: 1,
@@ -18,7 +19,8 @@ const CAROUSEL_ITEMS = [
     id: "ted_lasso",
     title: "Ted Lasso",
     category: "Comedy • Apple TV+",
-    description: "Small-time American football coach Ted Lasso is hired to coach a professional soccer team in England, despite having no experience coaching soccer.",
+    description:
+      "Small-time American football coach Ted Lasso is hired to coach a professional soccer team in England, despite having no experience coaching soccer.",
     tmdbId: "97546",
     type: "tv",
     season: 1,
@@ -29,7 +31,8 @@ const CAROUSEL_ITEMS = [
     id: "foundation",
     title: "Foundation",
     category: "Sci-Fi Fantasy • Apple TV+",
-    description: "Based on the award-winning novels by Isaac Asimov, Foundation chronicles a band of exiles on their monumental journey to save humanity and rebuild civilization amid the fall of the Galactic Empire.",
+    description:
+      "Based on the award-winning novels by Isaac Asimov, Foundation chronicles a band of exiles on their monumental journey to save humanity and rebuild civilization amid the fall of the Galactic Empire.",
     tmdbId: "91363",
     type: "tv",
     season: 1,
@@ -40,13 +43,14 @@ const CAROUSEL_ITEMS = [
     id: "silo",
     title: "Silo",
     category: "Sci-Fi Drama • Apple TV+",
-    description: "In a ruined and toxic future, a community exists in a giant underground silo that plunges hundreds of stories deep. There, people live in a society full of regulations they believe are meant to protect them.",
+    description:
+      "In a ruined and toxic future, a community exists in a giant underground silo that plunges hundreds of stories deep. There, people live in a society full of regulations they believe are meant to protect them.",
     tmdbId: "125988",
     type: "tv",
     season: 1,
     episode: 1,
     bgFallback: "bg-gradient-to-tr from-stone-900 to-amber-950",
-  }
+  },
 ];
 
 const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNext, isCompact }) => {
@@ -60,12 +64,12 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
   // Fetch Carousel Backdrops
   useEffect(() => {
     const fetchBackdrops = async () => {
-      const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
       const backdrops = {};
       for (const item of CAROUSEL_ITEMS) {
         try {
           const res = await fetch(
-            `https://api.themoviedb.org/3/${item.type}/${item.tmdbId}?api_key=${apiKey}`
+            `https://api.themoviedb.org/3/${item.type}/${item.tmdbId}?api_key=${apiKey}`,
           );
           const data = await res.json();
           if (data.backdrop_path) {
@@ -92,17 +96,17 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
   useEffect(() => {
     const fetchAppleContent = async () => {
       setIsLoading(true);
-      const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
       try {
         // Popular Apple TV Shows (Network 2552)
         const tvRes = await fetch(
-          `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_networks=2552&sort_by=popularity.desc`
+          `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_networks=2552&sort_by=popularity.desc`,
         );
         const tvData = await tvRes.json();
 
         // Popular Apple TV Movies (Watch Provider 350, US region)
         const movieRes = await fetch(
-          `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_watch_providers=350&watch_region=US&sort_by=popularity.desc`
+          `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_watch_providers=350&watch_region=US&sort_by=popularity.desc`,
         );
         const movieData = await movieRes.json();
 
@@ -121,7 +125,11 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
 
           setPopularSeries(formattedTv.slice(0, 8));
           // Filter out Sci-Fi genre (878 or 10765 for Sci-Fi & Fantasy)
-          setSciFiSeries(formattedTv.filter((s) => s.genres.includes(10765) || s.genres.includes(18)).slice(0, 8));
+          setSciFiSeries(
+            formattedTv
+              .filter((s) => s.genres.includes(10765) || s.genres.includes(18))
+              .slice(0, 8),
+          );
         }
 
         if (movieData.results) {
@@ -158,16 +166,73 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
 
   // Fallback static listings in case API load is empty
   const fallbackSeries = [
-    { id: "ted_lasso", title: "Ted Lasso", category: "9.0 ★ • Apple TV+", duration: "3 Seasons", tmdbId: "97546", type: "tv", season: 1, episode: 1 },
-    { id: "morning_show", title: "The Morning Show", category: "8.3 ★ • Apple TV+", duration: "3 Seasons", tmdbId: "87096", type: "tv", season: 1, episode: 1 },
-    { id: "for_all_mankind", title: "For All Mankind", category: "8.2 ★ • Apple TV+", duration: "4 Seasons", tmdbId: "87917", type: "tv", season: 1, episode: 1 },
-    { id: "foundation", title: "Foundation", category: "8.5 ★ • Apple TV+", duration: "2 Seasons", tmdbId: "91363", type: "tv", season: 1, episode: 1 },
+    {
+      id: "ted_lasso",
+      title: "Ted Lasso",
+      category: "9.0 ★ • Apple TV+",
+      duration: "3 Seasons",
+      tmdbId: "97546",
+      type: "tv",
+      season: 1,
+      episode: 1,
+    },
+    {
+      id: "morning_show",
+      title: "The Morning Show",
+      category: "8.3 ★ • Apple TV+",
+      duration: "3 Seasons",
+      tmdbId: "87096",
+      type: "tv",
+      season: 1,
+      episode: 1,
+    },
+    {
+      id: "for_all_mankind",
+      title: "For All Mankind",
+      category: "8.2 ★ • Apple TV+",
+      duration: "4 Seasons",
+      tmdbId: "87917",
+      type: "tv",
+      season: 1,
+      episode: 1,
+    },
+    {
+      id: "foundation",
+      title: "Foundation",
+      category: "8.5 ★ • Apple TV+",
+      duration: "2 Seasons",
+      tmdbId: "91363",
+      type: "tv",
+      season: 1,
+      episode: 1,
+    },
   ];
 
   const fallbackMovies = [
-    { id: "ghosted", title: "Ghosted", category: "6.5 ★ • Movie", duration: "Movie", tmdbId: "868759", type: "movie" },
-    { id: "coda", title: "CODA", category: "8.1 ★ • Movie", duration: "Movie", tmdbId: "776503", type: "movie" },
-    { id: "tetris", title: "Tetris", category: "7.7 ★ • Movie", duration: "Movie", tmdbId: "724495", type: "movie" },
+    {
+      id: "ghosted",
+      title: "Ghosted",
+      category: "6.5 ★ • Movie",
+      duration: "Movie",
+      tmdbId: "868759",
+      type: "movie",
+    },
+    {
+      id: "coda",
+      title: "CODA",
+      category: "8.1 ★ • Movie",
+      duration: "Movie",
+      tmdbId: "776503",
+      type: "movie",
+    },
+    {
+      id: "tetris",
+      title: "Tetris",
+      category: "7.7 ★ • Movie",
+      duration: "Movie",
+      tmdbId: "724495",
+      type: "movie",
+    },
   ];
 
   const finalSeries = popularSeries.length > 0 ? popularSeries : fallbackSeries;
@@ -183,7 +248,9 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
         </span>
         <div>
           <h2 className="text-lg font-bold text-gray-800 leading-tight">Apple TV+ Originals</h2>
-          <p className="text-xs text-gray-400">Groundbreaking stories from the world's most creative minds.</p>
+          <p className="text-xs text-gray-400">
+            Groundbreaking stories from the world's most creative minds.
+          </p>
         </div>
       </div>
 
@@ -279,7 +346,9 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
           {/* Popular Series Row */}
           <section className="space-y-3">
             <h3 className="text-sm font-bold text-gray-800 px-1">Popular Series</h3>
-            <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
+            <div
+              className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}
+            >
               {finalSeries.map((show) => (
                 <MovieCard
                   key={show.id}
@@ -296,7 +365,9 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
           {/* Popular Movies Row */}
           <section className="space-y-3">
             <h3 className="text-sm font-bold text-gray-800 px-1">Feature Films</h3>
-            <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
+            <div
+              className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}
+            >
               {finalMovies.map((movie) => (
                 <MovieCard
                   key={movie.id}
@@ -313,7 +384,9 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
           {/* Drama & Sci-Fi Row */}
           <section className="space-y-3">
             <h3 className="text-sm font-bold text-gray-800 px-1">Acclaimed Dramas & Sci-Fi</h3>
-            <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
+            <div
+              className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}
+            >
               {finalSciFi.map((show) => (
                 <MovieCard
                   key={show.id}

@@ -5,7 +5,11 @@ const useMessages = () => {
   const [conversations, setConversations] = useState(() => {
     const saved = localStorage.getItem("macos_portfolio_messages");
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { console.error(e); }
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
     }
     return INITIAL_CONVERSATIONS;
   });
@@ -18,8 +22,11 @@ const useMessages = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [mutedChats, setMutedChats] = useState({});
   const [callState, setCallState] = useState({
-    isOpen: false, type: "audio", status: "ringing",
-    micMuted: false, cameraOff: false,
+    isOpen: false,
+    type: "audio",
+    status: "ringing",
+    micMuted: false,
+    cameraOff: false,
   });
   const [callDuration, setCallDuration] = useState(0);
   const messagesEndRef = useRef(null);
@@ -37,10 +44,10 @@ const useMessages = () => {
   useEffect(() => {
     if (activeChat?.unread) {
       setConversations((prev) =>
-        prev.map((c) => (c.id === activeChat.id ? { ...c, unread: false } : c))
+        prev.map((c) => (c.id === activeChat.id ? { ...c, unread: false } : c)),
       );
     }
-  }, [activeChatId]);
+  }, [activeChat]);
 
   useEffect(() => {
     let ringTimer;
@@ -55,7 +62,9 @@ const useMessages = () => {
   useEffect(() => {
     let callTimer;
     if (callState.isOpen && callState.status === "connected") {
-      callTimer = setInterval(() => { setCallDuration((prev) => prev + 1); }, 1000);
+      callTimer = setInterval(() => {
+        setCallDuration((prev) => prev + 1);
+      }, 1000);
     } else {
       setCallDuration(0);
     }
@@ -82,10 +91,8 @@ const useMessages = () => {
 
     setConversations((prev) =>
       prev.map((c) =>
-        c.id === activeChat.id
-          ? { ...c, messages: [...c.messages, newMessage] }
-          : c
-      )
+        c.id === activeChat.id ? { ...c, messages: [...c.messages, newMessage] } : c,
+      ),
     );
 
     const userMsg = inputText.toLowerCase();
@@ -97,13 +104,25 @@ const useMessages = () => {
         setIsTyping(false);
         let replyText = "That's cool! Feel free to explore other apps in the dock too.";
         if (userMsg.includes("project")) {
-          replyText = "I have built several cool projects! You can check them out in the 'Portfolio' Finder app, or view 'NewTube', 'Snsta', and 'Docs Editor'.";
-        } else if (userMsg.includes("skill") || userMsg.includes("tech") || userMsg.includes("stack")) {
-          replyText = "My primary tech stack includes React, Next.js, TypeScript, Node.js, Express, Bun, Tailwind CSS, PostgreSQL, and MongoDB. Open the 'Skills' Terminal app to see the complete list!";
-        } else if (userMsg.includes("contact") || userMsg.includes("mail") || userMsg.includes("hire")) {
-          replyText = "You can contact me via email at kuldeeprajput.dev@gmail.com, or check out my socials (Github, LinkedIn) in the Safari app!";
+          replyText =
+            "I have built several cool projects! You can check them out in the 'Portfolio' Finder app, or view 'NewTube', 'Snsta', and 'Docs Editor'.";
+        } else if (
+          userMsg.includes("skill") ||
+          userMsg.includes("tech") ||
+          userMsg.includes("stack")
+        ) {
+          replyText =
+            "My primary tech stack includes React, Next.js, TypeScript, Node.js, Express, Bun, Tailwind CSS, PostgreSQL, and MongoDB. Open the 'Skills' Terminal app to see the complete list!";
+        } else if (
+          userMsg.includes("contact") ||
+          userMsg.includes("mail") ||
+          userMsg.includes("hire")
+        ) {
+          replyText =
+            "You can contact me via email at kuldeeprajput.dev@gmail.com, or check out my socials (Github, LinkedIn) in the Safari app!";
         } else if (userMsg.includes("hello") || userMsg.includes("hi") || userMsg.includes("hey")) {
-          replyText = "Hey there! Hope you are enjoying the macOS portfolio. How can I help you today?";
+          replyText =
+            "Hey there! Hope you are enjoying the macOS portfolio. How can I help you today?";
         }
 
         const replyMessage = {
@@ -115,10 +134,8 @@ const useMessages = () => {
 
         setConversations((prev) =>
           prev.map((c) =>
-            c.id === "kuldeep"
-              ? { ...c, messages: [...c.messages, replyMessage] }
-              : c
-          )
+            c.id === "kuldeep" ? { ...c, messages: [...c.messages, replyMessage] } : c,
+          ),
         );
       }, 1200);
     }
@@ -127,27 +144,38 @@ const useMessages = () => {
   const filteredConversations = conversations.filter(
     (c) =>
       c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.messages.some((m) => m.text.toLowerCase().includes(searchQuery.toLowerCase()))
+      c.messages.some((m) => m.text.toLowerCase().includes(searchQuery.toLowerCase())),
   );
 
   const formatCallTime = (secs) => {
-    const m = Math.floor(secs / 60).toString().padStart(2, "0");
+    const m = Math.floor(secs / 60)
+      .toString()
+      .padStart(2, "0");
     const s = (secs % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
 
   return {
     conversations,
-    activeChat, activeChatId, setActiveChatId,
-    inputText, setInputText,
-    searchQuery, setSearchQuery,
-    isSidebarOpen, setIsSidebarOpen,
+    activeChat,
+    activeChatId,
+    setActiveChatId,
+    inputText,
+    setInputText,
+    searchQuery,
+    setSearchQuery,
+    isSidebarOpen,
+    setIsSidebarOpen,
     isTyping,
-    showInfo, setShowInfo,
-    mutedChats, setMutedChats,
-    callState, callDuration,
+    showInfo,
+    setShowInfo,
+    mutedChats,
+    setMutedChats,
+    callState,
+    callDuration,
     messagesEndRef,
-    triggerCall, endCall,
+    triggerCall,
+    endCall,
     handleSend,
     filteredConversations,
     formatCallTime,

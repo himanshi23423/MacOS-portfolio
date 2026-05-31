@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PRESET_PLACES from "./mapData";
 
 const useMap = () => {
-  const nominatimApiBase = import.meta.env.VITE_NOMINATIM_API_URL || "https://nominatim.openstreetmap.org";
-  const openStreetMapBase = import.meta.env.VITE_OPENSTREETMAP_URL || "https://www.openstreetmap.org";
+  const nominatimApiBase =
+    process.env.NEXT_PUBLIC_NOMINATIM_API_URL || "https://nominatim.openstreetmap.org";
+  const openStreetMapBase =
+    process.env.NEXT_PUBLIC_OPENSTREETMAP_URL || "https://www.openstreetmap.org";
 
   const [activeTab, setActiveTab] = useState("explore");
   const [activeKey, setActiveKey] = useState("mumbai");
@@ -12,13 +14,16 @@ const useMap = () => {
   const [mapStyle, setMapStyle] = useState("standard");
   const [customPlace, setCustomPlace] = useState(null);
 
-  const currentCity = activeKey === "custom" && customPlace ? customPlace : (PRESET_PLACES[activeKey] || PRESET_PLACES.mumbai);
+  const currentCity =
+    activeKey === "custom" && customPlace
+      ? customPlace
+      : PRESET_PLACES[activeKey] || PRESET_PLACES.mumbai;
 
   const handleZoom = (direction) => {
     if (direction === "in") {
-      setZoomLevel(prev => Math.max(0.1, prev - 0.15));
+      setZoomLevel((prev) => Math.max(0.1, prev - 0.15));
     } else {
-      setZoomLevel(prev => Math.min(4, prev + 0.15));
+      setZoomLevel((prev) => Math.min(4, prev + 0.15));
     }
   };
 
@@ -26,7 +31,9 @@ const useMap = () => {
     if (!searchQuery.trim()) return;
 
     try {
-      const response = await fetch(`${nominatimApiBase}/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=1`);
+      const response = await fetch(
+        `${nominatimApiBase}/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=1`,
+      );
       const data = await response.json();
 
       if (data && data.length > 0) {
@@ -48,8 +55,8 @@ const useMap = () => {
           steps: [
             `Navigate toward coordinates: ${lat.toFixed(4)}, ${lon.toFixed(4)}.`,
             "Follow arterial routes to final waypoint.",
-            `Arrive in ${display.split(",")[0]}.`
-          ]
+            `Arrive in ${display.split(",")[0]}.`,
+          ],
         };
 
         setCustomPlace(newPlace);
@@ -67,23 +74,38 @@ const useMap = () => {
   const bboxWidth = currentCity.bboxWidth * zoomLevel;
   const minLon = currentCity.lon - bboxWidth;
   const maxLon = currentCity.lon + bboxWidth;
-  const minLat = currentCity.lat - (bboxWidth * 0.6);
-  const maxLat = currentCity.lat + (bboxWidth * 0.6);
+  const minLat = currentCity.lat - bboxWidth * 0.6;
+  const maxLat = currentCity.lat + bboxWidth * 0.6;
 
   const iframeSrc = `${openStreetMapBase}/export/embed.html?bbox=${minLon}%2C${minLat}%2C${maxLon}%2C${maxLat}&layer=mapnik&marker=${currentCity.lat}%2C${currentCity.lon}`;
 
-  const filteredKeys = Object.keys(PRESET_PLACES).filter(key => {
+  const filteredKeys = Object.keys(PRESET_PLACES).filter((key) => {
     const city = PRESET_PLACES[key];
-    return city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-           city.region.toLowerCase().includes(searchQuery.toLowerCase());
+    return (
+      city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      city.region.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   });
 
   return {
-    activeTab, activeKey, searchQuery, zoomLevel, mapStyle,
-    customPlace, currentCity, iframeSrc, filteredKeys, PRESET_PLACES,
-    setActiveTab, setActiveKey, setSearchQuery, setZoomLevel,
-    setMapStyle, setCustomPlace,
-    handleZoom, handleSearch,
+    activeTab,
+    activeKey,
+    searchQuery,
+    zoomLevel,
+    mapStyle,
+    customPlace,
+    currentCity,
+    iframeSrc,
+    filteredKeys,
+    PRESET_PLACES,
+    setActiveTab,
+    setActiveKey,
+    setSearchQuery,
+    setZoomLevel,
+    setMapStyle,
+    setCustomPlace,
+    handleZoom,
+    handleSearch,
   };
 };
 

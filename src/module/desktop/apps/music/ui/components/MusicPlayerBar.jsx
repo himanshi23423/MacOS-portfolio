@@ -1,4 +1,14 @@
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Shuffle, Repeat, Heart } from "lucide-react";
+import {
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Volume2,
+  VolumeX,
+  Shuffle,
+  Repeat,
+  Heart,
+} from "lucide-react";
 
 const MusicPlayerBar = ({
   activeTrack,
@@ -28,7 +38,9 @@ const MusicPlayerBar = ({
             className="w-12 h-12 rounded-lg object-cover shadow-md shrink-0 bg-zinc-100 border border-zinc-200"
           />
         ) : (
-          <div className={`w-12 h-12 rounded-lg bg-gradient-to-tr ${activeTrack.coverColor} flex items-center justify-center text-xl shadow-md shrink-0`}>
+          <div
+            className={`w-12 h-12 rounded-lg bg-gradient-to-tr ${activeTrack.coverColor} flex items-center justify-center text-xl shadow-md shrink-0`}
+          >
             {activeTrack.coverText}
           </div>
         )}
@@ -43,19 +55,39 @@ const MusicPlayerBar = ({
 
       <div className="w-1/3 flex flex-col items-center gap-1.5">
         <div className="flex items-center gap-4">
-          <button onClick={onShuffleToggle} className={`p-1 transition-colors ${isShuffle ? "text-red-500" : "text-gray-400 hover:text-gray-600"}`} title="Shuffle">
+          <button
+            onClick={onShuffleToggle}
+            className={`p-1 transition-colors ${isShuffle ? "text-red-500" : "text-gray-400 hover:text-gray-600"}`}
+            title="Shuffle"
+          >
             <Shuffle size={14} />
           </button>
-          <button onClick={onPrev} className="p-1 hover:bg-zinc-200 rounded text-gray-600 transition-transform active:scale-95 cursor-pointer" title="Previous">
+          <button
+            onClick={onPrev}
+            className="p-1 hover:bg-zinc-200 rounded text-gray-600 transition-transform active:scale-95 cursor-pointer"
+            title="Previous"
+          >
             <SkipBack size={16} />
           </button>
-          <button onClick={onPlayPause} className="p-2.5 bg-red-500 hover:bg-red-600 text-white rounded-full transition-all active:scale-95 shadow-md flex items-center justify-center cursor-pointer" title={isPlaying ? "Pause" : "Play"}>
+          <button
+            onClick={onPlayPause}
+            className="p-2.5 bg-red-500 hover:bg-red-600 text-white rounded-full transition-all active:scale-95 shadow-md flex items-center justify-center cursor-pointer"
+            title={isPlaying ? "Pause" : "Play"}
+          >
             {isPlaying ? <Pause size={15} /> : <Play size={15} className="pl-0.5" />}
           </button>
-          <button onClick={onNext} className="p-1 hover:bg-zinc-200 rounded text-gray-600 transition-transform active:scale-95 cursor-pointer" title="Next">
+          <button
+            onClick={onNext}
+            className="p-1 hover:bg-zinc-200 rounded text-gray-600 transition-transform active:scale-95 cursor-pointer"
+            title="Next"
+          >
             <SkipForward size={16} />
           </button>
-          <button onClick={onRepeatToggle} className={`p-1 transition-colors ${isRepeat ? "text-red-500" : "text-gray-400 hover:text-gray-600"}`} title="Repeat">
+          <button
+            onClick={onRepeatToggle}
+            className={`p-1 transition-colors ${isRepeat ? "text-red-500" : "text-gray-400 hover:text-gray-600"}`}
+            title="Repeat"
+          >
             <Repeat size={14} />
           </button>
         </div>
@@ -75,7 +107,11 @@ const MusicPlayerBar = ({
       </div>
 
       <div className="w-1/3 flex items-center justify-end gap-2.5 text-gray-500">
-        <button onClick={onMuteToggle} className="hover:text-gray-700 transition-colors" title={isMuted ? "Unmute" : "Mute"}>
+        <button
+          onClick={onMuteToggle}
+          className="hover:text-gray-700 transition-colors"
+          title={isMuted ? "Unmute" : "Mute"}
+        >
           {isMuted ? <VolumeX size={15} className="text-red-500" /> : <Volume2 size={15} />}
         </button>
         <input

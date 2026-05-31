@@ -1,12 +1,22 @@
 import React from "react";
-import WindowControls from "#components/WindowControls";
+import WindowControls from "@components/WindowControls";
 import { ChevronRight } from "lucide-react";
 import { SIDEBAR_GROUPS, SidebarItem } from "./settingsData";
 
-const SettingsSidebar = ({ activeTab, setActiveTab, githubData, isLoading, isMobile, mobileView, setMobileView }) => {
+const SettingsSidebar = ({
+  activeTab,
+  setActiveTab,
+  githubData,
+  isLoading,
+  isMobile,
+  mobileView,
+  setMobileView,
+}) => {
   if (isMobile) {
     return (
-      <div className={`${mobileView === "main" ? "flex" : "hidden"} flex-col h-full w-full bg-[#f2f2f7]`}>
+      <div
+        className={`${mobileView === "main" ? "flex" : "hidden"} flex-col h-full w-full bg-[#f2f2f7]`}
+      >
         <div className="flex flex-col shrink-0 bg-[#f2f2f7] border-b border-gray-300">
           <div className="px-4 py-3 pb-2 flex items-center justify-between">
             <WindowControls target="settings" />
@@ -16,12 +26,19 @@ const SettingsSidebar = ({ activeTab, setActiveTab, githubData, isLoading, isMob
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6 thin-scrollbar">
           <div
             className="bg-white rounded-xl shadow-sm flex items-center gap-4 p-4 cursor-pointer active:bg-gray-50 transition-colors"
-            onClick={() => { setActiveTab("Apple ID"); setMobileView("Apple ID"); }}
+            onClick={() => {
+              setActiveTab("Apple ID");
+              setMobileView("Apple ID");
+            }}
           >
             {isLoading ? (
               <div className="w-[60px] h-[60px] rounded-full bg-gray-200 animate-pulse shrink-0" />
             ) : githubData ? (
-              <img src={githubData.profile.avatar_url} className="w-[60px] h-[60px] rounded-full shrink-0 border border-gray-200" alt="Avatar" />
+              <img
+                src={githubData.profile.avatar_url}
+                className="w-[60px] h-[60px] rounded-full shrink-0 border border-gray-200"
+                alt="Avatar"
+              />
             ) : (
               <div className="w-[60px] h-[60px] rounded-full bg-gray-200 shrink-0" />
             )}
@@ -39,10 +56,15 @@ const SettingsSidebar = ({ activeTab, setActiveTab, githubData, isLoading, isMob
               {group.map((item, j) => (
                 <div
                   key={item.id}
-                  className={`flex items-center gap-3 p-3 pl-4 cursor-pointer active:bg-gray-50 transition-colors ${j < group.length - 1 ? 'border-b border-gray-100' : ''}`}
-                  onClick={() => { setActiveTab(item.id); setMobileView(item.id); }}
+                  className={`flex items-center gap-3 p-3 pl-4 cursor-pointer active:bg-gray-50 transition-colors ${j < group.length - 1 ? "border-b border-gray-100" : ""}`}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setMobileView(item.id);
+                  }}
                 >
-                  <div className={`flex items-center justify-center w-[28px] h-[28px] rounded-md shadow-sm text-white ${item.color}`}>
+                  <div
+                    className={`flex items-center justify-center w-[28px] h-[28px] rounded-md shadow-sm text-white ${item.color}`}
+                  >
                     {item.icon}
                   </div>
                   <span className="flex-1 text-[16px] font-medium text-black">{item.id}</span>

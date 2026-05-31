@@ -1,24 +1,15 @@
 import { Copy, Check } from "lucide-react";
 
-const ContactCard = ({ label, email, phone, copied, onCopy }) => (
+const ContactCard = ({ _label, email, phone, copied, onCopy }) => (
   <>
-    <img
-      src={"/images/profile.jpg"}
-      alt="kuldeep"
-      className="w-20 rounded-full"
-    />
+    <img src={"/images/profile.jpg"} alt="kuldeep" className="w-20 rounded-full" />
     <h3>Let's Connect</h3>
-    <p>
-      Full-stack developer building scalable apps—let's connect and create
-      something impactful.
-    </p>
+    <p>Full-stack developer building scalable apps—let's connect and create something impactful.</p>
     <div
       className="flex items-center gap-3 cursor-pointer group"
       onClick={() => onCopy(email, "email")}
     >
-      <p className="hover:text-blue-500 transition-colors">
-        {email}
-      </p>
+      <p className="hover:text-blue-500 transition-colors">{email}</p>
       {copied === "email" ? (
         <Check size={14} className="text-green-500 animate-in zoom-in" />
       ) : (
@@ -38,9 +29,7 @@ const ContactCard = ({ label, email, phone, copied, onCopy }) => (
       className="flex items-center gap-3 cursor-pointer group"
       onClick={() => onCopy(phone, "phone")}
     >
-      <p className="hover:text-blue-500 transition-colors">
-        {phone}
-      </p>
+      <p className="hover:text-blue-500 transition-colors">{phone}</p>
       {copied === "phone" ? (
         <Check size={14} className="text-green-500 animate-in zoom-in" />
       ) : (

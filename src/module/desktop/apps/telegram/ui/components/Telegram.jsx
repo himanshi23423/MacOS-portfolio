@@ -1,5 +1,5 @@
 import React from "react";
-import windowWrapper from "#hoc/windowWrapper";
+import windowWrapper from "@hoc/windowWrapper";
 import useTelegram from "./useTelegram";
 import TelegramSection from "../section/TelegramSection";
 

@@ -1,5 +1,5 @@
 import { Clock, Star, MapPin, Users, Heart } from "lucide-react";
-import { photosLinks } from "#constants";
+import { photosLinks } from "@constants";
 
 const tabIcons = {
   Library: <Clock size={20} />,
@@ -17,7 +17,7 @@ const PhotoSidebarDesktop = ({ activeTab, onTabChange }) => (
         <li
           key={id}
           onClick={() => onTabChange(title)}
-          className={`cursor-pointer ${activeTab === title ? 'bg-blue-100 text-blue-700' : ''}`}
+          className={`cursor-pointer ${activeTab === title ? "bg-blue-100 text-blue-700" : ""}`}
         >
           <img src={icon} alt={title} />
           <p>{title}</p>
