@@ -13,7 +13,7 @@
     }
 
     .apple-logo {
-      @apply h-[17px] sm:h-[16px] sm:mr-3 sm:px-2 cursor-pointer;
+      @apply h-[19px] sm:h-[18px] sm:mr-1 sm:pl-0 sm:pr-1 cursor-pointer;
     }
 
     .nav-links {

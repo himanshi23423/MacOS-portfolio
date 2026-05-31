@@ -1,6 +1,6 @@
 const NavbarAppMenu = ({ activeAppName, openWindow }) => (
   <ul className="nav-links max-sm:hidden">
-    <li className="font-bold cursor-default">{activeAppName}</li>
+    <li className="font-bold cursor-default min-w-[80px] shrink-0">{activeAppName}</li>
     <li onClick={() => openWindow("finder")}>Projects</li>
     <li onClick={() => openWindow("contact")}>Contact</li>
     <li onClick={() => openWindow("resume")}>Resume</li>
