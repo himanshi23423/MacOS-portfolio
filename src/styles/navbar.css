@@ -32,7 +32,7 @@
       @apply flex items-center h-full gap-1;
 
       li {
-        @apply px-3 h-full flex items-center text-[13.5px] font-[500] tracking-normal rounded cursor-pointer transition-colors;
+        @apply px-3 h-full flex items-center text-[13.5px] font-[600] tracking-normal rounded cursor-pointer transition-colors;
         color: #ffffff;
       }
       li.font-bold {
