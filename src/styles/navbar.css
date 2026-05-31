@@ -11,11 +11,11 @@
   }
 
   nav.mac-navbar {
-    @apply flex justify-between items-center bg-white/58 sm:bg-white/40 backdrop-blur-3xl sm:backdrop-blur-2xl p-2 px-5 sm:px-3 select-none z-[9999] relative;
+    @apply flex justify-between items-center bg-transparent backdrop-blur-3xl sm:backdrop-blur-2xl p-2 px-5 sm:px-3 select-none z-[9999] relative;
 
     @media (min-width: 640px) {
-      height: 28px;
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+      height: 33px;
+      box-shadow: none;
     }
 
     .nav-left,
@@ -25,6 +25,7 @@
 
     .apple-logo {
       @apply h-[19px] sm:h-[18px] sm:mr-1 sm:pl-0 sm:pr-1 cursor-pointer;
+      filter: brightness(0) invert(1);
     }
 
     .nav-links {
@@ -32,7 +33,7 @@
 
       li {
         @apply px-3 h-full flex items-center text-[13.5px] font-[500] tracking-normal rounded cursor-pointer transition-colors;
-        color: #1d1d1f;
+        color: #ffffff;
       }
       li.font-bold {
         @apply font-bold tracking-normal;
@@ -48,12 +49,13 @@
 
       .icon-hover {
         @apply h-3.5 px-1.5 cursor-pointer rounded transition-colors;
+        filter: brightness(0) invert(1);
       }
     }
 
     time {
       @apply text-[13.5px] font-[500] tracking-normal ml-3 cursor-default;
-      color: #1d1d1f;
+      color: #ffffff;
     }
 
     .battery-indicator {
@@ -61,30 +63,30 @@
 
       .battery-text {
         @apply text-[12px] font-[500] tracking-normal;
-        color: #1d1d1f;
+        color: #ffffff;
       }
 
       .battery-icon-shell {
         @apply relative w-[22px] h-[11px] rounded-[3px];
-        border: 1px solid rgba(29, 29, 31, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.8);
         padding: 1px;
 
         .battery-level {
           @apply h-full rounded-[1px];
-          background: #1d1d1f;
+          background: #ffffff;
           transition: width 240ms ease;
         }
 
         i {
           @apply absolute right-[-2.5px] top-1/2 -translate-y-1/2 w-[1.5px] h-1 rounded-full;
-          background: rgba(29, 29, 31, 0.5);
+          background: rgba(255, 255, 255, 0.8);
           font-style: normal;
         }
       }
 
       svg {
         @apply size-3;
-        fill: #1d1d1f;
+        fill: #ffffff;
       }
     }
 
