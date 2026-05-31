@@ -88,32 +88,58 @@
         @apply size-3;
         fill: #ffffff;
       }
+
+      img {
+        filter: brightness(0) invert(1);
+      }
     }
 
     .apple-menu {
       position: absolute;
-      top: 30px;
+      top: calc(100% + 4px);
       left: 2px;
       z-index: 99999;
-      width: 265px;
-      padding: 6px;
+      width: 250px;
+      padding: 5px;
       color: rgba(255, 255, 255, 0.94);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-      font-size: 13px;
-      line-height: 1.2;
-      border: 0.5px solid rgba(255, 255, 255, 0.16);
-      border-radius: 10px;
-      background:
-        linear-gradient(180deg, rgba(58, 58, 60, 0.78), rgba(32, 32, 34, 0.72)),
-        rgba(28, 28, 30, 0.74);
+      font-size: 13.5px;
+      line-height: 1.35;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      background: rgba(30, 30, 30, 0.55);
       box-shadow:
-        0 22px 50px rgba(0, 0, 0, 0.36),
-        0 8px 18px rgba(0, 0, 0, 0.22),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(34px) saturate(190%);
-      -webkit-backdrop-filter: blur(34px) saturate(190%);
+        0 12px 30px rgba(0, 0, 0, 0.35),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+      backdrop-filter: blur(40px) saturate(210%);
+      -webkit-backdrop-filter: blur(40px) saturate(210%);
       transform-origin: top left;
-      animation: appleMenuIn 130ms cubic-bezier(0.16, 1, 0.3, 1);
+      animation: appleMenuIn 120ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mac-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      z-index: 99999;
+      width: max-content;
+      min-width: 220px;
+      max-width: 290px;
+      padding: 5px;
+      color: rgba(255, 255, 255, 0.94);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      font-size: 13.5px;
+      line-height: 1.35;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      background: rgba(30, 30, 30, 0.55);
+      box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.35),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+      backdrop-filter: blur(40px) saturate(210%);
+      -webkit-backdrop-filter: blur(40px) saturate(210%);
+      transform-origin: top left;
+      animation: appleMenuIn 120ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .apple-menu-section {
