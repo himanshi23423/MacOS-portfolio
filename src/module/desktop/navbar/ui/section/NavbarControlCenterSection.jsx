@@ -3,6 +3,8 @@ import NavbarBatteryMenu from "../components/NavbarBatteryMenu";
 import NavbarDateTime from "../components/NavbarDateTime";
 import NavbarControlCenter from "../components/NavbarControlCenter";
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import useWindowsStore from "@store/window";
 
 const NavbarControlCenterSection = ({
   now,
@@ -16,8 +18,37 @@ const NavbarControlCenterSection = ({
   setMusicState,
   openWindow,
 }) => {
+  const { updateSystemSetting } = useWindowsStore();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [activeMenu, setActiveMenu] = useState(null); // 'wifi' | 'bluetooth' | 'user' | 'battery' | 'spotlight' | 'control' | null
   const [spotlightQuery, setSpotlightQuery] = useState("");
+  const [connectingDevice, setConnectingDevice] = useState(null);
+
+  const bluetoothDevicesList = [
+    { key: "keyboard", name: "Magic Keyboard", icon: "⌨️" },
+    { key: "airpods", name: "AirPods Pro", icon: "🎧" },
+    { key: "mouse", name: "Magic Mouse", icon: "🖱️" },
+    { key: "headphones", name: "Sony WH", icon: "🎧" },
+  ];
+
+  const handleBluetoothDeviceClick = (device) => {
+    const isConnected = settings.bluetoothDevices?.[device.key] ?? false;
+    if (isConnected) {
+      const updated = { ...settings.bluetoothDevices, [device.key]: false };
+      updateSystemSetting("bluetoothDevices", updated);
+    } else {
+      if (connectingDevice) return;
+      setConnectingDevice(device.key);
+      setTimeout(() => {
+        const updated = { ...settings.bluetoothDevices, [device.key]: true };
+        updateSystemSetting("bluetoothDevices", updated);
+        setConnectingDevice(null);
+      }, 1200);
+    }
+  };
   const containerRef = useRef(null);
   const spotlightInputRef = useRef(null);
 
@@ -90,9 +121,9 @@ const NavbarControlCenterSection = ({
       )
     : [];
 
-  const handleLaunchApp = (appKey) => {
+  const handleLaunchApp = (appKey, data = null) => {
     setActiveMenu(null);
-    openWindow(appKey);
+    openWindow(appKey, data);
   };
 
   const handleSpotlightKeyDown = (e) => {
@@ -142,7 +173,7 @@ const NavbarControlCenterSection = ({
 
             {/* Wi-Fi Dropdown */}
             {type === "wifi" && activeMenu === "wifi" && (
-              <div className="mac-dropdown right-0 w-[260px] text-white" role="menu">
+              <div className="mac-dropdown left-auto right-0 w-[260px] text-white" role="menu">
                 <div className="apple-menu-section flex items-center justify-between px-3 py-1">
                   <span className="font-semibold">Wi-Fi</span>
                   <input
@@ -230,7 +261,11 @@ const NavbarControlCenterSection = ({
 
             {/* Bluetooth Dropdown */}
             {type === "bluetooth" && activeMenu === "bluetooth" && (
-              <div className="mac-dropdown right-0 w-[260px] text-white" role="menu">
+              <div
+                className="mac-dropdown left-auto right-0 w-[260px] text-white"
+                role="menu"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <div className="apple-menu-section flex items-center justify-between px-3 py-1">
                   <span className="font-semibold">Bluetooth</span>
                   <input
@@ -245,18 +280,32 @@ const NavbarControlCenterSection = ({
                     <div className="text-[11px] text-white/40 px-3 py-0.5 font-bold">
                       MY DEVICES
                     </div>
-                    <button className="apple-menu-item" type="button">
-                      <span className="flex items-center gap-2">⌨️ Magic Keyboard</span>
-                      <span className="text-[11px] text-white/40">Connected</span>
-                    </button>
-                    <button className="apple-menu-item" type="button">
-                      <span className="flex items-center gap-2">🎧 AirPods Pro</span>
-                      <span className="text-[11px] text-white/40">Connected</span>
-                    </button>
-                    <button className="apple-menu-item" type="button">
-                      <span className="flex items-center gap-2">🖱️ Magic Mouse</span>
-                      <span className="text-[11px] text-white/40">Connected</span>
-                    </button>
+                    {bluetoothDevicesList.map((device) => {
+                      const isConnected = settings.bluetoothDevices?.[device.key] ?? false;
+                      const isConnecting = connectingDevice === device.key;
+                      return (
+                        <button
+                          key={device.key}
+                          className="apple-menu-item flex items-center justify-between w-full"
+                          type="button"
+                          onClick={() => handleBluetoothDeviceClick(device)}
+                        >
+                          <span className="flex items-center gap-2">
+                            <span>{device.icon}</span>
+                            <span>{device.name}</span>
+                          </span>
+                          <span className="text-[11px] text-white/40 flex items-center justify-end min-w-[20px]">
+                            {isConnecting ? (
+                              <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                            ) : isConnected ? (
+                              "Connected"
+                            ) : (
+                              "Not Connected"
+                            )}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="px-3 py-3 text-white/40 text-center text-[12px]">
@@ -267,7 +316,7 @@ const NavbarControlCenterSection = ({
                   <button
                     className="apple-menu-item font-medium"
                     type="button"
-                    onClick={() => handleLaunchApp("settings")}
+                    onClick={() => handleLaunchApp("settings", { tab: "Bluetooth" })}
                   >
                     Bluetooth Settings...
                   </button>
@@ -277,7 +326,7 @@ const NavbarControlCenterSection = ({
 
             {/* User Profile Dropdown */}
             {type === "user" && activeMenu === "user" && (
-              <div className="mac-dropdown right-0 w-[230px] text-white" role="menu">
+              <div className="mac-dropdown left-auto right-0 w-[230px] text-white" role="menu">
                 <div className="apple-menu-section flex items-center gap-3 px-3 py-2">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-[16px] text-white shadow-md">
                     K
@@ -327,7 +376,7 @@ const NavbarControlCenterSection = ({
           <NavbarBatteryMenu battery={battery} />
 
           {activeMenu === "battery" && (
-            <div className="mac-dropdown right-0 w-[240px] text-white" role="menu">
+            <div className="mac-dropdown left-auto right-0 w-[240px] text-white" role="menu">
               <div className="apple-menu-section px-3 py-1">
                 <span className="font-semibold text-white/90">Battery</span>
               </div>
@@ -415,7 +464,7 @@ const NavbarControlCenterSection = ({
               <div className="max-h-[350px] overflow-y-auto p-2 flex flex-col gap-0.5">
                 {filteredApps.map((app, idx) => (
                   <div
-                    key={app.key}
+                    key={app.name}
                     className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg cursor-pointer transition-colors ${
                       idx === 0 ? "bg-[#007aff] text-white" : "hover:bg-white/5 text-white"
                     }`}
@@ -450,7 +499,7 @@ const NavbarControlCenterSection = ({
                 <div className="grid grid-cols-2 gap-1 mt-1">
                   {searchableApps.slice(0, 6).map((app) => (
                     <div
-                      key={app.key}
+                      key={app.name}
                       className="flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-white/70 hover:text-white"
                       onClick={() => handleLaunchApp(app.key)}
                     >
@@ -464,6 +513,7 @@ const NavbarControlCenterSection = ({
           </div>
         </div>
       )}
+      {/* Bluetooth Connection Prompt overlay */}
     </div>
   );
 };
