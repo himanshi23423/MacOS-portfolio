@@ -422,34 +422,16 @@ const SettingsFocusSection = () => {
   );
 };
 
-const ToggleRightActive = ({ size, className }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    className={className}
-  >
-    <rect x="1" y="5" width="22" height="14" rx="7" fill="currentColor" fillOpacity="0.15" />
-    <circle cx="16" cy="12" r="5" fill="currentColor" />
-  </svg>
+const ToggleRightActive = () => (
+  <div className="w-10 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer bg-[#007aff]">
+    <span className="w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all left-[18px]" />
+  </div>
 );
 
-const ToggleRightInactive = ({ size, className }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    className={className}
-  >
-    <rect x="1" y="5" width="22" height="14" rx="7" fill="none" stroke="currentColor" />
-    <circle cx="8" cy="12" r="5" fill="currentColor" />
-  </svg>
+const ToggleRightInactive = () => (
+  <div className="w-10 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer bg-gray-300">
+    <span className="w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all left-0.5" />
+  </div>
 );
 
 export default SettingsFocusSection;
