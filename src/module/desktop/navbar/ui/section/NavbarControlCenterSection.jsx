@@ -6,6 +6,23 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import useWindowsStore from "@store/window";
 
+const CalendarIcon = ({ sizeClass = "w-[26px] h-[26px] rounded-[5px]" }) => {
+  const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const today = new Date();
+  return (
+    <div
+      className={`${sizeClass} bg-white border border-black/10 shadow-sm overflow-hidden flex flex-col items-center select-none aspect-square shrink-0`}
+    >
+      <div className="w-full bg-[#ff3b30] text-white text-[5px] font-extrabold py-0.5 text-center leading-none tracking-wider uppercase">
+        {days[today.getDay()]}
+      </div>
+      <div className="flex-1 flex items-center justify-center text-gray-800 font-bold text-[12px] leading-none font-sans -mt-0.5">
+        {today.getDate()}
+      </div>
+    </div>
+  );
+};
+
 const NavbarControlCenterSection = ({
   now,
   battery,
@@ -133,25 +150,127 @@ const NavbarControlCenterSection = ({
   };
 
   const searchableApps = [
-    { name: "Finder", key: "finder", icon: "📁", desc: "System File Explorer" },
-    { name: "Projects", key: "finder", icon: "💻", desc: "View Portfolio Projects" },
-    { name: "VS Code", key: "vscode", icon: "📝", desc: "Visual Studio Code Workspace" },
-    { name: "Safari Browser", key: "safari", icon: "🌐", desc: "Apple Safari Web Browser" },
-    { name: "Chrome", key: "chrome", icon: "🌐", desc: "Google Chrome Browser" },
-    { name: "Calculator", key: "calculator", icon: "🧮", desc: "System Calculator App" },
-    { name: "Terminal", key: "terminal", icon: "💻", desc: "Command Line Shell" },
-    { name: "Music Player", key: "music", icon: "🎵", desc: "Apple Music Streamer" },
+    {
+      name: "Finder",
+      key: "finder",
+      image: "finder.png",
+      icon: "📁",
+      desc: "System File Explorer",
+    },
+    {
+      name: "Projects",
+      key: "finder",
+      image: "folder.png",
+      icon: "💻",
+      desc: "View Portfolio Projects",
+    },
+    {
+      name: "VS Code",
+      key: "vscode",
+      image: "vscode.png",
+      icon: "📝",
+      desc: "Visual Studio Code Workspace",
+    },
+    {
+      name: "Safari Browser",
+      key: "safari",
+      image: "safari.png",
+      icon: "🌐",
+      desc: "Apple Safari Web Browser",
+    },
+    {
+      name: "Chrome",
+      key: "chrome",
+      image: "chromee.png",
+      icon: "🌐",
+      desc: "Google Chrome Browser",
+    },
+    {
+      name: "Calculator",
+      key: "calculator",
+      image: "calculator.png",
+      icon: "🧮",
+      desc: "System Calculator App",
+    },
+    {
+      name: "Terminal",
+      key: "terminal",
+      image: "terminal.png",
+      icon: "💻",
+      desc: "Command Line Shell",
+    },
+    { name: "Music", key: "music", image: "music.png", icon: "🎵", desc: "Apple Music Streamer" },
     {
       name: "System Settings",
       key: "settings",
+      image: "settings.png",
       icon: "⚙️",
       desc: "Portfolio System Configuration",
     },
-    { name: "Resume Viewer", key: "resume", icon: "📄", desc: "Curriculum Vitae" },
-    { name: "Contact Form", key: "contact", icon: "✉️", desc: "Get In Touch" },
-    { name: "Launchpad", key: "launchpad", icon: "🚀", desc: "App Launcher Overview" },
-    { name: "Weather Forecast", key: "weather", icon: "☀️", desc: "Local Weather Report" },
-    { name: "Notes Pad", key: "notes", icon: "📝", desc: "Quick Notes Manager" },
+    {
+      name: "Contact Form",
+      key: "contact",
+      image: "contact.png",
+      icon: "✉️",
+      desc: "Get In Touch",
+    },
+    {
+      name: "Gallery",
+      key: "photos",
+      image: "photos.png",
+      icon: "🖼️",
+      desc: "Photo & Media Album",
+    },
+    {
+      name: "Calendar",
+      key: "calendar",
+      image: "calendar.png",
+      icon: "📅",
+      desc: "Calendar & Schedule Planner",
+    },
+    {
+      name: "App Store",
+      key: "appstore",
+      image: "appstore.png",
+      icon: "🛍️",
+      desc: "Search & Install Applications",
+    },
+    {
+      name: "Postman",
+      key: "postman",
+      image: "postman.png",
+      icon: "🚀",
+      desc: "API Development & Testing Workspace",
+    },
+    {
+      name: "Telegram",
+      key: "telegram",
+      image: "telegram.png",
+      icon: "💬",
+      desc: "Cloud Messaging & Chat",
+    },
+    { name: "Maps", key: "map", image: "map.png", icon: "🗺️", desc: "World Maps & Navigation" },
+    {
+      name: "Font Book",
+      key: "font",
+      image: "font.png",
+      icon: "🔤",
+      desc: "System Fonts Catalogue",
+    },
+    {
+      name: "Weather Forecast",
+      key: "weather",
+      image: "weather.png",
+      icon: "☀️",
+      desc: "Local Weather Report",
+    },
+    {
+      name: "Notes Pad",
+      key: "notes",
+      image: "notes.png",
+      icon: "📝",
+      desc: "Quick Notes Manager",
+    },
   ];
 
   const filteredApps = spotlightQuery.trim()
@@ -471,14 +590,15 @@ const NavbarControlCenterSection = ({
       {/* Spotlight Search Overlay Popup Panel */}
       {activeMenu === "spotlight" && (
         <div
-          className="fixed inset-0 bg-black/15 z-[999999] flex justify-center items-start pt-[12dvh] backdrop-blur-[1px]"
+          className="fixed inset-0 bg-transparent z-[999999] flex justify-center items-start pt-[12dvh]"
           onClick={() => setActiveMenu(null)}
         >
           <div
             className="w-[600px] border border-white/20 rounded-2xl flex flex-col overflow-hidden text-white transition-all shadow-[0_30px_70px_rgba(0,0,0,0.55),_0_0_0_1px_rgba(255,255,255,0.08)_inset]"
             style={{
-              background: "rgba(35, 35, 37, 0.72)",
+              background: "rgba(30, 30, 30, 0.55)",
               backdropFilter: "blur(40px) saturate(210%)",
+              WebkitBackdropFilter: "blur(40px) saturate(210%)",
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -516,12 +636,24 @@ const NavbarControlCenterSection = ({
                     }`}
                     onClick={() => handleLaunchApp(app.key)}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <span className="text-[20px] shrink-0">{app.icon}</span>
+                    <div className="flex items-center gap-3.5 min-w-0">
+                      {app.key === "calendar" ? (
+                        <CalendarIcon sizeClass="w-[28px] h-[28px] rounded-[6px]" />
+                      ) : app.image ? (
+                        <img
+                          src={`/images/${app.image}`}
+                          className={`w-[28px] h-[28px] object-contain shrink-0 ${app.key === "font" ? "scale-[3]" : ""}`}
+                          alt={app.name}
+                        />
+                      ) : (
+                        <span className="text-[20px] shrink-0">{app.icon}</span>
+                      )}
                       <div className="flex flex-col min-w-0">
-                        <span className="font-medium text-[14.5px] leading-tight">{app.name}</span>
+                        <span className="font-semibold text-[14.5px] leading-tight text-white">
+                          {app.name}
+                        </span>
                         <span
-                          className={`text-[11px] truncate leading-tight mt-0.5 ${idx === 0 ? "text-white/70" : "text-white/40"}`}
+                          className={`text-[11px] truncate leading-tight mt-0.5 ${idx === 0 ? "text-white/80" : "text-white/50"}`}
                         >
                           {app.desc}
                         </span>
@@ -538,19 +670,31 @@ const NavbarControlCenterSection = ({
             ) : spotlightQuery.trim() ? (
               <div className="p-8 text-center text-white/30 text-[13.5px]">No Results Found</div>
             ) : (
-              <div className="p-3.5 flex flex-col gap-1 text-[12px] text-white/35">
-                <div className="font-semibold uppercase tracking-wider text-[10px] px-2 text-white/25">
+              <div className="p-3.5 flex flex-col gap-1.5 text-[12px] text-white/35">
+                <div className="font-semibold uppercase tracking-wider text-[10px] px-2 text-white/30">
                   SUGGESTED APPS
                 </div>
-                <div className="grid grid-cols-2 gap-1 mt-1">
+                <div className="grid grid-cols-2 gap-1.5 mt-1">
                   {searchableApps.slice(0, 6).map((app) => (
                     <div
                       key={app.name}
-                      className="flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-white/70 hover:text-white"
+                      className="flex items-center gap-3.5 px-3 py-2 rounded-lg cursor-pointer hover:bg-white/10 text-white transition-colors group"
                       onClick={() => handleLaunchApp(app.key)}
                     >
-                      <span>{app.icon}</span>
-                      <span className="font-medium text-[13px]">{app.name}</span>
+                      {app.key === "calendar" ? (
+                        <CalendarIcon sizeClass="w-[26px] h-[26px] rounded-[5px]" />
+                      ) : app.image ? (
+                        <img
+                          src={`/images/${app.image}`}
+                          className={`w-[26px] h-[26px] object-contain shrink-0 ${app.key === "font" ? "scale-[3]" : ""}`}
+                          alt={app.name}
+                        />
+                      ) : (
+                        <span className="text-[18px] shrink-0">{app.icon}</span>
+                      )}
+                      <span className="font-semibold text-[13.5px] text-white/90 group-hover:text-white transition-colors">
+                        {app.name}
+                      </span>
                     </div>
                   ))}
                 </div>
