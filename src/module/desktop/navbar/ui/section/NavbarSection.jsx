@@ -39,15 +39,9 @@ const NavbarSection = ({
           setIsAsleep={setIsAsleep}
           setIsShuttingDown={setIsShuttingDown}
         />
-        <NavbarAppMenuSection
-          activeAppName={activeAppName}
-          openWindow={openWindow}
-        />
+        <NavbarAppMenuSection activeAppName={activeAppName} openWindow={openWindow} />
       </div>
-      <div
-        className="nav-right relative max-sm:hidden"
-        onClick={openControlCenterFromNavbar}
-      >
+      <div className="nav-right relative max-sm:hidden" onClick={openControlCenterFromNavbar}>
         <NavbarControlCenterSection
           now={now}
           battery={battery}
@@ -59,6 +53,7 @@ const NavbarSection = ({
           updateSlider={updateSlider}
           setMusicState={setMusicState}
           openWindow={openWindow}
+          setIsAsleep={setIsAsleep}
         />
       </div>
     </nav>

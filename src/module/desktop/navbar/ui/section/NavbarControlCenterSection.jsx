@@ -5,6 +5,7 @@ import NavbarControlCenter from "../components/NavbarControlCenter";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import useWindowsStore from "@store/window";
+import { User, Cloud, ShoppingBag, Users, Lock, Settings } from "lucide-react";
 
 const CalendarIcon = ({ sizeClass = "w-[26px] h-[26px] rounded-[5px]" }) => {
   const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -34,12 +35,46 @@ const NavbarControlCenterSection = ({
   updateSlider,
   setMusicState,
   openWindow,
+  setIsAsleep,
 }) => {
   const { updateSystemSetting } = useWindowsStore();
   const [mounted, setMounted] = useState(false);
+
+  const [profile, setProfile] = useState({
+    name: "Kuldeep Rajput",
+    avatar_url: null,
+    login: "kuldeeprajput-dev",
+    email: "kuldeeprajput-dev@users.noreply.github.com",
+    bio: "Full Stack Developer",
+    location: "India",
+    public_repos: 15,
+    followers: 45,
+  });
+
+  const [currentUserMode, setCurrentUserMode] = useState("admin"); // "admin" | "guest"
+  const [activeSubTab, setActiveSubTab] = useState("apple_id"); // "apple_id" | "icloud" | "media" | "guest" | "session"
+
   useEffect(() => {
     setMounted(true);
+    fetch("https://api.github.com/users/kuldeeprajput-dev")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.login) {
+          setProfile({
+            name: data.name || "Kuldeep Rajput",
+            avatar_url: data.avatar_url,
+            login: data.login,
+            email: data.email || `${data.login}@users.noreply.github.com`,
+            bio: data.bio || "Full Stack Developer",
+            location: data.location || "India",
+            public_repos: data.public_repos || 15,
+            followers: data.followers || 45,
+          });
+        }
+      })
+      .catch((err) => console.error("Error fetching user profile:", err));
   }, []);
+
   const [activeMenu, setActiveMenu] = useState(null); // 'wifi' | 'bluetooth' | 'user' | 'battery' | 'spotlight' | 'control' | null
   const [spotlightQuery, setSpotlightQuery] = useState("");
   const [connectingDevice, setConnectingDevice] = useState(null);
@@ -491,40 +526,306 @@ const NavbarControlCenterSection = ({
 
             {/* User Profile Dropdown */}
             {type === "user" && activeMenu === "user" && (
-              <div className="mac-dropdown left-auto right-0 w-[230px] text-white" role="menu">
-                <div className="apple-menu-section flex items-center gap-3 px-3 py-2">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-[16px] text-white shadow-md">
-                    K
+              <div
+                className="mac-dropdown left-auto right-0 w-[calc(100vw-24px)] sm:w-[580px] h-auto sm:h-[280px] flex flex-col sm:flex-row p-0 text-white overflow-hidden"
+                style={{ maxWidth: "none" }}
+                role="menu"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Left Sidebar Navigation */}
+                <div className="w-full sm:w-[155px] h-auto sm:h-full bg-white/5 border-b sm:border-b-0 sm:border-r border-white/10 p-2 flex flex-row sm:flex-col gap-1 shrink-0 overflow-x-auto sm:overflow-x-visible scrollbar-none">
+                  <div className="hidden sm:block px-2 py-1.5 mb-1 text-[10px] font-bold text-white/30 tracking-wider uppercase select-none">
+                    USER PROFILE
                   </div>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[13px] text-white/95 leading-tight">
-                      Kuldeep Rajput
+                  {[
+                    { id: "apple_id", label: "Apple ID", icon: <User size={13} /> },
+                    { id: "icloud", label: "iCloud", icon: <Cloud size={13} /> },
+                    { id: "media", label: "Media", icon: <ShoppingBag size={13} /> },
+                    { id: "guest", label: "Guest User", icon: <Users size={13} /> },
+                    { id: "session", label: "Session Control", icon: <Lock size={13} /> },
+                  ].map((subTab) => (
+                    <button
+                      key={subTab.id}
+                      type="button"
+                      onClick={() => setActiveSubTab(subTab.id)}
+                      className={`flex items-center gap-2.5 px-3 py-1.5 sm:px-2.5 sm:py-1.5 rounded-lg text-[12px] font-medium transition-colors shrink-0 ${
+                        activeSubTab === subTab.id
+                          ? "bg-[#007aff] text-white shadow-sm font-semibold"
+                          : "text-white/80 hover:bg-white/10 hover:text-white"
+                      }`}
+                    >
+                      <span>{subTab.icon}</span>
+                      <span className="truncate">{subTab.label}</span>
+                    </button>
+                  ))}
+                  <div className="hidden sm:block mt-auto p-1.5 bg-white/5 border border-white/5 rounded-lg text-center">
+                    <span className="text-[9px] text-white/40 block leading-tight">
+                      SESSION STATUS
                     </span>
-                    <span className="text-[10px] text-white/50 leading-tight mt-0.5">
-                      Developer Account
+                    <span className="text-[10px] text-white/80 font-bold block mt-0.5 capitalize">
+                      {currentUserMode} Mode
                     </span>
                   </div>
                 </div>
-                <div className="apple-menu-section">
-                  <button
-                    className="apple-menu-item"
-                    type="button"
-                    onClick={() => handleLaunchApp("settings")}
-                  >
-                    Users & Groups Settings...
-                  </button>
-                </div>
-                <div className="apple-menu-section">
-                  <button
-                    className="apple-menu-item"
-                    type="button"
-                    onClick={() => {
-                      setActiveMenu(null);
-                      toggleSetting("focusMode");
-                    }}
-                  >
-                    Enter Focus Mode
-                  </button>
+
+                {/* Right Content Area (Minimal Design) */}
+                <div className="flex-1 h-full p-4 overflow-y-auto thin-scrollbar flex flex-col bg-transparent justify-between">
+                  {activeSubTab === "apple_id" && (
+                    <div className="flex flex-col h-full justify-between animate-in fade-in slide-in-from-right-1 duration-200">
+                      {/* Minimal Header */}
+                      <div className="flex items-center gap-3">
+                        {profile.avatar_url ? (
+                          <img
+                            src={
+                              currentUserMode === "admin"
+                                ? profile.avatar_url
+                                : "/images/profile.jpg"
+                            }
+                            className="w-11 h-11 rounded-full border border-white/20 shadow-md shrink-0 object-cover"
+                            alt="Profile Avatar"
+                          />
+                        ) : (
+                          <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-[18px] text-white shadow-md shrink-0">
+                            {currentUserMode === "admin" ? profile.name[0] : "G"}
+                          </div>
+                        )}
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-bold text-[14px] text-white/95 leading-tight truncate">
+                            {currentUserMode === "admin" ? profile.name : "Guest User"}
+                          </span>
+                          <span className="text-[10.5px] text-white/50 leading-tight mt-0.5 truncate">
+                            {currentUserMode === "admin"
+                              ? `@${profile.login}`
+                              : "Standard Guest Session"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Minimal bio/tagline */}
+                      <div className="my-3 text-[11.5px] text-white/80 leading-normal flex items-start gap-1.5">
+                        <Settings size={14} className="text-white/40 shrink-0 mt-0.5" />
+                        {currentUserMode === "admin" ? (
+                          <span className="block font-medium">
+                            Full Stack Developer | Building beautiful, premium web solutions.
+                          </span>
+                        ) : (
+                          <span>
+                            This guest session is secure and sandboxed. All transient files and
+                            storage will clear on logout.
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Clean stats row */}
+                      {currentUserMode === "admin" && (
+                        <div className="flex items-center gap-4 text-[11px] text-white/55 bg-white/5 border border-white/5 py-1.5 px-3 rounded-lg w-fit">
+                          <span>
+                            📦 <strong>{profile.public_repos}</strong> Repos
+                          </span>
+                          <span className="text-white/20">|</span>
+                          <span>
+                            👥 <strong>{profile.followers}</strong> Followers
+                          </span>
+                          <span className="text-white/20">|</span>
+                          <span>
+                            📍 <strong>{profile.location}</strong>
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="mt-4 pt-2.5 border-t border-white/10 flex">
+                        <button
+                          type="button"
+                          className="flex-1 bg-white/10 hover:bg-white/15 active:bg-white/8 text-white rounded-lg py-1.5 px-3 text-[11px] font-medium transition-all text-center"
+                          onClick={() => handleLaunchApp("settings", { tab: "Apple ID" })}
+                        >
+                          Apple ID Settings...
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeSubTab === "icloud" && (
+                    <div className="flex flex-col h-full justify-between animate-in fade-in slide-in-from-right-1 duration-200">
+                      <div>
+                        <h4 className="text-[13px] font-bold text-white/95">iCloud+</h4>
+                        <div className="flex items-center justify-between text-[10.5px] text-white/50 mt-1">
+                          <span>
+                            Status: <span className="text-green-400 font-semibold">Active</span>
+                          </span>
+                          <span>45.2 GB of 200 GB Used</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-white/10 rounded-full mt-2 overflow-hidden flex">
+                          <div className="h-full bg-blue-500 w-[22%]" title="Photos" />
+                          <div className="h-full bg-yellow-500 w-[11%]" title="Drive" />
+                          <div className="h-full bg-green-500 w-[8%]" title="Documents" />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5 my-3">
+                        {[
+                          {
+                            key: "icloud_drive",
+                            label: "iCloud Drive",
+                            desc: "Sync files across devices",
+                            icon: <Cloud size={14} className="opacity-80" />,
+                          },
+                          {
+                            key: "photos",
+                            label: "Photos Syncing",
+                            desc: "Keep all your high-res photos safe",
+                            icon: <ShoppingBag size={14} className="opacity-80" />,
+                          },
+                        ].map((item) => (
+                          <div
+                            key={item.key}
+                            className="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5"
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <span className="shrink-0">{item.icon}</span>
+                              <div className="flex flex-col min-w-0">
+                                <span className="text-[11.5px] font-semibold text-white/95 leading-tight">
+                                  {item.label}
+                                </span>
+                                <span className="text-[9px] text-white/40 leading-tight mt-0.5 truncate">
+                                  {item.desc}
+                                </span>
+                              </div>
+                            </div>
+                            <input
+                              type="checkbox"
+                              defaultChecked={true}
+                              className="accent-[#007aff] cursor-pointer w-3.5 h-3.5 shrink-0"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {activeSubTab === "media" && (
+                    <div className="flex flex-col h-full justify-between animate-in fade-in slide-in-from-right-1 duration-200">
+                      <div>
+                        <h4 className="text-[13px] font-bold text-white/95">Media & Sponsors</h4>
+                        <p className="text-[10px] text-white/50 mt-0.5">
+                          Active developer stack licenses
+                        </p>
+                      </div>
+
+                      <div className="bg-white/5 border border-white/5 p-3 rounded-xl my-2">
+                        <span className="text-[9px] text-white/40 block leading-tight font-bold tracking-wider uppercase">
+                          CURRENT PLAN
+                        </span>
+                        <span className="text-[12px] font-semibold text-white block mt-1">
+                          GitHub Pro & Developer Subscription
+                        </span>
+                        <p className="text-[10px] text-white/50 mt-1 leading-normal">
+                          Allows deployment of optimized sites and packages under custom domains.
+                        </p>
+                      </div>
+
+                      <div className="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5 mt-auto">
+                        <span className="text-[11px] text-white/80">Support Project</span>
+                        <button
+                          type="button"
+                          className="bg-[#007aff] hover:bg-[#007aff]/80 active:bg-[#007aff]/60 text-white rounded-lg py-1 px-3 text-[10px] font-semibold transition-all cursor-pointer"
+                          onClick={() =>
+                            window.open(`https://github.com/sponsors/kuldeeprajput-dev`, "_blank")
+                          }
+                        >
+                          💖 Sponsor
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeSubTab === "guest" && (
+                    <div className="flex flex-col h-full justify-between animate-in fade-in slide-in-from-right-1 duration-200">
+                      <div className="text-center flex-1 flex flex-col items-center justify-center my-2">
+                        <div className="w-10 h-10 rounded-full bg-white/10 border border-white/5 flex items-center justify-center shadow-inner mb-2">
+                          {currentUserMode === "admin" ? (
+                            <Users size={18} className="text-white/80" />
+                          ) : (
+                            <User size={18} className="text-white/80" />
+                          )}
+                        </div>
+                        <h5 className="text-[12px] font-semibold text-white/90">
+                          {currentUserMode === "admin" ? "Start Guest Session" : "Switch to Admin"}
+                        </h5>
+                        <p className="text-[10px] text-white/40 max-w-[220px] mt-1 leading-relaxed">
+                          {currentUserMode === "admin"
+                            ? "Launches a secure, transient sandbox environment for guests."
+                            : "Returns back to administrator profile."}
+                        </p>
+                        <button
+                          type="button"
+                          className="mt-3.5 bg-[#007aff] hover:bg-[#007aff]/80 active:bg-[#007aff]/60 text-white text-[10.5px] font-bold py-1 px-3.5 rounded-lg shadow-md transition-all cursor-pointer"
+                          onClick={() => {
+                            setActiveMenu(null);
+                            setIsAsleep(true);
+                            setTimeout(() => {
+                              setCurrentUserMode(currentUserMode === "admin" ? "guest" : "admin");
+                            }, 500);
+                          }}
+                        >
+                          {currentUserMode === "admin"
+                            ? "Launch Guest Mode"
+                            : "Switch back to Admin (Kuldeep)"}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeSubTab === "session" && (
+                    <div className="flex flex-col h-full justify-between animate-in fade-in slide-in-from-right-1 duration-200">
+                      <div className="space-y-1 my-1">
+                        {[
+                          {
+                            label: "Lock Screen",
+                            meta: "⌃⌘Q",
+                            onClick: () => {
+                              setActiveMenu(null);
+                              setIsAsleep(true);
+                            },
+                          },
+                          {
+                            label: "Sleep Mac",
+                            meta: "⌥⌘⏽",
+                            onClick: () => {
+                              setActiveMenu(null);
+                              setIsAsleep(true);
+                            },
+                          },
+                          {
+                            label: "Log Out Developer...",
+                            meta: "⇧⌘Q",
+                            onClick: () => {
+                              setActiveMenu(null);
+                              setIsAsleep(true);
+                            },
+                          },
+                          {
+                            label: "System Settings...",
+                            onClick: () => handleLaunchApp("settings"),
+                          },
+                        ].map((action, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            className="apple-menu-item flex items-center justify-between w-full py-1 text-[11.5px]"
+                            onClick={action.onClick}
+                          >
+                            <span>{action.label}</span>
+                            {action.meta && (
+                              <span className="text-[9.5px] text-white/30 font-mono">
+                                {action.meta}
+                              </span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
