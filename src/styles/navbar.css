@@ -41,14 +41,14 @@
     }
 
     .status-icons {
-      @apply flex items-center gap-4 h-full;
+      @apply flex items-center gap-1 h-full;
 
       li {
-        @apply h-full flex items-center;
+        @apply h-full flex items-center px-[7px] cursor-pointer transition-colors rounded-sm;
       }
 
       .icon-hover {
-        @apply h-3.5 px-1.5 cursor-pointer rounded transition-colors;
+        @apply h-3.5 cursor-pointer transition-colors;
         filter: brightness(0) invert(1);
       }
     }
