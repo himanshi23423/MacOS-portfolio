@@ -862,7 +862,7 @@ const NavbarControlCenterSection = ({
                 <button
                   className="apple-menu-item"
                   type="button"
-                  onClick={() => handleLaunchApp("settings")}
+                  onClick={() => handleLaunchApp("settings", { tab: "Battery" })}
                 >
                   Battery Settings...
                 </button>

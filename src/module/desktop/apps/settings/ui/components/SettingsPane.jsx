@@ -12,6 +12,7 @@ import SettingsScreenTimeSection from "../section/SettingsScreenTimeSection";
 import SettingsAccessibilitySection from "../section/SettingsAccessibilitySection";
 import SettingsControlCenterSection from "../section/SettingsControlCenterSection";
 import SettingsAppleIDSection from "../section/SettingsAppleIDSection";
+import SettingsBatterySection from "../section/SettingsBatterySection";
 
 const SettingsPane = ({
   activeTab,
@@ -48,6 +49,8 @@ const SettingsPane = ({
         return <SettingsControlCenterSection />;
       case "Apple ID":
         return <SettingsAppleIDSection githubData={githubData} />;
+      case "Battery":
+        return <SettingsBatterySection />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-full text-gray-400 animate-in fade-in duration-300">
