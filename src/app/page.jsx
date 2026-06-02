@@ -10,11 +10,13 @@ import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
 
 export default function Page() {
+  const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [booting, setBooting] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -23,12 +25,17 @@ export default function Page() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  if (!isMounted) {
+    return <div className="fixed inset-0 bg-black z-99999" />;
+  }
+
   if (isMobile) {
     return (
       <>
         <LoadingView
           booting={booting}
           isLoggedIn={isLoggedIn}
+          isMobile={isMobile}
           onBootComplete={() => setBooting(false)}
           onLogin={() => setIsLoggedIn(true)}
         />
@@ -42,6 +49,7 @@ export default function Page() {
       <LoadingView
         booting={booting}
         isLoggedIn={isLoggedIn}
+        isMobile={isMobile}
         onBootComplete={() => setBooting(false)}
         onLogin={() => setIsLoggedIn(true)}
       />

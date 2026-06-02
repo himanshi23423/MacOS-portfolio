@@ -63,3 +63,9 @@ body {
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
+
+@media (max-width: 767px) {
+  body {
+    background-image: url("/images/mobile-wallpaper.png") !important;
+  }
+}

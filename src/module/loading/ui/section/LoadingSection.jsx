@@ -1,10 +1,10 @@
 import BootScreen from "../components/BootScreen";
 import LoginScreen from "../components/LoginScreen";
 
-const LoadingSection = ({ booting, isLoggedIn, onBootComplete, onLogin }) => (
+const LoadingSection = ({ booting, isLoggedIn, isMobile, onBootComplete, onLogin }) => (
   <>
-    {booting && <BootScreen onComplete={onBootComplete} />}
-    {!booting && !isLoggedIn && <LoginScreen onLogin={onLogin} />}
+    {booting && <BootScreen onComplete={onBootComplete} isMobile={isMobile} />}
+    {!booting && !isLoggedIn && <LoginScreen onLogin={onLogin} isMobile={isMobile} />}
   </>
 );
 
