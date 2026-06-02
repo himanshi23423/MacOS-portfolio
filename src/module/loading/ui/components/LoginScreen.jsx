@@ -197,9 +197,11 @@ const LoginScreen = ({ onLogin, isMobile }) => {
 
             {/* Notification preview (iOS Widget style) */}
             <div className="w-full max-w-sm bg-white/5 backdrop-blur-xl border border-white/5 rounded-2xl p-4 flex gap-3.5 shadow-xl animate-bounce duration-[3000ms] mt-10">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shrink-0">
-                KR
-              </div>
+              <img
+                src="/images/profile.jpg"
+                alt="Profile Avatar"
+                className="w-10 h-10 rounded-xl object-cover border border-white/10 shadow-sm shrink-0"
+              />
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-baseline">
                   <span className="text-xs font-bold text-white leading-tight">Welcome</span>
@@ -285,7 +287,7 @@ const LoginScreen = ({ onLogin, isMobile }) => {
               <Lock className="w-4.5 h-4.5 text-white/90 mb-3" />
               <h2 className="text-[15px] font-bold tracking-wide text-white">Enter Passcode</h2>
               <p className="text-[10px] text-white/40 font-semibold mt-1">
-                Passcode is the current year
+                Passcode is the current year (e.g. {new Date().getFullYear()})
               </p>
             </div>
 
