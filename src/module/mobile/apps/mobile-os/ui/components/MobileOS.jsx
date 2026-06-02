@@ -66,9 +66,22 @@ const MobileOS = () => {
         controlCenterRef={controlCenterRef}
       />
 
-      <MobileOSAppGrid dockApps={dockApps} openWindow={openWindow} />
+      <MobileOSAppGrid
+        dockApps={dockApps.filter(
+          (app) =>
+            app.id !== "launchpad" &&
+            app.id !== "trash" &&
+            !["safari", "messages", "call", "music"].includes(app.id),
+        )}
+        openWindow={openWindow}
+      />
 
-      <MobileOSDock dockApps={dockApps} openWindow={openWindow} />
+      <MobileOSDock
+        dockApps={["call", "safari", "messages", "music"]
+          .map((id) => dockApps.find((app) => app.id === id))
+          .filter(Boolean)}
+        openWindow={openWindow}
+      />
 
       <div className="absolute bottom-[2px] left-1/2 -translate-x-1/2 rounded-full z-50 w-[134px] h-[5px] bg-white/55" />
     </div>
