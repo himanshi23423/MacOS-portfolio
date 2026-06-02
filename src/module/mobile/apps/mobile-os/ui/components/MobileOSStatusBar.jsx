@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const IOSSignalIcon = () => (
-  <svg width="17" height="11" viewBox="0 0 17 11" fill="none" className="text-white shrink-0">
+  <svg width="14" height="9" viewBox="0 0 17 11" fill="none" className="text-white shrink-0">
     <rect x="0.5" y="8" width="2.5" height="3" rx="0.75" fill="currentColor" />
     <rect x="4.5" y="6" width="2.5" height="5" rx="0.75" fill="currentColor" />
     <rect x="8.5" y="3.5" width="2.5" height="7.5" rx="0.75" fill="currentColor" />
@@ -11,8 +11,8 @@ const IOSSignalIcon = () => (
 
 const IOSWifiIcon = () => (
   <svg
-    width="16"
-    height="12"
+    width="13"
+    height="10"
     viewBox="0 0 16 12"
     fill="currentColor"
     className="text-white shrink-0"
@@ -22,11 +22,11 @@ const IOSWifiIcon = () => (
 );
 
 const IOSBatteryIcon = ({ level, isCharging, lowPower }) => (
-  <div className="flex items-center gap-[4.5px] select-none shrink-0">
-    <span className="text-[11.5px] font-semibold tracking-tight">{level}%</span>
-    <div className="w-[24.5px] h-[11.5px] rounded-[3px] border border-white/70 p-[1.5px] relative flex items-center bg-transparent">
+  <div className="flex items-center gap-[3.5px] select-none shrink-0">
+    <span className="text-[10px] font-semibold tracking-tight">{level}%</span>
+    <div className="w-[21px] h-[10.5px] rounded-[2.5px] border border-white/70 p-[1.2px] relative flex items-center bg-transparent">
       <div
-        className="h-full rounded-[1px] transition-all duration-300"
+        className="h-full rounded-[0.8px] transition-all duration-300"
         style={{
           width: `${level}%`,
           backgroundColor: isCharging
@@ -40,12 +40,12 @@ const IOSBatteryIcon = ({ level, isCharging, lowPower }) => (
       />
       {isCharging && (
         <div className="absolute inset-0 flex items-center justify-center shadow-sm">
-          <svg width="5" height="8" viewBox="0 0 6 9" fill="currentColor" className="text-white">
+          <svg width="4" height="7" viewBox="0 0 6 9" fill="currentColor" className="text-white">
             <path d="M3.5 0L0 5h2.5v4L6 4H3.5V0z" />
           </svg>
         </div>
       )}
-      <div className="absolute right-[-3px] top-1/2 -translate-y-1/2 w-[1.5px] h-[3.5px] rounded-r-[0.75px] bg-white/70" />
+      <div className="absolute right-[-2.5px] top-1/2 -translate-y-1/2 w-[1.2px] h-[3px] rounded-r-[0.6px] bg-white/70" />
     </div>
   </div>
 );
@@ -70,13 +70,13 @@ const MobileOSStatusBar = ({ now, anyWindowOpen, setIsControlOpen, settings }) =
 
   return (
     <header
-      className="absolute top-0 left-0 w-full z-[70] flex justify-between items-center h-[44px] pl-[16px] pr-[16px] bg-[linear-gradient(to_bottom,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0.15)_70%,transparent_100%)] select-none"
+      className="absolute top-0 left-0 w-full z-[70] flex justify-between items-center h-[38px] pl-[18px] pr-[18px] bg-[linear-gradient(to_bottom,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0.15)_70%,transparent_100%)] select-none"
       onClick={() => !anyWindowOpen && setIsControlOpen((p) => !p)}
     >
-      <time className="text-sm font-semibold tracking-tight text-white mt-1">
+      <time className="text-[11.5px] font-semibold tracking-tight text-white mt-1">
         {now.format("h:mm")}
       </time>
-      <div className="flex items-center gap-[6px] text-white mt-1">
+      <div className="flex items-center gap-[5px] text-white mt-1">
         <IOSSignalIcon />
         <IOSWifiIcon />
         <IOSBatteryIcon level={batteryLevel} isCharging={isCharging} lowPower={settings.lowPower} />
