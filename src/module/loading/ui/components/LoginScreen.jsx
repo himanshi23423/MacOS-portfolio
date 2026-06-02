@@ -279,8 +279,15 @@ const LoginScreen = ({ onLogin, isMobile }) => {
         `}</style>
 
         {/* Dynamic Island cutout at the very top */}
-        <div className="w-24 h-5 bg-[#0a0a0a] rounded-full border border-neutral-900 flex items-center justify-center relative mt-3 shadow-lg z-20">
-          <div className="absolute right-3 w-1.5 h-1.5 rounded-full bg-neutral-900 border border-neutral-800" />
+        <div className="w-28 h-[26px] bg-[#0a0a0a] rounded-full border border-neutral-900 flex items-center justify-between px-3.5 mt-3 shadow-lg z-20">
+          {/* FaceID Sensor / TrueDepth Array */}
+          <div className="w-2.5 h-2.5 rounded-full bg-[#080808] border border-neutral-950 flex-shrink-0" />
+          {/* Front Camera Lens with blue AR glass element reflection */}
+          <div className="w-3.5 h-3.5 rounded-full bg-[#030307] border border-[#1a1a24] shadow-inner flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#0d2d4d] opacity-90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] flex items-center justify-center">
+              <div className="w-0.5 h-0.5 rounded-full bg-cyan-400 opacity-60" />
+            </div>
+          </div>
         </div>
 
         {!showPasswordInput ? (

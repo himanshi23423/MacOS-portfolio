@@ -42,10 +42,14 @@ const MobileOS = () => {
       />
 
       {/* iPhone 17 Pro Dynamic Island cutout */}
-      <div className="w-24 h-5 bg-[#0a0a0a] rounded-full border border-neutral-900/60 flex items-center justify-center absolute top-[11px] left-1/2 -translate-x-1/2 shadow-[inset_0_1px_2px_rgba(255,255,255,0.04),0_2px_6px_rgba(0,0,0,0.6)] z-[80] pointer-events-none">
-        {/* Camera lens reflection */}
-        <div className="absolute right-3.5 w-1.5 h-1.5 rounded-full bg-[#050505] border border-neutral-850 flex items-center justify-center">
-          <div className="w-0.5 h-0.5 rounded-full bg-blue-900/20" />
+      <div className="w-28 h-[26px] bg-[#0a0a0a] rounded-full border border-neutral-900/60 flex items-center justify-between px-3.5 absolute top-[9px] left-1/2 -translate-x-1/2 shadow-[inset_0_1px_2px_rgba(255,255,255,0.04),0_2px_6px_rgba(0,0,0,0.6)] z-[80] pointer-events-none">
+        {/* FaceID Sensor / TrueDepth Array */}
+        <div className="w-2.5 h-2.5 rounded-full bg-[#080808] border border-neutral-950 flex-shrink-0" />
+        {/* Front Camera Lens with blue AR glass element reflection */}
+        <div className="w-3.5 h-3.5 rounded-full bg-[#030307] border border-[#1a1a24] shadow-inner flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#0d2d4d] opacity-90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] flex items-center justify-center">
+            <div className="w-0.5 h-0.5 rounded-full bg-cyan-400 opacity-60" />
+          </div>
         </div>
       </div>
 
