@@ -18,6 +18,111 @@ const LoginScreen = ({ onLogin, isMobile }) => {
   const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [error, setError] = useState(false);
   const [flashlightActive, setFlashlightActive] = useState(false);
+  const [torchTrack, setTorchTrack] = useState(null);
+
+  const togglePhysicalTorch = async (activate) => {
+    if (activate) {
+      try {
+        if (
+          typeof navigator === "undefined" ||
+          !navigator.mediaDevices ||
+          !navigator.mediaDevices.getUserMedia
+        )
+          return;
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+        });
+        const track = stream.getVideoTracks()[0];
+        const capabilities = track.getCapabilities();
+        if (capabilities.torch) {
+          await track.applyConstraints({
+            advanced: [{ torch: true }],
+          });
+          setTorchTrack(track);
+        }
+      } catch (err) {
+        console.warn("Physical torch error:", err);
+      }
+    } else {
+      if (torchTrack) {
+        try {
+          await torchTrack.applyConstraints({
+            advanced: [{ torch: false }],
+          });
+          torchTrack.stop();
+        } catch (err) {
+          console.warn("Error turning off physical torch:", err);
+        }
+        setTorchTrack(null);
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (torchTrack) {
+        torchTrack.stop();
+      }
+    };
+  }, [torchTrack]);
+  const [showCameraView, setShowCameraView] = useState(false);
+  const [cameraStream, setCameraStream] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("normal");
+  const [shutterFlash, setShutterFlash] = useState(false);
+
+  const startCamera = async () => {
+    if (
+      typeof navigator === "undefined" ||
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
+      console.warn(
+        "Camera API not supported in this context (requires HTTPS or localhost). Launching mock camera.",
+      );
+      setShowCameraView(true);
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+        audio: false,
+      });
+      setCameraStream(stream);
+      setShowCameraView(true);
+      setTimeout(() => {
+        const video = document.getElementById("lockscreen-camera-video");
+        if (video) {
+          video.srcObject = stream;
+          video.play().catch((err) => console.log("Video playback error:", err));
+        }
+      }, 100);
+    } catch (err) {
+      console.warn("Camera API error:", err);
+      // Fallback to mock if permission is denied
+      setShowCameraView(true);
+    }
+  };
+
+  const stopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((track) => track.stop());
+      setCameraStream(null);
+    }
+    setShowCameraView(false);
+  };
+
+  const takePhoto = () => {
+    setShutterFlash(true);
+    setTimeout(() => setShutterFlash(false), 250);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [cameraStream]);
 
   // Time and Date State
   const getFormattedTime = () => {
@@ -147,7 +252,7 @@ const LoginScreen = ({ onLogin, isMobile }) => {
           backgroundPosition: "center",
         }}
         onClick={() => {
-          if (!showPasswordInput) {
+          if (!showPasswordInput && !showCameraView) {
             triggerFullscreen();
             setShowPasswordInput(true);
           }
@@ -221,9 +326,11 @@ const LoginScreen = ({ onLogin, isMobile }) => {
               <div className="flex justify-between w-full px-4">
                 {/* Flashlight button */}
                 <button
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.stopPropagation();
-                    setFlashlightActive(!flashlightActive);
+                    const nextActive = !flashlightActive;
+                    setFlashlightActive(nextActive);
+                    await togglePhysicalTorch(nextActive);
                   }}
                   className={`w-12 h-12 rounded-full flex items-center justify-center transition-all cursor-pointer ${
                     flashlightActive
@@ -255,6 +362,7 @@ const LoginScreen = ({ onLogin, isMobile }) => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
+                    startCamera();
                   }}
                   className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/5 flex items-center justify-center transition-colors cursor-pointer text-white"
                 >
@@ -363,6 +471,141 @@ const LoginScreen = ({ onLogin, isMobile }) => {
                   Delete
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Camera modal view overlay */}
+        {showCameraView && (
+          <div
+            className="absolute inset-0 bg-black z-[120] flex flex-col justify-between py-6 px-4 animate-in fade-in duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Top Bar controls */}
+            <div className="flex justify-between items-center z-[130] mt-6">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  stopCamera();
+                }}
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/5 active:bg-white/20 transition-all cursor-pointer text-white"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <div className="bg-black/40 border border-white/5 rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white/85 select-none">
+                Live Filter: {activeFilter}
+              </div>
+
+              <div className="w-10 h-10 opacity-0 pointer-events-none" />
+            </div>
+
+            {/* Video preview with live CSS filter / Mock preview fallback */}
+            <div className="absolute inset-0 flex items-center justify-center z-10 bg-black">
+              {cameraStream ? (
+                <video
+                  id="lockscreen-camera-video"
+                  autoPlay
+                  playsInline
+                  muted
+                  className="w-full h-full object-cover transition-all duration-300"
+                  style={{
+                    filter:
+                      activeFilter === "mono"
+                        ? "grayscale(1)"
+                        : activeFilter === "noir"
+                          ? "contrast(1.4) grayscale(1)"
+                          : activeFilter === "vivid"
+                            ? "saturate(1.8)"
+                            : "none",
+                    transform: "scaleX(-1)", // mirror for front camera feel
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center relative bg-neutral-950">
+                  <img
+                    src="/images/profile.jpg"
+                    alt="Mock viewfinder"
+                    className="w-full h-full object-cover opacity-50 transition-all duration-300"
+                    style={{
+                      filter:
+                        activeFilter === "mono"
+                          ? "grayscale(1)"
+                          : activeFilter === "noir"
+                            ? "contrast(1.4) grayscale(1)"
+                            : activeFilter === "vivid"
+                              ? "saturate(1.8)"
+                              : "none",
+                    }}
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 pointer-events-none p-6 text-center">
+                    <span className="text-[10px] font-bold text-white/60 tracking-widest uppercase bg-black/60 px-4 py-2 rounded-full border border-white/5 shadow-lg">
+                      Preview Mode (HTTP/Non-Secure)
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Visual flash effect */}
+            {shutterFlash && (
+              <div className="absolute inset-0 bg-white z-[999] pointer-events-none transition-opacity duration-300" />
+            )}
+
+            {/* Bottom Controls */}
+            <div className="flex justify-between items-center px-6 mb-8 z-[130]">
+              {/* Filter toggle button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const filters = ["normal", "mono", "noir", "vivid"];
+                  const idx = filters.indexOf(activeFilter);
+                  const nextFilter = filters[(idx + 1) % filters.length];
+                  setActiveFilter(nextFilter);
+                }}
+                className="w-12 h-12 rounded-full bg-white/10 border border-white/5 flex items-center justify-center text-white active:bg-white/20 transition-colors cursor-pointer"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                >
+                  <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm0 2v16a8 8 0 0 0 0-16z" />
+                </svg>
+              </button>
+
+              {/* Shutter button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  takePhoto();
+                }}
+                className="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-transparent active:scale-95 transition-all cursor-pointer"
+              >
+                <div className="w-16 h-16 rounded-full bg-white active:bg-neutral-250 transition-colors" />
+              </button>
+
+              {/* Camera flip mock / placeholder */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                className="w-12 h-12 rounded-full bg-white/10 border border-white/5 flex items-center justify-center text-white active:bg-white/20 transition-colors cursor-pointer"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                >
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                </svg>
+              </button>
             </div>
           </div>
         )}
