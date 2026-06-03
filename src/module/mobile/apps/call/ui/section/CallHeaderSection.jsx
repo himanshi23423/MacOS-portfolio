@@ -4,13 +4,13 @@ import { ChevronLeft } from "lucide-react";
 const CallHeaderSection = ({ isSidebarOpen, onToggleSidebar }) => (
   <div
     id="window-header"
-    className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2.5"
+    className="window-header shrink-0 flex items-center justify-between !bg-zinc-50 !border-b-zinc-200 !px-4 !py-2.5 text-zinc-800"
   >
     <div className="flex items-center gap-4">
       <WindowControls target="call" />
       <button
         onClick={onToggleSidebar}
-        className="sm:hidden p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors"
+        className="sm:hidden p-1 rounded hover:bg-zinc-200/60 text-zinc-600 transition-colors"
         aria-label="Toggle Sidebar"
       >
         <ChevronLeft
@@ -20,7 +20,7 @@ const CallHeaderSection = ({ isSidebarOpen, onToggleSidebar }) => (
         />
       </button>
     </div>
-    <div className="flex-1 text-center font-bold text-gray-700 text-sm hidden sm:block">
+    <div className="flex-1 text-center font-bold text-zinc-700 text-sm hidden sm:block">
       FaceTime
     </div>
     <div className="w-14" />

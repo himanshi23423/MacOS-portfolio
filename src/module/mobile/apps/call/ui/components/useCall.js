@@ -51,6 +51,9 @@ const useCall = () => {
       const freqs = dtmfFrequencies[digit];
       if (!freqs) return;
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === "suspended") {
+        ctx.resume();
+      }
       const osc1 = ctx.createOscillator();
       const osc2 = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -77,6 +80,9 @@ const useCall = () => {
   const startRingbackSound = useCallback(() => {
     try {
       ringbackAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      if (ringbackAudioCtxRef.current.state === "suspended") {
+        ringbackAudioCtxRef.current.resume();
+      }
       const playRingCycle = () => {
         const ctx = ringbackAudioCtxRef.current;
         if (!ctx || ctx.state === "closed") return;
