@@ -8,7 +8,7 @@ import MobileOSAppGrid from "./MobileOSAppGrid";
 import MobileOSDock from "./MobileOSDock";
 
 const MobileOS = () => {
-  const { openWindow, windows } = useWindowsStore();
+  const { openWindow, closeWindow, windows } = useWindowsStore();
   const [now, setNow] = useState(dayjs());
   const [isControlOpen, setIsControlOpen] = useState(false);
   const [settings, setSettings] = useState({

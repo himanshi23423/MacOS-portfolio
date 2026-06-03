@@ -4,7 +4,7 @@ import { fileIconMap } from "./finderData";
 import windowWrapper from "@hoc/windowWrapper";
 import useLocationStore from "@store/location";
 import useWindowsStore from "@store/window";
-import { Search, ChevronRight, FileText } from "lucide-react";
+import { Search, ChevronRight, FileText, ChevronLeft, Clock, Folder } from "lucide-react";
 import { useState, useEffect } from "react";
 import FinderToolbar from "./FinderToolbar";
 import FinderSidebar from "./FinderSidebar";
@@ -16,12 +16,32 @@ const Finder = () => {
   const { activeLocation, setActiveLocation } = useLocationStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [navStack, setNavStack] = useState([]);
+  const [activeTab, setActiveTab] = useState("browse"); // "recents" or "browse"
+  const [searchVal, setSearchVal] = useState("");
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  const _goBack = () => {
+    if (navStack.length > 0) {
+      const prev = navStack[navStack.length - 1];
+      setNavStack((s) => s.slice(0, -1));
+      setActiveLocation(prev);
+    }
+  };
+
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app === "finder") {
+        _goBack();
+      }
+    };
+    window.addEventListener("app-navigate-back", handleNavBack);
+    return () => window.removeEventListener("app-navigate-back", handleNavBack);
+  }, [navStack, activeLocation]);
 
   const openItem = (item) => {
     if (item.fileType === "pdf") return openWindow("resume");
@@ -36,198 +56,245 @@ const Finder = () => {
     openWindow(`${item.fileType}${item.kind}`, item);
   };
 
-  const _goBack = () => {
-    if (navStack.length > 0) {
-      const prev = navStack[navStack.length - 1];
-      setNavStack((s) => s.slice(0, -1));
-      setActiveLocation(prev);
-    }
-  };
-
   if (isMobile) {
+    const isRoot = navStack.length === 0;
+
+    // Filter folder items if searching
+    const folderItems = activeLocation?.children || [];
+    const filteredItems = searchVal.trim()
+      ? folderItems.filter((item) => item.name.toLowerCase().includes(searchVal.toLowerCase()))
+      : folderItems;
+
     return (
-      <>
-        <div
-          id="window-header"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            padding: "14px 16px",
-            background: "#f2f2f7",
-            borderBottom: "1px solid #e5e5ea",
-            gap: 10,
-            minHeight: 52,
-          }}
-        >
-          <WindowControls target="finder" />
-          <h1
-            style={{
-              fontSize: 17,
-              fontWeight: 600,
-              color: "#000",
-              flex: 1,
-              textAlign: "center",
-            }}
-          >
-            {activeLocation?.name || "Files"}
-          </h1>
-          <Search size={20} className="text-blue-500" />
+      <div className="flex flex-col h-full bg-[#f2f2f7] select-none text-black relative">
+        {/* iOS style Top Header */}
+        <div className="flex items-center justify-between px-4 py-3 bg-[#f2f2f7] border-b border-[#e5e5ea] min-h-[50px]">
+          {isRoot ? (
+            <WindowControls target="finder" />
+          ) : (
+            <button
+              onClick={_goBack}
+              className="flex items-center gap-0.5 text-[#007aff] font-normal text-[16px] active:opacity-60"
+            >
+              <ChevronLeft size={21} strokeWidth={2.5} />
+              <span>Back</span>
+            </button>
+          )}
+
+          <h2 className="text-[17px] font-semibold text-black absolute left-1/2 -translate-x-1/2">
+            {!isRoot ? activeLocation?.name : "Browse"}
+          </h2>
+
+          {/* Spacer to keep title centered */}
+          <div className="w-[60px] flex justify-end">
+            {isRoot && (
+              <button
+                onClick={() => openWindow("finder")}
+                className="text-[#007aff] text-[16px] font-semibold active:opacity-60"
+              >
+                Done
+              </button>
+            )}
+          </div>
         </div>
 
-        <div
-          className="finder-main"
-          style={{
-            flex: 1,
-            overflow: "auto",
-            WebkitOverflowScrolling: "touch",
-            background: "#f2f2f7",
-          }}
-        >
-          <div style={{ padding: "20px 16px 8px" }}>
-            <p
-              style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: "#6d6d72",
-                textTransform: "uppercase",
-                letterSpacing: 0.5,
-                marginBottom: 8,
-              }}
-            >
-              Favorites
-            </p>
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: 12,
-                overflow: "hidden",
-              }}
-            >
-              {Object.values(locations).map((item, index) => (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    setNavStack((prev) => [...prev, activeLocation]);
-                    setActiveLocation(item);
-                  }}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "100%",
-                    padding: "12px 16px",
-                    background: item.id === activeLocation?.id ? "#e8f0fe" : "transparent",
-                    borderBottom:
-                      index < Object.values(locations).length - 1 ? "0.5px solid #e5e5ea" : "none",
-                    gap: 14,
-                    textAlign: "left",
-                  }}
-                >
-                  <img
-                    src={item.icon}
-                    alt={item.name}
-                    style={{ width: 30, height: 30, borderRadius: 7 }}
-                  />
-                  <div style={{ flex: 1 }}>
-                    <p
-                      style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        color: "#000",
-                      }}
-                    >
-                      {item.name}
-                    </p>
-                  </div>
-                  <ChevronRight size={18} className="text-gray-300" />
-                </button>
-              ))}
-            </div>
+        {/* Search Bar Wrapper */}
+        <div className="px-4 pt-3 pb-2 bg-[#f2f2f7]">
+          <div className="relative flex items-center bg-[#e3e3e8] rounded-xl px-3 py-1.5 shadow-inner">
+            <Search size={15} className="text-gray-500 mr-2" />
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchVal}
+              onChange={(e) => setSearchVal(e.target.value)}
+              className="w-full bg-transparent text-[15px] outline-none text-black placeholder-gray-500"
+            />
+            {searchVal && (
+              <button
+                onClick={() => setSearchVal("")}
+                className="text-gray-400 font-semibold text-sm active:opacity-60 ml-1.5"
+              >
+                Clear
+              </button>
+            )}
           </div>
+        </div>
 
-          {activeLocation?.children && activeLocation.children.length > 0 && (
-            <div style={{ padding: "24px 16px 8px" }}>
-              <p
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "#6d6d72",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 8,
-                }}
-              >
-                {activeLocation.name}
-              </p>
-              <div
-                style={{
-                  background: "#fff",
-                  borderRadius: 12,
-                  overflow: "hidden",
-                }}
-              >
-                {activeLocation.children.map((item, index) => (
-                  <button
-                    key={item.id}
-                    onClick={() => openItem(item)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      width: "100%",
-                      padding: "12px 16px",
-                      background: "transparent",
-                      borderBottom:
-                        index < activeLocation.children.length - 1 ? "0.5px solid #e5e5ea" : "none",
-                      gap: 14,
-                      textAlign: "left",
-                    }}
-                  >
-                    {item.kind === "folder" ? (
-                      <img
-                        src={item.icon}
-                        alt={item.name}
-                        style={{ width: 30, height: 30, borderRadius: 7 }}
-                      />
-                    ) : (
-                      <div
-                        style={{
-                          width: 30,
-                          height: 30,
-                          borderRadius: 7,
-                          background: "#f2f2f7",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        {fileIconMap[item.fileType] || (
-                          <FileText size={20} className="text-gray-400" />
+        {/* Content Pane */}
+        <div className="flex-1 overflow-y-auto pb-[76px] WebkitOverflowScrolling-touch">
+          {activeTab === "recents" ? (
+            /* Recents Tab View */
+            <div className="p-4">
+              <h1 className="text-3xl font-bold text-black mb-4 tracking-tight">Recents</h1>
+              <div className="bg-white rounded-2xl shadow-sm border border-neutral-200/50 divide-y divide-neutral-100 overflow-hidden">
+                {/* Seed a couple of recent files based on mock data */}
+                {Object.values(locations)
+                  .flatMap((loc) => loc.children || [])
+                  .slice(0, 4)
+                  .map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => openItem(item)}
+                      className="flex items-center gap-3.5 w-full p-4 hover:bg-neutral-50 active:bg-neutral-100 text-left"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-neutral-100 flex items-center justify-center flex-shrink-0">
+                        {item.kind === "folder" ? (
+                          <img
+                            src={item.icon}
+                            alt=""
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        ) : (
+                          fileIconMap[item.fileType] || (
+                            <FileText size={18} className="text-gray-400" />
+                          )
                         )}
                       </div>
-                    )}
-                    <div style={{ flex: 1 }}>
-                      <p
-                        style={{
-                          fontSize: 16,
-                          fontWeight: 400,
-                          color: "#000",
-                        }}
-                      >
-                        {item.name}
-                      </p>
-                      {item.kind === "folder" && (
-                        <p style={{ fontSize: 12, color: "#8e8e93" }}>
-                          {item.children?.length || 0} items
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[15px] font-semibold text-neutral-900 truncate">
+                          {item.name}
                         </p>
-                      )}
-                    </div>
-                    {item.kind === "folder" && <ChevronRight size={18} className="text-gray-300" />}
-                  </button>
-                ))}
+                        <span className="text-[12px] text-neutral-400">Recently Opened</span>
+                      </div>
+                      <ChevronRight size={16} className="text-neutral-300" />
+                    </button>
+                  ))}
               </div>
             </div>
+          ) : (
+            /* Browse Tab View */
+            <>
+              {isRoot ? (
+                /* Browse Main Landing Screen (Locations list) */
+                <div className="p-4 flex flex-col gap-5">
+                  <h1 className="text-3xl font-bold text-black tracking-tight pl-1">Browse</h1>
+
+                  <div>
+                    <h3 className="text-[13px] font-bold text-neutral-500 uppercase tracking-wider pl-1 mb-2">
+                      Locations
+                    </h3>
+                    <div className="bg-white rounded-2xl shadow-sm border border-neutral-200/50 divide-y divide-neutral-100 overflow-hidden">
+                      {Object.values(locations).map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            setNavStack((prev) => [...prev, activeLocation]);
+                            setActiveLocation(item);
+                          }}
+                          className="flex items-center gap-3.5 w-full p-4 hover:bg-neutral-50 active:bg-neutral-100 text-left"
+                        >
+                          <img
+                            src={item.icon}
+                            alt={item.name}
+                            className="w-9 h-9 object-cover rounded-lg flex-shrink-0 shadow-sm"
+                          />
+                          <span className="flex-1 text-[16px] font-semibold text-neutral-800">
+                            {item.name}
+                          </span>
+                          <ChevronRight size={17} className="text-neutral-300" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Folder Content View */
+                <div className="p-4">
+                  <div className="flex items-center justify-between pl-1 mb-3.5">
+                    <h3 className="text-[13px] font-bold text-neutral-500 uppercase tracking-wider">
+                      {activeLocation.name}
+                    </h3>
+                    <span className="text-[12px] text-neutral-400 font-semibold">
+                      {filteredItems.length} items
+                    </span>
+                  </div>
+
+                  {filteredItems.length > 0 ? (
+                    <div className="bg-white rounded-2xl shadow-sm border border-neutral-200/50 divide-y divide-neutral-100 overflow-hidden">
+                      {filteredItems.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => openItem(item)}
+                          className="flex items-center gap-3.5 w-full p-4 hover:bg-neutral-50 active:bg-neutral-100 text-left"
+                        >
+                          <div className="w-9 h-9 rounded-lg bg-neutral-100 flex items-center justify-center flex-shrink-0">
+                            {item.kind === "folder" ? (
+                              <img
+                                src={item.icon}
+                                alt=""
+                                className="w-full h-full object-cover rounded-lg"
+                              />
+                            ) : (
+                              fileIconMap[item.fileType] || (
+                                <FileText size={18} className="text-gray-400" />
+                              )
+                            )}
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[15px] font-semibold text-neutral-900 truncate">
+                              {item.name}
+                            </p>
+                            {item.kind === "folder" && (
+                              <p className="text-[12px] text-neutral-400">
+                                {item.children?.length || 0} items
+                              </p>
+                            )}
+                          </div>
+
+                          {item.kind === "folder" && (
+                            <ChevronRight size={16} className="text-neutral-300" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-14 text-neutral-400">
+                      <Folder size={40} strokeWidth={1.5} className="mb-2 opacity-50" />
+                      <p className="text-[14px]">No Files Found</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
           )}
         </div>
-      </>
+
+        {/* iOS Style Bottom Tab Bar */}
+        <div className="absolute bottom-0 left-0 w-full h-[65px] bg-[#f9f9f9]/85 backdrop-blur-xl border-t border-[#d1d1d6] flex justify-around items-center px-6 z-10">
+          <button
+            onClick={() => setActiveTab("recents")}
+            className={`flex flex-col items-center gap-1.5 transition-colors ${
+              activeTab === "recents" ? "text-[#007aff]" : "text-gray-400"
+            }`}
+          >
+            <Clock size={20} strokeWidth={activeTab === "recents" ? 2.5 : 2} />
+            <span className="text-[10px] font-semibold">Recents</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTab("browse");
+              // Go to root folder if already in Browse
+              if (activeTab === "browse") {
+                setNavStack([]);
+                setActiveLocation(locations.home || Object.values(locations)[0]);
+              }
+            }}
+            className={`flex flex-col items-center gap-1.5 transition-colors ${
+              activeTab === "browse" ? "text-[#007aff]" : "text-gray-400"
+            }`}
+          >
+            <Folder
+              size={20}
+              strokeWidth={activeTab === "browse" ? 2.5 : 2}
+              fill={activeTab === "browse" ? "currentColor" : "none"}
+              className={activeTab === "browse" ? "opacity-90" : ""}
+            />
+            <span className="text-[10px] font-semibold">Browse</span>
+          </button>
+        </div>
+      </div>
     );
   }
 

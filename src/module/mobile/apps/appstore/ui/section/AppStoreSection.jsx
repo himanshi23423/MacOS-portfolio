@@ -111,6 +111,20 @@ const AppStoreSection = () => {
     }, 200);
   };
 
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app === "appstore") {
+        if (alertApp) {
+          setAlertApp(null);
+        } else if (isSidebarOpen) {
+          setIsSidebarOpen(false);
+        }
+      }
+    };
+    window.addEventListener("app-navigate-back", handleNavBack);
+    return () => window.removeEventListener("app-navigate-back", handleNavBack);
+  }, [alertApp, isSidebarOpen]);
+
   return (
     <div className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative">
       <AppStoreNavSection

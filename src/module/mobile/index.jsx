@@ -29,6 +29,7 @@ const Terminal = dynamic(() => import("@module/mobile/apps/terminal/ui/view/Term
 import Text from "@module/mobile/apps/text/ui/view/TextView";
 import VSCode from "@module/mobile/apps/vscode/ui/view/VSCodeView";
 import Weather from "@module/mobile/apps/weather/ui/view/WeatherView";
+import AssistiveTouch from "./apps/mobile-os/ui/components/AssistiveTouch";
 
 const Mobile = () => (
   <main className="mobile-os">
@@ -58,6 +59,7 @@ const Mobile = () => (
     <Telegram />
     <Music />
     <Launchpad />
+    <AssistiveTouch />
   </main>
 );
 

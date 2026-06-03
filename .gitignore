@@ -29,3 +29,6 @@ dist-ssr
 .codex
 graphify-out
 .next
+.venv
+local_graphify
+graphify

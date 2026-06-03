@@ -329,6 +329,92 @@ const Chrome = () => {
     }
   }, [activeTab.url, activeTabId]);
 
+  const getTitleForUrl = (url) => {
+    if (url === "chrome://newtab") return "New Tab";
+    if (url === "chrome://settings") return "Settings";
+    if (url === "chrome://history") return "History";
+    if (url === "chrome://bookmarks") return "Bookmarks";
+    if (url === "chrome://about") return "About Chrome";
+    if (url === "chrome://incognito") return "New Incognito Tab";
+    if (url === "chrome://extensions") return "Extensions";
+    if (url === "chrome://downloads") return "Downloads";
+    if (url === "chrome://devtools") return "Developer Tools";
+    if (url.includes("google.com/search")) {
+      try {
+        const q = new URL(url).searchParams.get("q");
+        return q ? `${q} - Google` : "Google Search";
+      } catch {
+        return "Google Search";
+      }
+    }
+    try {
+      return new URL(url).hostname.replace("www.", "");
+    } catch {
+      return "Web Page";
+    }
+  };
+
+  // Back/Forward controls
+  const handleGoBack = () => {
+    if (activeTab.historyIndex > 0) {
+      setTabs((prevTabs) =>
+        prevTabs.map((tab) => {
+          if (tab.id === activeTabId) {
+            const nextIndex = tab.historyIndex - 1;
+            const nextUrl = tab.history[nextIndex];
+            return {
+              ...tab,
+              url: nextUrl,
+              historyIndex: nextIndex,
+              title: getTitleForUrl(nextUrl),
+            };
+          }
+          return tab;
+        }),
+      );
+    }
+  };
+
+  const handleGoForward = () => {
+    if (activeTab.historyIndex < activeTab.history.length - 1) {
+      setTabs((prevTabs) =>
+        prevTabs.map((tab) => {
+          if (tab.id === activeTabId) {
+            const nextIndex = tab.historyIndex + 1;
+            const nextUrl = tab.history[nextIndex];
+            return {
+              ...tab,
+              url: nextUrl,
+              historyIndex: nextIndex,
+              title: getTitleForUrl(nextUrl),
+            };
+          }
+          return tab;
+        }),
+      );
+    }
+  };
+
+  // Handle back and forward navigation from AssistiveTouch
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app === "chrome") {
+        handleGoBack();
+      }
+    };
+    const handleNavForward = (e) => {
+      if (e.detail?.app === "chrome") {
+        handleGoForward();
+      }
+    };
+    window.addEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [tabs, activeTabId]);
+
   // Navigate function for tab history
   const navigateTabTo = (url) => {
     let targetUrl = url.trim();
@@ -409,72 +495,6 @@ const Chrome = () => {
         return tab;
       }),
     );
-  };
-
-  // Back/Forward controls
-  const handleGoBack = () => {
-    if (activeTab.historyIndex > 0) {
-      setTabs((prevTabs) =>
-        prevTabs.map((tab) => {
-          if (tab.id === activeTabId) {
-            const nextIndex = tab.historyIndex - 1;
-            const nextUrl = tab.history[nextIndex];
-            return {
-              ...tab,
-              url: nextUrl,
-              historyIndex: nextIndex,
-              title: getTitleForUrl(nextUrl),
-            };
-          }
-          return tab;
-        }),
-      );
-    }
-  };
-
-  const handleGoForward = () => {
-    if (activeTab.historyIndex < activeTab.history.length - 1) {
-      setTabs((prevTabs) =>
-        prevTabs.map((tab) => {
-          if (tab.id === activeTabId) {
-            const nextIndex = tab.historyIndex + 1;
-            const nextUrl = tab.history[nextIndex];
-            return {
-              ...tab,
-              url: nextUrl,
-              historyIndex: nextIndex,
-              title: getTitleForUrl(nextUrl),
-            };
-          }
-          return tab;
-        }),
-      );
-    }
-  };
-
-  const getTitleForUrl = (url) => {
-    if (url === "chrome://newtab") return "New Tab";
-    if (url === "chrome://settings") return "Settings";
-    if (url === "chrome://history") return "History";
-    if (url === "chrome://bookmarks") return "Bookmarks";
-    if (url === "chrome://about") return "About Chrome";
-    if (url === "chrome://incognito") return "New Incognito Tab";
-    if (url === "chrome://extensions") return "Extensions";
-    if (url === "chrome://downloads") return "Downloads";
-    if (url === "chrome://devtools") return "Developer Tools";
-    if (url.includes("google.com/search")) {
-      try {
-        const q = new URL(url).searchParams.get("q");
-        return q ? `${q} - Google` : "Google Search";
-      } catch {
-        return "Google Search";
-      }
-    }
-    try {
-      return new URL(url).hostname.replace("www.", "");
-    } catch {
-      return "Web Page";
-    }
   };
 
   // Tab management

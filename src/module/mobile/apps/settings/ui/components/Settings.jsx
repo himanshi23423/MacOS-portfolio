@@ -8,6 +8,16 @@ const Settings = () => {
   const { activeTab, setActiveTab, githubData, isLoading, isMobile, mobileView, setMobileView } =
     useSettings();
 
+  React.useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app === "settings" && mobileView !== "main") {
+        setMobileView("main");
+      }
+    };
+    window.addEventListener("app-navigate-back", handleNavBack);
+    return () => window.removeEventListener("app-navigate-back", handleNavBack);
+  }, [mobileView, setMobileView]);
+
   return (
     <div className="@container w-full h-full">
       <div className="flex h-full w-full bg-[#f3f3f3]/95 backdrop-blur-3xl overflow-hidden rounded-lg font-sans select-none border border-black/10">
