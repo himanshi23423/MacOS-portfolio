@@ -38,12 +38,17 @@
     border-radius: 0 !important;
     box-shadow: none !important;
     max-width: none !important;
+    max-height: none !important;
+    width: 100vw !important;
     width: 100dvw !important;
     top: 0 !important;
     left: 0 !important;
     display: flex !important;
     flex-direction: column !important;
+    height: 100vh !important;
     height: 100dvh !important;
+    position: fixed !important;
+    translate: none !important;
   }
 
   #window-header {
@@ -99,10 +104,6 @@
   #resume .resume-main .react-pdf__Page__textContent,
   #resume .resume-main .react-pdf__Page__annotations {
     width: 100% !important;
-  }
-
-  #photos {
-    margin-top: 330px;
   }
 
   #finder .finder-main {

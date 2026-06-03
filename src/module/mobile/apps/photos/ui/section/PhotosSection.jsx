@@ -44,6 +44,7 @@ const PhotosSection = ({ isMobile, filteredGallery, activeTab, onSelectPhoto, on
             background: "#f2f2f7",
             display: "flex",
             flexDirection: "column",
+            minHeight: 0,
           }}
         >
           <PhotosGridSection

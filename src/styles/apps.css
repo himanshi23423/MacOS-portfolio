@@ -167,8 +167,10 @@
     }
   }
 
-  #photos {
-    @apply w-[800px] h-[550px] max-w-3xl bg-white absolute top-96 left-1/2 -translate-y-1/2 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+  @media (min-width: 768px) {
+    #photos {
+      @apply w-[800px] h-[550px] max-w-3xl bg-white absolute top-96 left-1/2 -translate-y-1/2 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    }
   }
 
   #resume {
