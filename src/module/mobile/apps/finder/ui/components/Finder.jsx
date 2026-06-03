@@ -74,9 +74,20 @@ const Finder = () => {
           ) : (
             <button
               onClick={_goBack}
-              className="flex items-center gap-0.5 text-[#007aff] font-normal text-[16px] active:opacity-60"
+              style={{
+                border: "none",
+                background: "none",
+                color: "#000",
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                fontSize: 14,
+                fontWeight: 500,
+                padding: "4px 0",
+                cursor: "pointer",
+              }}
             >
-              <ChevronLeft size={21} strokeWidth={2.5} />
+              <ChevronLeft size={16} />
               <span>Back</span>
             </button>
           )}
