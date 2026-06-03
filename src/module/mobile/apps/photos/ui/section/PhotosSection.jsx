@@ -1,67 +1,262 @@
+import React, { useRef, useState } from "react";
 import WindowControls from "@components/WindowControls";
-import { Search } from "lucide-react";
+import { Search, X, ChevronLeft } from "lucide-react";
 import PhotosSidebarSection from "./PhotosSidebarSection";
 import PhotosGridSection from "./PhotosGridSection";
+import { PhotosCollectionsMobile } from "../components/PhotosCollections";
 import { photosLinks } from "@constants";
+import useWindowsStore from "@store/window";
 
-const PhotosSection = ({ isMobile, filteredGallery, activeTab, onSelectPhoto, onSelectAlbum }) => {
+const PhotosSection = ({
+  isMobile,
+  gallery = [],
+  favorites = [],
+  filteredGallery,
+  activeTab,
+  onSelectPhoto,
+  onSelectAlbum,
+}) => {
+  const { closeWindow } = useWindowsStore();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearchInput, setShowSearchInput] = useState(false);
+  const [selectedAlbum, setSelectedAlbum] = useState(null); // null means show main collections page
+  const scrollContainerRef = useRef(null);
+  const searchInputRef = useRef(null);
+  const collectionsRef = useRef(null);
+
+  const handleScrollToCollections = () => {
+    if (collectionsRef.current) {
+      collectionsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const handleSearchClick = () => {
+    setShowSearchInput(true);
+    setTimeout(() => {
+      if (searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+    }, 100);
+  };
+
+  // Filter gallery based on search query or selectedAlbum/activeTab
+  const getFilteredPhotos = () => {
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      return gallery.filter(
+        (p) => p.category.toLowerCase().includes(q) || (p.img && p.img.toLowerCase().includes(q)),
+      );
+    }
+
+    const albumToFilter = selectedAlbum || activeTab;
+    if (albumToFilter === "Favorites") {
+      return gallery.filter((p) => favorites.includes(p.id));
+    }
+    return gallery.filter((p) => p.category === albumToFilter);
+  };
+
+  const finalPhotos = getFilteredPhotos();
+
   if (isMobile) {
     return (
-      <>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          width: "100%",
+          position: "relative",
+          background: "#fff",
+          overflow: "hidden",
+        }}
+      >
+        {/* iOS style Top Header */}
         <div
           id="window-header"
           style={{
             display: "flex",
             alignItems: "center",
-            padding: "14px 16px",
-            background: "#f2f2f7",
+            padding: "10px 16px",
+            background: "rgba(242, 242, 247, 0.96)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
             borderBottom: "1px solid #e5e5ea",
             gap: 10,
             minHeight: 52,
+            zIndex: 100,
           }}
         >
-          <WindowControls target="photos" />
-          <h1
+          <button
+            onClick={() => {
+              if (showSearchInput) {
+                setShowSearchInput(false);
+                setSearchQuery("");
+              } else if (selectedAlbum) {
+                setSelectedAlbum(null);
+              } else {
+                closeWindow("photos");
+              }
+            }}
             style={{
-              fontSize: 17,
-              fontWeight: 600,
+              border: "none",
+              background: "none",
               color: "#000",
-              flex: 1,
-              textAlign: "center",
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              fontSize: 14,
+              fontWeight: 500,
+              padding: "4px 0",
+              cursor: "pointer",
             }}
           >
-            Photos
-          </h1>
-          <Search size={20} className="text-blue-500" />
+            <ChevronLeft size={16} />
+            <span>Back</span>
+          </button>
+
+          {showSearchInput ? (
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                background: "#e5e5ea",
+                borderRadius: 10,
+                padding: "4px 8px",
+                marginLeft: 8,
+              }}
+            >
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search photos, categories..."
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  outline: "none",
+                  fontSize: 14,
+                  width: "100%",
+                  color: "#000",
+                }}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  style={{ border: "none", background: "none", padding: 4 }}
+                >
+                  <X size={14} style={{ color: "#8e8e93" }} />
+                </button>
+              )}
+            </div>
+          ) : (
+            <h1
+              style={{
+                fontSize: 17,
+                fontWeight: 600,
+                color: "#000",
+                flex: 1,
+                textAlign: "center",
+              }}
+            >
+              {selectedAlbum ? selectedAlbum : "Photos"}
+            </h1>
+          )}
+
+          {showSearchInput ? (
+            <button
+              onClick={() => {
+                setShowSearchInput(false);
+                setSearchQuery("");
+              }}
+              style={{
+                border: "none",
+                background: "none",
+                padding: 4,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <X size={18} style={{ color: "#000" }} />
+            </button>
+          ) : (
+            <button
+              onClick={handleSearchClick}
+              style={{ border: "none", background: "none", padding: 4 }}
+            >
+              <Search size={16} style={{ color: "#000" }} />
+            </button>
+          )}
         </div>
 
+        {/* Unified Scrollable Container */}
         <div
+          ref={scrollContainerRef}
           className="photos-main"
           style={{
             flex: 1,
-            overflow: "auto",
+            overflowY: "auto",
             WebkitOverflowScrolling: "touch",
-            background: "#f2f2f7",
+            background: "#fff",
             display: "flex",
             flexDirection: "column",
             minHeight: 0,
+            paddingBottom: 80, // space for floating navigation pill
           }}
         >
-          <PhotosGridSection
-            photos={filteredGallery}
-            onSelectPhoto={onSelectPhoto}
-            activeTab={activeTab}
-            isMobile
-          />
+          {selectedAlbum || searchQuery ? (
+            /* Show Photo Grid if an album is selected or user is searching */
+            <PhotosGridSection
+              photos={finalPhotos}
+              onSelectPhoto={onSelectPhoto}
+              activeTab={searchQuery ? "Search Results" : selectedAlbum}
+              isMobile
+            />
+          ) : (
+            /* Show unified collections by default on mobile */
+            <div style={{ marginTop: 16 }}>
+              <PhotosCollectionsMobile
+                gallery={gallery}
+                favorites={favorites}
+                onSelectPhoto={onSelectPhoto}
+                onSelectAlbum={(albumName) => {
+                  setSelectedAlbum(albumName);
+                  onSelectAlbum(albumName);
+                  if (scrollContainerRef.current) {
+                    scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }}
+              />
+            </div>
+          )}
         </div>
 
+        {/* Floating Glassy Bottom Bar */}
         <PhotosSidebarSection
           albums={photosLinks}
-          activeAlbum={activeTab}
-          onSelectAlbum={onSelectAlbum}
+          activeAlbum={selectedAlbum || "Collections"}
+          onSelectAlbum={(albumName) => {
+            if (albumName === "Collections") {
+              setSelectedAlbum(null);
+            } else {
+              setSelectedAlbum(albumName);
+              onSelectAlbum(albumName);
+            }
+            if (scrollContainerRef.current) {
+              scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
           isMobile
+          onScrollToCollections={() => {
+            setSelectedAlbum(null);
+            if (scrollContainerRef.current) {
+              scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
+          onSearchClick={handleSearchClick}
         />
-      </>
+      </div>
     );
   }
 

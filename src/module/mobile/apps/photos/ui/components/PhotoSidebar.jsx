@@ -1,12 +1,12 @@
-import { Clock, Star, MapPin, Users, Heart } from "lucide-react";
+import { Image, FolderHeart, Search, Grid } from "lucide-react";
 import { photosLinks } from "@constants";
 
 const tabIcons = {
-  Library: <Clock size={20} />,
-  Memories: <Star size={20} />,
-  Places: <MapPin size={20} />,
-  People: <Users size={20} />,
-  Favorites: <Heart size={20} />,
+  Library: <Image size={20} />,
+  Memories: <Grid size={20} />,
+  Places: <Grid size={20} />,
+  People: <Grid size={20} />,
+  Favorites: <FolderHeart size={20} />,
 };
 
 const PhotoSidebarDesktop = ({ activeTab, onTabChange }) => (
@@ -27,54 +27,96 @@ const PhotoSidebarDesktop = ({ activeTab, onTabChange }) => (
   </div>
 );
 
-const PhotoSidebarMobile = ({ activeTab, onTabChange }) => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-around",
-      alignItems: "center",
-      padding: "8px 0 24px",
-      background: "rgba(249,249,249,0.94)",
-      backdropFilter: "blur(20px)",
-      WebkitBackdropFilter: "blur(20px)",
-      borderTop: "0.5px solid #e5e5ea",
-      flexShrink: 0,
-    }}
-  >
-    {photosLinks.map(({ id, title }) => (
-      <button
-        key={id}
-        onClick={() => onTabChange(title)}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 2,
-          background: "none",
-          border: "none",
-          padding: "4px 12px",
-        }}
-      >
-        <div
-          style={{
-            color: activeTab === title ? "#007AFF" : "#8e8e93",
-            transition: "color 0.2s",
-          }}
-        >
-          {tabIcons[title] || <Star size={22} />}
-        </div>
-        <span
-          style={{
-            fontSize: 10,
-            color: activeTab === title ? "#007AFF" : "#8e8e93",
-            fontWeight: activeTab === title ? 500 : 400,
-          }}
-        >
-          {title}
-        </span>
-      </button>
-    ))}
-  </div>
-);
+const PhotoSidebarMobile = ({ activeTab, onTabChange, onScrollToCollections, onSearchClick }) => {
+  const tabs = [
+    { title: "Collections", icon: <Grid size={18} /> },
+    { title: "Library", icon: <Image size={18} /> },
+    { title: "Favorites", icon: <FolderHeart size={18} /> },
+    { title: "Search", icon: <Search size={18} /> },
+  ];
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        bottom: 24,
+        left: "50%",
+        transform: "translateX(-50%)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "8px 12px",
+        background: "rgba(255, 255, 255, 0.75)",
+        backdropFilter: "blur(24px) saturate(180%)",
+        WebkitBackdropFilter: "blur(24px) saturate(180%)",
+        border: "0.5px solid rgba(255, 255, 255, 0.4)",
+        borderRadius: 100,
+        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)",
+        zIndex: 50,
+        gap: 6,
+        width: "90%",
+        maxWidth: 320,
+        pointerEvents: "auto",
+      }}
+    >
+      {tabs.map(({ title, icon }) => {
+        const isActive =
+          activeTab === title ||
+          (title === "Collections" && ["Memories", "Places", "People"].includes(activeTab));
+        return (
+          <button
+            key={title}
+            onClick={() => {
+              if (title === "Collections") {
+                onScrollToCollections();
+              } else if (title === "Search") {
+                onSearchClick();
+              } else {
+                onTabChange(title);
+              }
+            }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
+              background: isActive ? "#fff" : "transparent",
+              border: "none",
+              padding: "8px 16px",
+              borderRadius: 100,
+              cursor: "pointer",
+              boxShadow: isActive ? "0 2px 8px rgba(0,0,0,0.06)" : "none",
+              flex: 1,
+              transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          >
+            <div
+              style={{
+                color: isActive ? "#007AFF" : "#555",
+                display: "flex",
+                alignItems: "center",
+                transition: "color 0.2s",
+              }}
+            >
+              {icon}
+            </div>
+            {isActive && (
+              <span
+                style={{
+                  fontSize: 12,
+                  color: "#007AFF",
+                  fontWeight: 600,
+                  transition: "opacity 0.2s",
+                }}
+              >
+                {title}
+              </span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
 
 export { PhotoSidebarDesktop, PhotoSidebarMobile };

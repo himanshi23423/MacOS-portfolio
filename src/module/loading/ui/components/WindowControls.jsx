@@ -16,18 +16,21 @@ const WindowControls = ({ target }) => {
     return (
       <button
         onClick={() => closeWindow(target)}
-        className="flex items-center gap-0.5 text-[#007AFF] active:opacity-50"
         style={{
-          background: "none",
           border: "none",
-          padding: 0,
-          fontSize: 17,
-          fontWeight: 400,
+          background: "none",
+          color: "#000",
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          fontSize: 14,
+          fontWeight: 500,
+          padding: "4px 0",
           cursor: "pointer",
         }}
       >
-        <ChevronLeft size={28} strokeWidth={2.5} />
-        <span style={{ marginLeft: -4 }}>Back</span>
+        <ChevronLeft size={16} />
+        <span>Back</span>
       </button>
     );
   }

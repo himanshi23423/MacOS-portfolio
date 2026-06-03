@@ -34,6 +34,8 @@ const Photos = () => {
   return (
     <PhotosSection
       isMobile={isMobile}
+      gallery={gallery}
+      favorites={favorites}
       filteredGallery={filteredGallery}
       activeTab={activeTab}
       onSelectPhoto={handlePhotoClick}
