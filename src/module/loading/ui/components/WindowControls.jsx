@@ -2,7 +2,7 @@ import useWindowsStore from "@store/window";
 import { ChevronLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const WindowControls = ({ target }) => {
+const WindowControls = ({ target, onBack }) => {
   const { closeWindow, toggleMaximize, minimizeWindow } = useWindowsStore();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -15,7 +15,7 @@ const WindowControls = ({ target }) => {
   if (isMobile) {
     return (
       <button
-        onClick={() => closeWindow(target)}
+        onClick={onBack || (() => closeWindow(target))}
         style={{
           border: "none",
           background: "none",

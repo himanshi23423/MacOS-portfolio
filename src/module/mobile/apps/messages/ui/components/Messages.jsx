@@ -27,6 +27,12 @@ const Messages = () => {
     handleSend,
     formatCallTime,
     setCallState,
+    pinnedChats,
+    togglePinChat,
+    activeCategory,
+    setActiveCategory,
+    addReaction,
+    sendAttachment,
   } = useMessages();
 
   return (
@@ -55,6 +61,12 @@ const Messages = () => {
       onCameraToggle={() => setCallState((prev) => ({ ...prev, cameraOff: !prev.cameraOff }))}
       handleSend={handleSend}
       formatCallTime={formatCallTime}
+      pinnedChats={pinnedChats}
+      togglePinChat={togglePinChat}
+      activeCategory={activeCategory}
+      setActiveCategory={setActiveCategory}
+      addReaction={addReaction}
+      sendAttachment={sendAttachment}
     />
   );
 };

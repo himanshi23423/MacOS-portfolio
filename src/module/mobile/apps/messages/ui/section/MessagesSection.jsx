@@ -4,26 +4,43 @@ import MessagesCallSection from "./MessagesCallSection";
 
 const MessagesSection = (props) => {
   const {
-    activeChat, isSidebarOpen, setIsSidebarOpen,
-    conversations, searchQuery, setSearchQuery,
-    activeChatId, setActiveChatId,
-    inputText, setInputText,
+    activeChat,
+    isSidebarOpen,
+    setIsSidebarOpen,
+    conversations,
+    searchQuery,
+    setSearchQuery,
+    activeChatId,
+    setActiveChatId,
+    inputText,
+    setInputText,
     isTyping,
-    showInfo, setShowInfo,
-    mutedChats, setMutedChats,
+    showInfo,
+    setShowInfo,
+    mutedChats,
+    setMutedChats,
     messagesEndRef,
-    triggerCall, handleSend,
-    callState, callDuration,
-    onMicToggle, onCameraToggle, onEndCall, formatCallTime,
+    triggerCall,
+    handleSend,
+    callState,
+    callDuration,
+    onMicToggle,
+    onCameraToggle,
+    onEndCall,
+    formatCallTime,
+    pinnedChats,
+    togglePinChat,
+    activeCategory,
+    setActiveCategory,
+    addReaction,
+    sendAttachment,
   } = props;
+
+  const handleBack = !isSidebarOpen ? () => setIsSidebarOpen(true) : undefined;
 
   return (
     <div className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative">
-      <MessagesHeaderSection
-        activeChat={activeChat}
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
+      <MessagesHeaderSection activeChat={activeChat} onBack={handleBack} />
       <MessagesChatSection
         conversations={conversations}
         searchQuery={searchQuery}
@@ -43,6 +60,12 @@ const MessagesSection = (props) => {
         messagesEndRef={messagesEndRef}
         triggerCall={triggerCall}
         handleSend={handleSend}
+        pinnedChats={pinnedChats}
+        togglePinChat={togglePinChat}
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        addReaction={addReaction}
+        sendAttachment={sendAttachment}
       />
       <MessagesCallSection
         callState={callState}

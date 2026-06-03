@@ -6,7 +6,25 @@ const useMessages = () => {
     const saved = localStorage.getItem("macos_portfolio_messages");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (
+          Array.isArray(parsed) &&
+          parsed.length > 0 &&
+          parsed.every((c) => c.messages && c.messages.length > 0)
+        ) {
+          return parsed.map((c) => {
+            const match = INITIAL_CONVERSATIONS.find((init) => init.id === c.id);
+            if (match) {
+              return {
+                ...c,
+                name: match.name,
+                avatar: match.avatar,
+                initials: match.initials,
+              };
+            }
+            return c;
+          });
+        }
       } catch (e) {
         console.error(e);
       }
@@ -14,6 +32,12 @@ const useMessages = () => {
     return INITIAL_CONVERSATIONS;
   });
 
+  const [pinnedChats, setPinnedChats] = useState(() => {
+    const saved = localStorage.getItem("macos_portfolio_pinned_messages");
+    return saved ? JSON.parse(saved) : ["kuldeep"];
+  });
+
+  const [activeCategory, setActiveCategory] = useState("all"); // "all", "unread", "muted"
   const [activeChatId, setActiveChatId] = useState("kuldeep");
   const [inputText, setInputText] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -36,6 +60,10 @@ const useMessages = () => {
   useEffect(() => {
     localStorage.setItem("macos_portfolio_messages", JSON.stringify(conversations));
   }, [conversations]);
+
+  useEffect(() => {
+    localStorage.setItem("macos_portfolio_pinned_messages", JSON.stringify(pinnedChats));
+  }, [pinnedChats]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -78,6 +106,79 @@ const useMessages = () => {
   const endCall = useCallback(() => {
     setCallState((prev) => ({ ...prev, isOpen: false }));
   }, []);
+
+  const togglePinChat = useCallback((id) => {
+    setPinnedChats((prev) =>
+      prev.includes(id) ? prev.filter((pId) => pId !== id) : [...prev, id],
+    );
+  }, []);
+
+  const addReaction = useCallback(
+    (messageId, reaction) => {
+      setConversations((prev) =>
+        prev.map((c) => {
+          if (c.id === activeChat.id) {
+            return {
+              ...c,
+              messages: c.messages.map((m) => {
+                if (m.id === messageId) {
+                  const currentReactions = m.reactions || [];
+                  const nextReactions = currentReactions.includes(reaction)
+                    ? currentReactions.filter((r) => r !== reaction)
+                    : [...currentReactions, reaction];
+                  return { ...m, reactions: nextReactions };
+                }
+                return m;
+              }),
+            };
+          }
+          return c;
+        }),
+      );
+    },
+    [activeChat],
+  );
+
+  const sendAttachment = useCallback(
+    (type, value) => {
+      const newMessage = {
+        id: Date.now(),
+        text: type === "photo" ? "📷 Sent a photo" : `🎨 Sticker: ${value}`,
+        sender: "me",
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        attachment: { type, value },
+      };
+
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.id === activeChat.id ? { ...c, messages: [...c.messages, newMessage] } : c,
+        ),
+      );
+
+      // Kuldeep chatbot reply triggers
+      if (activeChat.id === "kuldeep") {
+        setIsTyping(true);
+        setTimeout(() => {
+          setIsTyping(false);
+          const replyMessage = {
+            id: Date.now() + 1,
+            text:
+              type === "photo"
+                ? "Wow, that looks amazing! Thanks for sharing."
+                : "Haha, I love that sticker! 😂",
+            sender: "them",
+            time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          };
+          setConversations((prev) =>
+            prev.map((c) =>
+              c.id === "kuldeep" ? { ...c, messages: [...c.messages, replyMessage] } : c,
+            ),
+          );
+        }, 1200);
+      }
+    },
+    [activeChat],
+  );
 
   const handleSend = useCallback(() => {
     if (!inputText.trim()) return;
@@ -180,6 +281,12 @@ const useMessages = () => {
     filteredConversations,
     formatCallTime,
     setCallState,
+    pinnedChats,
+    togglePinChat,
+    activeCategory,
+    setActiveCategory,
+    addReaction,
+    sendAttachment,
   };
 };
 
