@@ -88,12 +88,11 @@
   }
 
   #resume .resume-main .react-pdf__Page {
-    width: 100% !important;
-    max-width: 100% !important;
+    display: block;
   }
 
   #resume .resume-main .react-pdf__Page__canvas {
-    width: 100% !important;
+    display: block;
     height: auto !important;
   }
 
