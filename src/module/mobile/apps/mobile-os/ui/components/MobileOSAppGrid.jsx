@@ -331,22 +331,28 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                   }}
                 >
                   {app.id === "calendar" ? (
-                    <div className="w-full h-full bg-white flex flex-col items-center justify-between select-none pb-1">
-                      <div className="text-[#ff3b30] text-[8px] font-bold mt-1 uppercase tracking-tight leading-none">
-                        {
-                          [
-                            "Sunday",
-                            "Monday",
-                            "Tuesday",
-                            "Wednesday",
-                            "Thursday",
-                            "Friday",
-                            "Saturday",
-                          ][new Date().getDay()]
-                        }
+                    <div className="w-full h-full bg-white flex flex-col items-center select-none">
+                      {/* Top Day Header Area with Red Background */}
+                      <div className="w-full bg-[#ff3b30] py-1 flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-[8px] font-bold uppercase tracking-wide leading-none">
+                          {
+                            [
+                              "Sunday",
+                              "Monday",
+                              "Tuesday",
+                              "Wednesday",
+                              "Thursday",
+                              "Friday",
+                              "Saturday",
+                            ][new Date().getDay()]
+                          }
+                        </span>
                       </div>
-                      <div className="text-gray-900 font-semibold text-[24px] leading-none -mt-1 font-sans">
-                        {new Date().getDate()}
+                      {/* Bottom Date Area */}
+                      <div className="flex-1 flex items-center justify-center -mt-0.5">
+                        <span className="text-gray-900 font-semibold text-[22px] leading-none font-sans">
+                          {new Date().getDate()}
+                        </span>
                       </div>
                     </div>
                   ) : (
@@ -383,22 +389,28 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                   }}
                 >
                   {app.id === "calendar" ? (
-                    <div className="w-full h-full bg-white flex flex-col items-center justify-between select-none pb-1">
-                      <div className="text-[#ff3b30] text-[8px] font-bold mt-1 uppercase tracking-tight leading-none">
-                        {
-                          [
-                            "Sunday",
-                            "Monday",
-                            "Tuesday",
-                            "Wednesday",
-                            "Thursday",
-                            "Friday",
-                            "Saturday",
-                          ][new Date().getDay()]
-                        }
+                    <div className="w-full h-full bg-white flex flex-col items-center select-none">
+                      {/* Top Day Header Area with Red Background */}
+                      <div className="w-full bg-[#ff3b30] py-1 flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-[8px] font-bold uppercase tracking-wide leading-none">
+                          {
+                            [
+                              "Sunday",
+                              "Monday",
+                              "Tuesday",
+                              "Wednesday",
+                              "Thursday",
+                              "Friday",
+                              "Saturday",
+                            ][new Date().getDay()]
+                          }
+                        </span>
                       </div>
-                      <div className="text-gray-900 font-semibold text-[24px] leading-none -mt-1 font-sans">
-                        {new Date().getDate()}
+                      {/* Bottom Date Area */}
+                      <div className="flex-1 flex items-center justify-center -mt-0.5">
+                        <span className="text-gray-900 font-semibold text-[22px] leading-none font-sans">
+                          {new Date().getDate()}
+                        </span>
                       </div>
                     </div>
                   ) : (
