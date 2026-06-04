@@ -15,7 +15,14 @@ const WindowControls = ({ target, onBack }) => {
   if (isMobile) {
     return (
       <button
-        onClick={onBack || (() => closeWindow(target))}
+        onClick={(e) => {
+          console.log("Back button clicked in WindowControls for target:", target);
+          if (onBack) {
+            onBack(e);
+          } else {
+            closeWindow(target);
+          }
+        }}
         style={{
           border: "none",
           background: "none",

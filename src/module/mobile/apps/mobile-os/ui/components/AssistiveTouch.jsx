@@ -75,7 +75,8 @@ const AssistiveTouch = () => {
   const handleBackAction = () => {
     const activeApp = getActiveWindowKey();
     if (activeApp) {
-      if (["imgfile", "resume", "txtfile"].includes(activeApp)) {
+      const appsWithBackListener = ["finder", "chrome", "notes", "appstore", "settings"];
+      if (!appsWithBackListener.includes(activeApp)) {
         closeWindow(activeApp);
       } else {
         // Dispatch app-specific back navigation event
