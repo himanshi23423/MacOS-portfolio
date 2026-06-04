@@ -4,7 +4,7 @@ import { Bell, ChevronRight, ArrowLeft } from "lucide-react";
 const Toggle = ({ active, onChange }) => (
   <button
     onClick={() => onChange(!active)}
-    className={`w-10 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer focus:outline-none ${active ? "bg-[#30d158]" : "bg-zinc-200"}`}
+    className={`w-10 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer focus:outline-none ${active ? "bg-blue-500" : "bg-zinc-200"}`}
   >
     <span
       className={`w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all ${active ? "left-[18px]" : "left-0.5"}`}
@@ -73,9 +73,9 @@ const SettingsNotificationsSection = () => {
         {/* Navigation Header */}
         <button
           onClick={() => setSelectedApp(null)}
-          className="flex items-center gap-1 text-[13px] font-semibold text-blue-500 hover:text-blue-600 transition-colors focus:outline-none mb-5"
+          className="flex items-center gap-1 text-[12px] font-bold text-black hover:opacity-75 transition-opacity focus:outline-none mb-5"
         >
-          <ArrowLeft size={16} />
+          <ArrowLeft size={13} strokeWidth={2.5} />
           <span>Notifications</span>
         </button>
 

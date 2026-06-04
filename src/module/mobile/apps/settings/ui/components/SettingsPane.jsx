@@ -55,21 +55,23 @@ const SettingsPane = ({ activeTab, githubData, isMobile, setMobileView }) => {
   return (
     <>
       {isMobile && (
-        <div className="flex items-center justify-between shrink-0 bg-[#f2f2f7] border-b border-gray-300 px-2 py-3">
+        <div className="flex items-center justify-between shrink-0 bg-[#f2f2f7]/95 backdrop-blur-md border-b border-zinc-200 px-4 pt-5 pb-3 z-40 select-none">
           <div
-            className="flex items-center gap-1 text-blue-500 cursor-pointer w-1/3"
+            className="flex items-center gap-0.5 text-black cursor-pointer w-1/3 active:opacity-60 transition-opacity"
             onClick={() => setMobileView("main")}
           >
-            <ChevronLeft size={22} />
-            <span className="text-[16px]">Settings</span>
+            <ChevronLeft size={18} strokeWidth={2.5} className="relative -left-0.5" />
+            <span className="text-[14px] font-semibold">Settings</span>
           </div>
-          <h2 className="text-[16px] font-semibold text-black text-center w-1/3 truncate">
+          <h2 className="text-[17px] font-bold text-gray-900 text-center w-1/3 truncate">
             {activeTab}
           </h2>
           <div className="w-1/3"></div>
         </div>
       )}
-      <div className="flex-1 overflow-y-auto thin-scrollbar">{renderContent()}</div>
+      <div className="flex-1 overflow-y-auto bg-[#f2f2f7] scrollbar-none pb-16">
+        {renderContent()}
+      </div>
     </>
   );
 };
