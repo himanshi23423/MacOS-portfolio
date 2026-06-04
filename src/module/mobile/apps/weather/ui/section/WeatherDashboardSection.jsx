@@ -6,6 +6,10 @@ const WeatherDashboardSection = ({
   weatherData,
   isLoading,
   unit: unitMode = "both",
+  setViewMode,
+  cities,
+  setActiveCityId,
+  activeCityId,
 }) => {
   const city = weatherData || activeCity;
   const [error, setError] = useState(null);
@@ -25,6 +29,10 @@ const WeatherDashboardSection = ({
       loading={isLoading}
       error={error}
       setError={setError}
+      setViewMode={setViewMode}
+      cities={cities}
+      setActiveCityId={setActiveCityId}
+      activeCityId={activeCityId}
     />
   );
 };

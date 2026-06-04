@@ -2,8 +2,12 @@ import React from "react";
 import { Compass, Sunrise, Sunset } from "lucide-react";
 
 const MetricCard = ({ title, children, className = "" }) => (
-  <div className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 flex flex-col justify-between border border-white/10 shadow-sm min-h-[120px] ${className}`}>
-    <h4 className="text-[9px] font-bold uppercase tracking-wider text-white/50 leading-none">{title}</h4>
+  <div
+    className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 flex flex-col justify-between border border-white/10 shadow-sm min-h-[120px] text-white ${className}`}
+  >
+    <h4 className="text-[9px] font-bold uppercase tracking-wider text-white/50 leading-none">
+      {title}
+    </h4>
     {children}
   </div>
 );
@@ -27,7 +31,9 @@ export const WindCard = ({ windSpeed, windDir, windAngle }) => (
   <MetricCard title="Wind">
     <div className="flex items-center gap-3">
       <div className="space-y-1 min-w-0 flex-1">
-        <span className="text-xl font-bold tracking-tight">{windSpeed} <span className="text-[10px] font-semibold">mph</span></span>
+        <span className="text-xl font-bold tracking-tight">
+          {windSpeed} <span className="text-[10px] font-semibold">mph</span>
+        </span>
         <p className="text-[9px] font-bold opacity-80">{windDir} Direction</p>
       </div>
       <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center relative shrink-0">
@@ -73,6 +79,24 @@ export const AirQualityCard = ({ aqi, aqiLabel }) => (
         className="absolute size-2 rounded-full bg-white border border-black/20 -top-0.5"
         style={{ left: `${Math.min((aqi / 150) * 100, 100)}%` }}
       />
+    </div>
+  </MetricCard>
+);
+
+export const HumidityCard = ({ humidity }) => (
+  <MetricCard title="Humidity">
+    <div className="space-y-1">
+      <span className="text-xl font-bold">{humidity}%</span>
+      <p className="text-[9px] opacity-75 font-semibold mt-1">The dew point is normal.</p>
+    </div>
+  </MetricCard>
+);
+
+export const VisibilityCard = ({ visibility }) => (
+  <MetricCard title="Visibility">
+    <div className="space-y-1">
+      <span className="text-xl font-bold">{visibility} mi</span>
+      <p className="text-[9px] opacity-75 font-semibold mt-1">Clear view of the horizon.</p>
     </div>
   </MetricCard>
 );

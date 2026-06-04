@@ -5,40 +5,53 @@ const WeatherHero = ({ activeCity, unitMode }) => {
   const activeTemps = getSafeTemp(activeCity);
 
   return (
-    <div className="text-center space-y-1.5 py-4 shrink-0">
-      <h2 className="text-2xl font-bold tracking-tight drop-shadow-sm">{activeCity.name}</h2>
-      <div className="flex items-baseline justify-center gap-2 drop-shadow-sm">
+    <div className="text-center space-y-0.5 py-6 shrink-0 text-white select-none">
+      <h2 className="text-3xl font-light tracking-wide drop-shadow-sm">{activeCity.name}</h2>
+
+      <div className="flex justify-center items-start pl-4 drop-shadow-md">
         {unitMode === "both" && (
-          <>
-            <span className="text-6xl font-extralight tracking-tighter">{activeTemps.tempC}°C</span>
-            <span className="text-2xl font-light text-white/70">/ {activeTemps.tempF}°F</span>
-          </>
+          <div className="flex items-baseline gap-1">
+            <span className="text-8xl font-thin tracking-tighter leading-none">
+              {activeTemps.tempC}°
+            </span>
+            <span className="text-2xl font-light opacity-65">/ {activeTemps.tempF}°</span>
+          </div>
         )}
         {unitMode === "c" && (
-          <span className="text-6xl font-extralight tracking-tighter">{activeTemps.tempC}°C</span>
+          <span className="text-8xl font-thin tracking-tighter leading-none">
+            {activeTemps.tempC}°
+          </span>
         )}
         {unitMode === "f" && (
-          <span className="text-6xl font-extralight tracking-tighter">{activeTemps.tempF}°F</span>
+          <span className="text-8xl font-thin tracking-tighter leading-none">
+            {activeTemps.tempF}°
+          </span>
         )}
       </div>
-      <p className="text-sm font-semibold tracking-wide drop-shadow-xs">{activeCity.condition}</p>
-      <div className="flex justify-center gap-3 text-xs font-semibold opacity-85">
+
+      <p className="text-base font-medium opacity-90 mt-1 drop-shadow-sm">{activeCity.condition}</p>
+
+      <div className="flex justify-center gap-3 text-xs font-semibold opacity-80 mt-1 drop-shadow-sm">
         {unitMode === "both" && (
           <>
-            <span>H: {activeTemps.highC}°C / {activeTemps.highF}°F</span>
-            <span>L: {activeTemps.lowC}°C / {activeTemps.lowF}°F</span>
+            <span>
+              H: {activeTemps.highC}° / {activeTemps.highF}°
+            </span>
+            <span>
+              L: {activeTemps.lowC}° / {activeTemps.lowF}°
+            </span>
           </>
         )}
         {unitMode === "c" && (
           <>
-            <span>H: {activeTemps.highC}°C</span>
-            <span>L: {activeTemps.lowC}°C</span>
+            <span>H: {activeTemps.highC}°</span>
+            <span>L: {activeTemps.lowC}°</span>
           </>
         )}
         {unitMode === "f" && (
           <>
-            <span>H: {activeTemps.highF}°F</span>
-            <span>L: {activeTemps.lowF}°F</span>
+            <span>H: {activeTemps.highF}°</span>
+            <span>L: {activeTemps.lowF}°</span>
           </>
         )}
       </div>

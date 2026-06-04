@@ -3,26 +3,24 @@ import { Search } from "lucide-react";
 import { getSafeTemp, renderIcon } from "./weatherUtils";
 
 const WeatherSidebar = ({
-  searchQuery, setSearchQuery,
+  searchQuery,
+  setSearchQuery,
   handleSearch,
-  filteredCityKeys, citiesData,
-  activeCityId, setActiveCityId,
+  filteredCityKeys,
+  citiesData,
+  activeCityId,
+  setActiveCityId,
   setIsSidebarOpen,
-  unitMode
+  unitMode,
 }) => {
   return (
-    <aside className="absolute sm:relative inset-y-0 left-0 w-56 bg-gray-50 border-r border-[#d1d1d1] p-3.5 space-y-4 flex flex-col z-20 transition-transform duration-300 shrink-0 h-full">
-      <div className="relative flex items-center bg-gray-200/60 border border-gray-300/40 rounded-lg px-2.5 py-1.5 shrink-0">
-        <button
-          onClick={() => searchQuery.trim() && handleSearch(searchQuery)}
-          className="focus:outline-none cursor-pointer text-gray-400 hover:text-blue-500 transition-colors mr-2 flex items-center justify-center"
-          aria-label="Search"
-        >
-          <Search className="w-4 h-4 shrink-0" />
-        </button>
+    <aside className="absolute sm:relative inset-0 w-full bg-[#f2f2f7] p-4 space-y-4 flex flex-col z-20 transition-transform duration-300 shrink-0 h-full select-none text-gray-800">
+      {/* iOS search input bar */}
+      <div className="relative flex items-center bg-gray-200/80 border border-gray-300/10 rounded-xl px-3 py-2 shrink-0">
+        <Search className="w-4 h-4 text-gray-500 mr-2 shrink-0" />
         <input
           type="text"
-          placeholder="Search City (Press Enter)"
+          placeholder="Search for a city"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={(e) => {
@@ -30,11 +28,12 @@ const WeatherSidebar = ({
               handleSearch(searchQuery);
             }
           }}
-          className="w-full bg-transparent text-xs focus:outline-none border-none outline-none text-gray-800 placeholder-gray-400"
+          className="w-full bg-transparent text-sm focus:outline-none border-none outline-none text-gray-800 placeholder-gray-500"
         />
       </div>
 
-      <div className="flex-1 overflow-y-auto thin-scrollbar space-y-2">
+      {/* City list cards */}
+      <div className="flex-1 overflow-y-auto thin-scrollbar space-y-3 pb-8">
         {filteredCityKeys.map((key) => {
           const city = citiesData[key];
           const isActive = activeCityId === key;
@@ -45,34 +44,34 @@ const WeatherSidebar = ({
               key={key}
               onClick={() => {
                 setActiveCityId(key);
-                if (window.innerWidth < 768) {
-                  setIsSidebarOpen(false);
-                }
+                setIsSidebarOpen(false); // setViewMode("dashboard")
               }}
-              className={`w-full p-3 rounded-xl text-left transition-all duration-200 relative flex items-center justify-between text-white overflow-hidden shadow-sm hover:shadow-md cursor-pointer ${
-                isActive ? "ring-2 ring-blue-500/50" : ""
+              className={`w-full p-4 rounded-2xl text-left transition-all duration-200 relative flex flex-col justify-between text-white overflow-hidden shadow-sm hover:shadow-md cursor-pointer min-h-[90px] ${
+                isActive ? "ring-2 ring-white/60" : ""
               }`}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${city.bgClass} opacity-90 z-0`} />
-              <div className="relative z-10 space-y-0.5">
-                <h4 className="font-bold text-xs leading-none">{city.name}</h4>
-                <p className="text-[10px] text-white/70 leading-none">{city.condition}</p>
+              {/* Dynamic weather gradient background */}
+              <div
+                className={`absolute inset-0 bg-gradient-to-r ${city.bgClass || "from-sky-400 to-blue-600"} z-0`}
+              />
+
+              <div className="relative z-10 flex justify-between items-start w-full">
+                <div>
+                  <h4 className="font-bold text-lg tracking-tight leading-none">{city.name}</h4>
+                  <p className="text-[10px] opacity-75 font-semibold mt-1">
+                    {key === "delhi" ? "My Location" : "Local Weather"}
+                  </p>
+                </div>
+                <span className="text-3xl font-light tracking-tighter leading-none">
+                  {temps.tempC}°
+                </span>
               </div>
-              <div className="relative z-10 flex items-center gap-2">
-                {renderIcon(city.hourly?.[0]?.icon || "sunny", "w-5 h-5")}
-                <div className="text-right flex flex-col justify-center">
-                  {unitMode === "both" && (
-                    <>
-                      <span className="font-bold text-base tracking-tighter leading-none">{temps.tempC}°C</span>
-                      <span className="text-[10px] opacity-75 font-semibold leading-none mt-0.5">{temps.tempF}°F</span>
-                    </>
-                  )}
-                  {unitMode === "c" && (
-                    <span className="font-bold text-base tracking-tighter leading-none">{temps.tempC}°C</span>
-                  )}
-                  {unitMode === "f" && (
-                    <span className="font-bold text-base tracking-tighter leading-none">{temps.tempF}°F</span>
-                  )}
+
+              <div className="relative z-10 flex justify-between items-end w-full mt-3">
+                <p className="text-xs font-semibold opacity-90">{city.condition}</p>
+                <div className="flex gap-2 text-xs font-semibold opacity-85">
+                  <span>H: {temps.highC}°</span>
+                  <span>L: {temps.lowC}°</span>
                 </div>
               </div>
             </button>
