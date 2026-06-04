@@ -16,7 +16,6 @@ import Music from "@module/mobile/apps/music/ui/view/MusicView";
 import Notes from "@module/mobile/apps/notes/ui/view/NotesView";
 import Photos from "@module/mobile/apps/photos/ui/view/PhotosView";
 import dynamic from "next/dynamic";
-import Postman from "@module/mobile/apps/postman/ui/view/PostmanView";
 const Resume = dynamic(() => import("@module/mobile/apps/resume/ui/view/ResumeView"), {
   ssr: false,
 });
@@ -27,7 +26,6 @@ const Terminal = dynamic(() => import("@module/mobile/apps/terminal/ui/view/Term
   ssr: false,
 });
 import Text from "@module/mobile/apps/text/ui/view/TextView";
-import VSCode from "@module/mobile/apps/vscode/ui/view/VSCodeView";
 import Weather from "@module/mobile/apps/weather/ui/view/WeatherView";
 import AssistiveTouch from "./apps/mobile-os/ui/components/AssistiveTouch";
 
@@ -52,8 +50,6 @@ const Mobile = () => (
     <Calendar />
     <Weather />
     <Chrome />
-    <VSCode />
-    <Postman />
     <Map />
     <FontBook />
     <Telegram />

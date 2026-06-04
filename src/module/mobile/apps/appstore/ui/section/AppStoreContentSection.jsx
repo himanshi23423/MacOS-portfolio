@@ -43,7 +43,7 @@ const AppStoreContentSection = ({
   const [trendingQueries] = useState([
     "Minecraft",
     "Figma",
-    "VS Code",
+    "Google Chrome",
     "Safari",
     "FaceTime",
     "Weather",
@@ -204,13 +204,13 @@ const AppStoreContentSection = ({
               <span className="text-[9px] font-extrabold uppercase tracking-wider text-white/70">
                 Spotlight App
               </span>
-              <h3 className="text-xl font-extrabold tracking-tight">VS Code Mobile</h3>
+              <h3 className="text-xl font-extrabold tracking-tight">Chrome Mobile</h3>
               <p className="text-[11px] text-white/80 max-w-xs">
-                Edit your code anywhere with automated typescript compilation modules.
+                Fast, secure, and private web browsing simulation with modern settings.
               </p>
             </div>
             <button
-              onClick={() => onSelectApp(STORE_APPS.find((a) => a.id === "vscode"))}
+              onClick={() => onSelectApp(STORE_APPS.find((a) => a.id === "chrome"))}
               className="px-5 py-2 bg-white text-blue-600 rounded-full text-xs font-bold shadow-sm active:scale-95 transition-transform"
             >
               Learn More

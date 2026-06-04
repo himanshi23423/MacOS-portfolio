@@ -31,7 +31,7 @@ const Launchpad = () => {
   if (!isOpen) return null;
 
   const appItems = dockApps.filter(
-    (app) => !["launchpad", "trash", "folder"].includes(app.id) && app.canOpen,
+    (app) => !["launchpad", "trash", "folder", "vscode", "postman"].includes(app.id) && app.canOpen,
   );
 
   const filteredApps = appItems.filter((app) =>
