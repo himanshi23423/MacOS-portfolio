@@ -2,7 +2,7 @@ import useWindowsStore from "@store/window";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 
 const windowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
@@ -177,6 +177,28 @@ const windowWrapper = (Component, windowKey) => {
       window.addEventListener("pointerup", handlePointerUp);
     };
 
+    const prevPropsRef = useRef(props);
+    const memoizedProps = useMemo(() => {
+      const prev = prevPropsRef.current;
+      const keys = Object.keys(props);
+      const prevKeys = Object.keys(prev);
+      if (keys.length !== prevKeys.length) {
+        prevPropsRef.current = props;
+        return props;
+      }
+      for (const key of keys) {
+        if (props[key] !== prev[key]) {
+          prevPropsRef.current = props;
+          return props;
+        }
+      }
+      return prev;
+    }, [props]);
+
+    const componentElement = useMemo(() => {
+      return <Component {...memoizedProps} />;
+    }, [Component, memoizedProps]);
+
     return (
       <section
         id={windowKey}
@@ -184,7 +206,7 @@ const windowWrapper = (Component, windowKey) => {
         style={isMobile ? mobileStyles : desktopStyles}
         className={`${isMobile ? "" : "absolute"} ${windows[windowKey]?.isMaximized ? "maximized" : ""}`}
       >
-        <Component {...props} />
+        {componentElement}
         {!isMobile && !windows[windowKey]?.isMaximized && !windows[windowKey]?.isMinimized && (
           <>
             <div

@@ -1,7 +1,14 @@
+import { memo } from "react";
 import { Compass } from "lucide-react";
+import useWindowsStore from "@store/window";
 
 const MapCanvas = ({ currentCity, mapStyle, iframeSrc }) => {
+  const isOpen = useWindowsStore((state) => state.windows.map?.isOpen);
+
   if (mapStyle === "standard") {
+    if (!isOpen) {
+      return <div className="w-full h-full bg-white" />;
+    }
     return (
       <div className="w-full h-full overflow-hidden relative">
         <iframe
@@ -26,7 +33,7 @@ const MapCanvas = ({ currentCity, mapStyle, iframeSrc }) => {
         className="absolute inset-0 opacity-40"
         style={{
           backgroundImage: `linear-gradient(to right, #334155 1px, transparent 1px), linear-gradient(to bottom, #334155 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
+          backgroundSize: "40px 40px",
         }}
       />
       <div className="absolute inset-0 bg-radial-gradient from-blue-900/20 to-black" />
@@ -37,11 +44,16 @@ const MapCanvas = ({ currentCity, mapStyle, iframeSrc }) => {
         </div>
         <h4 className="text-sm font-bold">{currentCity.name} Orbit Imaging</h4>
         <p className="text-[11px] text-zinc-300 leading-normal">
-          High-altitude thermal satellite layers currently syncing with OpenStreetMap telemetry. GPS Coordinates: <code className="bg-zinc-800 text-yellow-500 px-1 py-0.5 rounded">{currentCity.lat.toFixed(4)}° N, {currentCity.lon.toFixed(4)}° E</code>.
+          High-altitude thermal satellite layers currently syncing with OpenStreetMap telemetry. GPS
+          Coordinates:{" "}
+          <code className="bg-zinc-800 text-yellow-500 px-1 py-0.5 rounded">
+            {currentCity.lat.toFixed(4)}° N, {currentCity.lon.toFixed(4)}° E
+          </code>
+          .
         </p>
       </div>
     </div>
   );
 };
 
-export default MapCanvas;
+export default memo(MapCanvas);
