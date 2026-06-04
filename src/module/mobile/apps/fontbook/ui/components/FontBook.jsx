@@ -4,6 +4,7 @@ import INITIAL_FONTS from "./fontData";
 import FontBookSection from "../section/FontBookSection";
 
 const FontBook = () => {
+  const [currentView, setCurrentView] = useState("collections"); // "collections" | "list" | "preview"
   const [activeCategory, setActiveCategory] = useState("All Fonts");
   const [fonts, setFonts] = useState(INITIAL_FONTS);
   const [activeFont, setActiveFont] = useState(INITIAL_FONTS[0]);
@@ -53,6 +54,7 @@ const FontBook = () => {
     setFonts((prev) => [...prev, newFont]);
     setActiveFont(newFont);
     setGoogleFontInput("");
+    setCurrentView("preview"); // Automatically show preview when installed
   };
 
   const filteredFonts = fonts.filter((font) => {
@@ -65,6 +67,8 @@ const FontBook = () => {
 
   return (
     <FontBookSection
+      currentView={currentView}
+      setCurrentView={setCurrentView}
       fonts={fonts}
       activeCategory={activeCategory}
       setActiveCategory={setActiveCategory}
