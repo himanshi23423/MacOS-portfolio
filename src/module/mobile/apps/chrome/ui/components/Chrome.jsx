@@ -43,7 +43,7 @@ const Chrome = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   // Dynamic state sections
-  const [activeSettingsSection, setActiveSettingsSection] = useState("appearance");
+  const [activeSettingsSection, setActiveSettingsSection] = useState(null);
   const [fontSize, setFontSize] = useState("medium");
   const [findText, setFindText] = useState("");
   const [showFindBar, setShowFindBar] = useState(false);

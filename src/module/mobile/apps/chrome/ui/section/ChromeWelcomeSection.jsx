@@ -7,9 +7,11 @@ const ChromeWelcomeSection = ({
   googleSearchQuery,
   setGoogleSearchQuery,
   navigateTabTo,
-  bookmarks
+  bookmarks,
 }) => (
-  <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 select-none overflow-y-auto ${theme === "dark" ? "bg-[#202124] text-white" : "bg-[#f8f9fa] text-gray-800"}`}>
+  <div
+    className={`absolute inset-0 flex flex-col items-center justify-center p-6 select-none overflow-y-auto ${theme === "dark" ? "bg-[#202124] text-white" : "bg-[#f8f9fa] text-gray-800"}`}
+  >
     <div className="w-full max-w-xl flex flex-col items-center gap-8 -mt-16">
       {searchEngine === "Google" && (
         <div className="flex items-baseline font-bold text-6xl tracking-tight select-none">
@@ -31,11 +33,13 @@ const ChromeWelcomeSection = ({
           <span>DuckDuckGo</span>
         </div>
       )}
-      <div className={`w-full flex items-center border hover:border-transparent hover:shadow-md focus-within:shadow-md focus-within:border-transparent transition-all rounded-full px-4 py-3 text-sm max-w-lg ${
-        theme === "dark"
-          ? "bg-[#35363a] border-[#404144] text-gray-200"
-          : "bg-white border-[#dadce0] text-gray-700"
-      }`}>
+      <div
+        className={`w-full flex items-center border hover:border-transparent hover:shadow-md focus-within:shadow-md focus-within:border-transparent transition-all rounded-full px-4 py-3 text-sm max-w-lg ${
+          theme === "dark"
+            ? "bg-[#35363a] border-[#404144] text-gray-200"
+            : "bg-white border-[#dadce0] text-gray-700"
+        }`}
+      >
         <Search className="w-4 h-4 text-gray-400 mr-3 shrink-0" />
         <input
           type="text"
@@ -51,8 +55,8 @@ const ChromeWelcomeSection = ({
           className={`w-full bg-transparent border-none outline-none ${theme === "dark" ? "text-gray-100 placeholder-gray-500" : "text-gray-800 placeholder-gray-400"}`}
         />
       </div>
-      <div className="grid grid-cols-5 gap-6 max-w-lg w-full justify-center text-center mt-2">
-        {bookmarks.slice(0, 5).map((bookmark, idx) => {
+      <div className="grid grid-cols-4 gap-4 max-w-sm w-full justify-center text-center mt-2 px-4">
+        {bookmarks.slice(0, 8).map((bookmark, idx) => {
           const initial = bookmark.title ? bookmark.title.charAt(0).toUpperCase() : "G";
           let initialColor = "text-blue-500";
           let iconSrc = "";
@@ -77,24 +81,34 @@ const ChromeWelcomeSection = ({
             <button
               key={idx}
               onClick={() => navigateTabTo(bookmark.url)}
-              className="flex flex-col items-center gap-2 group cursor-pointer"
+              className="flex flex-col items-center gap-1.5 group cursor-pointer"
             >
-              <div className={`w-11 h-11 rounded-full border flex items-center justify-center shadow-sm overflow-hidden transition-all group-hover:scale-105 ${
-                theme === "dark"
-                  ? "bg-[#35363a] border-[#404144] hover:bg-[#3d3e42]"
-                  : "bg-white border-gray-200 hover:bg-gray-100"
-              }`}>
+              <div
+                className={`w-12 h-12 rounded-2xl border flex items-center justify-center shadow-sm overflow-hidden transition-all group-hover:scale-105 ${
+                  theme === "dark"
+                    ? "bg-[#35363a] border-zinc-700/50 hover:bg-[#3d3e42]"
+                    : "bg-white border-gray-200 hover:bg-gray-100"
+                }`}
+              >
                 {iconSrc ? (
                   <img
                     src={iconSrc}
                     alt={bookmark.title}
-                    className={bookmark.title === "Portfolio" ? "w-full h-full object-cover" : "w-6 h-6 object-contain"}
+                    className={
+                      bookmark.title === "Portfolio"
+                        ? "w-full h-full object-cover"
+                        : "w-6 h-6 object-contain"
+                    }
                   />
                 ) : (
                   <span className={`text-sm ${initialColor}`}>{initial}</span>
                 )}
               </div>
-              <span className={`text-[10px] font-semibold group-hover:underline truncate w-16 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>{bookmark.title}</span>
+              <span
+                className={`text-[10px] font-semibold group-hover:underline truncate w-14 ${theme === "dark" ? "text-zinc-350" : "text-gray-600"}`}
+              >
+                {bookmark.title}
+              </span>
             </button>
           );
         })}

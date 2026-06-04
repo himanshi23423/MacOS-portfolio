@@ -1,5 +1,5 @@
-import React from "react";
-import { Settings, Bookmark, Star, History, Info, Globe, Trash2 } from "lucide-react";
+import React, { useState } from "react";
+import { Star, Globe, Trash2, Search } from "lucide-react";
 
 const ChromeBookmarksSection = ({
   settingsThemeClasses,
@@ -8,65 +8,107 @@ const ChromeBookmarksSection = ({
   bookmarks,
   setBookmarks,
   highlightText,
-  findText
-}) => (
-  <div className={`absolute inset-0 flex select-none overflow-hidden ${settingsThemeClasses.contentBg}`}>
-    <div className={`w-52 border-r shrink-0 py-6 px-4 flex flex-col gap-1.5 ${settingsThemeClasses.sidebarBg}`}>
-      <div className={`flex items-center gap-2 px-2 pb-4 border-b ${settingsThemeClasses.borderMuted} mb-3`}>
-        <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
-        <span className="font-bold text-sm">Bookmarks</span>
+  findText,
+}) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredBookmarks = bookmarks.filter(
+    (b) =>
+      b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      b.url.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  return (
+    <div
+      className={`absolute inset-0 flex flex-col select-none overflow-y-auto pb-10 ${settingsThemeClasses.contentBg}`}
+    >
+      {/* iOS Style Top Header */}
+      <div
+        className={`shrink-0 px-4 py-3 flex items-center justify-between border-b ${
+          theme === "dark"
+            ? "bg-[#202124] border-zinc-800/80 text-white"
+            : "bg-white border-zinc-200/50 text-gray-800"
+        }`}
+      >
+        <span className="text-xs font-bold">Bookmarks</span>
       </div>
-      <button onClick={() => navigateTabTo("chrome://settings")} className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400">
-        <Settings className="w-4 h-4" /> Appearance
-      </button>
-      <button className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 text-left w-full">
-        <Bookmark className="w-4 h-4" /> Bookmarks
-      </button>
-      <button onClick={() => navigateTabTo("chrome://history")} className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400">
-        <History className="w-4 h-4" /> History
-      </button>
-      <button onClick={() => navigateTabTo("chrome://downloads")} className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400">
-        <History className="w-4 h-4 transform rotate-180" /> Downloads
-      </button>
-      <button onClick={() => navigateTabTo("chrome://about")} className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400">
-        <Info className="w-4 h-4" /> About Chrome
-      </button>
-    </div>
-    <div className="flex-1 overflow-y-auto p-8 max-w-3xl space-y-6">
-      <div className={`flex items-center justify-between border-b ${settingsThemeClasses.borderMuted} pb-4`}>
-        <h2 className="text-xl font-bold">Bookmarks</h2>
-      </div>
-      {bookmarks.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 text-center text-gray-400 gap-3">
-          <Star className="w-10 h-10 stroke-[1.5]" />
-          <p className="text-xs">Your bookmarks will show up here. Press the Star icon in the address bar to bookmark a page.</p>
-        </div>
-      ) : (
-        <div className={`border rounded-xl divide-y overflow-hidden shadow-sm ${theme === "dark" ? "bg-[#2f3033] border-[#3c3e41] divide-[#3c3e41]" : "bg-white border-gray-200 divide-gray-100"}`}>
-          {bookmarks.map((bookmark, index) => (
-            <div key={index} className="flex items-center justify-between p-3.5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors group">
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <Globe className="w-3.5 h-3.5 text-sky-600 shrink-0" />
-                <span
-                  onClick={() => navigateTabTo(bookmark.url)}
-                  className="text-xs font-semibold text-blue-500 hover:underline cursor-pointer truncate max-w-md"
+
+      <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+        {/* Search Bar */}
+        {bookmarks.length > 0 && (
+          <div
+            className={`w-full flex items-center border rounded-xl px-3 py-2 text-xs ${
+              theme === "dark"
+                ? "bg-zinc-900 border-zinc-800 text-zinc-200"
+                : "bg-white border-gray-200 text-gray-700"
+            }`}
+          >
+            <Search className="w-3.5 h-3.5 text-gray-400 mr-2 shrink-0" />
+            <input
+              type="text"
+              placeholder="Search Bookmarks"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`w-full bg-transparent border-none outline-none ${
+                theme === "dark"
+                  ? "text-zinc-200 placeholder-zinc-550"
+                  : "text-gray-800 placeholder-gray-450"
+              }`}
+            />
+          </div>
+        )}
+
+        {/* Bookmarks List */}
+        {filteredBookmarks.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center text-gray-400 gap-2.5">
+            <Star className="w-8 h-8 stroke-[1.5]" />
+            <p className="text-xs font-medium">No bookmarks found.</p>
+          </div>
+        ) : (
+          <div
+            className={`border rounded-xl divide-y overflow-hidden shadow-sm ${
+              theme === "dark"
+                ? "bg-zinc-900 border-zinc-850 divide-zinc-800"
+                : "bg-white border-zinc-200/60 divide-zinc-100"
+            }`}
+          >
+            {filteredBookmarks.map((bookmark, index) => {
+              const initial = bookmark.title ? bookmark.title.charAt(0).toUpperCase() : "B";
+              return (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-3.5 hover:bg-neutral-50 dark:hover:bg-zinc-850 transition-colors group"
                 >
-                  {highlightText(bookmark.title, findText)}
-                </span>
-                <span className={`text-[10px] ${settingsThemeClasses.textMuted} truncate hidden md:inline`}>{highlightText(bookmark.url, findText)}</span>
-              </div>
-              <button
-                onClick={() => setBookmarks(prev => prev.filter((_, i) => i !== index))}
-                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-rose-500/10 hover:text-rose-500 rounded transition-all text-gray-400 shrink-0"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+                  <div
+                    onClick={() => navigateTabTo(bookmark.url)}
+                    className="flex items-center gap-3 min-w-0 flex-1 cursor-pointer"
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-xs shrink-0">
+                      {initial}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-xs font-bold truncate">
+                        {highlightText(bookmark.title, findText || searchQuery)}
+                      </h4>
+                      <p className={`text-[9px] ${settingsThemeClasses.textMuted} truncate`}>
+                        {highlightText(bookmark.url, findText || searchQuery)}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setBookmarks((prev) => prev.filter((_, i) => i !== index))}
+                    className="p-1 hover:bg-rose-500/10 text-gray-400 hover:text-rose-500 rounded transition-all shrink-0 ml-2"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default ChromeBookmarksSection;

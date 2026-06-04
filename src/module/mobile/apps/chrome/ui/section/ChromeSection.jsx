@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import WindowControls from "@components/WindowControls";
 import {
   RotateCw,
@@ -145,937 +145,81 @@ const ChromeSection = ({
   isWikipediaUrl,
   highlightText,
 }) => {
+  const [showTabsOverview, setShowTabsOverview] = useState(false);
+
+  // Helper to extract domain for the mobile header
+  const getCleanDomain = (url) => {
+    if (url === "chrome://newtab") return "New Tab";
+    if (url === "chrome://settings") return "Settings";
+    if (url === "chrome://history") return "History";
+    if (url === "chrome://bookmarks") return "Bookmarks";
+    if (url === "chrome://about") return "About Chrome";
+    if (url === "chrome://incognito") return "New Incognito Tab";
+    if (url === "chrome://extensions") return "Extensions";
+    if (url === "chrome://downloads") return "Downloads";
+    if (url === "chrome://devtools") return "Developer Tools";
+    if (url.includes("google.com/search")) return "Google Search";
+    try {
+      const parsed = new URL(url);
+      return parsed.hostname.replace("www.", "");
+    } catch {
+      return url;
+    }
+  };
+
   return (
     <div
-      className={`flex flex-col h-full w-full rounded-xl overflow-hidden shadow-2xl border select-none text-xs font-sans ${themeClasses.container} ${isFullScreen ? "fixed inset-0 z-50 rounded-none border-none" : ""}`}
+      className={`flex flex-col h-full w-full select-none text-xs font-sans relative ${
+        theme === "dark" ? "bg-[#202124] text-white" : "bg-[#f8f9fa] text-gray-800"
+      }`}
     >
-      {/* CHROME TAB BAR & WINDOW CONTROLS */}
+      {/* iOS Minimal Top Bar */}
       <div
-        id="window-header"
-        className={`shrink-0 px-3 pt-2.5 pb-1 flex items-center justify-between z-20 border-b gap-4 select-none ${themeClasses.header}`}
+        className={`shrink-0 border-b px-4 py-3 flex items-center justify-between z-20 relative select-none ${
+          theme === "dark"
+            ? "bg-[#202124] border-zinc-800/80 text-white"
+            : "bg-white border-zinc-200/50 text-gray-800"
+        }`}
       >
-        <div className="flex items-center gap-6 shrink-0">
-          <WindowControls target="chrome" />
-        </div>
-        <div className="flex-1 flex items-end gap-1.5 overflow-x-auto thin-scrollbar select-none pr-12 min-w-0">
-          {tabs.map((tab) => {
-            const isActive = tab.id === activeTabId;
-            const isIncognitoTab = tab.url === "chrome://incognito";
-            return (
-              <div
-                key={tab.id}
-                onClick={() => setActiveTabId(tab.id)}
-                className={`
-                  group flex items-center gap-2 h-[28px] max-w-[160px] min-w-[100px] px-3 rounded-t-lg text-xs leading-none transition-all duration-150 cursor-pointer relative shrink-0
-                  ${
-                    isActive
-                      ? isIncognitoTab
-                        ? "bg-[#202124] text-zinc-100 shadow-[0_-1px_3px_rgba(0,0,0,0.3)] z-10"
-                        : themeClasses.tabActive
-                      : isIncognitoTab
-                        ? "text-zinc-400 hover:bg-[#323336]"
-                        : themeClasses.tabInactive
-                  }
-                `}
-              >
-                {isIncognitoTab ? (
-                  <svg
-                    className="w-3.5 h-3.5 shrink-0 text-zinc-400"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <circle cx="8" cy="15" r="2" />
-                    <circle cx="16" cy="15" r="2" />
-                    <path d="M10 15h4M2 11a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v1H2z" />
-                  </svg>
-                ) : (
-                  <Globe className={`w-3.5 h-3.5 shrink-0 ${themeClasses.tabGlobe}`} />
-                )}
-                <span className="truncate flex-1 pr-3">{tab.title}</span>
-                {tabs.length > 1 && (
-                  <button
-                    onClick={(e) => handleCloseTab(tab.id, e)}
-                    className={`absolute right-2 opacity-0 group-hover:opacity-100 p-0.5 rounded-full transition-opacity ${themeClasses.tabCloseHover}`}
-                    aria-label="Close tab"
-                  >
-                    <X className="w-2.5 h-2.5" />
-                  </button>
-                )}
-              </div>
-            );
-          })}
+        <div className="flex items-center gap-1">
           <button
-            onClick={handleNewTab}
-            className={`p-1 rounded-full mb-1 transition-colors flex items-center justify-center shrink-0 cursor-pointer ${theme === "dark" ? "hover:bg-white/10 text-gray-400" : "hover:bg-[#d0d3d7] text-gray-600"}`}
-            aria-label="New tab"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-          </button>
-        </div>
-      </div>
-
-      {/* NAVIGATION & ADDRESS BAR */}
-      <div
-        className={`shrink-0 px-3 py-1.5 border-b flex items-center gap-3 ${themeClasses.navBg}`}
-      >
-        <div className="flex items-center gap-1 shrink-0">
-          <button
-            onClick={handleGoBack}
-            disabled={activeTab.historyIndex <= 0}
-            className={`p-1.5 rounded-full transition-colors flex items-center justify-center cursor-pointer ${activeTab.historyIndex > 0 ? themeClasses.buttonText : themeClasses.buttonDisabled}`}
-            aria-label="Back"
-          >
-            <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
-          </button>
-          <button
-            onClick={handleGoForward}
-            disabled={activeTab.historyIndex >= activeTab.history.length - 1}
-            className={`p-1.5 rounded-full transition-colors flex items-center justify-center cursor-pointer ${activeTab.historyIndex < activeTab.history.length - 1 ? themeClasses.buttonText : themeClasses.buttonDisabled}`}
-            aria-label="Forward"
-          >
-            <ChevronRight className="w-4 h-4 stroke-[2.5]" />
-          </button>
-          <button
-            onClick={() => navigateTabTo(activeTab.url)}
-            className={`p-1.5 rounded-full transition-colors flex items-center justify-center cursor-pointer ${themeClasses.buttonText}`}
-            aria-label="Reload"
-          >
-            <RotateCw className="w-3.5 h-3.5 stroke-[2.5]" />
-          </button>
-          <button
-            onClick={() => navigateTabTo("chrome://newtab")}
-            className={`p-1.5 rounded-full transition-colors flex items-center justify-center cursor-pointer ${themeClasses.buttonText}`}
-            aria-label="Home"
-          >
-            <Home className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        <div
-          className={`flex-1 flex items-center focus-within:ring-2 rounded-full px-3 py-1 text-xs shadow-inner transition-all ${themeClasses.addressBg}`}
-        >
-          <Lock className="w-3 h-3 text-emerald-600 mr-2 shrink-0" />
-          <input
-            type="text"
-            placeholder={
-              activeTab.url === "chrome://incognito"
-                ? "Search privately"
-                : `Search ${searchEngine} or type a URL`
-            }
-            value={addressInput}
-            onChange={(e) => setAddressInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && navigateTabTo(addressInput)}
-            className={`w-full bg-transparent border-none outline-none focus:ring-0 ${themeClasses.addressInput}`}
-          />
-          <Star
-            onClick={toggleBookmark}
-            className={`w-3.5 h-3.5 cursor-pointer ml-1.5 shrink-0 transition-colors ${
-              isBookmarked ? "text-amber-400 fill-amber-400" : "text-gray-400 hover:text-amber-400"
+            onClick={() => {
+              if (activeTab.historyIndex > 0) {
+                handleGoBack();
+              } else {
+                closeWindow("chrome");
+              }
+            }}
+            className={`flex items-center gap-0.5 font-semibold text-sm bg-transparent border-none outline-none cursor-pointer p-0 active:opacity-60 transition-opacity ${
+              theme === "dark" ? "text-blue-400" : "text-blue-600"
             }`}
-          />
+          >
+            <ChevronLeft size={16} />
+            <span>Back</span>
+          </button>
         </div>
-
-        <div className="flex items-center gap-1 shrink-0 relative">
-          {castDevice && !isCastConnecting && (
-            <button
-              onClick={() => setShowCastDialog(true)}
-              className="p-1.5 rounded-full transition-colors flex items-center justify-center cursor-pointer text-blue-500 bg-blue-500/10 hover:bg-blue-500/20"
-              title={`Casting to ${castDevice}`}
+        <span className="text-xs font-bold absolute left-1/2 -translate-x-1/2 max-w-[50%] truncate">
+          {getCleanDomain(activeTab.url)}
+        </span>
+        <div className="w-16 flex justify-end">
+          {activeTab.url === "chrome://incognito" && (
+            <svg
+              className={`w-4 h-4 ${theme === "dark" ? "text-zinc-300" : "text-gray-650"}`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
             >
-              <svg
-                className="w-4 h-4 animate-pulse"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="2" y="2" width="20" height="20" rx="2" />
-                <path d="M2 18a2 2 0 0 1 2-2" />
-                <path d="M2 14a6 6 0 0 1 6-6" />
-                <path d="M12 20a10 10 0 0 0-10-10" />
-              </svg>
-            </button>
-          )}
-          <button
-            className={`p-1.5 rounded-full transition-colors flex items-center justify-center cursor-pointer ${themeClasses.buttonText}`}
-          >
-            <User className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            className={`p-1.5 rounded-full transition-colors flex items-center justify-center cursor-pointer ${themeClasses.buttonText} ${isMenuOpen ? "bg-black/10 dark:bg-white/10" : ""}`}
-          >
-            <MoreVertical className="w-4 h-4" />
-          </button>
-
-          {isMenuOpen && (
-            <>
-              <div
-                className="fixed inset-0 z-40 bg-transparent"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setActiveSubMenu(null);
-                }}
-              />
-              <div
-                className={`absolute right-0 top-8 w-72 border rounded-xl shadow-2xl p-1.5 z-50 text-xs font-sans divide-y ${menuThemeClasses.menuBg} ${theme === "dark" ? "shadow-black/40" : "shadow-gray-300/45"}`}
-              >
-                <div className="pb-1.5">
-                  <button
-                    onClick={() => {
-                      setIsDefaultBrowser(true);
-                      alert("Chrome is now your default browser!");
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-lg flex items-center gap-2 font-semibold transition-all ${menuThemeClasses.bannerBg}`}
-                  >
-                    <Globe className="w-3.5 h-3.5 text-blue-500" />
-                    <span>
-                      {isDefaultBrowser
-                        ? "Chrome is default browser"
-                        : "Set Chrome as default browser"}
-                    </span>
-                  </button>
-                </div>
-
-                <div className="py-1">
-                  <button
-                    onClick={() => {
-                      handleNewTab();
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left ${menuThemeClasses.itemHover}`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Plus className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                      <span>New tab</span>
-                    </div>
-                    <span className={`text-[10px] font-medium ${menuThemeClasses.labelMuted}`}>
-                      Ctrl+T
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleNewTab();
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left ${menuThemeClasses.itemHover}`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Plus className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                      <span>New window</span>
-                    </div>
-                    <span className={`text-[10px] font-medium ${menuThemeClasses.labelMuted}`}>
-                      Ctrl+N
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      const newId = `tab-${Date.now()}`;
-                      setTabs((prev) => [
-                        ...prev,
-                        {
-                          id: newId,
-                          title: "Incognito",
-                          url: "chrome://incognito",
-                          history: ["chrome://incognito"],
-                          historyIndex: 0,
-                        },
-                      ]);
-                      setActiveTabId(newId);
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left ${menuThemeClasses.itemHover}`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Lock className="w-3.5 h-3.5 text-amber-500" />
-                      <span>New Incognito window</span>
-                    </div>
-                    <span className={`text-[10px] font-medium ${menuThemeClasses.labelMuted}`}>
-                      Ctrl+Shift+N
-                    </span>
-                  </button>
-                </div>
-
-                <div className="py-1">
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("profile")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <div
-                          className={`w-4.5 h-4.5 ${profileColor} text-white rounded-full flex items-center justify-center text-[9px] font-bold`}
-                        >
-                          K
-                        </div>
-                        <span className="font-semibold">{username}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="bg-blue-600/20 text-blue-400 px-1.5 py-0.5 rounded text-[9px] font-bold">
-                          Signed in
-                        </span>
-                        <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                      </div>
-                    </div>
-                    {activeSubMenu === "profile" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-48 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <div
-                          className={`px-3 py-1.5 border-b text-[10px] ${menuThemeClasses.labelMuted} ${theme === "dark" ? "border-zinc-700/50" : "border-gray-200/60"}`}
-                        >
-                          Manage user profile
-                        </div>
-                        <button
-                          onClick={() => {
-                            const newName = prompt("Enter new username:", username);
-                            if (newName) setUsername(newName);
-                            setActiveSubMenu(null);
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Edit profile name
-                        </button>
-                        <button
-                          onClick={() => {
-                            setIsSyncActive((prev) => !prev);
-                            alert(isSyncActive ? "Sync disabled!" : "Sync enabled!");
-                            setActiveSubMenu(null);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Sync is {isSyncActive ? "active" : "inactive"}
-                        </button>
-                        <div
-                          className={`px-3 py-1 text-[9px] font-semibold ${menuThemeClasses.labelMuted}`}
-                        >
-                          Choose color:
-                        </div>
-                        <div className="flex items-center gap-2 px-3 pb-1.5">
-                          {["bg-orange-600", "bg-blue-600", "bg-emerald-600", "bg-purple-600"].map(
-                            (c, i) => (
-                              <button
-                                key={i}
-                                onClick={() => {
-                                  setProfileColor(c);
-                                  setActiveSubMenu(null);
-                                }}
-                                className={`w-4 h-4 rounded-full ${c} border border-white hover:scale-110 transition-transform`}
-                              />
-                            ),
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("passwords")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Lock className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                        <span>Passwords and autofill</span>
-                      </div>
-                      <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                    </div>
-                    {activeSubMenu === "passwords" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-52 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <button
-                          onClick={() => {
-                            navigateTabTo("chrome://settings");
-                            setActiveSettingsSection("autofill");
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Password Manager
-                        </button>
-                        <button
-                          onClick={() => {
-                            navigateTabTo("chrome://settings");
-                            setActiveSettingsSection("autofill");
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Payment methods
-                        </button>
-                        <button
-                          onClick={() => {
-                            navigateTabTo("chrome://settings");
-                            setActiveSettingsSection("autofill");
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Addresses and more
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("history")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <History className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                        <span>History</span>
-                      </div>
-                      <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                    </div>
-                    {activeSubMenu === "history" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-56 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <button
-                          onClick={() => {
-                            navigateTabTo("chrome://history");
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md font-semibold text-blue-500 ${menuThemeClasses.itemHover}`}
-                        >
-                          Open History Center
-                        </button>
-                        <div
-                          className={`h-px my-1 ${theme === "dark" ? "bg-zinc-700/50" : "bg-gray-200/60"}`}
-                        />
-                        <div className={`px-3 py-1 text-[10px] ${menuThemeClasses.labelMuted}`}>
-                          Recent Tabs
-                        </div>
-                        {historyList.slice(0, 3).map((item, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => {
-                              navigateTabTo(item.url);
-                              setIsMenuOpen(false);
-                            }}
-                            className={`w-full text-left px-3 py-1 rounded-md truncate block ${menuThemeClasses.itemHover}`}
-                          >
-                            {item.title}
-                          </button>
-                        ))}
-                        {historyList.length === 0 && (
-                          <div className={`px-3 py-1 text-[10px] ${menuThemeClasses.labelMuted}`}>
-                            No recent tabs
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      navigateTabTo("chrome://downloads");
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left cursor-pointer ${menuThemeClasses.itemHover}`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <History
-                        className={`w-3.5 h-3.5 transform rotate-180 ${menuThemeClasses.iconColor}`}
-                      />
-                      <span>Downloads</span>
-                    </div>
-                    <span className={`text-[10px] font-medium ${menuThemeClasses.labelMuted}`}>
-                      Ctrl+J
-                    </span>
-                  </button>
-
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("bookmarks")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Star className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                        <span>Bookmarks and lists</span>
-                      </div>
-                      <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                    </div>
-                    {activeSubMenu === "bookmarks" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-56 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <button
-                          onClick={() => {
-                            navigateTabTo("chrome://bookmarks");
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md font-semibold text-blue-500 ${menuThemeClasses.itemHover}`}
-                        >
-                          Open Bookmarks Manager
-                        </button>
-                        <button
-                          onClick={() => {
-                            toggleBookmark();
-                            setActiveSubMenu(null);
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          {isBookmarked ? "Remove Bookmark" : "Bookmark this tab"}
-                        </button>
-                        <div
-                          className={`h-px my-1 ${theme === "dark" ? "bg-zinc-700/50" : "bg-gray-200/60"}`}
-                        />
-                        <div className={`px-3 py-1 text-[10px] ${menuThemeClasses.labelMuted}`}>
-                          My Bookmarks
-                        </div>
-                        {bookmarks.map((bookmark, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => {
-                              navigateTabTo(bookmark.url);
-                              setIsMenuOpen(false);
-                            }}
-                            className={`w-full text-left px-3 py-1 rounded-md truncate block ${menuThemeClasses.itemHover}`}
-                          >
-                            {bookmark.title}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("tabgroups")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Bookmark className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                        <span>Tab groups</span>
-                      </div>
-                      <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                    </div>
-                    {activeSubMenu === "tabgroups" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-48 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <button
-                          onClick={() => {
-                            const groupName = prompt("Enter new tab group name:", "Work");
-                            if (groupName) {
-                              alert(`Created tab group "${groupName}"!`);
-                            }
-                            setActiveSubMenu(null);
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Create new group
-                        </button>
-                        <button
-                          onClick={() => {
-                            alert("Active tab added to Work group!");
-                            setActiveSubMenu(null);
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Work Group
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("extensions")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Bookmark
-                          className={`w-3.5 h-3.5 transform rotate-90 ${menuThemeClasses.iconColor}`}
-                        />
-                        <span>Extensions</span>
-                      </div>
-                      <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                    </div>
-                    {activeSubMenu === "extensions" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-52 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <button
-                          onClick={() => {
-                            navigateTabTo("chrome://extensions");
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md font-semibold text-blue-500 ${menuThemeClasses.itemHover}`}
-                        >
-                          Manage Extensions
-                        </button>
-                        <div
-                          className={`h-px my-1 ${theme === "dark" ? "bg-zinc-700/50" : "bg-gray-200/60"}`}
-                        />
-                        <div className="flex items-center justify-between px-3 py-1.5">
-                          <span>AdBlocker Pro</span>
-                          <button
-                            onClick={() => setIsAdBlockerActive((prev) => !prev)}
-                            className={`w-7 h-4.5 rounded-full p-0.5 transition-colors ${isAdBlockerActive ? "bg-blue-500" : "bg-zinc-600"}`}
-                          >
-                            <div
-                              className={`w-3.5 h-3.5 rounded-full bg-white transition-transform duration-150 transform ${isAdBlockerActive ? "translate-x-3.5" : "translate-x-0"}`}
-                            />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      setHistoryList([]);
-                      alert("Browsing history cleared!");
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left cursor-pointer ${menuThemeClasses.itemHover}`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Trash2 className="w-3.5 h-3.5 text-rose-500" />
-                      <span>Delete browsing data...</span>
-                    </div>
-                    <span className={`text-[10px] font-medium ${menuThemeClasses.labelMuted}`}>
-                      Ctrl+Shift+Del
-                    </span>
-                  </button>
-                </div>
-
-                <div className="py-1.5 px-3 flex items-center justify-between">
-                  <span className={menuThemeClasses.labelMuted}>Zoom</span>
-                  <div
-                    className={`flex items-center gap-3 rounded-lg p-0.5 border ${menuThemeClasses.zoomBg}`}
-                  >
-                    <button
-                      onClick={() => setZoom((prev) => Math.max(50, prev - 10))}
-                      className={`w-5 h-5 flex items-center justify-center rounded text-base font-bold cursor-pointer ${menuThemeClasses.zoomBtnHover}`}
-                    >
-                      -
-                    </button>
-                    <span
-                      className={`w-8 text-center text-[10px] font-bold ${theme === "dark" ? "text-zinc-200" : "text-gray-800"}`}
-                    >
-                      {zoom}%
-                    </span>
-                    <button
-                      onClick={() => setZoom((prev) => Math.min(200, prev + 10))}
-                      className={`w-5 h-5 flex items-center justify-center rounded text-base font-bold cursor-pointer ${menuThemeClasses.zoomBtnHover}`}
-                    >
-                      +
-                    </button>
-                  </div>
-                  <button
-                    onClick={() => setIsFullScreen((prev) => !prev)}
-                    className={`p-1 rounded cursor-pointer ${menuThemeClasses.itemHover} ${isFullScreen ? "bg-blue-600/30 text-blue-400" : ""}`}
-                  >
-                    <Maximize className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-
-                <div className="py-1">
-                  <button
-                    onClick={() => {
-                      window.print();
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left cursor-pointer ${menuThemeClasses.itemHover}`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Printer className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                      <span>Print...</span>
-                    </div>
-                    <span className={`text-[10px] font-medium ${menuThemeClasses.labelMuted}`}>
-                      Ctrl+P
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setIsLensScanning(true);
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-left cursor-pointer ${menuThemeClasses.itemHover}`}
-                  >
-                    <Search className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                    <span>Search this tab with Google Lens</span>
-                  </button>
-
-                  <button
-                    disabled
-                    className="w-full flex items-center gap-2.5 px-3 py-1.5 opacity-55 cursor-not-allowed rounded-lg text-left text-zinc-500"
-                  >
-                    <Globe className="w-3.5 h-3.5" />
-                    <span>Translate...</span>
-                  </button>
-
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("find_edit")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Search className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                        <span>Find and edit</span>
-                      </div>
-                      <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                    </div>
-                    {activeSubMenu === "find_edit" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-48 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <button
-                          onClick={() => {
-                            setShowFindBar(true);
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover} flex items-center justify-between`}
-                        >
-                          <span>Find...</span>
-                          <span className={menuThemeClasses.labelMuted}>Ctrl+F</span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(activeTab.title + " - " + activeTab.url);
-                            alert("Copied title and URL to clipboard!");
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Copy
-                        </button>
-                        <button
-                          onClick={async () => {
-                            try {
-                              const text = await navigator.clipboard.readText();
-                              setAddressInput(text);
-                              alert(`Pasted text from clipboard: "${text}"`);
-                            } catch {
-                              alert("Please type or paste manually.");
-                            }
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Paste
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("cast_share")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Printer className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                        <span>Cast, save, and share</span>
-                      </div>
-                      <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                    </div>
-                    {activeSubMenu === "cast_share" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-52 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <button
-                          onClick={() => {
-                            setShowCastDialog(true);
-                            setIsCastConnecting(false);
-                            setCastDevice(null);
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Cast...
-                        </button>
-                        <button
-                          onClick={() => {
-                            const newDownload = {
-                              name: `${activeTab.title.toLowerCase().replace(/ /g, "_")}.html`,
-                              size: "1.2 MB",
-                              progress: "Complete",
-                              type: "HTML",
-                              date: "Today",
-                            };
-                            setDownloadsList((prev) => [newDownload, ...prev]);
-                            alert(`Saved Page: Added "${newDownload.name}" to Downloads list.`);
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Save page as...
-                        </button>
-                        <button
-                          onClick={() => {
-                            setShowQrCode(true);
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Create QR Code
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("tools")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Settings className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                        <span>More tools</span>
-                      </div>
-                      <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                    </div>
-                    {activeSubMenu === "tools" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-48 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <button
-                          onClick={() => {
-                            navigateTabTo("chrome://devtools");
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md font-semibold text-blue-500 ${menuThemeClasses.itemHover}`}
-                        >
-                          Developer tools
-                        </button>
-                        <button
-                          onClick={() => alert("Opening Task Manager...")}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Task Manager
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="py-1">
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveSubMenu("help")}
-                    onMouseLeave={() => setActiveSubMenu(null)}
-                  >
-                    <div
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg cursor-pointer ${menuThemeClasses.itemHover}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Info className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                        <span>Help</span>
-                      </div>
-                      <span className={menuThemeClasses.labelMuted}>&gt;</span>
-                    </div>
-                    {activeSubMenu === "help" && (
-                      <div
-                        className={`absolute right-full top-0 mr-1 w-48 border rounded-lg shadow-2xl p-1.5 z-50 text-xs ${menuThemeClasses.subBg}`}
-                      >
-                        <button
-                          onClick={() => {
-                            navigateTabTo("chrome://about");
-                            setIsMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          About Google Chrome
-                        </button>
-                        <button
-                          onClick={() => alert("Redirecting to Chrome Help Center...")}
-                          className={`w-full text-left px-3 py-1.5 rounded-md ${menuThemeClasses.itemHover}`}
-                        >
-                          Help Center
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      navigateTabTo("chrome://settings");
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-left cursor-pointer ${menuThemeClasses.itemHover}`}
-                  >
-                    <Settings className={`w-3.5 h-3.5 ${menuThemeClasses.iconColor}`} />
-                    <span>Settings</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      closeWindow("chrome");
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-left font-semibold cursor-pointer ${menuThemeClasses.exitBtn}`}
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                    <span>Exit</span>
-                  </button>
-                </div>
-              </div>
-            </>
+              <circle cx="8" cy="15" r="2" />
+              <circle cx="16" cy="15" r="2" />
+              <path d="M10 15h4M2 11a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v1H2z" />
+            </svg>
           )}
         </div>
       </div>
 
-      {/* BOOKMARKS BAR */}
-      {showBookmarks && (
-        <div
-          className={`shrink-0 px-4 py-1 border-b flex items-center gap-4 text-[10px] font-medium select-none ${themeClasses.bookmarksBg}`}
-        >
-          {bookmarks.map((bookmark, idx) => (
-            <button
-              key={idx}
-              onClick={() => navigateTabTo(bookmark.url)}
-              className={`flex items-center gap-1 px-2 py-0.5 rounded cursor-pointer transition-colors ${themeClasses.bookmarksText}`}
-            >
-              <Globe className="w-3 h-3 text-sky-600" /> {bookmark.title}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* BROWSER BODY RENDER */}
-      <div className="flex-1 bg-white relative min-h-0 overflow-hidden">
+      {/* Main Content Area */}
+      <div className="flex-1 relative overflow-hidden bg-white mb-[105px] z-10">
         {/* Google Lens scan effect layer */}
         {isLensScanning && (
           <div className="absolute inset-0 bg-black/60 z-50 flex items-center justify-center pointer-events-auto">
@@ -1430,11 +574,439 @@ const ChromeSection = ({
             isAdBlockerActive={isAdBlockerActive}
             setIsAdBlockerActive={setIsAdBlockerActive}
             settingsThemeClasses={settingsThemeClasses}
-            highlightText={highlightText}
-            findText={findText}
           />
         </div>
       </div>
+
+      {/* Chrome iOS Bottom Section (URL + Nav) */}
+      <div
+        className={`absolute bottom-0 left-0 right-0 border-t z-30 flex flex-col gap-3 pb-8 pt-3 px-4 shadow-lg shrink-0 ${
+          theme === "dark" ? "bg-[#282a2d]/95 border-zinc-800/80" : "bg-white/95 border-gray-200"
+        }`}
+      >
+        {/* Floating URL Address Bar */}
+        <div
+          className={`w-full h-11 border rounded-2xl flex items-center justify-between px-3.5 shadow-inner ${
+            theme === "dark"
+              ? "bg-[#35363a] border-zinc-700/50 text-white"
+              : "bg-gray-100 border-gray-200 text-gray-800"
+          }`}
+        >
+          <div className="flex items-center gap-2 max-w-[85%] flex-1">
+            <Lock size={12} className={theme === "dark" ? "text-zinc-400" : "text-emerald-600"} />
+            <input
+              type="text"
+              value={addressInput}
+              onChange={(e) => setAddressInput(e.target.value)}
+              placeholder={
+                activeTab.url === "chrome://incognito" ? "Search privately" : "Search or type URL"
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  navigateTabTo(addressInput);
+                }
+              }}
+              className={`text-sm bg-transparent border-none outline-none w-full text-center ${
+                theme === "dark"
+                  ? "text-zinc-200 placeholder-zinc-550"
+                  : "text-gray-800 placeholder-gray-400"
+              }`}
+            />
+          </div>
+          {activeTab.url !== "chrome://newtab" && (
+            <button
+              onClick={() => navigateTabTo(activeTab.url)}
+              className={`p-1 rounded-full transition-colors bg-transparent border-none outline-none cursor-pointer ${
+                theme === "dark"
+                  ? "text-zinc-400 hover:bg-zinc-850"
+                  : "text-gray-500 hover:bg-gray-250"
+              }`}
+            >
+              <RotateCw size={13} strokeWidth={2.2} />
+            </button>
+          )}
+        </div>
+
+        {/* Navigation Toolbar */}
+        <div className="flex justify-between items-center w-full px-2 mt-0.5">
+          <button
+            onClick={handleGoBack}
+            disabled={activeTab.historyIndex <= 0}
+            className="border-none bg-transparent cursor-pointer p-2 active:opacity-50 transition-opacity"
+          >
+            <ChevronLeft
+              size={24}
+              className={
+                activeTab.historyIndex > 0
+                  ? theme === "dark"
+                    ? "text-blue-400"
+                    : "text-blue-600"
+                  : theme === "dark"
+                    ? "text-zinc-600"
+                    : "text-gray-300"
+              }
+            />
+          </button>
+
+          <button
+            onClick={handleGoForward}
+            disabled={activeTab.historyIndex >= activeTab.history.length - 1}
+            className="border-none bg-transparent cursor-pointer p-2 active:opacity-50 transition-opacity"
+          >
+            <ChevronRight
+              size={24}
+              className={
+                activeTab.historyIndex < activeTab.history.length - 1
+                  ? theme === "dark"
+                    ? "text-blue-400"
+                    : "text-blue-600"
+                  : theme === "dark"
+                    ? "text-zinc-600"
+                    : "text-gray-300"
+              }
+            />
+          </button>
+
+          <button
+            onClick={handleNewTab}
+            className="border-none bg-transparent cursor-pointer p-2 active:scale-95 transition-transform"
+          >
+            <Plus size={24} className={theme === "dark" ? "text-blue-400" : "text-blue-600"} />
+          </button>
+
+          <button
+            onClick={() => setShowTabsOverview(true)}
+            className="border-none bg-transparent cursor-pointer p-2 active:scale-95 transition-transform relative"
+          >
+            <div
+              className={`w-5 h-5 border-2 rounded-md flex items-center justify-center text-[10px] font-bold ${
+                theme === "dark" ? "border-blue-400 text-blue-400" : "border-blue-600 text-blue-600"
+              }`}
+            >
+              {tabs.length}
+            </div>
+          </button>
+
+          <button
+            onClick={() => setIsMenuOpen(true)}
+            className="border-none bg-transparent cursor-pointer p-2 active:scale-95 transition-transform"
+          >
+            <MoreVertical
+              size={22}
+              className={theme === "dark" ? "text-blue-400" : "text-blue-600"}
+            />
+          </button>
+        </div>
+      </div>
+
+      {/* iOS Style Bottom Menu Sheet */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/45 z-50 flex flex-col justify-end"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <div
+            className={`rounded-t-[25px] p-5 pb-8 space-y-4 max-h-[80%] overflow-y-auto shadow-2xl transition-all ${
+              theme === "dark" ? "bg-[#282a2d] text-zinc-200" : "bg-[#f2f2f7] text-zinc-950"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-10 h-1.5 bg-gray-400/50 rounded-full mx-auto mb-2" />
+            <div className="flex justify-between items-center border-b pb-3 border-gray-400/20">
+              <h4 className="text-sm font-extrabold">Chrome Menu</h4>
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${
+                  theme === "dark" ? "bg-zinc-800 text-zinc-400" : "bg-gray-200 text-zinc-650"
+                }`}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3">
+              <button
+                onClick={() => {
+                  handleNewTab();
+                  setIsMenuOpen(false);
+                }}
+                className={`p-3 rounded-2xl flex flex-col items-center gap-1.5 border shadow-sm ${
+                  theme === "dark"
+                    ? "bg-[#35363a] border-zinc-700/40 text-white"
+                    : "bg-white border-zinc-200/50 text-gray-800"
+                }`}
+              >
+                <Plus size={18} className="text-blue-500" />
+                <span className="text-[10px] font-bold">New Tab</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  const newId = `tab-${Date.now()}`;
+                  setTabs((prev) => [
+                    ...prev,
+                    {
+                      id: newId,
+                      title: "Incognito",
+                      url: "chrome://incognito",
+                      history: ["chrome://incognito"],
+                      historyIndex: 0,
+                    },
+                  ]);
+                  setActiveTabId(newId);
+                  setIsMenuOpen(false);
+                }}
+                className={`p-3 rounded-2xl flex flex-col items-center gap-1.5 border shadow-sm ${
+                  theme === "dark"
+                    ? "bg-[#35363a] border-zinc-700/40 text-white"
+                    : "bg-white border-zinc-200/50 text-gray-800"
+                }`}
+              >
+                <Lock size={18} className="text-amber-500" />
+                <span className="text-[10px] font-bold">Incognito</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  navigateTabTo("chrome://bookmarks");
+                  setIsMenuOpen(false);
+                }}
+                className={`p-3 rounded-2xl flex flex-col items-center gap-1.5 border shadow-sm ${
+                  theme === "dark"
+                    ? "bg-[#35363a] border-zinc-700/40 text-white"
+                    : "bg-white border-zinc-200/50 text-gray-800"
+                }`}
+              >
+                <Star size={18} className="text-yellow-500 fill-yellow-500/20" />
+                <span className="text-[10px] font-bold">Bookmarks</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  navigateTabTo("chrome://history");
+                  setIsMenuOpen(false);
+                }}
+                className={`p-3 rounded-2xl flex flex-col items-center gap-1.5 border shadow-sm ${
+                  theme === "dark"
+                    ? "bg-[#35363a] border-zinc-700/40 text-white"
+                    : "bg-white border-zinc-200/50 text-gray-800"
+                }`}
+              >
+                <History size={18} className="text-emerald-500" />
+                <span className="text-[10px] font-bold">History</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  navigateTabTo("chrome://downloads");
+                  setIsMenuOpen(false);
+                }}
+                className={`p-3 rounded-2xl flex flex-col items-center gap-1.5 border shadow-sm ${
+                  theme === "dark"
+                    ? "bg-[#35363a] border-zinc-700/40 text-white"
+                    : "bg-white border-zinc-200/50 text-gray-800"
+                }`}
+              >
+                <History size={18} className="rotate-180 text-violet-500" />
+                <span className="text-[10px] font-bold">Downloads</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  navigateTabTo("chrome://settings");
+                  setIsMenuOpen(false);
+                }}
+                className={`p-3 rounded-2xl flex flex-col items-center gap-1.5 border shadow-sm ${
+                  theme === "dark"
+                    ? "bg-[#35363a] border-zinc-700/40 text-white"
+                    : "bg-white border-zinc-200/50 text-gray-800"
+                }`}
+              >
+                <Settings size={18} className="text-gray-500" />
+                <span className="text-[10px] font-bold">Settings</span>
+              </button>
+            </div>
+
+            <div
+              className={`rounded-2xl border divide-y overflow-hidden shadow-sm ${
+                theme === "dark"
+                  ? "bg-[#35363a] border-zinc-700/40 divide-zinc-700/35"
+                  : "bg-white border-zinc-200/50 divide-zinc-100"
+              }`}
+            >
+              <button
+                onClick={() => {
+                  toggleBookmark();
+                  setIsMenuOpen(false);
+                }}
+                className={`w-full text-left p-3.5 hover:bg-black/5 text-xs font-semibold flex items-center gap-3 bg-transparent border-none outline-none cursor-pointer ${
+                  theme === "dark" ? "text-white" : "text-gray-800"
+                }`}
+              >
+                <Star
+                  size={16}
+                  className={isBookmarked ? "text-yellow-500 fill-yellow-500" : "text-gray-400"}
+                />
+                <span>{isBookmarked ? "Remove Bookmark" : "Bookmark this page"}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowQrCode(true);
+                  setIsMenuOpen(false);
+                }}
+                className={`w-full text-left p-3.5 hover:bg-black/5 text-xs font-semibold flex items-center gap-3 bg-transparent border-none outline-none cursor-pointer ${
+                  theme === "dark" ? "text-white" : "text-gray-800"
+                }`}
+              >
+                <Globe size={16} className="text-zinc-400" />
+                <span>Create QR Code</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setHistoryList([]);
+                  alert("Browsing history cleared!");
+                  setIsMenuOpen(false);
+                }}
+                className={`w-full text-left p-3.5 hover:bg-black/5 text-xs font-semibold flex items-center gap-3 bg-transparent border-none outline-none cursor-pointer ${
+                  theme === "dark" ? "text-white" : "text-gray-800"
+                }`}
+              >
+                <Trash2 size={16} className="text-rose-500" />
+                <span>Clear history...</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setTheme(theme === "dark" ? "light" : "dark");
+                  setIsMenuOpen(false);
+                }}
+                className={`w-full text-left p-3.5 hover:bg-black/5 text-xs font-semibold flex items-center gap-3 bg-transparent border-none outline-none cursor-pointer ${
+                  theme === "dark" ? "text-white" : "text-gray-800"
+                }`}
+              >
+                {theme === "dark" ? (
+                  <>
+                    <Sun size={16} className="text-amber-500" />
+                    <span>Switch to Light Theme</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon size={16} className="text-[#007aff]" />
+                    <span>Switch to Dark Theme</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* iOS Style Tabs Grid Overview Screen */}
+      {showTabsOverview && (
+        <div
+          className={`fixed inset-0 z-50 flex flex-col justify-between p-4 ${
+            theme === "dark" ? "bg-zinc-950 text-white" : "bg-gray-100 text-gray-800"
+          }`}
+        >
+          <div className="flex items-center justify-between shrink-0 py-2">
+            <span
+              className={`text-xs font-extrabold tracking-wide uppercase ${theme === "dark" ? "text-zinc-400" : "text-gray-500"}`}
+            >
+              {tabs.length} {tabs.length === 1 ? "Tab" : "Tabs"}
+            </span>
+            <button
+              onClick={() => setShowTabsOverview(false)}
+              className={`text-sm font-bold bg-transparent border-none outline-none cursor-pointer ${
+                theme === "dark"
+                  ? "text-blue-400 hover:text-blue-300"
+                  : "text-blue-600 hover:text-blue-700"
+              }`}
+            >
+              Done
+            </button>
+          </div>
+
+          {/* Grid of Tabs */}
+          <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-4 my-4 content-start pb-24">
+            {tabs.map((tab) => {
+              const isTabActive = tab.id === activeTabId;
+              const tabDomain = getCleanDomain(tab.url);
+              return (
+                <div
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveTabId(tab.id);
+                    setShowTabsOverview(false);
+                  }}
+                  className={`relative h-44 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer flex flex-col justify-between p-3.5 ${
+                    theme === "dark"
+                      ? "bg-zinc-900 border-zinc-800 hover:border-zinc-700"
+                      : "bg-white border-gray-250 hover:border-gray-300"
+                  } ${
+                    isTabActive
+                      ? theme === "dark"
+                        ? "border-blue-500 ring-4 ring-blue-500/30"
+                        : "border-blue-600 ring-4 ring-blue-600/20"
+                      : ""
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <span className="text-[11px] font-bold truncate max-w-[80%]">{tab.title}</span>
+                    <button
+                      onClick={(e) => handleCloseTab(tab.id, e)}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center border-none outline-none cursor-pointer ${
+                        theme === "dark"
+                          ? "bg-zinc-800 text-zinc-400 hover:text-white"
+                          : "bg-gray-200 text-gray-650 hover:text-gray-850"
+                      }`}
+                    >
+                      <X size={10} />
+                    </button>
+                  </div>
+
+                  {/* Tab Mock Content Preview */}
+                  <div
+                    className={`flex-1 flex items-center justify-center mt-2 border rounded-xl shadow-inner overflow-hidden select-none ${
+                      theme === "dark"
+                        ? "bg-zinc-950/60 border-zinc-800 text-zinc-650"
+                        : "bg-gray-50 border-gray-200 text-gray-400"
+                    }`}
+                  >
+                    {tab.url === "chrome://newtab" ? (
+                      <span className="text-[9px] uppercase tracking-wider font-extrabold">
+                        New Tab
+                      </span>
+                    ) : tab.url === "chrome://incognito" ? (
+                      <span className="text-[9px] uppercase tracking-wider font-extrabold text-amber-500">
+                        Incognito
+                      </span>
+                    ) : (
+                      <Globe size={18} className="opacity-80" />
+                    )}
+                  </div>
+                  <div className="text-[8.5px] truncate pt-1 opacity-60">{tabDomain}</div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Bottom Bar inside Tab Switcher */}
+          <div className="flex justify-center items-center py-3 shrink-0">
+            <button
+              onClick={() => {
+                handleNewTab();
+                setShowTabsOverview(false);
+              }}
+              className={`flex items-center gap-1.5 px-6 py-2.5 rounded-full font-bold text-xs shadow-md active:scale-95 transition-transform bg-blue-600 text-white hover:bg-blue-700`}
+            >
+              <Plus size={14} strokeWidth={2.5} />
+              <span>New Tab</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

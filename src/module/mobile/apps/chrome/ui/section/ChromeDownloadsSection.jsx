@@ -1,113 +1,126 @@
-import React from "react";
-import { Settings, Star, History, Info } from "lucide-react";
+import React, { useState } from "react";
+import { Download, Trash2, Search } from "lucide-react";
 
 const ChromeDownloadsSection = ({
   settingsThemeClasses,
-  _theme,
+  theme,
   navigateTabTo,
   downloadsList,
   setDownloadsList,
   highlightText,
   findText,
-}) => (
-  <div
-    className={`absolute inset-0 flex select-none overflow-hidden ${settingsThemeClasses.contentBg}`}
-  >
+}) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredDownloads = downloadsList.filter(
+    (d) =>
+      d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      d.type.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  return (
     <div
-      className={`w-52 border-r shrink-0 py-6 px-4 flex flex-col gap-1.5 ${settingsThemeClasses.sidebarBg}`}
+      className={`absolute inset-0 flex flex-col select-none overflow-y-auto pb-10 ${settingsThemeClasses.contentBg}`}
     >
+      {/* iOS Style Top Header */}
       <div
-        className={`flex items-center gap-2 px-2 pb-4 border-b ${settingsThemeClasses.borderMuted} mb-3`}
+        className={`shrink-0 px-4 py-3 flex items-center justify-between border-b ${
+          theme === "dark"
+            ? "bg-[#202124] border-zinc-800/80 text-white"
+            : "bg-white border-zinc-200/50 text-gray-800"
+        }`}
       >
-        <History className="w-5 h-5 text-blue-500 transform rotate-180" />
-        <span className="font-bold text-sm">Downloads</span>
-      </div>
-      <button
-        onClick={() => navigateTabTo("chrome://settings")}
-        className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400"
-      >
-        <Settings className="w-4 h-4" /> Appearance
-      </button>
-      <button
-        onClick={() => navigateTabTo("chrome://bookmarks")}
-        className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400"
-      >
-        <Star className="w-4 h-4" /> Bookmarks
-      </button>
-      <button
-        onClick={() => navigateTabTo("chrome://history")}
-        className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400"
-      >
-        <History className="w-4 h-4" /> History
-      </button>
-      <button className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 text-left w-full">
-        <History className="w-4 h-4 transform rotate-180" /> Downloads
-      </button>
-      <button
-        onClick={() => navigateTabTo("chrome://about")}
-        className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400"
-      >
-        <Info className="w-4 h-4" /> About Chrome
-      </button>
-    </div>
-    <div className="flex-1 overflow-y-auto p-8 max-w-3xl space-y-6">
-      <div
-        className={`flex items-center justify-between border-b ${settingsThemeClasses.borderMuted} pb-4`}
-      >
-        <h2 className="text-xl font-bold">Downloads</h2>
+        <span className="text-xs font-bold">Downloads</span>
         {downloadsList.length > 0 && (
           <button
             onClick={() => setDownloadsList([])}
-            className="text-xs font-semibold text-rose-500 hover:bg-rose-500/10 px-3 py-1.5 rounded-lg transition-colors"
+            className="text-xs font-bold text-rose-500 active:opacity-60 bg-transparent border-none outline-none cursor-pointer"
           >
             Clear All
           </button>
         )}
       </div>
-      <div className="space-y-4">
-        {downloadsList.map((d, index) => (
+
+      <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+        {/* Search Bar */}
+        {downloadsList.length > 0 && (
           <div
-            key={index}
-            className={`p-4 rounded-xl border flex items-center justify-between gap-4 ${settingsThemeClasses.cardBg}`}
+            className={`w-full flex items-center border rounded-xl px-3 py-2 text-xs ${
+              theme === "dark"
+                ? "bg-zinc-900 border-zinc-800 text-zinc-200"
+                : "bg-white border-gray-200 text-gray-700"
+            }`}
           >
-            <div className="flex items-center gap-3 min-w-0">
-              <div
-                className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 font-bold text-xs ${d.type === "PDF" ? "bg-red-500/10 text-red-500" : d.type === "ZIP" ? "bg-blue-500/10 text-blue-500" : "bg-emerald-500/10 text-emerald-500"}`}
-              >
-                {d.type}
-              </div>
-              <div className="min-w-0">
-                <h4 className="text-xs font-bold truncate">{highlightText(d.name, findText)}</h4>
-                <p className={`text-[10px] ${settingsThemeClasses.textMuted}`}>
-                  {d.size} &bull; {d.progress} &bull; {d.date}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => alert(`Downloading ${d.name} again...`)}
-                className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] font-bold cursor-pointer"
-              >
-                Download Again
-              </button>
-              <button
-                onClick={() => setDownloadsList((prev) => prev.filter((_, i) => i !== index))}
-                className="px-3 py-1 hover:bg-rose-500/10 text-rose-500 dark:text-rose-400 border border-rose-200 dark:border-rose-900/30 rounded text-[10px] font-semibold cursor-pointer"
-              >
-                Remove
-              </button>
-            </div>
+            <Search className="w-3.5 h-3.5 text-gray-400 mr-2 shrink-0" />
+            <input
+              type="text"
+              placeholder="Search Downloads"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`w-full bg-transparent border-none outline-none ${
+                theme === "dark"
+                  ? "text-zinc-200 placeholder-zinc-550"
+                  : "text-gray-800 placeholder-gray-450"
+              }`}
+            />
           </div>
-        ))}
-        {downloadsList.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-center text-gray-400 gap-3">
-            <History className="w-10 h-10 transform rotate-180 stroke-[1.5]" />
-            <p className="text-xs">No downloads found.</p>
+        )}
+
+        {/* Downloads List */}
+        {filteredDownloads.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center text-gray-400 gap-2.5">
+            <Download className="w-8 h-8 stroke-[1.5]" />
+            <p className="text-xs font-medium">No downloaded files found.</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {filteredDownloads.map((d, index) => (
+              <div
+                key={index}
+                className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 ${settingsThemeClasses.cardBg}`}
+              >
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div
+                    className={`w-9.5 h-9.5 rounded-lg flex items-center justify-center shrink-0 font-bold text-[10px] ${
+                      d.type === "PDF"
+                        ? "bg-red-500/10 text-red-500"
+                        : d.type === "ZIP"
+                          ? "bg-blue-500/10 text-blue-500"
+                          : "bg-emerald-500/10 text-emerald-500"
+                    }`}
+                  >
+                    {d.type}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-xs font-bold truncate">
+                      {highlightText(d.name, findText || searchQuery)}
+                    </h4>
+                    <p className={`text-[9px] ${settingsThemeClasses.textMuted}`}>
+                      {d.size} &bull; {d.progress} &bull; {d.date}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => alert(`Downloading ${d.name} again...`)}
+                    className="px-2.5 py-1 bg-blue-650 hover:bg-blue-700 text-white rounded-md text-[9px] font-bold cursor-pointer"
+                  >
+                    Fetch
+                  </button>
+                  <button
+                    onClick={() => setDownloadsList((prev) => prev.filter((_, i) => i !== index))}
+                    className="p-1 hover:bg-rose-500/10 text-gray-400 hover:text-rose-500 rounded transition-all"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default ChromeDownloadsSection;

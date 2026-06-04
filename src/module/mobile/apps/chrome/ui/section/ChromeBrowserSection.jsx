@@ -182,19 +182,19 @@ const ChromeBrowserSection = ({
     {/* Mock GitHub Profile */}
     {isGitHubUrl && (
       <div className="absolute inset-0 bg-[#0d1117] text-[#c9d1d9] flex flex-col font-sans select-text overflow-y-auto z-0">
-        <div className="bg-[#161b22] px-6 py-3 border-b border-[#30363d] flex items-center justify-between shrink-0 select-none">
+        <div className="bg-[#161b22] px-4 md:px-6 py-3 border-b border-[#30363d] flex items-center justify-between shrink-0 select-none">
           <div className="flex items-center gap-3">
             <img src="/images/github.png" alt="GitHub Logo" className="w-8 h-8 invert" />
             <span className="font-bold text-white text-sm">GitHub</span>
-            <div className="bg-[#0d1117] border border-[#30363d] px-3 py-1 rounded-md text-[11px] w-64 text-[#8b949e]">
+            <div className="bg-[#0d1117] border border-[#30363d] px-3 py-1 rounded-md text-[11px] w-64 text-[#8b949e] hidden md:block">
               Search or jump to...
             </div>
           </div>
           <div className="flex items-center gap-4 text-xs text-[#8b949e] font-semibold">
-            <span>Pull requests</span>
-            <span>Issues</span>
-            <span>Codespaces</span>
-            <span>Marketplace</span>
+            <span className="hidden md:inline">Pull requests</span>
+            <span className="hidden md:inline">Issues</span>
+            <span className="hidden md:inline">Codespaces</span>
+            <span className="hidden md:inline">Marketplace</span>
             <div className="w-6 h-6 rounded-full overflow-hidden border border-[#30363d]">
               <img
                 src="/images/profile.jpg"
@@ -205,19 +205,26 @@ const ChromeBrowserSection = ({
           </div>
         </div>
 
-        <div className="flex-1 flex p-8 gap-8 max-w-6xl mx-auto w-full min-h-0">
-          <div className="w-64 shrink-0 space-y-4">
-            <div className="w-60 h-60 rounded-full overflow-hidden border-2 border-[#30363d] shadow-lg">
-              <img
-                src="/images/profile.jpg"
-                alt="Kuldeep Rajput avatar"
-                className="w-full h-full object-cover"
-              />
+        <div className="flex-1 flex flex-col md:flex-row p-4 md:p-8 gap-6 md:gap-8 max-w-6xl mx-auto w-full min-h-0">
+          <div className="w-full md:w-64 shrink-0 space-y-4">
+            <div className="flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-4">
+              <div className="w-20 h-20 md:w-60 md:h-60 rounded-full overflow-hidden border-2 border-[#30363d] shadow-lg shrink-0">
+                <img
+                  src="/images/profile.jpg"
+                  alt="Kuldeep Rajput avatar"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="space-y-1">
+                <h2 className="text-lg md:text-xl font-bold text-white leading-tight">
+                  Kuldeep Rajput
+                </h2>
+                <h3 className="text-[#8b949e] text-xs md:text-sm font-semibold">
+                  kuldeeprajput-dev
+                </h3>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-bold text-white leading-tight">Kuldeep Rajput</h2>
-              <h3 className="text-[#8b949e] text-sm">kuldeeprajput-dev</h3>
-            </div>
+
             <button className="w-full py-1.5 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] rounded-md font-semibold text-xs transition-colors">
               Follow
             </button>
@@ -225,7 +232,7 @@ const ChromeBrowserSection = ({
               Full Stack Developer | Building interactive macOS web portfolios, screens, and custom
               browser simulations.
             </p>
-            <div className="text-xs text-[#8b949e] space-y-1.5 pt-2">
+            <div className="text-xs text-[#8b949e] space-y-1.5 pt-1 flex flex-row md:flex-col flex-wrap gap-x-4 gap-y-1">
               <div className="flex items-center gap-1.5">
                 <span>{"\uD83D\uDCCD"}</span> Mumbai, India
               </div>
@@ -244,7 +251,7 @@ const ChromeBrowserSection = ({
           </div>
 
           <div className="flex-1 space-y-6">
-            <div className="flex gap-6 border-b border-[#30363d] pb-2 text-xs font-semibold text-[#8b949e] select-none">
+            <div className="flex gap-4 md:gap-6 border-b border-[#30363d] pb-2 text-xs font-semibold text-[#8b949e] select-none overflow-x-auto whitespace-nowrap scrollbar-none">
               <span className="text-white border-b-2 border-[#f78166] pb-2">Overview</span>
               <span>
                 Repositories{" "}
@@ -257,7 +264,7 @@ const ChromeBrowserSection = ({
 
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-white">Pinned</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-[#161b22] border border-[#30363d] rounded-md p-4 space-y-3 flex flex-col justify-between hover:border-[#8b949e]/50 transition-colors">
                   <div>
                     <div className="flex items-center justify-between text-xs">
@@ -378,40 +385,40 @@ const ChromeBrowserSection = ({
     {/* Mock LinkedIn Profile */}
     {isLinkedInUrl && (
       <div className="absolute inset-0 bg-[#f3f2f0] text-gray-800 flex flex-col font-sans select-text overflow-y-auto z-0">
-        <div className="bg-white border-b border-gray-200 px-6 py-2 flex items-center justify-between shrink-0 select-none shadow-sm">
+        <div className="bg-white border-b border-gray-200 px-4 md:px-6 py-2 flex items-center justify-between shrink-0 select-none shadow-sm">
           <div className="flex items-center gap-3">
             <img
               src="/images/linkedin.png"
               alt="LinkedIn Logo"
               className="w-8 h-8 object-contain"
             />
-            <div className="bg-[#edf3f8] border-none px-3 py-1.5 rounded-md text-[11px] w-64 text-gray-500 flex items-center gap-2">
+            <div className="bg-[#edf3f8] border-none px-3 py-1.5 rounded-md text-[11px] w-64 text-gray-500 items-center gap-2 hidden md:flex">
               <span>{"\uD83D\uDD0D"}</span> Search members, jobs...
             </div>
           </div>
-          <div className="flex items-center gap-6 text-[10px] text-gray-500 font-semibold">
-            <span className="flex flex-col items-center cursor-pointer">
+          <div className="flex items-center gap-4 md:gap-6 text-[10px] text-gray-500 font-semibold">
+            <span className="hidden md:flex flex-col items-center cursor-pointer">
               {"\uD83C\uDFE0"} <span>Home</span>
             </span>
-            <span className="flex flex-col items-center cursor-pointer">
+            <span className="hidden md:flex flex-col items-center cursor-pointer">
               {"\uD83D\uDC65"} <span>My Network</span>
             </span>
-            <span className="flex flex-col items-center cursor-pointer">
+            <span className="hidden md:flex flex-col items-center cursor-pointer">
               {"\uD83D\uDCBC"} <span>Jobs</span>
             </span>
-            <span className="flex flex-col items-center cursor-pointer">
+            <span className="hidden md:flex flex-col items-center cursor-pointer">
               {"\uD83D\uDCAC"} <span>Messaging</span>
             </span>
-            <span className="flex flex-col items-center cursor-pointer">
+            <span className="hidden md:flex flex-col items-center cursor-pointer">
               {"\uD83D\uDD14"} <span>Notifications</span>
             </span>
-            <div className="flex flex-col items-center border-l pl-4 cursor-pointer">
+            <div className="flex flex-col items-center border-l md:pl-4 pl-0 cursor-pointer">
               <img
                 src="/images/profile.jpg"
                 alt="Me avatar"
                 className="w-5 h-5 rounded-full object-cover"
               />
-              <span>Me {"\u25BC"}</span>
+              <span className="hidden md:inline">Me {"\u25BC"}</span>
             </div>
           </div>
         </div>
@@ -515,7 +522,7 @@ const ChromeBrowserSection = ({
     {/* Mock Twitter/X Profile */}
     {isTwitterUrl && (
       <div className="absolute inset-0 bg-black text-white flex font-sans select-text overflow-hidden z-0">
-        <div className="w-20 border-r border-zinc-800 flex flex-col items-center py-4 justify-between shrink-0 select-none">
+        <div className="hidden md:flex w-20 border-r border-zinc-800 flex-col items-center py-4 justify-between shrink-0 select-none">
           <div className="space-y-6 flex flex-col items-center">
             <img src="/images/x.png" alt="X logo" className="w-6 h-6 invert" />
             <span className="text-lg cursor-pointer">{"\uD83C\uDFE0"}</span>
@@ -589,14 +596,14 @@ const ChromeBrowserSection = ({
             </div>
           </div>
 
-          <div className="flex border-b border-zinc-800 text-xs font-bold text-zinc-500 text-center select-none shrink-0">
-            <div className="flex-1 py-3 text-white border-b-2 border-sky-500 font-extrabold">
+          <div className="flex border-b border-zinc-800 text-xs font-bold text-zinc-500 text-center select-none shrink-0 overflow-x-auto whitespace-nowrap scrollbar-none">
+            <div className="px-4 py-3 text-white border-b-2 border-sky-500 font-extrabold cursor-pointer">
               Posts
             </div>
-            <div className="flex-1 py-3 font-semibold">Replies</div>
-            <div className="flex-1 py-3 font-semibold">Highlights</div>
-            <div className="flex-1 py-3 font-semibold">Media</div>
-            <div className="flex-1 py-3 font-semibold">Likes</div>
+            <div className="px-4 py-3 font-semibold cursor-pointer">Replies</div>
+            <div className="px-4 py-3 font-semibold cursor-pointer">Highlights</div>
+            <div className="px-4 py-3 font-semibold cursor-pointer">Media</div>
+            <div className="px-4 py-3 font-semibold cursor-pointer">Likes</div>
           </div>
 
           <div className="divide-y divide-zinc-800">
@@ -983,75 +990,50 @@ root.render(<App />);`}</div>
     {/* About Chrome Page */}
     {activeTab.url === "chrome://about" && (
       <div
-        className={`absolute inset-0 flex select-none overflow-hidden ${settingsThemeClasses.contentBg}`}
+        className={`absolute inset-0 flex flex-col select-none overflow-y-auto pb-10 ${settingsThemeClasses.contentBg}`}
       >
+        {/* iOS Style Top Header */}
         <div
-          className={`w-52 border-r shrink-0 py-6 px-4 flex flex-col gap-1.5 ${settingsThemeClasses.sidebarBg}`}
+          className={`shrink-0 px-4 py-3 flex items-center justify-between border-b ${
+            theme === "dark"
+              ? "bg-[#202124] border-zinc-800/80 text-white"
+              : "bg-white border-zinc-200/50 text-gray-800"
+          }`}
         >
-          <div
-            className={`flex items-center gap-2 px-2 pb-4 border-b ${settingsThemeClasses.borderMuted} mb-3`}
-          >
-            <Globe className="w-5 h-5 text-blue-500" />
-            <span className="font-bold text-sm">Chrome OS</span>
-          </div>
-          <button
-            onClick={() => navigateTabTo("chrome://settings")}
-            className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400"
-          >
-            <Settings className="w-4 h-4" /> Appearance
-          </button>
-          <button
-            onClick={() => navigateTabTo("chrome://bookmarks")}
-            className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400"
-          >
-            <Star className="w-4 h-4" /> Bookmarks
-          </button>
-          <button
-            onClick={() => navigateTabTo("chrome://history")}
-            className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400"
-          >
-            <History className="w-4 h-4" /> History
-          </button>
-          <button
-            onClick={() => navigateTabTo("chrome://downloads")}
-            className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-left hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400"
-          >
-            <History className="w-4 h-4 transform rotate-180" /> Downloads
-          </button>
-          <button className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 text-left">
-            <Info className="w-4 h-4" /> About Chrome
-          </button>
+          <span className="text-xs font-bold">About Chrome</span>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-8 max-w-2xl space-y-6">
+        <div className="flex-1 p-6 max-w-md mx-auto space-y-6">
           <div
-            className={`flex flex-col items-center text-center gap-4 py-8 border-b ${settingsThemeClasses.borderMuted}`}
+            className={`flex flex-col items-center text-center gap-4 py-6 border-b ${settingsThemeClasses.borderMuted}`}
           >
-            <div className="w-20 h-20 rounded-full border-4 border-white dark:border-[#35363a] shadow-lg flex items-center justify-center relative overflow-hidden bg-white">
+            <div className="w-16 h-16 rounded-full border-4 border-white dark:border-[#35363a] shadow-lg flex items-center justify-center relative overflow-hidden bg-white">
               <div className="absolute inset-0 bg-blue-500 rounded-full scale-[0.4] z-10 border border-white" />
               <div className="absolute top-0 left-0 w-full h-1/2 bg-red-500 transform origin-bottom -skew-x-[30deg]" />
               <div className="absolute bottom-0 right-0 w-full h-1/2 bg-green-500 transform origin-top -skew-y-[30deg]" />
               <div className="absolute top-0 right-0 w-full h-full bg-yellow-500 transform origin-left -skew-x-[60deg] scale-x-[0.5]" />
             </div>
             <div className="space-y-1">
-              <h2 className="text-xl font-extrabold tracking-tight">Google Chrome</h2>
-              <p className="text-xs text-gray-400">
+              <h2 className="text-sm font-extrabold tracking-tight">Google Chrome</h2>
+              <p className={`text-[10px] ${settingsThemeClasses.textMuted}`}>
                 Version 125.0.6422.112 (Official Build) (64-bit)
               </p>
             </div>
           </div>
 
-          <div className={`space-y-4 text-xs leading-relaxed ${settingsThemeClasses.textMuted}`}>
-            <p className="font-semibold text-gray-700 dark:text-gray-300">
+          <div
+            className={`space-y-3.5 text-xs leading-relaxed text-center ${settingsThemeClasses.textMuted}`}
+          >
+            <p className="font-bold text-gray-700 dark:text-gray-300">
               Google Chrome is up to date
             </p>
-            <p>
-              This mockup browser runs inside the Antigravity MacOS portfolio interface. It features
+            <p className="text-[11px]">
+              This mockup browser runs inside the Antigravity macOS portfolio interface. It features
               customizable themes, bookmark controls, default search configurations, and whitelisted
               recursive site rendering.
             </p>
-            <p className="text-[10px] text-gray-400 pt-4">
-              Copyright 2026 Google DeepMind. All rights reserved. Chrome and Google are registered
+            <p className="text-[9px] text-gray-400 pt-3">
+              © 2026 Google DeepMind. All rights reserved. Chrome and Google are registered
               trademarks of Google LLC.
             </p>
           </div>
