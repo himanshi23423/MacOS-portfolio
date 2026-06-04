@@ -382,11 +382,32 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                     background: app.canOpen ? "transparent" : "rgba(255,255,255,0.1)",
                   }}
                 >
-                  <img
-                    src={`/images/${app.icon}`}
-                    alt={app.name}
-                    className="w-full h-full object-cover rounded-[16px]"
-                  />
+                  {app.id === "calendar" ? (
+                    <div className="w-full h-full bg-white flex flex-col items-center justify-between select-none pb-1">
+                      <div className="text-[#ff3b30] text-[8px] font-bold mt-1 uppercase tracking-tight leading-none">
+                        {
+                          [
+                            "Sunday",
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                          ][new Date().getDay()]
+                        }
+                      </div>
+                      <div className="text-gray-900 font-semibold text-[24px] leading-none -mt-1 font-sans">
+                        {new Date().getDate()}
+                      </div>
+                    </div>
+                  ) : (
+                    <img
+                      src={`/images/${app.icon}`}
+                      alt={app.name}
+                      className="w-full h-full object-cover rounded-[16px]"
+                    />
+                  )}
                 </div>
                 <span className="text-[10px] font-medium text-center text-white leading-tight max-w-[68px] drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.85)]">
                   {app.name}

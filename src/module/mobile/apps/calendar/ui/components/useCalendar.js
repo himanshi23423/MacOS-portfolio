@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
 const useCalendar = () => {
-  const [currentDate] = useState(new Date(2026, 4, 26));
-  const [selectedDate, setSelectedDate] = useState(new Date(2026, 4, 26));
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [currentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const [month, setMonth] = useState(currentDate.getMonth());
   const [year, setYear] = useState(currentDate.getFullYear());
@@ -17,7 +17,7 @@ const useCalendar = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventTitle, setEventTitle] = useState("");
-  const [eventDate, setEventDate] = useState("2026-05-26");
+  const [eventDate, setEventDate] = useState(new Date().toLocaleDateString("en-CA"));
   const [eventStart, setEventStart] = useState("09:00");
   const [eventEnd, setEventEnd] = useState("10:00");
   const [eventCategory, setEventCategory] = useState("personal");
@@ -28,54 +28,60 @@ const useCalendar = () => {
   const [events, setEvents] = useState(() => {
     const saved = localStorage.getItem("macos_portfolio_calendar_events");
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { console.error(e); }
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
     }
+
+    const todayStr = new Date().toLocaleDateString("en-CA");
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toLocaleDateString("en-CA");
+
+    const dayAfter = new Date();
+    dayAfter.setDate(dayAfter.getDate() + 2);
+    const dayAfterStr = dayAfter.toLocaleDateString("en-CA");
+
     return [
       {
         id: "1",
-        title: "Kuldeep's Birthday 🎂",
-        date: "2026-05-26",
-        start: "00:00",
-        end: "23:59",
+        title: "Kuldeep's Portfolio Review 🎂",
+        date: todayStr,
+        start: "09:00",
+        end: "10:30",
         category: "birthdays",
-        desc: "Celebrate Kuldeep's birthday and review macos portfolio improvements!"
+        desc: "Celebrate portfolio launch and review all recent iPhone 16/17/18 app updates!",
       },
       {
         id: "2",
-        title: "Antigravity Code Review 🚀",
-        date: "2026-05-26",
+        title: "Antigravity AI Code Sync 🚀",
+        date: todayStr,
         start: "14:00",
         end: "15:30",
         category: "work",
-        desc: "Review design elements, dynamic dock, and calendar integration."
+        desc: "Review final code layout, check dynamic widgets, and clean calendar grid view.",
       },
       {
         id: "3",
-        title: "Lunch with Design Team",
-        date: "2026-05-27",
+        title: "Lunch with UX/UI Team 🍕",
+        date: tomorrowStr,
         start: "12:30",
         end: "13:30",
         category: "personal",
-        desc: "Discuss visual animations and glassmorphism elements."
+        desc: "Discuss visual micro-animations and responsive spacing.",
       },
       {
         id: "4",
-        title: "Project Alpha Release 📦",
-        date: "2026-05-29",
-        start: "09:00",
-        end: "10:30",
+        title: "App Release Deployment 📦",
+        date: dayAfterStr,
+        start: "10:00",
+        end: "11:30",
         category: "work",
-        desc: "Build bundle and perform end-to-end user experience checks."
+        desc: "Build bundle and run automated end-to-end tests.",
       },
-      {
-        id: "5",
-        title: "Memorial Day Holiday 🇺🇸",
-        date: "2026-05-25",
-        start: "00:00",
-        end: "23:59",
-        category: "holidays",
-        desc: "Federal public holiday."
-      }
     ];
   });
 
@@ -145,12 +151,12 @@ const useCalendar = () => {
 
   const gridCells = generateGrid();
 
-  const getFilteredEvents = () => events.filter(event => activeCategories[event.category]);
+  const getFilteredEvents = () => events.filter((event) => activeCategories[event.category]);
   const filteredEvents = getFilteredEvents();
 
   const getEventsForDate = (dateObj) => {
-    const dateString = dateObj.toLocaleDateString('en-CA');
-    return filteredEvents.filter(event => event.date === dateString);
+    const dateString = dateObj.toLocaleDateString("en-CA");
+    return filteredEvents.filter((event) => event.date === dateString);
   };
 
   const handleAddEvent = (e) => {
@@ -174,44 +180,79 @@ const useCalendar = () => {
   };
 
   const handleDeleteEvent = (eventId) => {
-    setEvents((prev) => prev.filter(ev => ev.id !== eventId));
+    setEvents((prev) => prev.filter((ev) => ev.id !== eventId));
     if (dayEventsPopover) {
-      setDayEventsPopover(prev => ({
+      setDayEventsPopover((prev) => ({
         ...prev,
-        events: prev.events.filter(ev => ev.id !== eventId)
+        events: prev.events.filter((ev) => ev.id !== eventId),
       }));
     }
   };
 
   const triggerAddEventOnDate = (dateObj) => {
-    const formattedDate = dateObj.toLocaleDateString('en-CA');
+    const formattedDate = dateObj.toLocaleDateString("en-CA");
     setEventDate(formattedDate);
     setIsModalOpen(true);
   };
 
   const isToday = (dateObj) => {
     const today = new Date();
-    return dateObj.getDate() === today.getDate() &&
-           dateObj.getMonth() === today.getMonth() &&
-           dateObj.getFullYear() === today.getFullYear();
+    return (
+      dateObj.getDate() === today.getDate() &&
+      dateObj.getMonth() === today.getMonth() &&
+      dateObj.getFullYear() === today.getFullYear()
+    );
   };
 
   const isSelected = (dateObj) => {
-    return dateObj.getDate() === selectedDate.getDate() &&
-           dateObj.getMonth() === selectedDate.getMonth() &&
-           dateObj.getFullYear() === selectedDate.getFullYear();
+    return (
+      dateObj.getDate() === selectedDate.getDate() &&
+      dateObj.getMonth() === selectedDate.getMonth() &&
+      dateObj.getFullYear() === selectedDate.getFullYear()
+    );
   };
 
   return {
-    month, year, selectedDate, isSidebarOpen, activeCategories,
-    isModalOpen, eventTitle, eventDate, eventStart, eventEnd,
-    eventCategory, eventDesc, dayEventsPopover, events, gridCells, filteredEvents,
-    setMonth, setYear, setSelectedDate, setIsSidebarOpen, setActiveCategories,
-    setIsModalOpen, setEventTitle, setEventDate, setEventStart, setEventEnd,
-    setEventCategory, setEventDesc, setDayEventsPopover, setEvents,
-    toggleCategory, handlePrevMonth, handleNextMonth, handleGoToToday,
-    getEventsForDate, handleAddEvent, handleDeleteEvent, triggerAddEventOnDate,
-    isToday, isSelected,
+    month,
+    year,
+    selectedDate,
+    isSidebarOpen,
+    activeCategories,
+    isModalOpen,
+    eventTitle,
+    eventDate,
+    eventStart,
+    eventEnd,
+    eventCategory,
+    eventDesc,
+    dayEventsPopover,
+    events,
+    gridCells,
+    filteredEvents,
+    setMonth,
+    setYear,
+    setSelectedDate,
+    setIsSidebarOpen,
+    setActiveCategories,
+    setIsModalOpen,
+    setEventTitle,
+    setEventDate,
+    setEventStart,
+    setEventEnd,
+    setEventCategory,
+    setEventDesc,
+    setDayEventsPopover,
+    setEvents,
+    toggleCategory,
+    handlePrevMonth,
+    handleNextMonth,
+    handleGoToToday,
+    getEventsForDate,
+    handleAddEvent,
+    handleDeleteEvent,
+    triggerAddEventOnDate,
+    isToday,
+    isSelected,
   };
 };
 
