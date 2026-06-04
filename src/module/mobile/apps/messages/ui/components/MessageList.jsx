@@ -42,6 +42,7 @@ const MessageList = ({
           <input
             type="text"
             placeholder="Search"
+            autoComplete="off"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="w-full bg-transparent text-sm focus:outline-none border-none outline-none text-gray-800"

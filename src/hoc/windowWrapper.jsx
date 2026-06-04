@@ -49,12 +49,37 @@ const windowWrapper = (Component, windowKey) => {
       prevOpenRef.current = isOpen;
     }, [isOpen, isMobile]);
 
+    const [viewportHeight, setViewportHeight] = useState("100dvh");
+    const [viewportOffsetTop, setViewportOffsetTop] = useState(0);
+
+    useEffect(() => {
+      if (!isMobile) return;
+      const handleViewportChange = () => {
+        if (window.visualViewport) {
+          setViewportHeight(`${window.visualViewport.height}px`);
+          setViewportOffsetTop(window.visualViewport.offsetTop);
+          if (window.scrollY !== 0) {
+            window.scrollTo(0, 0);
+          }
+        }
+      };
+
+      handleViewportChange();
+
+      window.visualViewport?.addEventListener("resize", handleViewportChange);
+      window.visualViewport?.addEventListener("scroll", handleViewportChange);
+      return () => {
+        window.visualViewport?.removeEventListener("resize", handleViewportChange);
+        window.visualViewport?.removeEventListener("scroll", handleViewportChange);
+      };
+    }, [isMobile, isOpen]);
+
     const mobileStyles = {
       position: "fixed",
-      top: 0,
+      top: `${viewportOffsetTop}px`,
       left: 0,
       width: "100dvw",
-      height: "100dvh",
+      height: viewportHeight,
       zIndex: isOpen ? zIndex : -1,
       background: "#f2f2f7",
       flexDirection: "column",

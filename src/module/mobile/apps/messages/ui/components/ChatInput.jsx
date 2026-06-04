@@ -36,6 +36,8 @@ const ChatInput = ({ inputText, onInputChange, onSend, sendAttachment }) => {
 
         <input
           type="text"
+          name="message"
+          autoComplete="off"
           value={inputText}
           onChange={(e) => onInputChange(e.target.value)}
           placeholder="iMessage"
