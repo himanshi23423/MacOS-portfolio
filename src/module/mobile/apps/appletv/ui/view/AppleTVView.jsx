@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import windowWrapper from "@hoc/windowWrapper";
 import PlayerOverlay from "../components/PlayerOverlay";
+import ProfileOverlay from "../components/ProfileOverlay";
 import { FEATURED_SHOW } from "../components/appleTvCatalog";
 import AppleTVHeaderSection from "../section/AppleTVHeaderSection";
 import AppleTVSection from "../section/AppleTVSection";
@@ -9,19 +10,30 @@ const AppleTVView = () => {
   const [activeTab, setActiveTab] = useState("watchNow");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeVideo, setActiveVideo] = useState(null);
-  const [upNext, setUpNext] = useState(["sintel", "bbb"]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [upNext, setUpNext] = useState(["ted_lasso", "morning_show"]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [showControls, setShowControls] = useState(true);
+  const [showProfile, setShowProfile] = useState(false);
+  const [profileUrl, setProfileUrl] = useState("/images/profile.jpg");
 
   const videoRef = useRef(null);
   const controlsTimeoutRef = useRef(null);
 
   useEffect(() => {
+    // Fetch GitHub avatar dynamically
+    fetch("https://api.github.com/users/kuldeeprajput-dev")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.avatar_url) {
+          setProfileUrl(data.avatar_url);
+        }
+      })
+      .catch((err) => console.error("Error fetching avatar in AppleTVView:", err));
+
     return () => {
       if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
     };
@@ -30,11 +42,32 @@ const AppleTVView = () => {
   const openVideo = (video) => setActiveVideo(video);
 
   const playFeatured = (video = FEATURED_SHOW) => {
-    openVideo({ title: video.title, url: video.videoUrl ?? video.url });
+    openVideo({
+      title: video.title,
+      url: video.videoUrl ?? video.url,
+      tmdbId: video.tmdbId,
+      type: video.type || "movie",
+      season: video.season || 1,
+      episode: video.episode || 1,
+    });
   };
 
   const playMovie = (movie) => {
-    openVideo({ title: movie.title, url: movie.videoUrl });
+    openVideo({
+      title: movie.title,
+      url: movie.videoUrl,
+      tmdbId: movie.tmdbId,
+      type: movie.type || "movie",
+      season: movie.season || 1,
+      episode: movie.episode || 1,
+    });
+  };
+
+  const changeEpisode = (season, episode) => {
+    setActiveVideo((prev) => {
+      if (!prev) return null;
+      return { ...prev, season, episode };
+    });
   };
 
   const closePlayer = () => {
@@ -97,12 +130,11 @@ const AppleTVView = () => {
 
   const selectTab = (tab) => {
     setActiveTab(tab);
-    setSearchQuery("");
-    setIsSidebarOpen(false);
+    if (tab !== "search") setSearchQuery("");
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative">
+    <div className="flex flex-col h-full w-full bg-[#f5f5f7] rounded-xl overflow-hidden select-none relative">
       <PlayerOverlay
         activeVideo={activeVideo}
         videoRef={videoRef}
@@ -122,19 +154,16 @@ const AppleTVView = () => {
         onPause={() => setIsPlaying(false)}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
+        onChangeEpisode={changeEpisode}
       />
-      <AppleTVHeaderSection
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen((open) => !open)}
-      />
+      <ProfileOverlay isOpen={showProfile} onClose={() => setShowProfile(false)} />
+      <AppleTVHeaderSection onProfileClick={() => setShowProfile(true)} profileUrl={profileUrl} />
       <AppleTVSection
         activeTab={activeTab}
         searchQuery={searchQuery}
         upNext={upNext}
-        isSidebarOpen={isSidebarOpen}
         onSearch={setSearchQuery}
         onSelectTab={selectTab}
-        onCloseSidebar={() => setIsSidebarOpen(false)}
         onOpenStore={() => setActiveTab("store")}
         onPlayFeatured={playFeatured}
         onPlayMovie={playMovie}

@@ -8,7 +8,7 @@ const CAROUSEL_ITEMS = [
     title: "Severance",
     category: "Sci-Fi Thriller • Apple TV+",
     description:
-      "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs.",
+      "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives.",
     tmdbId: "95396",
     type: "tv",
     season: 1,
@@ -20,7 +20,7 @@ const CAROUSEL_ITEMS = [
     title: "Ted Lasso",
     category: "Comedy • Apple TV+",
     description:
-      "Small-time American football coach Ted Lasso is hired to coach a professional soccer team in England, despite having no experience coaching soccer.",
+      "Small-time American football coach Ted Lasso is hired to coach a professional soccer team in England.",
     tmdbId: "97546",
     type: "tv",
     season: 1,
@@ -32,7 +32,7 @@ const CAROUSEL_ITEMS = [
     title: "Foundation",
     category: "Sci-Fi Fantasy • Apple TV+",
     description:
-      "Based on the award-winning novels by Isaac Asimov, Foundation chronicles a band of exiles on their monumental journey to save humanity and rebuild civilization amid the fall of the Galactic Empire.",
+      "Based on Isaac Asimov's novels, Foundation chronicles a band of exiles saving humanity amid the fall of the Galactic Empire.",
     tmdbId: "91363",
     type: "tv",
     season: 1,
@@ -44,7 +44,7 @@ const CAROUSEL_ITEMS = [
     title: "Silo",
     category: "Sci-Fi Drama • Apple TV+",
     description:
-      "In a ruined and toxic future, a community exists in a giant underground silo that plunges hundreds of stories deep. There, people live in a society full of regulations they believe are meant to protect them.",
+      "In a ruined and toxic future, a community exists in a giant underground silo hundreds of stories deep.",
     tmdbId: "125988",
     type: "tv",
     season: 1,
@@ -84,27 +84,25 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
     fetchBackdrops();
   }, []);
 
-  // Auto-rotate carousel
+  // Auto-rotate
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % CAROUSEL_ITEMS.length);
-    }, 8000);
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch Apple TV+ content categories
+  // Fetch Apple TV+ content
   useEffect(() => {
     const fetchAppleContent = async () => {
       setIsLoading(true);
       const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
       try {
-        // Popular Apple TV Shows (Network 2552)
         const tvRes = await fetch(
           `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_networks=2552&sort_by=popularity.desc`,
         );
         const tvData = await tvRes.json();
 
-        // Popular Apple TV Movies (Watch Provider 350, US region)
         const movieRes = await fetch(
           `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_watch_providers=350&watch_region=US&sort_by=popularity.desc`,
         );
@@ -122,12 +120,11 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
             episode: 1,
             genres: show.genre_ids || [],
           }));
-
-          setPopularSeries(formattedTv.slice(0, 8));
+          setPopularSeries(formattedTv.slice(0, 9));
           setSciFiSeries(
             formattedTv
               .filter((s) => s.genres.includes(10765) || s.genres.includes(18))
-              .slice(0, 8),
+              .slice(0, 9),
           );
         }
 
@@ -135,12 +132,12 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
           const formattedMovies = movieData.results.map((movie) => ({
             id: `apple_movie_${movie.id}`,
             title: movie.title,
-            category: `${movie.vote_average ? movie.vote_average.toFixed(1) : "N/A"} ★ • Feature Film`,
+            category: `${movie.vote_average ? movie.vote_average.toFixed(1) : "N/A"} ★ • Film`,
             duration: "Movie",
             tmdbId: movie.id.toString(),
             type: "movie",
           }));
-          setPopularMovies(formattedMovies.slice(0, 8));
+          setPopularMovies(formattedMovies.slice(0, 9));
         }
       } catch (err) {
         console.error("Error fetching Apple TV+ TMDB data:", err);
@@ -148,61 +145,42 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
         setIsLoading(false);
       }
     };
-
     fetchAppleContent();
   }, []);
 
   const currentHero = CAROUSEL_ITEMS[activeSlide];
   const heroBackdrop = carouselBackdrops[currentHero.id];
 
-  const handlePrev = () => {
-    setActiveSlide((prev) => (prev - 1 + CAROUSEL_ITEMS.length) % CAROUSEL_ITEMS.length);
-  };
-
-  const handleNext = () => {
-    setActiveSlide((prev) => (prev + 1) % CAROUSEL_ITEMS.length);
-  };
-
-  // Fallback static listings for mobile
   const fallbackSeries = [
     {
-      id: "sintel",
-      title: "Sintel",
-      category: "Fantasy • Apple TV+",
-      duration: "15 min",
-      tmdbId: "sintel",
-      type: "movie",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+      id: "ted_lasso",
+      title: "Ted Lasso",
+      category: "9.0 ★ • Apple TV+",
+      duration: "3 Seasons",
+      tmdbId: "97546",
+      type: "tv",
+      season: 1,
+      episode: 1,
     },
     {
-      id: "bbb",
-      title: "Big Buck Bunny",
-      category: "Comedy • Apple TV+",
-      duration: "10 min",
-      tmdbId: "bbb",
-      type: "movie",
-      videoUrl:
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      id: "morning_show",
+      title: "The Morning Show",
+      category: "8.3 ★ • Apple TV+",
+      duration: "3 Seasons",
+      tmdbId: "87096",
+      type: "tv",
+      season: 1,
+      episode: 1,
     },
     {
-      id: "elephants",
-      title: "Elephant's Dream",
-      category: "Sci-Fi • Apple TV+",
-      duration: "11 min",
-      tmdbId: "elephants",
-      type: "movie",
-      videoUrl:
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    },
-    {
-      id: "tos",
-      title: "Tears of Steel",
-      category: "Action • Apple TV+",
-      duration: "12 min",
-      tmdbId: "tos",
-      type: "movie",
-      videoUrl:
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+      id: "for_all_mankind",
+      title: "For All Mankind",
+      category: "8.2 ★ • Apple TV+",
+      duration: "4 Seasons",
+      tmdbId: "87917",
+      type: "tv",
+      season: 1,
+      episode: 1,
     },
   ];
 
@@ -211,111 +189,111 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
   const finalSciFi = sciFiSeries.length > 0 ? sciFiSeries : [];
 
   return (
-    <div className="space-y-8 pb-10">
+    <div className="space-y-6 pb-6">
       {/* Brand Header */}
-      <div className="flex items-center gap-3 px-1">
-        <span className="bg-black text-white font-extrabold px-3 py-1 rounded-md text-sm tracking-widest uppercase shadow-sm">
+      <div className="flex items-center gap-3">
+        <span className="bg-white text-black font-extrabold px-2.5 py-1 rounded-lg text-[11px] tracking-wider uppercase shadow-sm">
           tv+
         </span>
         <div>
-          <h2 className="text-lg font-bold text-gray-800 leading-tight">Apple TV+</h2>
-          <p className="text-xs text-gray-400">Groundbreaking Apple Originals.</p>
+          <h2 className="text-[15px] font-bold text-white leading-tight">Apple TV+ Originals</h2>
+          <p className="text-[10px] text-white/40">Groundbreaking stories from creative minds.</p>
         </div>
       </div>
 
-      {/* Hero Carousel Section */}
+      {/* Hero Carousel */}
       <section
-        className={`relative rounded-2xl overflow-hidden border border-black/5 p-6 flex flex-col justify-end min-h-[260px] shadow-xl transition-all duration-700 ease-in-out ${
+        className={`relative rounded-2xl overflow-hidden border border-white/[0.06] flex flex-col justify-end min-h-[200px] shadow-xl transition-all duration-700 ${
           !heroBackdrop ? currentHero.bgFallback : ""
         }`}
         style={
           heroBackdrop
             ? {
-                backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.9) 35%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%), url(${heroBackdrop})`,
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%), url(${heroBackdrop})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center top",
               }
             : undefined
         }
       >
-        {/* Carousel Navigation Arrows */}
-        <button
-          onClick={handlePrev}
-          className="absolute left-3 top-1/2 -translate-y-1/2 p-1.5 bg-black/40 hover:bg-black/60 border border-white/10 rounded-full text-white backdrop-blur-md transition-all active:scale-90"
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </button>
-        <button
-          onClick={handleNext}
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-black/40 hover:bg-black/60 border border-white/10 rounded-full text-white backdrop-blur-md transition-all active:scale-90"
-        >
-          <ChevronRight className="w-4 h-4" />
-        </button>
-
-        {/* Slide Indicators */}
-        <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/30 backdrop-blur-md px-2 py-1 rounded-full border border-white/10">
+        {/* Slide dots */}
+        <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/10 z-10">
           {CAROUSEL_ITEMS.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setActiveSlide(idx)}
-              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                idx === activeSlide ? "bg-white scale-125 w-3" : "bg-white/40 hover:bg-white/70"
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                idx === activeSlide ? "bg-white w-3" : "bg-white/30 w-1.5"
               }`}
             />
           ))}
         </div>
 
-        {/* Hero Metadata & CTA */}
-        <div className="max-w-xs space-y-2.5 z-10 text-left">
-          <span className="text-[9px] font-extrabold tracking-widest text-sky-400 uppercase bg-sky-950/40 border border-sky-500/20 px-1.5 py-0.5 rounded backdrop-blur-sm inline-block">
+        {/* Hero content */}
+        <div className="p-4 space-y-2 z-10">
+          <span className="text-[8px] font-extrabold tracking-widest text-sky-400 uppercase bg-sky-950/50 border border-sky-500/20 px-1.5 py-0.5 rounded backdrop-blur-sm inline-block">
             {currentHero.category}
           </span>
-          <h1 className="text-2xl font-extrabold tracking-tight text-white leading-none">
+          <h1 className="text-xl font-extrabold tracking-tight text-white leading-none">
             {currentHero.title}
           </h1>
-          <p className="text-[11px] text-neutral-200 leading-relaxed line-clamp-3">
+          <p className="text-[10px] text-neutral-300 leading-relaxed line-clamp-2">
             {currentHero.description}
           </p>
-          <div className="flex items-center gap-2 pt-2">
+          <div className="flex items-center gap-2 pt-1">
             <button
               onClick={() => onPlayFeatured(currentHero)}
-              className="flex items-center gap-1 bg-white text-black px-3.5 py-2 rounded-lg text-[10px] font-bold hover:bg-neutral-200 active:scale-95 transition-all shadow-lg"
+              className="flex items-center gap-1 bg-white text-black px-3.5 py-1.5 rounded-xl text-[10px] font-bold active:scale-95 transition-all shadow-lg"
             >
-              <Play className="w-3.5 h-3.5 fill-black" />
+              <Play className="w-3 h-3 fill-black" />
               Watch Now
             </button>
             <button
               onClick={() => onToggleUpNext(currentHero.id)}
-              className="flex items-center gap-1 bg-white/15 border border-white/10 text-white px-3.5 py-2 rounded-lg text-[10px] font-bold hover:bg-white/25 active:scale-95 transition-all backdrop-blur-md"
+              className="flex items-center gap-1 bg-white/15 border border-white/10 text-white px-3 py-1.5 rounded-xl text-[10px] font-bold active:scale-95 transition-all backdrop-blur-sm"
             >
               {upNext.includes(currentHero.id) ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-green-400" />
-                  In Up Next
+                  <Check className="w-3 h-3 text-green-400" />
+                  Added
                 </>
               ) : (
                 <>
-                  <Plus className="w-3.5 h-3.5" />
-                  Up Next
+                  <Plus className="w-3 h-3" />
+                  My List
                 </>
               )}
             </button>
           </div>
         </div>
+
+        {/* Touch swipe areas */}
+        <button
+          onClick={() =>
+            setActiveSlide((prev) => (prev - 1 + CAROUSEL_ITEMS.length) % CAROUSEL_ITEMS.length)
+          }
+          className="absolute left-0 top-0 bottom-0 w-12 z-10"
+          aria-label="Previous slide"
+        />
+        <button
+          onClick={() => setActiveSlide((prev) => (prev + 1) % CAROUSEL_ITEMS.length)}
+          className="absolute right-0 top-0 bottom-0 w-12 z-10"
+          aria-label="Next slide"
+        />
       </section>
 
       {isLoading && (
         <div className="flex items-center justify-center py-10">
-          <Loader2 className="w-6 h-6 animate-spin text-neutral-400" />
+          <Loader2 className="w-5 h-5 animate-spin text-white/30" />
         </div>
       )}
 
       {!isLoading && (
         <>
-          {/* Popular Series Row */}
-          <section className="space-y-3">
-            <h3 className="text-sm font-bold text-gray-800 px-1">Popular Series</h3>
-            <div className="grid grid-cols-2 gap-4">
+          {/* Popular Series */}
+          <section className="space-y-2.5">
+            <h3 className="text-[15px] font-bold text-white px-0.5">Popular Series</h3>
+            <div className="grid grid-cols-3 gap-2.5">
               {finalSeries.map((show) => (
                 <MovieCard
                   key={show.id}
@@ -329,11 +307,11 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
             </div>
           </section>
 
-          {/* Popular Movies Row */}
+          {/* Feature Films */}
           {finalMovies.length > 0 && (
-            <section className="space-y-3">
-              <h3 className="text-sm font-bold text-gray-800 px-1">Feature Films</h3>
-              <div className="grid grid-cols-2 gap-4">
+            <section className="space-y-2.5">
+              <h3 className="text-[15px] font-bold text-white px-0.5">Feature Films</h3>
+              <div className="grid grid-cols-3 gap-2.5">
                 {finalMovies.map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -348,11 +326,11 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
             </section>
           )}
 
-          {/* Acclaimed Drama & Sci-Fi Row */}
+          {/* Acclaimed Drama & Sci-Fi */}
           {finalSciFi.length > 0 && (
-            <section className="space-y-3">
-              <h3 className="text-sm font-bold text-gray-800 px-1">Acclaimed Drama & Sci-Fi</h3>
-              <div className="grid grid-cols-2 gap-4">
+            <section className="space-y-2.5">
+              <h3 className="text-[15px] font-bold text-white px-0.5">Acclaimed Drama & Sci-Fi</h3>
+              <div className="grid grid-cols-3 gap-2.5">
                 {finalSciFi.map((show) => (
                   <MovieCard
                     key={show.id}

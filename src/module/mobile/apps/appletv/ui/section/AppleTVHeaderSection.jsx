@@ -1,27 +1,32 @@
 import WindowControls from "@components/WindowControls";
-import { ChevronLeft } from "lucide-react";
 
-const AppleTVHeaderSection = ({ isSidebarOpen, onToggleSidebar }) => (
+const AppleTVHeaderSection = ({ onProfileClick, profileUrl }) => (
   <div
     id="window-header"
-    className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2.5"
+    className="shrink-0 flex items-center justify-between bg-[#f5f5f7] border-b border-zinc-200/50 px-4 pt-12 pb-2.5 z-40 relative"
   >
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2">
       <WindowControls target="appletv" />
-      <button
-        onClick={onToggleSidebar}
-        className="sm:hidden p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors"
-        aria-label="Toggle Sidebar"
-      >
-        <ChevronLeft
-          className={`w-5 h-5 transition-transform duration-200 ${
-            isSidebarOpen ? "rotate-0" : "rotate-180"
-          }`}
-        />
-      </button>
     </div>
-    <div className="flex-1 text-center font-bold text-gray-700 text-sm hidden sm:block">TV</div>
-    <div className="w-14" />
+
+    <span className="text-[15px] font-bold text-gray-900 absolute left-1/2 -translate-x-1/2 select-none pointer-events-none">
+      Apple TV
+    </span>
+
+    <button
+      onClick={onProfileClick}
+      className="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center border border-zinc-200 shadow-sm active:scale-95 transition-transform cursor-pointer relative z-50"
+    >
+      <img
+        src={profileUrl || "/images/profile.jpg"}
+        alt="Profile"
+        className="w-full h-full object-cover"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = "https://avatars.githubusercontent.com/u/105151528?v=4";
+        }}
+      />
+    </button>
   </div>
 );
 
