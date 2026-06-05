@@ -291,7 +291,44 @@ const MobileNotch = () => {
   };
 
   const speakText = async (text, shouldStartRecordingAfter = false) => {
-    fallbackSpeakText(text, shouldStartRecordingAfter);
+    stopAudio();
+    setIsSpeaking(true);
+
+    try {
+      const response = await fetch("/api/groq/speech", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ input: text, voice: "hannah" }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Groq TTS API error: ${response.statusText}`);
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      audioPlaybackRef.current = audio;
+
+      audio.onended = () => {
+        setIsSpeaking(false);
+        if (shouldStartRecordingAfter && isSiriOpenRef.current) {
+          startRecording();
+        } else {
+          setSiriStatus("IDLE");
+        }
+      };
+
+      audio.onerror = () => {
+        setIsSpeaking(false);
+        setSiriStatus("IDLE");
+      };
+
+      await audio.play();
+    } catch (err) {
+      console.error("Groq TTS failed, falling back to Web Speech API:", err);
+      fallbackSpeakText(text, shouldStartRecordingAfter);
+    }
   };
 
   // ─── Siri open/close lifecycle (same as desktop) ───

@@ -16,9 +16,25 @@ const Siri = () => {
   const recognitionRef = useRef(null);
   const synthRef = useRef(window.speechSynthesis);
   const handleSendRef = useRef(handleSend);
+  const audioPlaybackRef = useRef(null);
+
   useEffect(() => {
     handleSendRef.current = handleSend;
   });
+
+  // Stop any playing Groq TTS audio when Siri is closed or muted
+  useEffect(() => {
+    if (!isSiriOpen || isMuted) {
+      if (audioPlaybackRef.current) {
+        try {
+          audioPlaybackRef.current.pause();
+          audioPlaybackRef.current.currentTime = 0;
+        } catch (e) {
+          console.error("Error stopping audio:", e);
+        }
+      }
+    }
+  }, [isSiriOpen, isMuted]);
 
   // Initialize Speech Recognition
   useEffect(() => {
@@ -58,8 +74,8 @@ const Siri = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isSiriOpen]);
 
-  // Siri speak helper
-  const speakText = (text) => {
+  // Fallback local TTS helper
+  const fallbackSpeakText = (text) => {
     if (isMuted || !synthRef.current) return;
     synthRef.current.cancel(); // Stop any previous speech
     const cleanText = text.replace(/[*#`_\-[\]()]/g, ""); // Strip markdown
@@ -88,6 +104,42 @@ const Siri = () => {
     }
 
     synthRef.current.speak(utterance);
+  };
+
+  // Main Premium TTS helper (using Groq hannah voice)
+  const speakText = async (text) => {
+    if (isMuted) return;
+
+    if (audioPlaybackRef.current) {
+      try {
+        audioPlaybackRef.current.pause();
+        audioPlaybackRef.current.currentTime = 0;
+      } catch (e) {
+        console.error("Error stopping audio:", e);
+      }
+    }
+
+    try {
+      const response = await fetch("/api/groq/speech", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ input: text, voice: "hannah" }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Groq TTS API error: ${response.statusText}`);
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      audioPlaybackRef.current = audio;
+
+      await audio.play();
+    } catch (err) {
+      console.error("Groq TTS failed, falling back to Web Speech API:", err);
+      fallbackSpeakText(text);
+    }
   };
 
   // Perform client-side portfolio commands based on speech/text
