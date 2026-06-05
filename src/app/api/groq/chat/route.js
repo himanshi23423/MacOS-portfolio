@@ -9,7 +9,7 @@ export async function POST(req) {
 
     const body = await req.json();
     if (!body.model) {
-      body.model = "llama-3.3-70b-versatile";
+      body.model = "llama-3.1-8b-instant";
     }
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {

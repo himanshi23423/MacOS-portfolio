@@ -316,51 +316,7 @@ const Notch = () => {
   };
 
   const speakText = async (text, shouldStartRecordingAfter = false) => {
-    stopAudio();
-    setIsSpeaking(true);
-
-    try {
-      const response = await fetch("/api/groq/speech", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          input: text,
-        }),
-      });
-
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.error || `Groq TTS API error: ${response.statusText}`);
-      }
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-
-      const audio = new Audio(audioUrl);
-      audioPlaybackRef.current = audio;
-
-      audio.onended = () => {
-        setIsSpeaking(false);
-        if (shouldStartRecordingAfter && isSiriOpenRef.current) {
-          startRecording();
-        } else {
-          setSiriStatus("IDLE");
-        }
-      };
-
-      audio.onerror = (e) => {
-        console.error("Audio playback error:", e);
-        setIsSpeaking(false);
-        setSiriStatus("IDLE");
-      };
-
-      await audio.play();
-    } catch (err) {
-      console.error("Groq TTS failed, falling back to Web Speech API:", err);
-      fallbackSpeakText(text, shouldStartRecordingAfter);
-    }
+    fallbackSpeakText(text, shouldStartRecordingAfter);
   };
 
   // When Siri opens, start listening
