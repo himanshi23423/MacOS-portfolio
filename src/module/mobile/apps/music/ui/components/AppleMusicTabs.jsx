@@ -1,5 +1,4 @@
 import { Search, Play, Plus, Clock, Music4, Heart, Radio, Flame, Sparkles } from "lucide-react";
-import { useMemo } from "react";
 
 const AppleMusicTabs = ({
   activeTab,

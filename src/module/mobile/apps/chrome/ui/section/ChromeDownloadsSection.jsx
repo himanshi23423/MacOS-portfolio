@@ -4,7 +4,7 @@ import { Download, Trash2, Search } from "lucide-react";
 const ChromeDownloadsSection = ({
   settingsThemeClasses,
   theme,
-  navigateTabTo,
+  _navigateTabTo,
   downloadsList,
   setDownloadsList,
   highlightText,

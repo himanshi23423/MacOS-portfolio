@@ -107,6 +107,7 @@ const Notch = () => {
       stopRecording();
       if (synth) synth.cancel();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startRecording = async () => {
@@ -383,6 +384,7 @@ const Notch = () => {
       setIsSpeaking(false);
       setSiriStatus("IDLE");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSiriOpen]);
 
   const parseSystemCommands = (text) => {

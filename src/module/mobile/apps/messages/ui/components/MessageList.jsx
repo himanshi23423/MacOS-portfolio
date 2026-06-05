@@ -8,7 +8,7 @@ const MessageList = ({
   activeChatId,
   onSelectChat,
   mutedChats,
-  pinnedChats = [],
+  _pinnedChats = [],
   togglePinChat,
   activeCategory = "all",
   setActiveCategory,

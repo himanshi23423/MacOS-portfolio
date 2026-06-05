@@ -29,7 +29,7 @@ const NavbarControlCenterSection = ({
   battery,
   music,
   settings,
-  isControlOpen,
+  _isControlOpen,
   controlCenterRef,
   toggleSetting,
   updateSlider,

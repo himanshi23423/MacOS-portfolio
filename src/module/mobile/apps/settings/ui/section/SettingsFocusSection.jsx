@@ -19,7 +19,7 @@ import {
 import useWindowsStore from "@store/window";
 
 const SettingsFocusSection = () => {
-  const { systemSettings, updateSystemSetting, toggleSystemSetting } = useWindowsStore();
+  const { systemSettings, toggleSystemSetting } = useWindowsStore();
   const { focusMode } = systemSettings;
 
   // Selected Focus mode for configuration (null means show list)

@@ -19,7 +19,7 @@ import NoteEditor from "../components/NoteEditor";
 
 const NotesSection = ({
   activeNote,
-  activeNoteId,
+  _activeNoteId,
   searchQuery,
   isSidebarOpen,
   setActiveNoteId,
@@ -54,7 +54,7 @@ const NotesSection = ({
   };
 
   // Functional Toolbar Actions
-  const handleAddChecklist = () => {
+  const _handleAddChecklist = () => {
     if (!activeNote) return;
     const currentBody = activeNote.body || "";
     const newBody =
@@ -65,7 +65,7 @@ const NotesSection = ({
     triggerToast("Checklist checkbox added!");
   };
 
-  const handleAddPhoto = () => {
+  const _handleAddPhoto = () => {
     if (!activeNote) return;
     const currentBody = activeNote.body || "";
     const sampleImg =

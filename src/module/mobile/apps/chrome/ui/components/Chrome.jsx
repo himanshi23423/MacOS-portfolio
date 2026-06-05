@@ -413,6 +413,7 @@ const Chrome = () => {
       window.removeEventListener("app-navigate-back", handleNavBack);
       window.removeEventListener("app-navigate-forward", handleNavForward);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabs, activeTabId]);
 
   // Navigate function for tab history

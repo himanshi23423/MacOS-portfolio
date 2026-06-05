@@ -56,8 +56,8 @@
     align-items: center;
     flex-shrink: 0;
     padding: 14px 16px !important;
-    background: #f2f2f7 !important;
-    border-bottom: 0.5px solid #e5e5ea !important;
+    background: #f2f2f7;
+    border-bottom: 0.5px solid #e5e5ea;
     height: auto !important;
     min-height: 52px;
     gap: 10px;

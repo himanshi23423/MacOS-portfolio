@@ -36,8 +36,8 @@ import ChromeBrowserSection from "./ChromeBrowserSection";
 
 const ChromeSection = ({
   theme,
-  themeClasses,
-  menuThemeClasses,
+  _themeClasses,
+  _menuThemeClasses,
   settingsThemeClasses,
 
   tabs,
@@ -57,14 +57,14 @@ const ChromeSection = ({
 
   isMenuOpen,
   setIsMenuOpen,
-  activeSubMenu,
-  setActiveSubMenu,
+  _activeSubMenu,
+  _setActiveSubMenu,
   zoom,
-  setZoom,
-  isFullScreen,
-  setIsFullScreen,
-  isDefaultBrowser,
-  setIsDefaultBrowser,
+  _setZoom,
+  _isFullScreen,
+  _setIsFullScreen,
+  _isDefaultBrowser,
+  _setIsDefaultBrowser,
   username,
   setUsername,
   profileColor,

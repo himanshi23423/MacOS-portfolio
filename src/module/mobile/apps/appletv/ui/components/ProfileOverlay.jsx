@@ -30,7 +30,6 @@ const GithubIcon = ({ size = 16, className = "" }) => (
 
 const ProfileOverlay = ({ isOpen, onClose }) => {
   const [profile, setProfile] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -39,11 +38,9 @@ const ProfileOverlay = ({ isOpen, onClose }) => {
       .then((res) => res.json())
       .then((data) => {
         setProfile(data);
-        setIsLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching github profile:", err);
-        setIsLoading(false);
       });
   }, [isOpen]);
 

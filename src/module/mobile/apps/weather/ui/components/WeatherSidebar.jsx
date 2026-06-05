@@ -1,6 +1,6 @@
 import React from "react";
 import { Search } from "lucide-react";
-import { getSafeTemp, renderIcon } from "./weatherUtils";
+import { getSafeTemp } from "./weatherUtils";
 
 const WeatherSidebar = ({
   searchQuery,
@@ -11,7 +11,7 @@ const WeatherSidebar = ({
   activeCityId,
   setActiveCityId,
   setIsSidebarOpen,
-  unitMode,
+  _unitMode,
 }) => {
   return (
     <aside className="absolute sm:relative inset-0 w-full bg-[#f2f2f7] p-4 space-y-4 flex flex-col z-20 transition-transform duration-300 shrink-0 h-full select-none text-gray-800">

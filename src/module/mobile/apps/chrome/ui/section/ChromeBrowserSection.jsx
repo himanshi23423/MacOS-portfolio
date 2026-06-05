@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  Search,
-  Globe,
-  AlertTriangle,
-  ArrowRight,
-  Bookmark,
-  Settings,
-  Star,
-  History,
-  Info,
-} from "lucide-react";
+import { Search, Globe, AlertTriangle, ArrowRight, Bookmark } from "lucide-react";
 
 const ChromeBrowserSection = ({
   activeTab,

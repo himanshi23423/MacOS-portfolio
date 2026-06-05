@@ -15,7 +15,7 @@ const MusicSection = (props) => {
     currentTime,
     searchQuery,
     setSearchQuery,
-    activeCategory,
+    _activeCategory,
     setActiveCategory,
     isShuffle,
     setIsShuffle,

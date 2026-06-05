@@ -1,7 +1,7 @@
 import React from "react";
 import WindowControls from "@components/WindowControls";
 
-const WeatherHeader = ({ activeCity, unitMode, setUnitMode, viewMode, setViewMode }) => {
+const WeatherHeader = ({ _activeCity, unitMode, setUnitMode, viewMode, setViewMode }) => {
   const isDashboard = viewMode === "dashboard";
 
   return (

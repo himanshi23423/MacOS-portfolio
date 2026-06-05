@@ -13,7 +13,7 @@ import {
 } from "./WeatherMetricCard";
 
 const WeatherDashboard = ({
-  activeCity,
+  _activeCity,
   unitMode,
   loading,
   error,

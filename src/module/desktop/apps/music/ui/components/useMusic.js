@@ -25,7 +25,7 @@ const STUNNING_ALBUM_COVERS = [
   "https://images.unsplash.com/photo-1446057032654-9d8885b7a391?w=500&auto=format&fit=crop&q=80",
 ];
 
-const getUniqueCover = (title) => {
+const _getUniqueCover = (title) => {
   let hash = 0;
   for (let i = 0; i < title.length; i++) {
     hash = title.charCodeAt(i) + ((hash << 5) - hash);

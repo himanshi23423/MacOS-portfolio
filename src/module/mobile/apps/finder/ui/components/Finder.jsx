@@ -41,6 +41,7 @@ const Finder = () => {
     };
     window.addEventListener("app-navigate-back", handleNavBack);
     return () => window.removeEventListener("app-navigate-back", handleNavBack);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navStack, activeLocation]);
 
   const openItem = (item) => {

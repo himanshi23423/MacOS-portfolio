@@ -1,14 +1,6 @@
 import { Image, FolderHeart, Search, Grid } from "lucide-react";
 import { photosLinks } from "@constants";
 
-const tabIcons = {
-  Library: <Image size={20} />,
-  Memories: <Grid size={20} />,
-  Places: <Grid size={20} />,
-  People: <Grid size={20} />,
-  Favorites: <FolderHeart size={20} />,
-};
-
 const PhotoSidebarDesktop = ({ activeTab, onTabChange }) => (
   <div className="sidebar w-1/3 @md:w-3/12 border-r border-gray-200 overflow-y-auto">
     <h2>Photos</h2>

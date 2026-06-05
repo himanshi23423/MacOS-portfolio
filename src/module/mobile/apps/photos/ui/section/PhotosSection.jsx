@@ -24,7 +24,7 @@ const PhotosSection = ({
   const searchInputRef = useRef(null);
   const collectionsRef = useRef(null);
 
-  const handleScrollToCollections = () => {
+  const _handleScrollToCollections = () => {
     if (collectionsRef.current) {
       collectionsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }

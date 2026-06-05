@@ -81,7 +81,7 @@ const windowWrapper = (Component, windowKey) => {
       width: "100dvw",
       height: viewportHeight,
       zIndex: isOpen ? zIndex : -1,
-      background: "#f2f2f7",
+      background: "transparent",
       flexDirection: "column",
       overflow: "hidden",
       display: "flex",
@@ -197,7 +197,7 @@ const windowWrapper = (Component, windowKey) => {
 
     const componentElement = useMemo(() => {
       return <Component {...memoizedProps} />;
-    }, [Component, memoizedProps]);
+    }, [memoizedProps]);
 
     return (
       <section
