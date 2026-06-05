@@ -71,7 +71,9 @@ const MobileOS = () => {
           (app) =>
             app.id !== "launchpad" &&
             app.id !== "trash" &&
-            !["safari", "messages", "call", "music", "vscode", "postman"].includes(app.id),
+            !["safari", "messages", "call", "music", "vscode", "postman", "folder"].includes(
+              app.id,
+            ),
         )}
         openWindow={openWindow}
       />
