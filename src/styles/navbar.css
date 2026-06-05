@@ -53,9 +53,19 @@
       }
     }
 
-    time {
-      @apply text-[13.5px] font-[500] tracking-normal ml-3 cursor-default;
+    time.nav-datetime {
+      @apply text-[13.5px] font-[500] tracking-normal ml-3 cursor-default inline-flex items-center;
       color: #ffffff;
+    }
+
+    .nav-date-day,
+    .nav-date-month,
+    .nav-date-date {
+      margin-right: 6px;
+    }
+
+    .nav-date-ampm {
+      margin-left: 4px;
     }
 
     .battery-indicator {
