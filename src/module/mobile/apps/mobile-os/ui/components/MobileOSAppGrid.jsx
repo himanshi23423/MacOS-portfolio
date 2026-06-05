@@ -400,8 +400,8 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
           </div>
         </div>
 
-        {/* PAGE 2: Secondary App Grid (Also bottom-aligned to look clean) */}
-        <div className="w-full flex-shrink-0 px-5 flex flex-col justify-end h-full pb-4">
+        {/* PAGE 2: Secondary App Grid (Top-aligned) */}
+        <div className="w-full flex-shrink-0 px-5 flex flex-col justify-start h-full pb-4">
           <div className="grid grid-cols-4 gap-y-5 gap-x-2.5">
             {page2Apps.map((app) => (
               <button
