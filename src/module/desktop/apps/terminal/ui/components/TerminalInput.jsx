@@ -21,7 +21,7 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
       };
 
       const println = (msg) => {
-        t.write("\r\n\x1b[38;2;37;99;235m" + msg + "\x1b[0m");
+        t.write("\r\n" + msg + "\x1b[0m");
       };
 
       const gradientChar = (char, tVal) => {
@@ -76,15 +76,31 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
 
           switch (baseCmd) {
             case "help":
-              println("Available commands:");
-              println("  help      - Show this help message");
-              println("  clear     - Clear the terminal screen");
-              println("  echo      - Print text to the terminal");
-              println("  date      - Print the current date and time");
-              println("  whoami    - Print the current user");
-              println("  techstack - Display my tech stack");
-              println("  projects  - Display my portfolio projects");
-              println("  sudo      - Execute a command as superuser");
+              println("\x1b[1;38;2;219;39;119m=== Available Commands ===\x1b[0m");
+              println(
+                "\x1b[1;38;2;16;185;129mhelp\x1b[0m      \x1b[38;2;75;85;99m- Show help message\x1b[0m",
+              );
+              println(
+                "\x1b[1;38;2;16;185;129mclear\x1b[0m     \x1b[38;2;75;85;99m- Clear screen\x1b[0m",
+              );
+              println(
+                "\x1b[1;38;2;16;185;129mecho\x1b[0m      \x1b[38;2;75;85;99m- Print text\x1b[0m",
+              );
+              println(
+                "\x1b[1;38;2;16;185;129mdate\x1b[0m      \x1b[38;2;75;85;99m- Print date/time\x1b[0m",
+              );
+              println(
+                "\x1b[1;38;2;16;185;129mwhoami\x1b[0m    \x1b[38;2;75;85;99m- Print current user\x1b[0m",
+              );
+              println(
+                "\x1b[1;38;2;16;185;129mtechstack\x1b[0m \x1b[38;2;75;85;99m- Display tech stack\x1b[0m",
+              );
+              println(
+                "\x1b[1;38;2;16;185;129mprojects\x1b[0m  \x1b[38;2;75;85;99m- Display portfolio projects\x1b[0m",
+              );
+              println(
+                "\x1b[1;38;2;16;185;129msudo\x1b[0m      \x1b[38;2;75;85;99m- Run superuser command\x1b[0m",
+              );
               break;
             case "clear":
               t.clear();
@@ -96,29 +112,39 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
               println(new Date().toString());
               break;
             case "whoami":
-              println("kuldeep");
+              println("\x1b[38;2;75;85;99mkuldeep\x1b[0m");
               break;
             case "sudo":
-              println("kuldeep is not in the sudoers file. This incident will be reported.");
+              println(
+                "\x1b[31mkuldeep is not in the sudoers file. This incident will be reported.\x1b[0m",
+              );
               break;
             case "techstack":
-              println("=== Tech Stack ===");
+              println("\x1b[1;38;2;219;39;119m=== Tech Stack ===\x1b[0m");
               techStack.forEach(({ category, items }) => {
-                println(`${category}:`);
-                println(`  ${items.join(", ")}`);
+                println(`\x1b[1;38;2;6;182;212m${category}:\x1b[0m`);
+                println(`\x1b[38;2;75;85;99m${items.join(", ")}\x1b[0m`);
               });
               break;
             case "projects":
-              println("=== Portfolio Projects ===");
+              println("\x1b[1;38;2;219;39;119m=== Portfolio Projects ===\x1b[0m");
               projects.forEach((proj) => {
-                println(`${proj.title}:`);
-                println(`  Description: ${proj.description}`);
-                if (proj.link) println(`  Live Demo:   ${proj.link}`);
-                if (proj.github) println(`  GitHub:      ${proj.github}`);
+                println(`\x1b[1;38;2;16;185;129m• ${proj.title}\x1b[0m`);
+                println("\x1b[1;38;2;245;158;11mDescription:\x1b[0m");
+                println(`\x1b[38;2;75;85;99m${proj.description}\x1b[0m`);
+                if (proj.link) {
+                  println("\x1b[1;38;2;6;182;212mLive Demo:\x1b[0m");
+                  println(`\x1b[4;38;2;37;99;235m${proj.link}\x1b[0m`);
+                }
+                if (proj.github) {
+                  println("\x1b[1;38;2;6;182;212mGitHub:\x1b[0m");
+                  println(`\x1b[4;38;2;37;99;235m${proj.github}\x1b[0m`);
+                }
+                println("");
               });
               break;
             default:
-              println(`zsh: command not found: ${baseCmd}`);
+              println(`\x1b[31mzsh: command not found: ${baseCmd}\x1b[0m`);
           }
 
           commandRef.current = "";
