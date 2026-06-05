@@ -367,7 +367,7 @@ const Notch = () => {
   useEffect(() => {
     if (isSiriOpen) {
       setUserQuestion("");
-      const greeting = "Hello sir, how can I assist you today?";
+      const greeting = "Hello, how can I assist you today?";
       setSiriResponse(greeting);
       setSiriStatus("SPEAKING");
       const timer = setTimeout(async () => {
