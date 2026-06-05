@@ -10,8 +10,10 @@ import {
   Sun,
   Calendar,
   CheckCircle2,
+  Mic,
 } from "lucide-react";
 import useWeather from "@module/desktop/apps/weather/ui/components/useWeather";
+import { dockApps as allDockApps } from "@constants";
 
 const scaleMap = {
   finder: "scale-[0.90]",
@@ -45,6 +47,8 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
   const touchStart = useRef(0);
   const touchEnd = useRef(0);
   const { activeCity } = useWeather();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleTouchStart = (e) => {
     touchStart.current = e.targetTouches[0].clientX;
@@ -462,16 +466,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
       </div>
 
       {/* Pagination Dot / iOS Search Indicator Bar */}
-      <div className="flex flex-col items-center gap-2 mb-1 select-none">
-        {/* iOS 17 style Search Pill */}
-        <button
-          onClick={() => setCurrentPage(currentPage === 0 ? 1 : 0)}
-          className="flex items-center gap-1.5 px-3 py-[3px] rounded-full bg-black/20 backdrop-blur-xl hover:bg-black/30 active:scale-95 transition-all text-white/90 text-[10.5px] font-medium shadow-[0_1px_3px_rgba(0,0,0,0.2)] border border-white/[0.08]"
-        >
-          <Search size={10.5} strokeWidth={2.8} className="text-white/80" />
-          <span className="tracking-wide">Search</span>
-        </button>
-
+      <div className="flex flex-col items-center gap-2 mb-1 select-none w-full">
         {/* Page dots indicator */}
         <div className="flex justify-center gap-1.5">
           {[0, 1].map((idx) => (
@@ -486,7 +481,194 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
             />
           ))}
         </div>
+
+        {/* iOS 16/17/18 style home screen Search Pill */}
+        <button
+          onClick={() => setIsSearchOpen(true)}
+          className="flex items-center justify-center gap-1.5 px-[14px] h-[28px] rounded-full bg-white/12 hover:bg-white/18 active:scale-95 transition-all text-white/95 text-[11.5px] font-semibold shadow-[0_1px_4px_rgba(0,0,0,0.15)] border border-white/10 backdrop-blur-md"
+        >
+          <Search size={11.5} strokeWidth={2.8} className="text-white/85" />
+          <span className="tracking-tight">Search</span>
+        </button>
       </div>
+
+      {/* Spotlight Search Overlay */}
+      {isSearchOpen && (
+        <div className="absolute inset-0 bg-[#0d0d0e]/60 backdrop-blur-[45px] backdrop-saturate-[1.6] z-50 flex flex-col pt-[55px] px-5 transition-all duration-300">
+          {/* Search Header Input row */}
+          <div className="flex items-center gap-3 w-full mb-6">
+            <div className="flex-grow flex items-center gap-2 px-3.5 h-[42px] rounded-[14px] bg-white/[0.08] border border-white/[0.08] backdrop-blur-md shadow-inner text-white focus-within:border-white/20 focus-within:bg-white/[0.12] transition-all font-sans">
+              <Search size={16} className="text-white/40" />
+              <input
+                type="text"
+                autoFocus
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 bg-transparent border-none outline-none text-[15px] placeholder-white/35 text-white font-medium"
+              />
+              {searchQuery ? (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="w-5 h-5 rounded-full bg-white/12 flex items-center justify-center text-[10px] text-white/85 active:bg-white/20"
+                >
+                  ✕
+                </button>
+              ) : (
+                <Mic size={15} className="text-white/40" />
+              )}
+            </div>
+            <button
+              onClick={() => {
+                setIsSearchOpen(false);
+                setSearchQuery("");
+              }}
+              className="text-[16px] font-semibold text-[#007aff] hover:text-[#3399ff] transition-colors duration-150 pr-1 active:opacity-70 font-sans"
+            >
+              Cancel
+            </button>
+          </div>
+
+          {/* Search Results / Suggestions Area */}
+          <div className="flex-1 overflow-y-auto pb-6 scrollbar-none">
+            {searchQuery.trim() === "" ? (
+              // Suggestions View
+              <div>
+                <p className="text-[11px] font-bold text-white/40 tracking-wider mb-2.5 px-1 uppercase font-sans">
+                  Siri Suggestions
+                </p>
+                <div className="bg-[#1c1c1e]/70 backdrop-blur-md border border-white/[0.06] rounded-[22px] p-4.5 shadow-lg grid grid-cols-4 gap-y-5 gap-x-2.5">
+                  {/* Show top 8 commonly used apps */}
+                  {allDockApps
+                    .filter((app) => app.id !== "launchpad" && app.id !== "trash")
+                    .slice(0, 8)
+                    .map((app) => (
+                      <button
+                        key={app.id}
+                        onClick={() => {
+                          if (app.canOpen) {
+                            openWindow(app.id);
+                            setIsSearchOpen(false);
+                          }
+                        }}
+                        className="flex flex-col items-center gap-1.5 active:scale-90 transition-transform"
+                      >
+                        <div className="w-12 h-12 rounded-[12px] overflow-hidden shadow-md bg-white/5 flex items-center justify-center">
+                          {app.id === "calendar" ? (
+                            <div className="w-full h-full bg-white flex flex-col items-center select-none rounded-[12px] overflow-hidden scale-[0.76]">
+                              <div className="w-full bg-[#ff3b30] py-0.5 flex items-center justify-center flex-shrink-0">
+                                <span className="text-white text-[7px] font-bold uppercase leading-none font-sans">
+                                  {
+                                    ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][
+                                      new Date().getDay()
+                                    ]
+                                  }
+                                </span>
+                              </div>
+                              <div className="flex-1 flex items-center justify-center -mt-0.5">
+                                <span className="text-gray-900 font-semibold text-[16px] leading-none font-sans">
+                                  {new Date().getDate()}
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            <img
+                              src={`/images/${app.icon}`}
+                              alt={app.name}
+                              className={`w-full h-full object-cover rounded-[12px] ${scaleMap[app.id] || ""}`}
+                            />
+                          )}
+                        </div>
+                        <span className="text-[10.5px] text-white/70 text-center truncate w-full px-1 font-medium font-sans">
+                          {app.name}
+                        </span>
+                      </button>
+                    ))}
+                </div>
+              </div>
+            ) : (
+              // Search Results List
+              <div className="flex flex-col gap-2">
+                <p className="text-[11px] font-bold text-white/40 tracking-wider mb-1.5 px-1 uppercase font-sans">
+                  Top Hits
+                </p>
+                {/* Search in all launchable apps */}
+                <div className="bg-[#1c1c1e]/70 backdrop-blur-md border border-white/[0.06] rounded-[22px] overflow-hidden divide-y divide-white/[0.06] shadow-lg">
+                  {allDockApps
+                    .filter(
+                      (app) =>
+                        app.id !== "launchpad" &&
+                        app.id !== "trash" &&
+                        (app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          app.id.toLowerCase().includes(searchQuery.toLowerCase())),
+                    )
+                    .map((app) => (
+                      <button
+                        key={app.id}
+                        onClick={() => {
+                          if (app.canOpen) {
+                            openWindow(app.id);
+                            setIsSearchOpen(false);
+                            setSearchQuery("");
+                          }
+                        }}
+                        className="flex items-center gap-3.5 px-4 py-3 hover:bg-white/[0.06] active:bg-white/[0.1] transition-all text-left w-full"
+                      >
+                        <div className="w-10 h-10 rounded-[10px] overflow-hidden flex-shrink-0 bg-white/5 flex items-center justify-center">
+                          {app.id === "calendar" ? (
+                            <div className="w-full h-full bg-white flex flex-col items-center select-none rounded-[10px] overflow-hidden scale-[0.76]">
+                              <div className="w-full bg-[#ff3b30] py-0.5 flex items-center justify-center flex-shrink-0">
+                                <span className="text-white text-[7px] font-bold uppercase leading-none font-sans">
+                                  {
+                                    ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][
+                                      new Date().getDay()
+                                    ]
+                                  }
+                                </span>
+                              </div>
+                              <div className="flex-1 flex items-center justify-center -mt-0.5">
+                                <span className="text-gray-900 font-semibold text-[16px] leading-none font-sans">
+                                  {new Date().getDate()}
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            <img
+                              src={`/images/${app.icon}`}
+                              alt={app.name}
+                              className={`w-full h-full object-cover rounded-[10px] ${scaleMap[app.id] || ""}`}
+                            />
+                          )}
+                        </div>
+                        <div className="flex-grow">
+                          <p className="text-[15px] font-semibold text-white leading-tight font-sans">
+                            {app.name}
+                          </p>
+                          <p className="text-[10.5px] text-white/40 mt-0.5 font-medium font-sans">
+                            {app.canOpen ? "Open App" : "Locked"}
+                          </p>
+                        </div>
+                        <span className="text-white/20 text-[14px] pr-1">➔</span>
+                      </button>
+                    ))}
+                </div>
+                {/* If no matches found */}
+                {allDockApps.filter(
+                  (app) =>
+                    app.id !== "launchpad" &&
+                    app.id !== "trash" &&
+                    (app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      app.id.toLowerCase().includes(searchQuery.toLowerCase())),
+                ).length === 0 && (
+                  <div className="text-center py-8 text-white/50 text-[13.5px] font-sans">
+                    No results found for "{searchQuery}"
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 };
