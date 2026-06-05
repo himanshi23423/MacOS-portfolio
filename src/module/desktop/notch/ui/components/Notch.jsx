@@ -33,7 +33,7 @@ const Notch = () => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [cameraError, setCameraError] = useState("");
   const videoRef = useRef(null);
-  const cameraStreamRef = useRef(null);
+  const [cameraStream, setCameraStream] = useState(null);
 
   const notchRef = useRef(null);
 
@@ -634,8 +634,7 @@ const Notch = () => {
     setIsCameraOpen(true);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-      cameraStreamRef.current = stream;
-      // videoRef may not be mounted yet; the useEffect below will wire it once rendered
+      setCameraStream(stream);
     } catch {
       setCameraError("Camera access denied. Please allow camera permission.");
     }
@@ -643,17 +642,17 @@ const Notch = () => {
 
   // Wire the webcam stream to the <video> element once camera overlay is rendered
   useEffect(() => {
-    if (isCameraOpen && videoRef.current && cameraStreamRef.current) {
-      videoRef.current.srcObject = cameraStreamRef.current;
+    if (isCameraOpen && videoRef.current && cameraStream) {
+      videoRef.current.srcObject = cameraStream;
       videoRef.current.play().catch(() => {});
     }
-  }, [isCameraOpen]);
+  }, [isCameraOpen, cameraStream]);
 
   const closeCamera = (e) => {
     if (e) e.stopPropagation();
-    if (cameraStreamRef.current) {
-      cameraStreamRef.current.getTracks().forEach((t) => t.stop());
-      cameraStreamRef.current = null;
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((t) => t.stop());
+      setCameraStream(null);
     }
     setIsCameraOpen(false);
     setCameraError("");
@@ -938,14 +937,14 @@ const Notch = () => {
             <div className="flex-1 w-full overflow-hidden flex flex-col justify-center">
               {activeTab === "nook" ? (
                 /* Nook Tab: Music | Calendar | Camera */
-                <div className="notch-nook-grid grid grid-cols-[1.2fr_1.5fr_0.9fr] items-center h-full w-full gap-2">
+                <div className="notch-nook-grid grid grid-cols-[1.25fr_1.5fr_0.85fr] items-center h-full w-full gap-2.5">
                   {/* Column 1: Music */}
                   <div
-                    className="nook-music-section flex items-center gap-2 pr-2 border-r border-zinc-800/40 h-[80%] min-w-0"
+                    className="nook-music-section flex items-center gap-2.5 pr-2.5 border-r border-zinc-800/40 h-[80%] min-w-0"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <div
-                      className={`nook-album-art w-12 h-12 rounded-lg flex-shrink-0 flex items-center justify-center relative overflow-hidden bg-zinc-800 ${isPlaying ? "playing" : ""}`}
+                      className={`nook-album-art w-12 h-12 rounded-lg flex-shrink-0 flex items-center justify-center relative overflow-hidden bg-zinc-800 shadow-lg ${isPlaying ? "playing" : ""}`}
                     >
                       {hasSong && activeTrack.coverUrl ? (
                         <img
@@ -954,38 +953,38 @@ const Notch = () => {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <span className="text-lg">{activeTrack.coverText || "🎵"}</span>
+                        <span className="text-xl">{activeTrack.coverText || "🎵"}</span>
                       )}
                     </div>
                     <div className="nook-music-info flex-1 min-w-0 flex flex-col justify-center gap-0.5">
-                      <span className="text-[11px] text-white font-semibold truncate block">
+                      <span className="text-[12.5px] text-white font-semibold truncate block">
                         {hasSong ? activeTrack.title : "Select a Song"}
                       </span>
-                      <span className="text-[9px] text-zinc-400 truncate block">
+                      <span className="text-[10.5px] text-zinc-400 truncate block">
                         {hasSong ? formatTime(currentTime) : "JioSaavn"}
                       </span>
-                      <div className="flex items-center gap-2 mt-1">
+                      <div className="flex items-center gap-3 mt-1">
                         <button
-                          className="text-zinc-400 hover:text-white transition-all"
+                          className="text-zinc-400 hover:text-white transition-all hover:scale-110 active:scale-95"
                           onClick={handlePrev}
                         >
-                          <SkipBack size={10} fill="currentColor" />
+                          <SkipBack size={12} fill="currentColor" />
                         </button>
                         <button
-                          className="text-zinc-400 hover:text-white transition-all"
+                          className="text-zinc-400 hover:text-white transition-all hover:scale-110 active:scale-95"
                           onClick={togglePlay}
                         >
                           {isPlaying ? (
-                            <Pause size={12} fill="currentColor" />
+                            <Pause size={14} fill="currentColor" />
                           ) : (
-                            <Play size={12} fill="currentColor" />
+                            <Play size={14} fill="currentColor" />
                           )}
                         </button>
                         <button
-                          className="text-zinc-400 hover:text-white transition-all"
+                          className="text-zinc-400 hover:text-white transition-all hover:scale-110 active:scale-95"
                           onClick={handleNext}
                         >
-                          <SkipForward size={10} fill="currentColor" />
+                          <SkipForward size={12} fill="currentColor" />
                         </button>
                       </div>
                     </div>
@@ -993,12 +992,14 @@ const Notch = () => {
 
                   {/* Column 2: Calendar */}
                   <div
-                    className="nook-calendar-section px-2 border-r border-zinc-800/40 h-[80%] flex flex-col justify-center select-none"
+                    className="nook-calendar-section px-2.5 border-r border-zinc-800/40 h-[80%] flex flex-col justify-center select-none"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[11px] text-white font-bold">{getMonthName()}</span>
-                      <div className="flex-1 flex justify-between text-[8px] font-bold text-zinc-500">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-[12px] text-white font-extrabold tracking-wide">
+                        {getMonthName()}
+                      </span>
+                      <div className="flex-1 flex justify-between text-[9px] font-extrabold text-zinc-500 tracking-wider">
                         {getCalendarDays().map((day, idx) => (
                           <span key={idx} className={day.isToday ? "text-[#3b82f6]" : ""}>
                             {day.dayName}
@@ -1006,35 +1007,38 @@ const Notch = () => {
                         ))}
                       </div>
                     </div>
-                    <div className="flex justify-between items-center text-[9px] text-zinc-400 mb-1">
+                    <div className="flex justify-between items-center text-[10px] text-zinc-400 mb-1">
                       <div className="flex-1 flex justify-between">
                         {getCalendarDays().map((day, idx) => (
                           <span
                             key={idx}
-                            className={`w-4 h-4 flex items-center justify-center rounded-full font-medium ${day.isToday ? "bg-[#3b82f6] text-white font-bold shadow-md shadow-blue-500/20" : "text-zinc-300"}`}
+                            className={`w-[18px] h-[18px] flex items-center justify-center rounded-full font-bold ${day.isToday ? "bg-[#3b82f6] text-white shadow-md shadow-blue-500/25" : "text-zinc-300 hover:bg-white/5 transition-colors"}`}
                           >
                             {day.dayNum}
                           </span>
                         ))}
                       </div>
                     </div>
-                    <div className="flex items-center gap-1.5 justify-center mt-1 text-[8px] text-zinc-500">
-                      <div className="w-1.5 h-1.5 rounded-sm border border-zinc-600 bg-zinc-800 flex-shrink-0" />
+                    <div className="flex items-center gap-1.5 justify-center mt-1.5 text-[9px] text-zinc-500 font-semibold">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981] flex-shrink-0 animate-pulse" />
                       <span>Nothing for today</span>
                     </div>
                   </div>
 
                   {/* Column 3: Camera */}
-                  <div className="nook-camera-section flex justify-center items-center h-[80%] pl-2">
+                  <div className="nook-camera-section flex flex-col justify-center items-center h-[80%] pl-2 gap-1.5">
                     <button
-                      className="nook-camera-button w-14 h-14 rounded-full border border-zinc-700 bg-gradient-to-b from-zinc-700 to-zinc-900 flex items-center justify-center shadow-lg transition-all hover:scale-105 hover:border-zinc-500 active:scale-95 text-zinc-400 hover:text-white"
+                      className="nook-camera-button w-[42px] h-[42px] rounded-full border border-zinc-800 bg-gradient-to-b from-zinc-700 to-zinc-900 flex items-center justify-center shadow-lg transition-all hover:scale-105 hover:border-zinc-600 active:scale-95 text-zinc-400 hover:text-white"
                       onClick={openCamera}
                       title="Open camera"
                     >
-                      <div className="w-11 h-11 rounded-full border border-zinc-700 bg-zinc-950 flex items-center justify-center">
-                        <Camera size={16} className="opacity-80" />
+                      <div className="w-[34px] h-[34px] rounded-full border border-zinc-800 bg-zinc-950 flex items-center justify-center shadow-inner">
+                        <Camera size={14} className="opacity-80" />
                       </div>
                     </button>
+                    <span className="text-[7.5px] text-zinc-500 font-bold tracking-wider uppercase">
+                      Camera
+                    </span>
                   </div>
                 </div>
               ) : (
