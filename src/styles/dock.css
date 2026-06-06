@@ -214,3 +214,25 @@
     bottom: -8px;
   }
 }
+
+/* Audio visualizer on top of the dock */
+@keyframes desktop-eq {
+  0% {
+    height: 10px;
+    opacity: 0.3;
+  }
+  50% {
+    height: var(--bar-height, 100px);
+    opacity: 1;
+  }
+  100% {
+    height: 20px;
+    opacity: 0.5;
+  }
+}
+
+.mask-image-fade {
+  /* Fades the edges of the waveform so it blends into the wallpaper */
+  mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+}
