@@ -32,11 +32,26 @@ const MobileOSControlCenter = ({
   setVolume,
   controlCenterRef,
 }) => {
-  const { systemSettings, updateSystemSetting } = useWindowsStore();
+  const { systemSettings, updateSystemSetting, music, setMusicState } = useWindowsStore();
   const isLowPowerActive = systemSettings.lowPowerMode === "Always";
-  const [isPlaying, setIsPlaying] = useState(false);
+  const isPlaying = music.isPlaying;
   const brightnessSliderRef = useRef(null);
   const volumeSliderRef = useRef(null);
+
+  const handleControlCenterNext = (e) => {
+    e.stopPropagation();
+    window.dispatchEvent(new CustomEvent("macos-portfolio-next-track"));
+  };
+
+  const handleControlCenterPrev = (e) => {
+    e.stopPropagation();
+    window.dispatchEvent(new CustomEvent("macos-portfolio-prev-track"));
+  };
+
+  const handleControlCenterPlayPause = (e) => {
+    e.stopPropagation();
+    setMusicState({ isPlaying: !music.isPlaying });
+  };
 
   useEffect(() => {
     if (!controlCenterRef.current) return;
@@ -184,14 +199,28 @@ const MobileOSControlCenter = ({
           {/* Music / Now Playing Widget */}
           <div className="bg-white/[0.08] border border-white/[0.05] rounded-[24px] p-4 flex flex-col justify-between aspect-square">
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-500 flex items-center justify-center shadow-md animate-pulse">
-                <span className="text-white text-xs font-bold"></span>
+              <div
+                className={`w-10 h-10 rounded-lg bg-gradient-to-tr ${music.activeTrack?.coverColor || "from-pink-500 via-purple-600 to-indigo-500"} flex items-center justify-center shadow-md ${isPlaying ? "animate-pulse" : ""}`}
+              >
+                {music.activeTrack?.coverUrl ? (
+                  <img
+                    src={music.activeTrack.coverUrl}
+                    alt="art"
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                ) : (
+                  <span className="text-white text-base font-bold">
+                    {music.activeTrack?.coverText || "🎵"}
+                  </span>
+                )}
               </div>
-              <div className="overflow-hidden">
+              <div className="overflow-hidden flex-1 min-w-0">
                 <p className="text-[12px] font-semibold text-white truncate leading-snug">
-                  Blinding Lights
+                  {music.activeTrack?.title || "Not Playing"}
                 </p>
-                <p className="text-[10px] text-white/50 truncate">The Weeknd</p>
+                <p className="text-[10px] text-white/50 truncate">
+                  {music.activeTrack?.artist || "Select a Song"}
+                </p>
               </div>
             </div>
 
@@ -216,11 +245,14 @@ const MobileOSControlCenter = ({
 
             {/* Media Controls */}
             <div className="flex items-center justify-around">
-              <button className="text-white/60 hover:text-white active:scale-90 transition-transform">
+              <button
+                onClick={handleControlCenterPrev}
+                className="text-white/60 hover:text-white active:scale-90 transition-transform"
+              >
                 <SkipBack size={18} fill="currentColor" />
               </button>
               <button
-                onClick={() => setIsPlaying(!isPlaying)}
+                onClick={handleControlCenterPlayPause}
                 className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center active:scale-90 transition-transform shadow"
               >
                 {isPlaying ? (
@@ -229,7 +261,10 @@ const MobileOSControlCenter = ({
                   <Play size={14} fill="currentColor" className="ml-0.5" />
                 )}
               </button>
-              <button className="text-white/60 hover:text-white active:scale-90 transition-transform">
+              <button
+                onClick={handleControlCenterNext}
+                className="text-white/60 hover:text-white active:scale-90 transition-transform"
+              >
                 <SkipForward size={18} fill="currentColor" />
               </button>
             </div>

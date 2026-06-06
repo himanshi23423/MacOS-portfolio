@@ -52,7 +52,7 @@ const IOSBatteryIcon = ({ level, isCharging, lowPower, showPercentage }) => (
 );
 
 const MobileOSStatusBar = ({ now, anyWindowOpen, setIsControlOpen, settings }) => {
-  const { systemSettings } = useWindowsStore();
+  const { systemSettings, music } = useWindowsStore();
   const [batteryLevel, setBatteryLevel] = useState(100);
   const [isCharging, setIsCharging] = useState(false);
 
@@ -85,7 +85,7 @@ const MobileOSStatusBar = ({ now, anyWindowOpen, setIsControlOpen, settings }) =
           level={batteryLevel}
           isCharging={isCharging}
           lowPower={systemSettings.lowPowerMode === "Always"}
-          showPercentage={systemSettings.showBatteryPercentage}
+          showPercentage={systemSettings.showBatteryPercentage && !music.isPlaying}
         />
       </div>
     </header>

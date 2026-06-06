@@ -359,15 +359,6 @@ const useMusic = () => {
     }
   }, [isPlaying, activeTrack, setMusicState]);
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    return () => {
-      if (audio) {
-        audio.pause();
-      }
-    };
-  }, []);
-
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
@@ -451,6 +442,26 @@ const useMusic = () => {
       audioRef.current.currentTime = newTime;
     }
   };
+
+  useEffect(() => {
+    const onNext = () => handleNext();
+    const onPrev = () => handlePrev();
+    window.addEventListener("macos-portfolio-next-track", onNext);
+    window.addEventListener("macos-portfolio-prev-track", onPrev);
+    return () => {
+      window.removeEventListener("macos-portfolio-next-track", onNext);
+      window.removeEventListener("macos-portfolio-prev-track", onPrev);
+    };
+  }, [tracks, activeTrack, isShuffle, handleNext, handlePrev]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    return () => {
+      if (audio) {
+        audio.pause();
+      }
+    };
+  }, []);
 
   return {
     tracks,

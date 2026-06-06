@@ -33,6 +33,30 @@ const MobileNotch = () => {
     isSiriOpenRef.current = isSiriOpen;
   }, [isSiriOpen]);
 
+  // Audio elements tracking states
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  const formatTime = (sec) => {
+    if (isNaN(sec) || sec === Infinity) return "0:00";
+    const minutes = Math.floor(sec / 60);
+    const seconds = Math.floor(sec % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
+  useEffect(() => {
+    const updateTime = () => {
+      const audioEl = document.querySelector("audio");
+      if (audioEl) {
+        setCurrentTime(audioEl.currentTime || 0);
+        setDuration(audioEl.duration || 0);
+      }
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 500);
+    return () => clearInterval(interval);
+  }, [notchState]);
+
   // Sync music state to notch state
   useEffect(() => {
     if (isSiriOpen) {
@@ -735,57 +759,113 @@ const MobileNotch = () => {
   // ═══════════════════════════════════════════
   if (notchState === "EXPANDED_MUSIC") {
     return (
-      <div
-        onClick={handleNotchClick}
-        className="fixed top-2.5 left-1/2 -translate-x-1/2 w-[92%] h-[120px] rounded-[24px] bg-[#0c0c0d]/95 backdrop-blur-[35px] border border-white/12 shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-3.5 flex flex-col justify-between z-[90] transition-all duration-300 ease-out select-none cursor-pointer"
-      >
-        <div className="flex items-center gap-3 w-full">
-          <div
-            className={`w-11 h-11 rounded-lg flex-shrink-0 bg-gradient-to-tr ${music.activeTrack?.coverColor || "from-pink-500 to-indigo-500"} flex items-center justify-center text-[22px] shadow-md`}
-          >
-            {music.activeTrack?.coverText || "🎵"}
-          </div>
-          <div className="flex-1 min-w-0">
-            <h4 className="text-[13.5px] font-bold text-white truncate leading-tight">
-              {music.activeTrack?.title || "No Title"}
-            </h4>
-            <p className="text-[11px] text-white/50 truncate mt-0.5">
-              {music.activeTrack?.artist || "Unknown Artist"}
-            </p>
-          </div>
-          {/* Animated visualizer */}
-          <div className="flex items-end gap-[2px] h-[15px] pr-1">
-            <span className="w-[2px] h-[10px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_100ms]" />
-            <span className="w-[2px] h-[15px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_300ms]" />
-            <span className="w-[2px] h-[8px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_200ms]" />
-            <span className="w-[2px] h-[12px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_400ms]" />
-          </div>
-        </div>
+      <div className="fixed inset-0 z-[89] flex flex-col select-none">
+        {/* Click outside backdrop overlay */}
+        <div
+          className="absolute inset-0 bg-transparent"
+          onClick={() => setNotchState("ACTIVE_MUSIC")}
+        />
 
-        {/* Media Control row */}
-        <div className="flex items-center justify-center gap-8 w-full pb-1">
-          <button
-            onClick={handlePrev}
-            className="text-white/70 hover:text-white active:scale-90 transition-transform"
+        <div
+          onClick={() => setNotchState("ACTIVE_MUSIC")}
+          className="relative z-[90] mx-auto mt-2.5 w-[92%] h-[142px] rounded-[24px] bg-[#0c0c0d]/95 backdrop-blur-[35px] border border-white/12 shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-3.5 flex flex-col justify-between cursor-pointer transition-all duration-300 ease-out"
+        >
+          <div className="flex items-center gap-3 w-full" onClick={(e) => e.stopPropagation()}>
+            <div
+              className={`w-11 h-11 rounded-lg flex-shrink-0 bg-gradient-to-tr ${music.activeTrack?.coverColor || "from-pink-500 to-indigo-500"} flex items-center justify-center text-[22px] shadow-md relative overflow-hidden`}
+            >
+              {music.activeTrack?.coverUrl ? (
+                <img
+                  src={music.activeTrack.coverUrl}
+                  alt="art"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                music.activeTrack?.coverText || "🎵"
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="text-[13.5px] font-bold text-white truncate leading-tight">
+                {music.activeTrack?.title || "No Title"}
+              </h4>
+              <p className="text-[11px] text-white/50 truncate mt-0.5">
+                {music.activeTrack?.artist || "Unknown Artist"}
+              </p>
+            </div>
+            {/* Animated visualizer */}
+            <div className="flex items-end gap-[2px] h-[15px] pr-1">
+              <span className="w-[2px] h-[10px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_100ms] shadow-[0_0_4px_#30d158]" />
+              <span className="w-[2px] h-[15px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_300ms] shadow-[0_0_4px_#30d158]" />
+              <span className="w-[2px] h-[8px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_200ms] shadow-[0_0_4px_#30d158]" />
+              <span className="w-[2px] h-[12px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_400ms] shadow-[0_0_4px_#30d158]" />
+            </div>
+          </div>
+
+          {/* Progress Bar (iPhone style with slider input) */}
+          <div
+            className="w-full px-1 flex flex-col gap-1 mt-1.5"
+            onClick={(e) => e.stopPropagation()}
           >
-            <SkipBack size={18} fill="currentColor" />
-          </button>
-          <button
-            onClick={togglePlay}
-            className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center active:scale-90 transition-transform shadow"
-          >
-            {music.isPlaying ? (
-              <Pause size={14} fill="currentColor" />
-            ) : (
-              <Play size={14} fill="currentColor" className="ml-0.5" />
-            )}
-          </button>
-          <button
-            onClick={handleNext}
-            className="text-white/70 hover:text-white active:scale-90 transition-transform"
-          >
-            <SkipForward size={18} fill="currentColor" />
-          </button>
+            <div className="relative w-full h-[4px] flex items-center group">
+              <input
+                type="range"
+                min="0"
+                max={duration || 100}
+                value={currentTime}
+                onChange={(e) => {
+                  const newTime = parseFloat(e.target.value);
+                  setCurrentTime(newTime);
+                  const audioEl = document.querySelector("audio");
+                  if (audioEl) {
+                    audioEl.currentTime = newTime;
+                  }
+                }}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              />
+              {/* Styled track */}
+              <div className="w-full h-[3.5px] bg-white/15 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-white rounded-full"
+                  style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
+                />
+              </div>
+              {/* Thumb indicator dot */}
+              <div
+                className="absolute w-2 h-2 rounded-full bg-white shadow-md -translate-x-1/2 pointer-events-none transition-transform duration-75 scale-0 group-hover:scale-100"
+                style={{ left: `${duration ? (currentTime / duration) * 100 : 0}%` }}
+              />
+            </div>
+            <div className="flex justify-between text-[9px] text-white/35 font-medium leading-none mt-0.5 select-none">
+              <span>{formatTime(currentTime)}</span>
+              <span>-{formatTime(Math.max(0, duration - currentTime))}</span>
+            </div>
+          </div>
+
+          {/* Media Control row */}
+          <div className="flex items-center justify-center gap-8 w-full pb-0.5">
+            <button
+              onClick={handlePrev}
+              className="text-white/70 hover:text-white active:scale-90 transition-transform"
+            >
+              <SkipBack size={18} fill="currentColor" />
+            </button>
+            <button
+              onClick={togglePlay}
+              className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center active:scale-90 transition-transform shadow"
+            >
+              {music.isPlaying ? (
+                <Pause size={14} fill="currentColor" />
+              ) : (
+                <Play size={14} fill="currentColor" className="ml-0.5" />
+              )}
+            </button>
+            <button
+              onClick={handleNext}
+              className="text-white/70 hover:text-white active:scale-90 transition-transform"
+            >
+              <SkipForward size={18} fill="currentColor" />
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -798,16 +878,28 @@ const MobileNotch = () => {
     return (
       <div
         onClick={handleNotchClick}
-        className="fixed top-2.5 left-1/2 -translate-x-1/2 w-[160px] h-[30px] rounded-full bg-black border border-white/10 flex items-center justify-between px-3.5 z-[80] shadow-lg transition-all duration-300 select-none cursor-pointer active:scale-[0.97]"
+        className="fixed top-2.5 left-1/2 -translate-x-1/2 w-[125px] h-[30px] rounded-full bg-black border border-white/10 flex items-center justify-between px-3 z-[80] shadow-lg transition-all duration-300 select-none cursor-pointer active:scale-[0.97]"
       >
-        <span className="text-[14px] leading-none select-none">
-          {music.activeTrack?.coverText || "🎵"}
-        </span>
+        {/* Album art cover art on the left */}
+        <div className="w-[18px] h-[18px] rounded-[5px] flex-shrink-0 bg-black flex items-center justify-center text-[10px] shadow-[0_0_5px_rgba(255,255,255,0.15)] relative overflow-hidden">
+          {music.activeTrack?.coverUrl ? (
+            <img
+              src={music.activeTrack.coverUrl}
+              alt="art"
+              className="w-full h-full object-cover animate-spin [animation-duration:8s]"
+            />
+          ) : (
+            <span className="text-[10px] leading-none select-none">
+              {music.activeTrack?.coverText || "🎵"}
+            </span>
+          )}
+        </div>
+
         {/* Animated mini visualizer */}
-        <div className="flex items-end gap-[1.5px] h-[10px] pb-0.5">
-          <span className="w-[1.5px] h-[6px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_100ms]" />
-          <span className="w-[1.5px] h-[10px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_300ms]" />
-          <span className="w-[1.5px] h-[5px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_200ms]" />
+        <div className="flex items-end gap-[1.5px] h-[11px] pb-[1px] pr-0.5">
+          <span className="w-[1.5px] h-[5px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_100ms] shadow-[0_0_2px_#30d158]" />
+          <span className="w-[1.5px] h-[10px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_300ms] shadow-[0_0_2px_#30d158]" />
+          <span className="w-[1.5px] h-[6px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_200ms] shadow-[0_0_2px_#30d158]" />
         </div>
       </div>
     );
