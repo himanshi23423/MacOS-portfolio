@@ -6,6 +6,7 @@ import Call from "@module/desktop/apps/call/ui/view/CallView";
 import Chrome from "@module/desktop/apps/chrome/ui/components/Chrome";
 import Contact from "@module/desktop/apps/contact/ui/view/ContactView";
 import Dock from "@module/desktop/dock/ui/view/DockView";
+import DockVisualizer from "./dock/ui/components/DockVisualizer";
 import Finder from "@module/desktop/apps/finder/ui/view/FinderView";
 import FontBook from "@module/desktop/apps/fontbook/ui/view/FontBookView";
 import Home from "@module/desktop/home/ui/view/HomeView";
@@ -39,6 +40,7 @@ const Desktop = () => (
     <Navbar />
     <Notch />
     <Welcome />
+    <DockVisualizer />
     <Dock />
     <Terminal />
     <Safari />
