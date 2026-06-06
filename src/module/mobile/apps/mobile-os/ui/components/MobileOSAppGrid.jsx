@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Search,
   Smartphone,
@@ -14,6 +14,49 @@ import {
 } from "lucide-react";
 import useWeather from "@module/desktop/apps/weather/ui/components/useWeather";
 import { dockApps as allDockApps } from "@constants";
+import useTimeStore from "@store/time";
+
+// --- WIDGET COMPONENTS ---
+
+const LockScreenTimeWidget = () => {
+  const time = useTimeStore((state) => state.time);
+
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const dayName = days[time.getDay()];
+  const monthName = months[time.getMonth()];
+  const dateNum = time.getDate();
+
+  const hours = time.getHours().toString().padStart(2, "0");
+  const minutes = time.getMinutes().toString().padStart(2, "0");
+
+  return (
+    <div className="flex flex-col items-center justify-center text-white w-full mb-[1vh] shrink">
+      <h3 className="text-[1.8vh] font-medium tracking-wide drop-shadow-md leading-tight">
+        {dayName}, {monthName} {dateNum}
+      </h3>
+      <h1 className="text-[9.5vh] font-bold tracking-tight leading-none drop-shadow-lg -mt-[0.8vh]">
+        {hours}:{minutes}
+      </h1>
+    </div>
+  );
+};
+
+// --- END WIDGET COMPONENTS ---
 
 const scaleMap = {
   finder: "scale-[0.90]",
@@ -102,12 +145,13 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
         className="flex-1 flex transition-transform duration-350 ease-out"
         style={{ transform: `translateX(-${currentPage * 100}%)` }}
       >
-        {/* PAGE 1: Widgets (Top) + Premium Mid Widget + Primary App Grid (Bottom-aligned) */}
-        <div className="w-full flex-shrink-0 px-5 flex flex-col justify-between h-full pb-4">
-          {/* Enhanced Widgets Container (Top) */}
-          <div className="flex flex-col gap-3">
+        {/* PAGE 1: Widgets and Apps (Bottom-aligned) */}
+        <div className="w-full flex-shrink-0 px-5 flex flex-col justify-end h-full pb-[2vh]">
+          {/* Enhanced Widgets Container */}
+          <div className="flex flex-col gap-[1.5vh] mt-auto min-h-0 shrink">
+            <LockScreenTimeWidget />
             {/* Top row widgets (2x2 each) */}
-            <div className="grid grid-cols-2 gap-3 mt-1">
+            <div className="grid grid-cols-2 gap-[1.5vh] mt-[0.5vh] min-h-0 shrink">
               {/* iOS 17 Weather Widget */}
               <div className="bg-gradient-to-b from-[#3a86f5] via-[#2068e6] to-[#0d4eb5] rounded-[22px] p-3 flex flex-col justify-between shadow-[0_6px_20px_rgba(0,0,0,0.22)] border border-white/12 text-white">
                 <div className="flex justify-between items-start">
@@ -345,8 +389,8 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
             </div>
           </div>
 
-          {/* Bottom-Aligned App Grid */}
-          <div className="grid grid-cols-4 gap-y-5 gap-x-2.5 mt-auto">
+          {/* App Grid */}
+          <div className="grid grid-cols-4 gap-y-[2.5vh] gap-x-2.5 mt-[3vh] shrink-0">
             {page1Apps.map((app) => (
               <button
                 key={app.id}

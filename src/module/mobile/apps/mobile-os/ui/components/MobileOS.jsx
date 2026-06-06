@@ -1,7 +1,8 @@
 import { dockApps } from "@constants";
 import useWindowsStore from "@store/window";
 import dayjs from "dayjs";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import useTimeStore from "@store/time";
 import MobileOSStatusBar from "./MobileOSStatusBar";
 import MobileOSControlCenter from "./MobileOSControlCenter";
 import MobileOSAppGrid from "./MobileOSAppGrid";
@@ -10,7 +11,8 @@ import MobileNotch from "./MobileNotch";
 
 const MobileOS = () => {
   const { openWindow, windows } = useWindowsStore();
-  const [now, setNow] = useState(dayjs());
+  const time = useTimeStore((state) => state.time);
+  const now = dayjs(time);
   const [isControlOpen, setIsControlOpen] = useState(false);
   const [settings, setSettings] = useState({
     wifi: true,
@@ -25,11 +27,6 @@ const MobileOS = () => {
   const controlCenterRef = useRef(null);
 
   const anyWindowOpen = Object.values(windows).some((w) => w.isOpen);
-
-  useEffect(() => {
-    const timer = setInterval(() => setNow(dayjs()), 30_000);
-    return () => clearInterval(timer);
-  }, []);
 
   const toggle = (key) => setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
 
