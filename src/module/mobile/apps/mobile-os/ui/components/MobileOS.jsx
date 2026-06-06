@@ -1,7 +1,7 @@
 import { dockApps } from "@constants";
 import useWindowsStore from "@store/window";
 import dayjs from "dayjs";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import useTimeStore from "@store/time";
 import MobileOSStatusBar from "./MobileOSStatusBar";
 import MobileOSControlCenter from "./MobileOSControlCenter";
@@ -10,7 +10,7 @@ import MobileOSDock from "./MobileOSDock";
 import MobileNotch from "./MobileNotch";
 
 const MobileOS = () => {
-  const { openWindow, windows } = useWindowsStore();
+  const { openWindow, windows, systemSettings } = useWindowsStore();
   const time = useTimeStore((state) => state.time);
   const now = dayjs(time);
   const [isControlOpen, setIsControlOpen] = useState(false);
@@ -21,6 +21,7 @@ const MobileOS = () => {
     lowPower: false,
     flashlight: false,
     airplane: false,
+    cellular: true,
   });
   const [brightness, setBrightness] = useState(100);
   const [volume, setVolume] = useState(50);
@@ -29,6 +30,11 @@ const MobileOS = () => {
   const anyWindowOpen = Object.values(windows).some((w) => w.isOpen);
 
   const toggle = (key) => setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  // Apply night mode class globally
+  useEffect(() => {
+    document.body.classList.toggle("night-light-active", !!systemSettings.nightLight);
+  }, [systemSettings.nightLight]);
 
   return (
     <div className="mobile-os-container text-white font-sans select-none fixed top-0 left-0 w-dvw h-dvh overflow-hidden z-[1]">
@@ -53,6 +59,7 @@ const MobileOS = () => {
         volume={volume}
         setVolume={setVolume}
         controlCenterRef={controlCenterRef}
+        openWindow={openWindow}
       />
 
       <MobileOSAppGrid
@@ -75,6 +82,12 @@ const MobileOS = () => {
       />
 
       <div className="absolute bottom-[2px] left-1/2 -translate-x-1/2 rounded-full z-50 w-[134px] h-[5px] bg-white/55" />
+
+      {/* Screen Brightness Overlay */}
+      <div
+        className="absolute inset-0 bg-black pointer-events-none z-[9999]"
+        style={{ opacity: ((100 - brightness) / 100) * 0.85 }}
+      />
     </div>
   );
 };
