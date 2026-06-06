@@ -39,6 +39,11 @@ const Desktop = () => (
   <main>
     <Navbar />
     <Notch />
+    <div
+      id="desktop-area"
+      className="absolute top-[35px] bottom-0 left-0 right-0 pointer-events-none z-0"
+    />
+    <div id="folder-bounds" className="absolute pointer-events-none z-0" />
     <Welcome />
     <DockVisualizer />
     <Dock />

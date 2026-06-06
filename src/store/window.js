@@ -7,6 +7,7 @@ const useWindowsStore = create(
     windows: WINDOW_CONFIG,
     nextZIndex: INITIAL_Z_INDEX + 1,
     favorites: [],
+    isDockHiddenByCollision: false,
     music: {
       activeTrack: {
         id: 0,
@@ -67,6 +68,11 @@ const useWindowsStore = create(
     setSiriOpen: (isOpen) =>
       set((state) => {
         state.isSiriOpen = isOpen;
+      }),
+
+    setDockHiddenByCollision: (isHidden) =>
+      set((state) => {
+        state.isDockHiddenByCollision = isHidden;
       }),
 
     toggleFavorite: (id) =>

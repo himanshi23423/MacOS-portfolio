@@ -270,3 +270,25 @@
     --dock-item-height: 62px;
   }
 }
+
+#folder-bounds {
+  position: absolute;
+  top: 35px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  --dock-icon-size: clamp(34px, calc((94vw - 156px) / 24), 56px);
+  --dock-item-height: calc(var(--dock-icon-size) + 6px);
+  --dock-total-height: calc(var(--dock-item-height) + 18px);
+  bottom: calc(20px + var(--dock-total-height) + 8px);
+}
+
+@media (min-width: 1920px) {
+  #folder-bounds {
+    --dock-icon-size: 56px;
+    --dock-item-height: 62px;
+  }
+}

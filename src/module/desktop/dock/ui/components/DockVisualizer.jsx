@@ -65,7 +65,7 @@ const BARS = [
 ];
 
 const DockVisualizer = () => {
-  const { windows, music } = useWindowsStore();
+  const { windows, music, isDockHiddenByCollision } = useWindowsStore();
   const isPlaying = music?.isPlaying;
 
   const isAnyWindowMaximized = useMemo(() => {
@@ -75,7 +75,7 @@ const DockVisualizer = () => {
   return (
     <div
       className={`desktop-visualizer-container ${
-        isPlaying && !isAnyWindowMaximized ? "active" : ""
+        isPlaying && !isAnyWindowMaximized && !isDockHiddenByCollision ? "active" : ""
       }`}
     >
       <style>{`

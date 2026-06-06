@@ -15,7 +15,9 @@ const Home = () => {
   };
 
   useGSAP(() => {
-    Draggable.create(".folder");
+    Draggable.create(".folder", {
+      bounds: "#folder-bounds",
+    });
   }, []);
   return (
     <section id="home">

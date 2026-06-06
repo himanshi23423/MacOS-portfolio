@@ -5,7 +5,8 @@ import DockIcon from "./DockIcon";
 import useDockAnimation from "./useDockAnimation";
 
 const Dock = () => {
-  const { openWindow, closeWindow, unminimizeWindow, windows, music } = useWindowsStore();
+  const { openWindow, closeWindow, unminimizeWindow, windows, music, isDockHiddenByCollision } =
+    useWindowsStore();
   const [hoveredAppId, setHoveredAppId] = useState(null);
   const dockRef = useDockAnimation();
 
@@ -38,7 +39,11 @@ const Dock = () => {
   );
 
   return (
-    <section id="dock" className={isAnyWindowMaximized ? "dock-hidden" : ""} aria-label="Dock">
+    <section
+      id="dock"
+      className={isAnyWindowMaximized || isDockHiddenByCollision ? "dock-hidden" : ""}
+      aria-label="Dock"
+    >
       <div ref={dockRef} className="dock-container">
         {dockApps.map(({ id, name, icon, canOpen }) => (
           <Fragment key={id}>

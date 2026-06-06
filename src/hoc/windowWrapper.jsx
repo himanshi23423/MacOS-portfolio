@@ -4,6 +4,42 @@ import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 import { useRef, useState, useEffect, useMemo } from "react";
 
+const checkDockCollision = () => {
+  if (typeof window === "undefined") return;
+  const dockEl = document.querySelector(".dock-container");
+  if (!dockEl) return;
+  const dockRect = dockEl.getBoundingClientRect();
+
+  const windowsList = document.querySelectorAll("main > section");
+  let collision = false;
+  for (const winEl of windowsList) {
+    if (
+      winEl.style.display !== "none" &&
+      winEl.id &&
+      winEl.id !== "dock" &&
+      winEl.id !== "navbar" &&
+      winEl.id !== "desktop-area"
+    ) {
+      const winRect = winEl.getBoundingClientRect();
+      const overlap = !(
+        winRect.right < dockRect.left ||
+        winRect.left > dockRect.right ||
+        winRect.bottom < dockRect.top ||
+        winRect.top > dockRect.bottom
+      );
+      if (overlap) {
+        collision = true;
+        break;
+      }
+    }
+  }
+
+  const currentVal = useWindowsStore.getState().isDockHiddenByCollision;
+  if (currentVal !== collision) {
+    useWindowsStore.getState().setDockHiddenByCollision(collision);
+  }
+};
+
 const windowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
     const { focusWindow, windows } = useWindowsStore();
@@ -27,11 +63,22 @@ const windowWrapper = (Component, windowKey) => {
       const [instance] = Draggable.create(el, {
         trigger: dragTrigger,
         cursor: "default",
+        bounds: "#desktop-area",
         onPress: () => focusWindow(windowKey),
+        onDrag: checkDockCollision,
+        onDragEnd: checkDockCollision,
       });
 
-      return () => instance.kill();
+      return () => {
+        instance.kill();
+        checkDockCollision();
+      };
     }, [isMobile, isOpen]);
+
+    useEffect(() => {
+      if (isMobile) return;
+      checkDockCollision();
+    }, [isOpen, windows[windowKey]?.isMinimized, isMobile]);
 
     useGSAP(() => {
       const el = ref.current;
@@ -166,6 +213,8 @@ const windowWrapper = (Component, windowKey) => {
         if (newX !== startGsapX || newY !== startGsapY) {
           gsap.set(el, { x: newX, y: newY });
         }
+
+        checkDockCollision();
       };
 
       const handlePointerUp = () => {
