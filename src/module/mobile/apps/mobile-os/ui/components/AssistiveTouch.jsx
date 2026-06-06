@@ -1,12 +1,12 @@
 import useWindowsStore from "@store/window";
-import { ChevronLeft, ChevronRight, Home, Maximize2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Home, Maximize2, Settings } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const AssistiveTouch = () => {
-  const { closeWindow, windows } = useWindowsStore();
+  const { closeWindow, windows, openWindow } = useWindowsStore();
   const [position, setPosition] = useState({ x: 280, y: 500 });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const dragStart = useRef({ x: 0, y: 0 });
+  const dragStart = useRef({ x: 0, y: 0, posX: 0, posY: 0 });
   const isDragging = useRef(false);
 
   useEffect(() => {
@@ -18,22 +18,37 @@ const AssistiveTouch = () => {
 
   // AssistiveTouch Drag/Pointer Handlers
   const handlePointerDown = (e) => {
-    dragStart.current = { x: e.clientX - position.x, y: e.clientY - position.y };
+    dragStart.current = { x: e.clientX, y: e.clientY, posX: position.x, posY: position.y };
     isDragging.current = false;
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
   const handlePointerMove = (e) => {
     if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
-    isDragging.current = true;
-    const nextX = e.clientX - dragStart.current.x;
-    const nextY = e.clientY - dragStart.current.y;
-    const maxX = window.innerWidth - 55;
-    const maxY = window.innerHeight - 55;
-    setPosition({
-      x: Math.max(10, Math.min(maxX, nextX)),
-      y: Math.max(10, Math.min(maxY, nextY)),
-    });
+
+    const moveX = e.clientX - dragStart.current.x;
+    const moveY = e.clientY - dragStart.current.y;
+
+    // Add a small threshold (5px) before considering it a drag, so taps don't get canceled
+    if (Math.abs(moveX) > 5 || Math.abs(moveY) > 5) {
+      isDragging.current = true;
+    }
+
+    if (isDragging.current) {
+      const nextX = dragStart.current.posX + moveX;
+      const nextY = dragStart.current.posY + moveY;
+
+      // Keep it constrained so the radial menu doesn't overflow off-screen
+      const minX = 10;
+      const minY = 70; // Extra padding for top radial menu
+      const maxX = window.innerWidth - 60;
+      const maxY = window.innerHeight - 120; // Extra padding for bottom radial menu
+
+      setPosition({
+        x: Math.max(minX, Math.min(maxX, nextX)),
+        y: Math.max(minY, Math.min(maxY, nextY)),
+      });
+    }
   };
 
   const handlePointerUp = (e) => {
@@ -75,7 +90,15 @@ const AssistiveTouch = () => {
   const handleBackAction = () => {
     const activeApp = getActiveWindowKey();
     if (activeApp) {
-      const appsWithBackListener = ["finder", "chrome", "notes", "appstore", "settings"];
+      const appsWithBackListener = [
+        "finder",
+        "chrome",
+        "notes",
+        "appstore",
+        "settings",
+        "safari",
+        "photos",
+      ];
       if (!appsWithBackListener.includes(activeApp)) {
         closeWindow(activeApp);
       } else {
@@ -83,8 +106,6 @@ const AssistiveTouch = () => {
         const event = new CustomEvent("app-navigate-back", { detail: { app: activeApp } });
         window.dispatchEvent(event);
       }
-    } else {
-      window.history.back();
     }
     setIsMenuOpen(false);
   };
@@ -95,91 +116,93 @@ const AssistiveTouch = () => {
       // Dispatch app-specific forward navigation event
       const event = new CustomEvent("app-navigate-forward", { detail: { app: activeApp } });
       window.dispatchEvent(event);
-    } else {
-      window.history.forward();
     }
     setIsMenuOpen(false);
   };
 
+  const handleOpenApp = (appId) => {
+    openWindow(appId);
+    setIsMenuOpen(false);
+  };
+
+  const menuItems = [
+    { label: "Settings", icon: Settings, onClick: () => handleOpenApp("settings") },
+    { label: "Back", icon: ChevronLeft, onClick: handleBackAction },
+    { label: "Home", icon: Home, onClick: handleHomeAction },
+    { label: "Forward", icon: ChevronRight, onClick: handleForwardAction },
+    { label: "Fullscreen", icon: Maximize2, onClick: handleFullscreenAction },
+  ];
+
   return (
     <>
-      {/* AssistiveTouch Ball */}
+      {/* AssistiveTouch expanded menu overlay background */}
+      {isMenuOpen && (
+        <div
+          onClick={() => setIsMenuOpen(false)}
+          className="fixed inset-0 bg-black/5 z-[99998] transition-opacity duration-300"
+        />
+      )}
+
+      {/* AssistiveTouch Wrapper */}
       <div
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
         style={{
           position: "fixed",
           left: position.x,
           top: position.y,
-          touchAction: "none",
+          zIndex: 99999,
         }}
-        className="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md border-[2.5px] border-white/20 shadow-lg cursor-pointer flex items-center justify-center z-[99999] transition-opacity hover:bg-black/60 active:scale-95"
       >
-        <div className="w-6 h-6 rounded-full bg-white/35 border-[1.5px] border-white/40 flex items-center justify-center shadow-inner">
-          <div className="w-3.5 h-3.5 rounded-full bg-white/70 shadow-sm" />
-        </div>
-      </div>
+        {/* Radial Menu Items */}
+        {menuItems.map((item, index) => {
+          const isLeftSide =
+            typeof window !== "undefined" ? position.x < window.innerWidth / 2 : true;
+          // Arc from top (-90) to bottom (90 or -270)
+          const angle = isLeftSide ? -90 + index * 45 : -90 - index * 45;
+          const rad = (angle * Math.PI) / 180;
+          const radius = 70;
 
-      {/* AssistiveTouch expanded menu overlay */}
-      {isMenuOpen && (
+          // Center of the 48x48 (w-12) ball is 24,24. Button size is 44x44, so offset by 22.
+          const x = isMenuOpen ? 24 + radius * Math.cos(rad) - 22 : 24 - 22;
+          const y = isMenuOpen ? 24 + radius * Math.sin(rad) - 22 : 24 - 22;
+
+          return (
+            <button
+              key={item.label}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (isMenuOpen) item.onClick();
+              }}
+              style={{
+                position: "absolute",
+                left: x,
+                top: y,
+                opacity: isMenuOpen ? 1 : 0,
+                pointerEvents: isMenuOpen ? "auto" : "none",
+                transform: `scale(${isMenuOpen ? 1 : 0.5})`,
+                transition: `all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ${index * 0.03}s`,
+              }}
+              className="w-[44px] h-[44px] rounded-full bg-[#1c1c1e]/90 backdrop-blur-xl border border-white/10 shadow-xl flex items-center justify-center text-white/90 hover:bg-[#2c2c2e] active:scale-95"
+            >
+              <item.icon size={20} strokeWidth={2.2} />
+            </button>
+          );
+        })}
+
+        {/* The Ball */}
         <div
-          onClick={() => setIsMenuOpen(false)}
-          className="fixed inset-0 bg-black/15 z-[99998] flex items-center justify-center"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          className={`w-12 h-12 rounded-full bg-black/45 backdrop-blur-md border-[2.5px] border-white/20 shadow-lg cursor-pointer flex items-center justify-center transition-all hover:bg-black/60 active:scale-95 ${
+            isMenuOpen ? "opacity-40 scale-90" : ""
+          }`}
+          style={{ touchAction: "none" }}
         >
-          {/* Menu Panel */}
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="bg-[#1c1c1e]/95 backdrop-blur-2xl p-4.5 w-[205px] h-[205px] rounded-[32px] border border-white/10 shadow-2xl grid grid-cols-2 gap-y-4 gap-x-2 items-center justify-center text-white z-[99999]"
-          >
-            {/* 1. Backward */}
-            <button
-              onClick={handleBackAction}
-              className="flex flex-col items-center group active:scale-90 transition-transform"
-            >
-              <div className="w-11 h-11 rounded-full bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-1 text-white shadow-sm">
-                <ChevronLeft size={20} strokeWidth={2.2} />
-              </div>
-              <span className="text-[9.5px] text-white/75 font-medium tracking-wide">Back</span>
-            </button>
-
-            {/* 2. Forward */}
-            <button
-              onClick={handleForwardAction}
-              className="flex flex-col items-center group active:scale-90 transition-transform"
-            >
-              <div className="w-11 h-11 rounded-full bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-1 text-white shadow-sm">
-                <ChevronRight size={20} strokeWidth={2.2} />
-              </div>
-              <span className="text-[9.5px] text-white/75 font-medium tracking-wide">Forward</span>
-            </button>
-
-            {/* 3. Fullscreen */}
-            <button
-              onClick={handleFullscreenAction}
-              className="flex flex-col items-center group active:scale-90 transition-transform"
-            >
-              <div className="w-11 h-11 rounded-full bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-1 text-white shadow-sm">
-                <Maximize2 size={17} strokeWidth={2.2} />
-              </div>
-              <span className="text-[9.5px] text-white/75 font-medium tracking-wide">
-                Fullscreen
-              </span>
-            </button>
-
-            {/* 4. Home */}
-            <button
-              onClick={handleHomeAction}
-              className="flex flex-col items-center group active:scale-90 transition-transform"
-            >
-              <div className="w-11 h-11 rounded-full bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-1 text-white shadow-sm">
-                <Home size={17} strokeWidth={2.2} />
-              </div>
-              <span className="text-[9.5px] text-white/75 font-medium tracking-wide">Home</span>
-            </button>
+          <div className="w-6 h-6 rounded-full bg-white/35 border-[1.5px] border-white/40 flex items-center justify-center shadow-inner pointer-events-none transition-all">
+            <div className="w-3.5 h-3.5 rounded-full bg-white/70 shadow-sm" />
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };
