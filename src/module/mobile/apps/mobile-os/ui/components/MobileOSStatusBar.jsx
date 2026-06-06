@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import useWindowsStore from "@store/window";
 
 const IOSSignalIcon = () => (
   <svg width="14" height="9" viewBox="0 0 17 11" fill="none" className="text-white shrink-0">
@@ -21,9 +22,9 @@ const IOSWifiIcon = () => (
   </svg>
 );
 
-const IOSBatteryIcon = ({ level, isCharging, lowPower }) => (
+const IOSBatteryIcon = ({ level, isCharging, lowPower, showPercentage }) => (
   <div className="flex items-center gap-[3.5px] select-none shrink-0">
-    <span className="text-[10px] font-semibold tracking-tight">{level}%</span>
+    {showPercentage && <span className="text-[10px] font-semibold tracking-tight">{level}%</span>}
     <div className="w-[21px] h-[10.5px] rounded-[2.5px] border border-white/70 p-[1.2px] relative flex items-center bg-transparent">
       <div
         className="h-full rounded-[0.8px] transition-all duration-300"
@@ -51,6 +52,7 @@ const IOSBatteryIcon = ({ level, isCharging, lowPower }) => (
 );
 
 const MobileOSStatusBar = ({ now, anyWindowOpen, setIsControlOpen, settings }) => {
+  const { systemSettings } = useWindowsStore();
   const [batteryLevel, setBatteryLevel] = useState(100);
   const [isCharging, setIsCharging] = useState(false);
 
@@ -79,7 +81,12 @@ const MobileOSStatusBar = ({ now, anyWindowOpen, setIsControlOpen, settings }) =
       <div className="flex items-center gap-[5px] text-white mt-1">
         <IOSSignalIcon />
         <IOSWifiIcon />
-        <IOSBatteryIcon level={batteryLevel} isCharging={isCharging} lowPower={settings.lowPower} />
+        <IOSBatteryIcon
+          level={batteryLevel}
+          isCharging={isCharging}
+          lowPower={systemSettings.lowPowerMode === "Always"}
+          showPercentage={systemSettings.showBatteryPercentage}
+        />
       </div>
     </header>
   );

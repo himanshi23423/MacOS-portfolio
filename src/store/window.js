@@ -45,6 +45,7 @@ const useWindowsStore = create(
         headphones: false,
       },
       lowPowerMode: "Never",
+      showBatteryPercentage: true,
     },
 
     updateSystemSetting: (key, value) =>

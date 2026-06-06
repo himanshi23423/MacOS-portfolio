@@ -18,6 +18,184 @@ import useTimeStore from "@store/time";
 
 // --- WIDGET COMPONENTS ---
 
+const RealtimeBatteryWidget = ({ onClick }) => {
+  const [level, setLevel] = useState(88);
+  const [charging, setCharging] = useState(false);
+
+  useEffect(() => {
+    let batteryObj;
+
+    const handleLevelChange = () => {
+      if (batteryObj) {
+        setLevel(Math.round(batteryObj.level * 100));
+        setCharging(batteryObj.charging);
+      }
+    };
+
+    if ("getBattery" in navigator) {
+      navigator.getBattery().then((battery) => {
+        batteryObj = battery;
+        handleLevelChange();
+        battery.addEventListener("levelchange", handleLevelChange);
+        battery.addEventListener("chargingchange", handleLevelChange);
+      });
+    }
+
+    return () => {
+      if (batteryObj) {
+        batteryObj.removeEventListener("levelchange", handleLevelChange);
+        batteryObj.removeEventListener("chargingchange", handleLevelChange);
+      }
+    };
+  }, []);
+
+  const color = charging || level > 20 ? "#30d158" : "#ff3b30";
+  const offset = 2 * Math.PI * 13.5 * (1 - level / 100);
+
+  return (
+    <div
+      onClick={onClick}
+      className="bg-black/25 backdrop-blur-3xl rounded-[22px] p-[1.5vh] flex flex-col justify-between shadow-[inset_0_0_30px_rgba(255,255,255,0.05),0_6px_20px_rgba(0,0,0,0.15)] border border-white/10 text-white relative overflow-hidden cursor-pointer active:scale-[0.96] transition-transform duration-200 select-none"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+      <span className="text-[1vh] font-bold text-white/50 tracking-wider uppercase relative z-10">
+        Batteries
+      </span>
+      <div className="grid grid-cols-2 gap-y-[1vh] gap-x-1.5 my-auto relative z-10">
+        <div className="flex items-center gap-1.5 pl-0.5 min-w-0">
+          <div className="relative w-[4vh] h-[4vh] flex items-center justify-center flex-shrink-0">
+            <svg className="absolute w-full h-full transform -rotate-90" viewBox="0 0 32 32">
+              <circle
+                cx="16"
+                cy="16"
+                r="13.5"
+                stroke="rgba(255,255,255,0.1)"
+                strokeWidth="2.5"
+                fill="transparent"
+              />
+              <circle
+                cx="16"
+                cy="16"
+                r="13.5"
+                stroke={color}
+                strokeWidth="2.5"
+                fill="transparent"
+                strokeDasharray={2 * Math.PI * 13.5}
+                strokeDashoffset={offset}
+                strokeLinecap="round"
+                style={{ filter: `drop-shadow(0 0 3px ${color})` }}
+              />
+            </svg>
+            <Smartphone className="text-white/80 w-[1.5vh] h-[1.5vh]" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[1.2vh] font-bold leading-none text-white">{level}%</p>
+            <p className="text-[0.9vh] text-white/50 font-medium truncate mt-0.5">
+              {charging ? "Charging" : "iPhone"}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 min-w-0">
+          <div className="relative w-[4vh] h-[4vh] flex items-center justify-center flex-shrink-0">
+            <svg className="absolute w-full h-full transform -rotate-90" viewBox="0 0 32 32">
+              <circle
+                cx="16"
+                cy="16"
+                r="13.5"
+                stroke="rgba(255,255,255,0.1)"
+                strokeWidth="2.5"
+                fill="transparent"
+              />
+              <circle
+                cx="16"
+                cy="16"
+                r="13.5"
+                stroke="#30d158"
+                strokeWidth="2.5"
+                fill="transparent"
+                strokeDasharray={2 * Math.PI * 13.5}
+                strokeDashoffset={2 * Math.PI * 13.5 * (1 - 0.94)}
+                strokeLinecap="round"
+                style={{ filter: `drop-shadow(0 0 3px #30d158)` }}
+              />
+            </svg>
+            <Watch className="text-white/80 w-[1.5vh] h-[1.5vh]" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[1.2vh] font-bold leading-none text-white">94%</p>
+            <p className="text-[0.9vh] text-white/50 font-medium truncate mt-0.5">Watch</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 pl-0.5 min-w-0">
+          <div className="relative w-[4vh] h-[4vh] flex items-center justify-center flex-shrink-0">
+            <svg className="absolute w-full h-full transform -rotate-90" viewBox="0 0 32 32">
+              <circle
+                cx="16"
+                cy="16"
+                r="13.5"
+                stroke="rgba(255,255,255,0.1)"
+                strokeWidth="2.5"
+                fill="transparent"
+              />
+              <circle
+                cx="16"
+                cy="16"
+                r="13.5"
+                stroke="#30d158"
+                strokeWidth="2.5"
+                fill="transparent"
+                strokeDasharray={2 * Math.PI * 13.5}
+                strokeDashoffset={2 * Math.PI * 13.5 * (1 - 1.0)}
+                strokeLinecap="round"
+                style={{ filter: `drop-shadow(0 0 3px #30d158)` }}
+              />
+            </svg>
+            <Headphones className="text-white/80 w-[1.5vh] h-[1.5vh]" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[1.2vh] font-bold leading-none text-white">100%</p>
+            <p className="text-[0.9vh] text-white/50 font-medium truncate mt-0.5">AirPods</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 min-w-0">
+          <div className="relative w-[4vh] h-[4vh] flex items-center justify-center flex-shrink-0">
+            <svg className="absolute w-full h-full transform -rotate-90" viewBox="0 0 32 32">
+              <circle
+                cx="16"
+                cy="16"
+                r="13.5"
+                stroke="rgba(255,255,255,0.1)"
+                strokeWidth="2.5"
+                fill="transparent"
+              />
+              <circle
+                cx="16"
+                cy="16"
+                r="13.5"
+                stroke="#ff9500"
+                strokeWidth="2.5"
+                fill="transparent"
+                strokeDasharray={2 * Math.PI * 13.5}
+                strokeDashoffset={2 * Math.PI * 13.5 * (1 - 0.65)}
+                strokeLinecap="round"
+                style={{ filter: `drop-shadow(0 0 3px #ff9500)` }}
+              />
+            </svg>
+            <Laptop className="text-white/80 w-[1.5vh] h-[1.5vh]" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[1.2vh] font-bold leading-none text-white">65%</p>
+            <p className="text-[0.9vh] text-white/50 font-medium truncate mt-0.5">MacBook</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const LockScreenTimeWidget = () => {
   const time = useTimeStore((state) => state.time);
 
@@ -45,7 +223,7 @@ const LockScreenTimeWidget = () => {
   const minutes = time.getMinutes().toString().padStart(2, "0");
 
   return (
-    <div className="flex flex-col items-center justify-center text-white w-full mb-[1vh] shrink">
+    <div className="flex flex-col items-center justify-center text-white w-full shrink pt-[4vh]">
       <h3 className="text-[1.8vh] font-medium tracking-wide drop-shadow-md leading-tight">
         {dayName}, {monthName} {dateNum}
       </h3>
@@ -145,306 +323,156 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
         className="flex-1 flex transition-transform duration-350 ease-out"
         style={{ transform: `translateX(-${currentPage * 100}%)` }}
       >
-        {/* PAGE 1: Widgets and Apps (Bottom-aligned) */}
-        <div className="w-full flex-shrink-0 px-5 flex flex-col justify-end h-full pb-[2vh]">
-          {/* Enhanced Widgets Container */}
-          <div className="flex flex-col gap-[1.5vh] mt-auto min-h-0 shrink">
-            <LockScreenTimeWidget />
-            {/* Top row widgets (2x2 each) */}
-            <div className="grid grid-cols-2 gap-[1.5vh] mt-[0.5vh] min-h-0 shrink">
-              {/* iOS 17 Weather Widget */}
-              <div className="bg-gradient-to-b from-[#3a86f5] via-[#2068e6] to-[#0d4eb5] rounded-[22px] p-3 flex flex-col justify-between shadow-[0_6px_20px_rgba(0,0,0,0.22)] border border-white/12 text-white">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-[11px] font-bold tracking-tight opacity-90">
-                      {activeCity.name}
+        {/* PAGE 1: Widgets and Apps */}
+        <div className="w-full flex-shrink-0 px-5 flex flex-col justify-between h-full pb-[2vh]">
+          <LockScreenTimeWidget />
+
+          <div className="flex flex-col justify-end mt-auto min-h-0 shrink w-full">
+            {/* Enhanced Widgets Container */}
+            <div className="flex flex-col gap-[1.5vh] min-h-0 shrink">
+              {/* Top row widgets (2x2 each) */}
+              <div className="grid grid-cols-2 gap-[1.5vh] mt-[0.5vh] min-h-0 shrink">
+                {/* iOS 18 Liquid Glass Weather Widget */}
+                <div
+                  onClick={() => openWindow("weather")}
+                  className="bg-black/20 backdrop-blur-3xl rounded-[22px] p-3 flex flex-col justify-between shadow-[inset_0_0_30px_rgba(58,134,245,0.15),0_6px_20px_rgba(0,0,0,0.15)] border border-white/10 text-white relative overflow-hidden cursor-pointer active:scale-[0.96] transition-transform duration-200 select-none"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                  <div className="flex justify-between items-start relative z-10">
+                    <div>
+                      <p className="text-[11px] font-bold tracking-tight opacity-90">
+                        {activeCity.name}
+                      </p>
+                      <h3 className="text-3xl font-light tracking-tighter mt-1 leading-none">
+                        {activeCity.tempC}°
+                      </h3>
+                    </div>
+                    <div className="bg-white/12 p-1 rounded-full backdrop-blur-md">
+                      <span className="text-[16px] leading-none">
+                        {getWeatherConditionEmoji(activeCity.condition)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="relative z-10">
+                    <p className="text-[10px] font-semibold tracking-wide">
+                      {activeCity.condition}
                     </p>
-                    <h3 className="text-3xl font-light tracking-tighter mt-1 leading-none">
-                      {activeCity.tempC}°
-                    </h3>
-                  </div>
-                  <div className="bg-white/12 p-1 rounded-full backdrop-blur-md">
-                    <span className="text-[16px] leading-none">
-                      {getWeatherConditionEmoji(activeCity.condition)}
-                    </span>
-                  </div>
-                </div>
+                    <p className="text-[8.5px] text-white/70 mt-0.5">
+                      H: {activeCity.highC}° L: {activeCity.lowC}°
+                    </p>
 
-                <div>
-                  <p className="text-[10px] font-semibold tracking-wide">{activeCity.condition}</p>
-                  <p className="text-[8.5px] text-white/70 mt-0.5">
-                    H: {activeCity.highC}° L: {activeCity.lowC}°
-                  </p>
-
-                  {/* Weather Stats Grid */}
-                  <div className="grid grid-cols-2 gap-x-1 gap-y-1 mt-1.5 pt-1.5 border-t border-white/10 text-[8px] text-white/80 font-medium">
-                    <div className="flex items-center gap-1">
-                      <Wind size={8} className="opacity-75" />
-                      <span>{activeCity.windSpeed} km/h</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Droplets size={8} className="opacity-75" />
-                      <span>{activeCity.humidity}%</span>
+                    {/* Weather Stats Grid */}
+                    <div className="grid grid-cols-2 gap-x-1 gap-y-1 mt-1.5 pt-1.5 border-t border-white/10 text-[8px] text-white/80 font-medium">
+                      <div className="flex items-center gap-1">
+                        <Wind size={8} className="opacity-75" />
+                        <span>{activeCity.windSpeed} km/h</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Droplets size={8} className="opacity-75" />
+                        <span>{activeCity.humidity}%</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                <RealtimeBatteryWidget onClick={() => openWindow("settings", { tab: "Battery" })} />
               </div>
 
-              {/* iOS 17 Premium Battery Widget */}
-              <div className="bg-white rounded-[22px] p-3 flex flex-col justify-between shadow-[0_6px_20px_rgba(0,0,0,0.08)] border border-neutral-100 text-slate-800">
-                <span className="text-[8.5px] font-bold text-slate-400 tracking-wider uppercase">
-                  Batteries
-                </span>
-
-                <div className="grid grid-cols-2 gap-y-2 gap-x-1.5 my-auto">
-                  {/* 1. iPhone */}
-                  <div className="flex items-center gap-1.5 pl-0.5 min-w-0">
-                    <div className="relative w-[28px] h-[28px] xs:w-[32px] xs:h-[32px] flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="absolute w-full h-full transform -rotate-90"
-                        viewBox="0 0 32 32"
-                      >
-                        <circle
-                          cx="16"
-                          cy="16"
-                          r="13.5"
-                          stroke="rgba(0,0,0,0.05)"
-                          strokeWidth="2.5"
-                          fill="transparent"
-                        />
-                        <circle
-                          cx="16"
-                          cy="16"
-                          r="13.5"
-                          stroke="#30d158"
-                          strokeWidth="2.5"
-                          fill="transparent"
-                          strokeDasharray={2 * Math.PI * 13.5}
-                          strokeDashoffset={2 * Math.PI * 13.5 * (1 - 0.88)}
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      <Smartphone size={9} className="text-slate-500 xs:size-[10px]" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[8px] xs:text-[9.5px] font-bold leading-none text-slate-900">
-                        88%
-                      </p>
-                      <p className="text-[7px] xs:text-[8px] text-slate-400 font-medium truncate mt-0.5">
-                        iPhone
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 2. Apple Watch */}
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <div className="relative w-[28px] h-[28px] xs:w-[32px] xs:h-[32px] flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="absolute w-full h-full transform -rotate-90"
-                        viewBox="0 0 32 32"
-                      >
-                        <circle
-                          cx="16"
-                          cy="16"
-                          r="13.5"
-                          stroke="rgba(0,0,0,0.05)"
-                          strokeWidth="2.5"
-                          fill="transparent"
-                        />
-                        <circle
-                          cx="16"
-                          cy="16"
-                          r="13.5"
-                          stroke="#30d158"
-                          strokeWidth="2.5"
-                          fill="transparent"
-                          strokeDasharray={2 * Math.PI * 13.5}
-                          strokeDashoffset={2 * Math.PI * 13.5 * (1 - 0.94)}
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      <Watch size={9} className="text-slate-500 xs:size-[10px]" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[8px] xs:text-[9.5px] font-bold leading-none text-slate-900">
-                        94%
-                      </p>
-                      <p className="text-[7px] xs:text-[8px] text-slate-400 font-medium truncate mt-0.5">
-                        Watch
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 3. AirPods */}
-                  <div className="flex items-center gap-1.5 pl-0.5 min-w-0">
-                    <div className="relative w-[28px] h-[28px] xs:w-[32px] xs:h-[32px] flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="absolute w-full h-full transform -rotate-90"
-                        viewBox="0 0 32 32"
-                      >
-                        <circle
-                          cx="16"
-                          cy="16"
-                          r="13.5"
-                          stroke="rgba(0,0,0,0.05)"
-                          strokeWidth="2.5"
-                          fill="transparent"
-                        />
-                        <circle
-                          cx="16"
-                          cy="16"
-                          r="13.5"
-                          stroke="#30d158"
-                          strokeWidth="2.5"
-                          fill="transparent"
-                          strokeDasharray={2 * Math.PI * 13.5}
-                          strokeDashoffset={2 * Math.PI * 13.5 * (1 - 1.0)}
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      <Headphones size={9} className="text-slate-500 xs:size-[10px]" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[8px] xs:text-[9.5px] font-bold leading-none text-slate-900">
-                        100%
-                      </p>
-                      <p className="text-[7px] xs:text-[8px] text-slate-400 font-medium truncate mt-0.5">
-                        AirPods
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 4. MacBook */}
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <div className="relative w-[28px] h-[28px] xs:w-[32px] xs:h-[32px] flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="absolute w-full h-full transform -rotate-90"
-                        viewBox="0 0 32 32"
-                      >
-                        <circle
-                          cx="16"
-                          cy="16"
-                          r="13.5"
-                          stroke="rgba(0,0,0,0.05)"
-                          strokeWidth="2.5"
-                          fill="transparent"
-                        />
-                        <circle
-                          cx="16"
-                          cy="16"
-                          r="13.5"
-                          stroke="#ff9500"
-                          strokeWidth="2.5"
-                          fill="transparent"
-                          strokeDasharray={2 * Math.PI * 13.5}
-                          strokeDashoffset={2 * Math.PI * 13.5 * (1 - 0.65)}
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      <Laptop size={9} className="text-slate-500 xs:size-[10px]" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[8px] xs:text-[9.5px] font-bold leading-none text-slate-900">
-                        65%
-                      </p>
-                      <p className="text-[7px] xs:text-[8px] text-slate-400 font-medium truncate mt-0.5">
-                        MacBook
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* iOS 17 Premium Wide Smart Calendar & Reminders Stack Widget (2x4) */}
-            <div className="w-full bg-white border border-neutral-100 rounded-[22px] p-3 flex shadow-[0_6px_20px_rgba(0,0,0,0.08)] text-slate-800 gap-3 items-center">
-              {/* Date Card (Left Side) */}
-              <div className="w-[30%] border-r border-neutral-200 pr-2.5 flex flex-col items-center justify-center text-center">
-                <span className="text-[10px] font-bold text-red-500 uppercase tracking-wider">
-                  {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date().getDay()]}
-                </span>
-                <span className="text-3xl font-bold leading-none mt-0.5 tracking-tight text-slate-905">
-                  {new Date().getDate()}
-                </span>
-              </div>
-
-              {/* Upcoming Event / Reminders (Right Side) */}
-              <div className="flex-1 flex flex-col justify-center min-w-0 pl-0.5">
-                <div className="flex items-center gap-1.5 mb-1.5">
-                  <Calendar size={11} className="text-slate-400" />
-                  <span className="text-[9px] font-bold text-slate-400 tracking-wide uppercase">
-                    Up Next
+              {/* iOS 18 Liquid Glass Calendar & Reminders Stack Widget */}
+              <div
+                onClick={() => openWindow("calendar")}
+                className="w-full bg-black/25 backdrop-blur-3xl border border-white/10 rounded-[22px] p-3 flex shadow-[inset_0_0_30px_rgba(255,255,255,0.05),0_6px_20px_rgba(0,0,0,0.15)] text-white gap-3 items-center relative overflow-hidden cursor-pointer active:scale-[0.96] transition-transform duration-200 select-none"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                {/* Date Card (Left Side) */}
+                <div className="w-[30%] border-r border-white/10 pr-2.5 flex flex-col items-center justify-center text-center relative z-10">
+                  <span className="text-[10px] font-bold text-red-400 uppercase tracking-wider drop-shadow-md">
+                    {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date().getDay()]}
+                  </span>
+                  <span className="text-3xl font-bold leading-none mt-0.5 tracking-tight text-white drop-shadow-lg">
+                    {new Date().getDate()}
                   </span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-1 h-7 rounded-full bg-[#007aff] mt-0.5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-[11px] font-bold text-slate-900 leading-tight truncate">
-                      Portfolio Presentation
-                    </p>
-                    <p className="text-[9px] text-slate-400 mt-0.5">2:30 PM - 3:30 PM</p>
+
+                {/* Upcoming Event / Reminders (Right Side) */}
+                <div className="flex-1 flex flex-col justify-center min-w-0 pl-0.5 relative z-10">
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <Calendar size={11} className="text-white/50" />
+                    <span className="text-[9px] font-bold text-white/50 tracking-wide uppercase">
+                      Up Next
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="w-1 h-7 rounded-full bg-blue-400 mt-0.5 flex-shrink-0 shadow-[0_0_8px_rgba(96,165,250,0.6)]" />
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-bold text-white leading-tight truncate">
+                        Portfolio Presentation
+                      </p>
+                      <p className="text-[9px] text-white/60 mt-0.5">2:30 PM - 3:30 PM</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* App Grid */}
-          <div className="grid grid-cols-4 gap-y-[2.5vh] gap-x-2.5 mt-[3vh] shrink-0">
-            {page1Apps.map((app) => (
-              <button
-                key={app.id}
-                disabled={!app.canOpen}
-                onClick={() => app.canOpen && openWindow(app.id)}
-                className="flex flex-col items-center gap-[5px] active:scale-[0.85] transition-transform duration-150"
-              >
-                <div
-                  className="overflow-hidden w-[56px] h-[56px] xs:w-[60px] xs:h-[60px] rounded-[16px] shadow-[0_3px_10px_rgba(0,0,0,0.22),0_0_0_0.5px_rgba(255,255,255,0.12)]"
-                  style={{
-                    opacity: app.canOpen ? 1 : 0.4,
-                    background: app.canOpen ? "transparent" : "rgba(255,255,255,0.1)",
-                  }}
+            {/* App Grid */}
+            <div className="grid grid-cols-4 gap-y-[2.5vh] gap-x-2.5 mt-[3vh] shrink-0">
+              {page1Apps.map((app) => (
+                <button
+                  key={app.id}
+                  disabled={!app.canOpen}
+                  onClick={() => app.canOpen && openWindow(app.id)}
+                  className="flex flex-col items-center gap-[5px] active:scale-[0.85] transition-transform duration-150"
                 >
-                  {app.id === "calendar" ? (
-                    <div
-                      className={`w-full h-full bg-white flex flex-col items-center select-none rounded-[16px] overflow-hidden ${scaleMap[app.id] || ""}`}
-                    >
-                      {/* Top Day Header Area with Red Background */}
-                      <div className="w-full bg-[#ff3b30] py-1 flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-[8px] font-bold uppercase tracking-wide leading-none">
-                          {
-                            [
-                              "Sunday",
-                              "Monday",
-                              "Tuesday",
-                              "Wednesday",
-                              "Thursday",
-                              "Friday",
-                              "Saturday",
-                            ][new Date().getDay()]
-                          }
-                        </span>
+                  <div
+                    className="overflow-hidden w-[56px] h-[56px] xs:w-[60px] xs:h-[60px] rounded-[16px] shadow-[0_3px_10px_rgba(0,0,0,0.22),0_0_0_0.5px_rgba(255,255,255,0.12)]"
+                    style={{
+                      opacity: app.canOpen ? 1 : 0.4,
+                      background: app.canOpen ? "transparent" : "rgba(255,255,255,0.1)",
+                    }}
+                  >
+                    {app.id === "calendar" ? (
+                      <div
+                        className={`w-full h-full bg-white flex flex-col items-center select-none rounded-[16px] overflow-hidden ${scaleMap[app.id] || ""}`}
+                      >
+                        {/* Top Day Header Area with Red Background */}
+                        <div className="w-full bg-[#ff3b30] py-1 flex items-center justify-center flex-shrink-0">
+                          <span className="text-white text-[8px] font-bold uppercase tracking-wide leading-none">
+                            {
+                              [
+                                "Sunday",
+                                "Monday",
+                                "Tuesday",
+                                "Wednesday",
+                                "Thursday",
+                                "Friday",
+                                "Saturday",
+                              ][new Date().getDay()]
+                            }
+                          </span>
+                        </div>
+                        {/* Bottom Date Area */}
+                        <div className="flex-1 flex items-center justify-center -mt-0.5">
+                          <span className="text-gray-900 font-semibold text-[22px] leading-none font-sans">
+                            {new Date().getDate()}
+                          </span>
+                        </div>
                       </div>
-                      {/* Bottom Date Area */}
-                      <div className="flex-1 flex items-center justify-center -mt-0.5">
-                        <span className="text-gray-900 font-semibold text-[22px] leading-none font-sans">
-                          {new Date().getDate()}
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    <img
-                      src={`/images/${app.icon}`}
-                      alt={app.name}
-                      className={`w-full h-full object-cover rounded-[16px] pointer-events-none ${scaleMap[app.id] || ""}`}
-                    />
-                  )}
-                </div>
-                <span className="text-[10px] font-medium text-center text-white leading-tight max-w-[68px] drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.85)]">
-                  {app.name}
-                </span>
-              </button>
-            ))}
+                    ) : (
+                      <img
+                        src={`/images/${app.icon}`}
+                        alt={app.name}
+                        className={`w-full h-full object-cover rounded-[16px] pointer-events-none ${scaleMap[app.id] || ""}`}
+                      />
+                    )}
+                  </div>
+                  <span className="text-[10px] font-medium text-center text-white leading-tight max-w-[68px] drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.85)]">
+                    {app.name}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

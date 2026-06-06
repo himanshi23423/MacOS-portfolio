@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
+import useWindowsStore from "@store/window";
 import {
   X,
   Wifi,
@@ -31,6 +32,8 @@ const MobileOSControlCenter = ({
   setVolume,
   controlCenterRef,
 }) => {
+  const { systemSettings, updateSystemSetting } = useWindowsStore();
+  const isLowPowerActive = systemSettings.lowPowerMode === "Always";
   const [isPlaying, setIsPlaying] = useState(false);
   const brightnessSliderRef = useRef(null);
   const volumeSliderRef = useRef(null);
@@ -304,16 +307,18 @@ const MobileOSControlCenter = ({
 
             {/* Low Power Mode Card */}
             <button
-              onClick={() => toggle("lowPower")}
+              onClick={() =>
+                updateSystemSetting("lowPowerMode", isLowPowerActive ? "Never" : "Always")
+              }
               className="flex items-center gap-3.5 px-4 rounded-[20px] transition-all border border-white/[0.05] text-left"
               style={{
-                background: settings.lowPower ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.08)",
+                background: isLowPowerActive ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.08)",
               }}
             >
               <div
                 className="flex items-center justify-center w-8 h-8 rounded-full"
                 style={{
-                  background: settings.lowPower ? "#ff9500" : "rgba(255,255,255,0.08)",
+                  background: isLowPowerActive ? "#ff9500" : "rgba(255,255,255,0.08)",
                 }}
               >
                 <Battery size={16} className="text-white" />
@@ -321,7 +326,7 @@ const MobileOSControlCenter = ({
               <div>
                 <p className="text-[11px] font-semibold text-white">Low Power</p>
                 <p className="text-[9px] text-white/45">
-                  {settings.lowPower ? "Enabled" : "Disabled"}
+                  {isLowPowerActive ? "Enabled" : "Disabled"}
                 </p>
               </div>
             </button>
