@@ -35,6 +35,10 @@ import Weather from "@module/desktop/apps/weather/ui/view/WeatherView";
 import Welcome from "@module/desktop/apps/welcome/ui/view/WelcomeView";
 import Notch from "./notch/ui/view/NotchView";
 
+const DesktopWidgets = dynamic(() => import("./widgets/ui/components/Widgets"), {
+  ssr: false,
+});
+
 const Desktop = () => (
   <main>
     <Navbar />
@@ -43,6 +47,7 @@ const Desktop = () => (
       id="desktop-area"
       className="absolute top-[35px] bottom-0 left-0 right-0 pointer-events-none z-0"
     />
+    <DesktopWidgets />
     <div id="folder-bounds" className="absolute pointer-events-none z-0" />
     <Welcome />
     <DockVisualizer />
