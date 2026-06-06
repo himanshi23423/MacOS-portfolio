@@ -46,6 +46,7 @@ const useWindowsStore = create(
       },
       lowPowerMode: "Never",
       showBatteryPercentage: true,
+      optimizedBatteryCharging: true,
     },
 
     updateSystemSetting: (key, value) =>
