@@ -60,11 +60,6 @@ const Launchpad = () => {
         onSearchChange={setSearchQuery}
       />
       <LaunchpadGrid apps={filteredApps} onLaunch={handleLaunch} searchQuery={searchQuery} />
-
-      <div className="flex items-center justify-center gap-2 mt-auto pt-6 shrink-0">
-        <span className="w-2 h-2 rounded-full bg-white transition-opacity duration-200" />
-        <span className="w-2 h-2 rounded-full bg-white/30 transition-opacity duration-200" />
-      </div>
     </div>
   );
 };
