@@ -301,11 +301,11 @@
         @apply absolute z-0 select-none flex items-center flex-col;
 
         img {
-          @apply group-hover:bg-gray-950/10 p-1 rounded-md;
+          @apply p-1 rounded-md;
         }
 
         p {
-          @apply text-sm text-white text-center px-1 rounded-md group-hover:bg-blue-500 transition-colors max-w-40;
+          @apply text-sm text-white text-center px-1 rounded-md transition-colors max-w-40;
         }
       }
     }
