@@ -74,6 +74,11 @@
     filter 180ms ease,
     opacity 180ms ease;
   will-change: transform;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
 }
 
 #dock .dock-icon {
@@ -88,26 +93,6 @@
 
 .dock-icon:disabled {
   cursor: default;
-}
-
-.dock-icon img,
-.dock-icon > span:first-of-type {
-  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.28));
-}
-
-.dock-icon::after {
-  content: "";
-  position: absolute;
-  left: 11%;
-  right: 11%;
-  bottom: -9px;
-  height: 16px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.38), transparent 70%);
-  opacity: 0.42;
-  transform: scaleX(0.82);
-  pointer-events: none;
-  z-index: -1;
 }
 
 .dock-item-open .dock-icon {
