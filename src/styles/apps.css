@@ -294,11 +294,13 @@
   }
 
   #home {
-    @apply relative z-0 max-sm:hidden;
+    @apply relative max-sm:hidden;
+    z-index: 1;
 
     ul {
       li {
-        @apply absolute z-0 select-none flex items-center flex-col;
+        @apply absolute select-none flex items-center flex-col;
+        z-index: 1;
 
         img {
           @apply p-1 rounded-md;

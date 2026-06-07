@@ -176,8 +176,9 @@
       border: 0;
       border-radius: 6px;
       background: transparent;
-      color: inherit;
+      color: #ffffff;
       font: inherit;
+      font-weight: 600;
       letter-spacing: 0;
       text-align: left;
       cursor: default;
