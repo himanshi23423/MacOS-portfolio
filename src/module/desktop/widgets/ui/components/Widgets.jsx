@@ -3,15 +3,11 @@ import useWindowsStore from "@store/window";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
+import useTimeStore from "@store/time";
 
 // Combined Time & Calendar Widget
 const ClockCalendarWidget = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const time = useTimeStore((state) => state.time);
 
   // Time formatting (HH:mm) — 24-hour format, synced with lock screen
   const hours = String(time.getHours()).padStart(2, "0");

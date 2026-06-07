@@ -2,6 +2,7 @@ import useWindowsStore from "@store/window";
 import dayjs from "dayjs";
 import html2canvas from "html2canvas";
 import { useEffect, useRef, useState } from "react";
+import useTimeStore from "@store/time";
 
 const useNavbar = () => {
   const {
@@ -18,7 +19,8 @@ const useNavbar = () => {
   const [isShuttingDown, setIsShuttingDown] = useState(false);
   const [isPowerMenuOpen, setIsPowerMenuOpen] = useState(false);
   const [isAsleep, setIsAsleep] = useState(false);
-  const [now, setNow] = useState(dayjs());
+  const time = useTimeStore((state) => state.time);
+  const now = dayjs(time);
   const appleMenuRef = useRef(null);
   const controlCenterRef = useRef(null);
 
@@ -43,14 +45,6 @@ const useNavbar = () => {
   };
 
   const activeAppKey = getActiveApp();
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setNow(dayjs());
-    }, 30_000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     document.body.classList.toggle("theme-light", !settings.darkMode);
