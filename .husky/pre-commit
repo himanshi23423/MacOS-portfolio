@@ -1,1 +1,4 @@
-npx lint-staged
+bun run lint -- --fix
+
+
+
