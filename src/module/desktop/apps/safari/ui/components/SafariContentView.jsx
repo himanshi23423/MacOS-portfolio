@@ -392,16 +392,20 @@ const SafariContentView = ({
                       <div className="flex items-center gap-4">
                         <a
                           href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigateTabTo(project.link);
+                          }}
                           className="flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-blue-600 transition-colors"
                         >
                           <ExternalLink size={14} /> Live Demo
                         </a>
                         <a
                           href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigateTabTo(project.github);
+                          }}
                           className={`flex items-center gap-1.5 text-xs font-bold ${isLightBg ? "text-gray-600 hover:text-black" : "text-white/80 hover:text-white"} transition-colors`}
                         >
                           Source

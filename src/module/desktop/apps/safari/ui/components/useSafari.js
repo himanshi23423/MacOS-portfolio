@@ -35,7 +35,8 @@ const useSafari = () => {
   const [readerTheme, setReaderTheme] = useState("sepia"); // white, sepia, gray, night
   const [readerFontSize, setReaderFontSize] = useState(16); // px
 
-  const { closeWindow, openWindow } = useWindowsStore();
+  const { closeWindow, openWindow, setWindowData } = useWindowsStore();
+  const safariWindowData = useWindowsStore((state) => state.windows.safari?.data);
 
   const activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
   const isBookmarked = bookmarks.some((b) => b.url === activeTab.url);
@@ -50,6 +51,8 @@ const useSafari = () => {
       }
     }
   }, [activeTab, activeTabId]);
+
+
 
   // Log history
   useEffect(() => {
@@ -181,6 +184,15 @@ const useSafari = () => {
       }),
     );
   };
+
+  // Navigate to URL passed in window data (placed after navigateTabTo is declared)
+  useEffect(() => {
+    if (safariWindowData && safariWindowData.url) {
+      navigateTabTo(safariWindowData.url);
+      setWindowData("safari", null);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [safariWindowData]);
 
   const handleGoBack = () => {
     if (activeTab.historyIndex > 0) {

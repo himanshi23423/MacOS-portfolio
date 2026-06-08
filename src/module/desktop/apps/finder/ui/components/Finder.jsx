@@ -74,8 +74,10 @@ const Finder = () => {
       }
       return;
     }
-    if (["fig", "url"].includes(item.fileType) && item.href)
-      return window.open(item.href, "_blank");
+    if (["fig", "url"].includes(item.fileType) && item.href) {
+      openWindow("safari", { url: item.href });
+      return;
+    }
     openWindow(`${item.fileType}${item.kind}`, item);
   };
 

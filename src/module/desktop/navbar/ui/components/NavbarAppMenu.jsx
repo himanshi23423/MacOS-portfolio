@@ -89,7 +89,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
       [
         {
           label: "View Featured Project",
-          onClick: () => openWindow("chrome", { url: "https://docs-editor-ashen.vercel.app/" }),
+          onClick: () => openWindow("safari", { url: "https://docs-editor-ashen.vercel.app/" }),
         },
         {
           label: "Launchpad Overview",
@@ -100,7 +100,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
       [
         {
           label: "GitHub Repositories",
-          onClick: () => openWindow("chrome", { url: "https://github.com/kuldeeprajput-dev" }),
+          onClick: () => openWindow("safari", { url: "https://github.com/kuldeeprajput-dev" }),
         },
       ],
     ],
@@ -126,11 +126,11 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
         {
           label: "Connect on LinkedIn",
           onClick: () =>
-            openWindow("chrome", { url: "https://www.linkedin.com/in/kuldeepdotcom/" }),
+            openWindow("safari", { url: "https://www.linkedin.com/in/kuldeepdotcom/" }),
         },
         {
           label: "Follow on Twitter / X",
-          onClick: () => openWindow("chrome", { url: "https://x.com/kuldeepdotcom" }),
+          onClick: () => openWindow("safari", { url: "https://x.com/kuldeepdotcom" }),
         },
       ],
     ],
@@ -156,7 +156,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
       [
         {
           label: "Interactive ATS System",
-          onClick: () => openWindow("chrome", { url: "https://resume-ats-omega.vercel.app/" }),
+          onClick: () => openWindow("safari", { url: "https://resume-ats-omega.vercel.app/" }),
         },
       ],
     ],

@@ -392,40 +392,40 @@ const Notch = () => {
     const query = text.toLowerCase();
 
     if (query.includes("open newtube")) {
-      openWindow("chrome", { url: "https://newtube-ruddy.vercel.app/" });
-      return "Opening NewTube project in Chrome.";
+      openWindow("safari", { url: "https://newtube-ruddy.vercel.app/" });
+      return "Opening NewTube project in Safari.";
     }
     if (
       query.includes("open snsta") ||
       query.includes("open free course finder") ||
       query.includes("open course finder")
     ) {
-      openWindow("chrome", { url: "https://snsta.vercel.app/" });
-      return "Opening Free Course Finder project in Chrome.";
+      openWindow("safari", { url: "https://snsta.vercel.app/" });
+      return "Opening Free Course Finder project in Safari.";
     }
     if (
       query.includes("open resume ats") ||
       query.includes("open ats scanner") ||
       query.includes("open resume scanner")
     ) {
-      openWindow("chrome", { url: "https://resume-ats-omega.vercel.app/" });
-      return "Opening Resume ATS Scanner project in Chrome.";
+      openWindow("safari", { url: "https://resume-ats-omega.vercel.app/" });
+      return "Opening Resume ATS Scanner project in Safari.";
     }
     if (
       query.includes("open docs editor") ||
       query.includes("open document editor") ||
       query.includes("open collaborative editor")
     ) {
-      openWindow("chrome", { url: "https://docs-editor-ashen.vercel.app/" });
-      return "Opening Docs Editor project in Chrome.";
+      openWindow("safari", { url: "https://docs-editor-ashen.vercel.app/" });
+      return "Opening Docs Editor project in Safari.";
     }
     if (query.includes("open my github") || query.includes("open github")) {
-      openWindow("chrome", { url: "https://github.com/kuldeeprajput-dev" });
-      return "Opening GitHub profile in Chrome.";
+      openWindow("safari", { url: "https://github.com/kuldeeprajput-dev" });
+      return "Opening GitHub profile in Safari.";
     }
     if (query.includes("open my linkedin") || query.includes("open linkedin")) {
-      openWindow("chrome", { url: "https://www.linkedin.com/in/kuldeepdotcom/" });
-      return "Opening LinkedIn profile in Chrome.";
+      openWindow("safari", { url: "https://www.linkedin.com/in/kuldeepdotcom/" });
+      return "Opening LinkedIn profile in Safari.";
     }
     if (
       query.includes("open my twitter") ||
@@ -433,8 +433,8 @@ const Notch = () => {
       query.includes("open my x") ||
       query.includes("open x")
     ) {
-      openWindow("chrome", { url: "https://x.com/kuldeepdotcom" });
-      return "Opening Twitter profile in Chrome.";
+      openWindow("safari", { url: "https://x.com/kuldeepdotcom" });
+      return "Opening Twitter profile in Safari.";
     }
 
     if (

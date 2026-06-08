@@ -103,6 +103,12 @@ const useWindowsStore = create(
         win.zIndex = INITIAL_Z_INDEX;
         win.data = null;
       }),
+    setWindowData: (windowKey, data) =>
+      set((state) => {
+        const win = state.windows[windowKey];
+        if (!win) return;
+        win.data = data;
+      }),
     minimizeWindow: (windowKey) =>
       set((state) => {
         const win = state.windows[windowKey];
