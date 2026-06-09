@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import WindowControls from "@components/WindowControls";
 import {
   ChevronLeft,
@@ -13,6 +13,8 @@ import {
   Download,
   Layout,
   AlignLeft,
+  Home,
+  Copy,
 } from "lucide-react";
 
 const SafariDesktopToolbar = ({
@@ -38,6 +40,15 @@ const SafariDesktopToolbar = ({
   const canGoBack = activeTab.historyIndex > 0;
   const canGoForward = activeTab.historyIndex < activeTab.history.length - 1;
   const isReaderCompatible = activeTab.url.includes("wikipedia.org");
+
+  const [showShare, setShowShare] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(activeTab.url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -92,6 +103,17 @@ const SafariDesktopToolbar = ({
             <ChevronRight size={17} />
           </button>
         </div>
+
+        {/* Home Button */}
+        <button
+          onClick={() => navigateTabTo("safari://start")}
+          className="p-1 rounded hover:bg-black/5 text-gray-600 transition-colors flex-shrink-0"
+          title="Go to Home"
+          onMouseDown={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          <Home size={16} />
+        </button>
 
         {/* Center: Address Bar */}
         <div className="flex-1 max-w-2xl mx-auto w-full">
@@ -176,13 +198,72 @@ const SafariDesktopToolbar = ({
 
         {/* Right Side: Share, Downloads, Plus, Layout */}
         <div className="flex items-center gap-1.5 @lg:gap-3">
-          <button
-            className="hidden @2xl:inline-block p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors"
-            onMouseDown={(e) => e.stopPropagation()}
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            <Share size={16} />
-          </button>
+          <div className="relative hidden @2xl:block">
+            <button
+              onClick={() => setShowShare(!showShare)}
+              className={`p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors ${
+                showShare ? "bg-black/8" : ""
+              }`}
+              onMouseDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+            >
+              <Share size={16} />
+            </button>
+
+            {/* Share Popover */}
+            {showShare && (
+              <div
+                className="absolute right-0 mt-2 w-56 bg-white border border-[#c8cbd0] rounded-xl shadow-xl p-2 text-xs z-50 text-gray-700 animate-in fade-in slide-in-from-top-2 duration-150"
+                onMouseDown={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
+              >
+                <div className="space-y-1">
+                  <button
+                    onClick={handleCopyLink}
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 hover:bg-blue-500 hover:text-white rounded-lg text-left font-medium transition-colors"
+                  >
+                    <Copy size={13} />
+                    <span>{copied ? "Copied!" : "Copy Link"}</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      toggleBookmark();
+                      setShowShare(false);
+                    }}
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 hover:bg-blue-500 hover:text-white rounded-lg text-left font-medium transition-colors"
+                  >
+                    <Star size={13} />
+                    <span>{isBookmarked ? "Remove Bookmark" : "Add Bookmark"}</span>
+                  </button>
+                  <div className="h-[1px] bg-gray-200 my-1" />
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(activeTab.url)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setShowShare(false)}
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 hover:bg-blue-500 hover:text-white rounded-lg text-left font-medium transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    <span>Twitter / X</span>
+                  </a>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(activeTab.url)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setShowShare(false)}
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 hover:bg-blue-500 hover:text-white rounded-lg text-left font-medium transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    <span>LinkedIn</span>
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="relative hidden @xl:block">
             <button
@@ -228,13 +309,19 @@ const SafariDesktopToolbar = ({
                       <p className="text-[10px] text-gray-400 text-left">2.4 MB — Complete</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-2.5">
+                  <div
+                    onClick={() => {
+                      openWindow("vscode");
+                      setShowDownloads(false);
+                    }}
+                    className="flex items-center gap-2.5 cursor-pointer hover:bg-black/5 p-1 rounded transition-colors"
+                  >
                     <div className="w-8 h-8 rounded bg-blue-100 flex items-center justify-center font-bold text-blue-600 text-[10px]">
                       ZIP
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold truncate">Project_Portfolio_Source.zip</p>
-                      <p className="text-[10px] text-gray-400">14.8 MB — Complete</p>
+                      <p className="font-semibold truncate text-left">Project_Portfolio_Source.zip</p>
+                      <p className="text-[10px] text-gray-400 text-left">14.8 MB — Complete</p>
                     </div>
                   </div>
                 </div>
