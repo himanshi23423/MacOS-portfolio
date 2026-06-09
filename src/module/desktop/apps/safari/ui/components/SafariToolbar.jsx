@@ -51,13 +51,13 @@ const SafariDesktopToolbar = ({
       id="window-header"
       className="!bg-[#eef1f5] !border-b-[#c8cbd0] !px-4 !py-2 flex flex-col gap-1.5 select-none relative z-20 shrink-0"
     >
-      <div className="flex items-center gap-4 w-full">
+      <div className="flex items-center gap-2 @lg:gap-4 w-full">
         {/* Left Side: Window Controls & Sidebar toggle */}
         <div className="flex items-center gap-3">
           <WindowControls target="safari" />
           <button
             onClick={onToggleSidebar}
-            className={`p-1 rounded hover:bg-black/5 transition-colors ${
+            className={`hidden @lg:block p-1 rounded hover:bg-black/5 transition-colors ${
               showSidebar ? "bg-black/8" : ""
             }`}
             onMouseDown={(e) => e.stopPropagation()}
@@ -68,7 +68,7 @@ const SafariDesktopToolbar = ({
         </div>
 
         {/* Navigation Arrows */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1 @lg:gap-1.5">
           <button
             onClick={handleGoBack}
             disabled={!canGoBack}
@@ -102,7 +102,7 @@ const SafariDesktopToolbar = ({
           >
             {/* Padlock / Security report */}
             <div
-              className="flex items-center gap-1 cursor-pointer hover:bg-black/5 rounded p-0.5"
+              className="hidden @md:flex items-center gap-1 cursor-pointer hover:bg-black/5 rounded p-0.5"
               title="Privacy Report"
             >
               <ShieldHalf size={13} className="text-green-600" />
@@ -112,7 +112,7 @@ const SafariDesktopToolbar = ({
             {isReaderCompatible && (
               <button
                 onClick={toggleReaderMode}
-                className={`p-0.5 rounded transition-colors ${
+                className={`hidden @md:inline-block p-0.5 rounded transition-colors ${
                   activeTab.isReaderMode
                     ? "bg-blue-100 text-blue-600"
                     : "text-gray-500 hover:bg-black/5"
@@ -124,22 +124,40 @@ const SafariDesktopToolbar = ({
             )}
 
             {/* Search Icon */}
-            {!activeTab.isReaderMode && <Search size={12} className="text-gray-400" />}
+            {!activeTab.isReaderMode && <Search size={12} className="hidden @md:block text-gray-400" />}
 
-            {/* Address Input */}
+            {/* Address Input - Large Container */}
             <input
               type="text"
               value={addressInput}
               onChange={(e) => setAddressInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search or enter website name"
-              className="flex-1 bg-transparent border-none outline-none text-xs text-gray-800 placeholder-gray-400 text-center focus:text-left"
+              className="hidden @lg:block flex-1 bg-transparent border-none outline-none text-xs text-gray-800 placeholder-gray-400 text-center focus:text-left"
+            />
+            {/* Address Input - Medium Container */}
+            <input
+              type="text"
+              value={addressInput}
+              onChange={(e) => setAddressInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Search or enter website"
+              className="hidden @md:block @lg:hidden flex-1 bg-transparent border-none outline-none text-xs text-gray-800 placeholder-gray-400 text-center focus:text-left"
+            />
+            {/* Address Input - Small Container */}
+            <input
+              type="text"
+              value={addressInput}
+              onChange={(e) => setAddressInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Search"
+              className="block @md:hidden flex-1 bg-transparent border-none outline-none text-xs text-gray-800 placeholder-gray-400 text-center focus:text-left"
             />
 
             {/* Bookmark Star Button */}
             <button
               onClick={toggleBookmark}
-              className={`p-0.5 rounded transition-colors text-gray-400 hover:text-amber-500`}
+              className="hidden @md:inline-block p-0.5 rounded transition-colors text-gray-400 hover:text-amber-500"
               title="Bookmark this page"
             >
               <Star size={13} className={isBookmarked ? "text-amber-500 fill-amber-500" : ""} />
@@ -157,16 +175,16 @@ const SafariDesktopToolbar = ({
         </div>
 
         {/* Right Side: Share, Downloads, Plus, Layout */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 @lg:gap-3">
           <button
-            className="p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors"
+            className="hidden @2xl:inline-block p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors"
             onMouseDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
           >
             <Share size={16} />
           </button>
 
-          <div className="relative">
+          <div className="relative hidden @xl:block">
             <button
               onClick={() => setShowDownloads(!showDownloads)}
               className={`p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors ${
@@ -226,7 +244,7 @@ const SafariDesktopToolbar = ({
 
           <button
             onClick={handleNewTab}
-            className="p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors"
+            className="hidden @xl:inline-block p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors"
             onMouseDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
           >
@@ -235,7 +253,7 @@ const SafariDesktopToolbar = ({
 
           <button
             onClick={() => setShowTabOverview(!showTabOverview)}
-            className={`p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors ${
+            className={`hidden @2xl:inline-block p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors ${
               showTabOverview ? "bg-black/8" : ""
             }`}
             onMouseDown={(e) => e.stopPropagation()}

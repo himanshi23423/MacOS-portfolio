@@ -60,7 +60,7 @@ const SafariContentView = ({
             <Minimize2 size={12} /> Exit Overview
           </button>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 @sm:grid-cols-2 @md:grid-cols-3 @lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {tabs.map((tab) => (
             <div
               key={tab.id}
@@ -296,7 +296,7 @@ const SafariContentView = ({
             {enabledSections.favorites && (
               <section>
                 <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>Favorites</h2>
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-6">
+                <div className="grid grid-cols-3 @sm:grid-cols-4 @md:grid-cols-5 @lg:grid-cols-6 @xl:grid-cols-8 gap-6 justify-items-center">
                   {bookmarks.map((fav) => (
                     <div
                       key={fav.id}
@@ -367,7 +367,7 @@ const SafariContentView = ({
               <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>
                 Featured Projects
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 @lg:grid-cols-2 gap-6">
                 {projects.map((project) => (
                   <div
                     key={project.id}

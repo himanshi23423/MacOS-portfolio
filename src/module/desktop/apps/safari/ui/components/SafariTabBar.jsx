@@ -17,7 +17,7 @@ const SafariTabBar = ({ tabs, activeTabId, setActiveTabId, onCloseTab, onNewTab 
             <div
               key={tab.id}
               onClick={() => setActiveTabId(tab.id)}
-              className={`group relative flex items-center h-8 min-w-[120px] max-w-[200px] flex-1 px-3 rounded-t-lg text-xs transition-all duration-150 cursor-pointer ${
+              className={`group relative flex items-center h-8 min-w-[85px] @md:min-w-[120px] max-w-[200px] flex-1 px-3 rounded-t-lg text-xs transition-all duration-150 cursor-pointer ${
                 isActive
                   ? "bg-white text-gray-800 shadow-[0_-1px_3px_rgba(0,0,0,0.06)] border-t border-x border-[#c8cbd0]/60 z-10 font-medium"
                   : "bg-black/5 hover:bg-black/10 text-gray-500 border-t border-x border-transparent hover:border-black/5"
