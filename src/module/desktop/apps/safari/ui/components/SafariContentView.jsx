@@ -43,6 +43,8 @@ const SafariContentView = ({
   setReaderFontSize,
   toggleReaderMode,
 }) => {
+  const [redirectProject, setRedirectProject] = React.useState(null);
+
   // If Tab Overview is active, render the Grid of tabs
   if (showTabOverview) {
     return (
@@ -255,11 +257,12 @@ const SafariContentView = ({
       : "bg-black/40 backdrop-blur-md border border-white/10 shadow-lg text-white";
 
     return (
-      <div
-        className="flex-1 overflow-y-auto relative transition-all duration-300 min-h-0 select-none pb-16"
-        style={{ background: backgroundImage }}
-      >
-        <div className="relative z-10 max-w-4xl mx-auto px-8 py-14">
+      <div className="flex-1 relative min-h-0 flex flex-col">
+        <div
+          className="flex-1 overflow-y-auto transition-all duration-300 select-none pb-16"
+          style={{ background: backgroundImage }}
+        >
+          <div className="relative z-10 max-w-4xl mx-auto px-8 py-14">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className={`text-4xl font-extrabold ${textClass} ${shadowClass} tracking-wide`}>
@@ -404,9 +407,7 @@ const SafariContentView = ({
                           href={project.github}
                           onClick={(e) => {
                             e.preventDefault();
-                            if (window.confirm(`Redirect to ${project.title} source code?`)) {
-                              window.open(project.github, "_blank");
-                            }
+                            setRedirectProject(project);
                           }}
                           className={`flex items-center gap-1.5 text-xs font-bold ${isLightBg ? "text-gray-600 hover:text-black" : "text-white/80 hover:text-white"} transition-colors`}
                         >
@@ -455,8 +456,43 @@ const SafariContentView = ({
           </div>
         </div>
       </div>
-    );
-  }
+
+      {redirectProject && (
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-xs flex items-center justify-center z-[100] animate-in fade-in duration-150">
+          <div className="bg-white border border-[#c8cbd0]/80 p-5 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center space-y-4 transform animate-in zoom-in-95 duration-150">
+            <div className="w-11 h-11 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
+              <Globe className="w-5 h-5 animate-pulse" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
+              <p className="text-[11px] text-gray-500 leading-relaxed">
+                Do you want to open the source code repository for{" "}
+                <span className="font-semibold text-gray-700">{redirectProject.title}</span>?
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setRedirectProject(null)}
+                className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <a
+                href={redirectProject.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setRedirectProject(null)}
+                className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center cursor-pointer text-center"
+              >
+                Open Link
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
   // 2. Detailed Privacy Report (safari://privacy-report)
   if (activeTab.url === "safari://privacy-report") {
