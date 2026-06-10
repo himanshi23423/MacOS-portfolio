@@ -284,7 +284,7 @@ const SafariDesktopToolbar = ({
                 onMouseDown={(e) => e.stopPropagation()}
                 onPointerDown={(e) => e.stopPropagation()}
               >
-                <div className="flex items-center justify-between border-b pb-2 mb-3">
+                <div className="flex items-center justify-between border-b border-[#c8cbd0]/40 pb-2 mb-3">
                   <span className="font-bold">Downloads</span>
                   <button
                     onClick={() => setShowDownloads(false)}
@@ -433,7 +433,7 @@ const SafariMobileHeader = ({
         {/* Mobile Downloads Popover */}
         {showDownloads && (
           <div className="absolute right-2 top-0 mt-8 w-64 bg-white border border-[#c8cbd0] rounded-xl shadow-xl p-3.5 text-xs z-50 text-gray-700 animate-in fade-in">
-            <div className="flex items-center justify-between border-b pb-1.5 mb-2">
+            <div className="flex items-center justify-between border-b border-[#c8cbd0]/40 pb-1.5 mb-2">
               <span className="font-bold">Downloads</span>
               <button
                 onClick={() => setShowDownloads(false)}

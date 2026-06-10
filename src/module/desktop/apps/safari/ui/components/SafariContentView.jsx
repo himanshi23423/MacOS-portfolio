@@ -404,7 +404,9 @@ const SafariContentView = ({
                           href={project.github}
                           onClick={(e) => {
                             e.preventDefault();
-                            navigateTabTo(project.github);
+                            if (window.confirm(`Redirect to ${project.title} source code?`)) {
+                              window.open(project.github, "_blank");
+                            }
                           }}
                           className={`flex items-center gap-1.5 text-xs font-bold ${isLightBg ? "text-gray-600 hover:text-black" : "text-white/80 hover:text-white"} transition-colors`}
                         >
@@ -587,6 +589,314 @@ const SafariContentView = ({
                 custom mock pages.
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 3.8 Wikipedia Article Mockup
+  const isWikipediaUrl = !activeTab.url.startsWith("safari://") && activeTab.url.toLowerCase().includes("wikipedia.org");
+  if (isWikipediaUrl) {
+    return (
+      <div
+        className="flex-1 flex flex-col min-h-0 bg-white text-gray-900 font-sans select-text overflow-y-auto z-0"
+        style={{ fontFamily: "'Linux Libertine', 'Georgia', serif" }}
+        onMouseDown={(e) => e.stopPropagation()}
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        <div className="bg-white border-b border-gray-300 px-4 py-2 flex items-center justify-between shrink-0 shadow-sm select-none">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-300 flex items-center justify-center text-xs font-bold text-gray-600">
+                W
+              </div>
+              <span
+                className="font-bold text-lg text-gray-900"
+                style={{ fontFamily: "'Linux Libertine', Georgia, serif" }}
+              >
+                Wikipedia
+              </span>
+            </div>
+            <span className="text-xs text-gray-400">The Free Encyclopedia</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="bg-gray-100 border border-gray-300 px-3 py-1 rounded text-[11px] w-52 text-gray-500 flex items-center gap-1.5">
+              <Search className="w-3 h-3 text-gray-400" />
+              Search Wikipedia
+            </div>
+            <span className="text-[11px] text-blue-600 font-semibold cursor-pointer hover:underline">
+              Log in
+            </span>
+          </div>
+        </div>
+
+        <div className="bg-[#f8f9fa] border-b border-gray-300 px-6 flex items-center gap-0 text-[12px] shrink-0 select-none">
+          {["Article", "Talk", "Read", "View source", "View history"].map((tab, i) => (
+            <span
+              key={i}
+              className={`px-3 py-2 cursor-pointer border-b-2 ${
+                tab === "Article"
+                  ? "border-blue-600 text-blue-600 bg-white -mb-px"
+                  : "border-transparent text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              {tab}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex flex-1 gap-0 min-h-0">
+          <div className="flex-1 overflow-y-auto p-8">
+            <h1
+              className="text-3xl font-normal border-b border-gray-300 pb-3 mb-4 text-gray-900"
+              style={{ fontFamily: "'Linux Libertine', Georgia, serif" }}
+            >
+              React (JavaScript library)
+            </h1>
+            <div className="text-[11px] text-gray-500 mb-5">
+              From Wikipedia, the free encyclopedia
+            </div>
+
+            <div className="float-right ml-6 mb-4 w-64 border border-gray-400 text-[12px] bg-[#f8f9fa] select-none">
+              <div className="bg-[#cee0f2] text-center px-3 py-1.5 font-bold text-[13px] border-b border-gray-400">
+                React
+              </div>
+              <div className="flex items-center justify-center py-3 bg-white border-b border-gray-300">
+                <div className="w-16 h-16 rounded-full bg-[#61dafb]/20 border-2 border-[#61dafb] flex items-center justify-center">
+                  <span className="text-3xl font-bold text-[#61dafb]">{"\u269B"}</span>
+                </div>
+              </div>
+              <table className="w-full">
+                <tbody>
+                  {[
+                    ["Developer", "Meta Platforms"],
+                    ["Initial release", "May 29, 2013"],
+                    ["Stable release", "19.1.0 (April 2025)"],
+                    ["Written in", "JavaScript"],
+                    ["Type", "JavaScript library"],
+                    ["License", "MIT License"],
+                    ["Website", "react.dev"],
+                  ].map(([k, v], i) => (
+                    <tr key={i} className="border-t border-gray-300">
+                      <td className="px-2 py-1 font-bold text-right text-[11px] align-top w-24 text-gray-700">
+                        {k}
+                      </td>
+                      <td className="px-2 py-1 text-[11px] text-blue-600 hover:underline cursor-pointer">
+                        {v}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-[13.5px] leading-relaxed mb-4 text-gray-805">
+              <b>React</b> (also known as <b>React.js</b> or <b>ReactJS</b>) is a free and
+              open-source front-end JavaScript library for building user interfaces based on
+              components. It is maintained by{" "}
+              <span className="text-blue-600 hover:underline cursor-pointer">Meta</span> (formerly
+              Facebook) and a community of individual developers and companies.
+            </p>
+            <p className="text-[13.5px] leading-relaxed mb-4 text-gray-805">
+              React can be used to develop single-page, mobile, or server-rendered applications with
+              frameworks like{" "}
+              <span className="text-blue-600 hover:underline cursor-pointer">Next.js</span>. Because
+              React is only concerned with the user interface and rendering components to the DOM,
+              React applications often rely on libraries for routing and other client-side
+              functionality.
+            </p>
+
+            <div className="border border-gray-400 bg-[#f8f9fa] inline-block p-3 mb-5 text-[12px] min-w-[200px] select-none">
+              <div className="font-bold mb-2 text-center text-gray-700">Contents</div>
+              {[
+                ["1", "History"],
+                ["2", "Basic usage"],
+                ["3", "Notable features"],
+                ["3.1", "Components"],
+                ["3.2", "Virtual DOM"],
+                ["3.3", "JSX"],
+                ["4", "React Hooks"],
+                ["5", "Server-side rendering"],
+                ["6", "See also"],
+              ].map(([num, title], i) => (
+                <div key={i} className={`flex gap-2 py-0.5 ${num.includes(".") ? "pl-4" : ""}`}>
+                  <span className="text-gray-500">{num}</span>
+                  <span className="text-blue-600 hover:underline cursor-pointer">{title}</span>
+                </div>
+              ))}
+            </div>
+
+            <h2
+              className="text-xl font-normal border-b border-gray-300 pb-1 mb-3 text-gray-900"
+              style={{ fontFamily: "'Linux Libertine', Georgia, serif" }}
+            >
+              History
+            </h2>
+            <p className="text-[13.5px] leading-relaxed mb-4 text-gray-805">
+              React was created by{" "}
+              <span className="text-blue-600 hover:underline cursor-pointer">Jordan Walke</span>, a
+              software engineer at Facebook. It was first deployed on Facebook's News Feed in 2011
+              and later on Instagram in 2012. It was open-sourced at JSConf US in May 2013. React
+              Native, which enables native Android, iOS, and UWP development with React, was
+              announced at Facebook's React Conf in February 2015 and open-sourced in March 2015.
+            </p>
+
+            <h2
+              className="text-xl font-normal border-b border-gray-300 pb-1 mb-3 text-gray-900"
+              style={{ fontFamily: "'Linux Libertine', Georgia, serif" }}
+            >
+              Basic usage
+            </h2>
+            <p className="text-[13.5px] leading-relaxed mb-3 text-gray-805">
+              The following is a rudimentary example of using React for the web, written in JSX and
+              JavaScript:
+            </p>
+            <div className="bg-[#f8f9fa] border border-gray-300 rounded p-4 font-mono text-[11px] text-gray-850 mb-5 whitespace-pre leading-relaxed overflow-x-auto">{`import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+function App() {
+  return <h1>Hello, World!</h1>;
+}
+
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);`}</div>
+
+            <h2
+              className="text-xl font-normal border-b border-gray-300 pb-1 mb-3 text-gray-900"
+              style={{ fontFamily: "'Linux Libertine', Georgia, serif" }}
+            >
+              Notable features
+            </h2>
+
+            <h3 className="text-[15px] font-bold mb-2 text-gray-900">Components</h3>
+            <p className="text-[13.5px] leading-relaxed mb-4 text-gray-805">
+              React code is made of entities called <i>components</i>. These components are reusable
+              and must be formed in the SFC (Single File Component) structure. React components can
+              be defined as class-based components or as functional components. The introduction of
+              React Hooks with React 16.8 in 2019 allowed state and lifecycle management in
+              functional components.
+            </p>
+
+            <h3 className="text-[15px] font-bold mb-2 text-gray-900">Virtual DOM</h3>
+            <p className="text-[13.5px] leading-relaxed mb-4 text-gray-855">
+              Another notable feature is the use of a{" "}
+              <span className="text-blue-600 hover:underline cursor-pointer">
+                virtual Document Object Model
+              </span>
+              , or virtual DOM. React creates an in-memory data-structure cache, computes the
+              resulting differences, and then updates the browser's displayed DOM efficiently. This
+              allows the programmer to write code as if the entire page is rendered on each change,
+              while React only renders the components that actually changed.
+            </p>
+
+            <h3 className="text-[15px] font-bold mb-2 text-gray-900">JSX</h3>
+            <p className="text-[13.5px] leading-relaxed mb-4 text-gray-805">
+              JSX is an extension to the JavaScript language syntax. Similar in appearance to HTML,
+              JSX provides a way to structure component rendering using syntax familiar to many
+              developers. React components are typically written using JSX, although they do not
+              have to be (components may also be written in pure JavaScript).
+            </p>
+
+            <h2
+              className="text-xl font-normal border-b border-gray-300 pb-1 mb-3 text-gray-900"
+              style={{ fontFamily: "'Linux Libertine', Georgia, serif" }}
+            >
+              React Hooks
+            </h2>
+            <p className="text-[13.5px] leading-relaxed mb-4 text-gray-805">
+              Hooks are functions that let developers "hook into" React state and lifecycle features
+              from function components. They were first available in React 16.8. The most common
+              hooks are <code className="bg-gray-100 px-1 rounded">useState</code>,{" "}
+              <code className="bg-gray-100 px-1 rounded">useEffect</code>,{" "}
+              <code className="bg-gray-100 px-1 rounded">useContext</code>,{" "}
+              <code className="bg-gray-100 px-1 rounded">useRef</code>, and{" "}
+              <code className="bg-gray-100 px-1 rounded">useMemo</code>.
+            </p>
+
+            <h2
+              className="text-xl font-normal border-b border-gray-300 pb-1 mb-3 text-gray-900"
+              style={{ fontFamily: "'Linux Libertine', Georgia, serif" }}
+            >
+              See also
+            </h2>
+            <ul className="list-disc pl-5 space-y-1 text-[13px] mb-8 text-gray-850">
+              {[
+                "Vue.js",
+                "Angular (web framework)",
+                "Svelte",
+                "Next.js",
+                "Vite",
+                "TypeScript",
+                "Node.js",
+                "JavaScript",
+              ].map((item) => (
+                <li key={item} className="text-blue-600 hover:underline cursor-pointer">
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div className="text-[11px] text-gray-500 border-t border-gray-300 pt-4 select-none">
+              This page was last edited on 27 May 2025. Text is available under the{" "}
+              <span className="text-blue-600 hover:underline cursor-pointer">
+                Creative Commons Attribution-ShareAlike License 4.0
+              </span>
+              ; additional terms may apply.
+            </div>
+          </div>
+
+          <div className="w-48 shrink-0 border-l border-gray-200 bg-[#f8f9fa] p-4 text-[11px] overflow-y-auto hidden lg:block select-none">
+            <div className="font-bold mb-2 text-gray-700">Navigation</div>
+            {[
+              "Main page",
+              "Contents",
+              "Current events",
+              "Random article",
+              "About Wikipedia",
+              "Contact us",
+              "Donate",
+            ].map((item) => (
+              <div key={item} className="py-0.5 text-blue-600 hover:underline cursor-pointer">
+                {item}
+              </div>
+            ))}
+            <div className="font-bold mb-2 mt-4 text-gray-700">Contribute</div>
+            {["Help", "Learn to edit", "Community portal", "Recent changes", "Upload file"].map(
+              (item) => (
+                <div key={item} className="py-0.5 text-blue-600 hover:underline cursor-pointer">
+                  {item}
+                </div>
+              ),
+            )}
+            <div className="font-bold mb-2 mt-4 text-gray-700">Tools</div>
+            {[
+              "What links here",
+              "Related changes",
+              "Special pages",
+              "Permanent link",
+              "Page information",
+              "Cite this page",
+              "Get shortened URL",
+            ].map((item) => (
+              <div key={item} className="py-0.5 text-blue-600 hover:underline cursor-pointer">
+                {item}
+              </div>
+            ))}
+            <div className="font-bold mb-2 mt-4 text-gray-700">Languages</div>
+            {[
+              "Deutsch",
+              "Español",
+              "Français",
+              "\u0939\u093F\u0928\u094D\u0926\u0940",
+              "\u65E5\u672C\u8A9E",
+              "\u0420\u0443\u0441\u0441\u043A\u0438\u0439",
+              "\u4E2D\u6587",
+            ].map((item) => (
+              <div key={item} className="py-0.5 text-blue-600 hover:underline cursor-pointer">
+                {item}
+              </div>
+            ))}
           </div>
         </div>
       </div>
