@@ -312,7 +312,7 @@ const SafariContentView = ({
                           <img
                             src={fav.img}
                             alt={fav.title}
-                            className="w-8 h-8 object-contain rounded-md"
+                            className="w-11 h-11 object-contain rounded-md"
                             onError={(e) => {
                               e.target.src = "";
                             }}
@@ -593,11 +593,16 @@ const SafariContentView = ({
     );
   }
 
-  // 4. Real Iframe Support
-  if (!activeTab.url.startsWith("safari://") && isIframeable(activeTab.url)) {
+  // 4. Real Iframe Support (Direct or via Proxy)
+  if (!activeTab.url.startsWith("safari://")) {
+    const urlLower = activeTab.url.toLowerCase();
+    const needsProxy = !isIframeable(activeTab.url);
+
     let sourceUrl = activeTab.url;
-    if (activeTab.url.toLowerCase().includes("openstreetmap.org")) {
+    if (urlLower.includes("openstreetmap.org")) {
       sourceUrl = "https://www.openstreetmap.org/export/embed.html";
+    } else if (needsProxy) {
+      sourceUrl = `/api/proxy?url=${encodeURIComponent(activeTab.url)}`;
     }
     return (
       <iframe
