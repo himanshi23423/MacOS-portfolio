@@ -44,6 +44,11 @@ const SafariContentView = ({
   toggleReaderMode,
 }) => {
   const [redirectProject, setRedirectProject] = React.useState(null);
+  const [iframeLoading, setIframeLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    setIframeLoading(true);
+  }, [activeTab.url]);
 
   // If Tab Overview is active, render the Grid of tabs
   if (showTabOverview) {
@@ -951,12 +956,29 @@ root.render(<App />);`}</div>
       sourceUrl = `/api/proxy?url=${encodeURIComponent(activeTab.url)}`;
     }
     return (
-      <iframe
-        src={sourceUrl}
-        title={activeTab.title}
-        className="flex-1 w-full h-full border-none bg-white relative z-0"
-        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-      />
+      <div className="flex-1 w-full h-full relative flex flex-col bg-white">
+        {iframeLoading && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 select-none animate-in fade-in duration-200">
+            {/* Elegant macOS-like loading spinner */}
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-8 h-8 border-[3px] border-gray-200 border-t-blue-500 rounded-full animate-spin" />
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-xs font-semibold text-gray-700">Loading {activeTab.title}...</span>
+                <span className="text-[10px] text-gray-400 truncate max-w-[200px]">{activeTab.url}</span>
+              </div>
+            </div>
+          </div>
+        )}
+        <iframe
+          src={sourceUrl}
+          title={activeTab.title}
+          className={`flex-1 w-full h-full border-none bg-white relative z-0 transition-opacity duration-300 ${
+            iframeLoading ? "opacity-0" : "opacity-100"
+          }`}
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+          onLoad={() => setIframeLoading(false)}
+        />
+      </div>
     );
   }
 
