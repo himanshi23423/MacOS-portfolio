@@ -15,6 +15,7 @@ import {
 const LoginScreen = ({ onLogin, isMobile }) => {
   const [password, setPassword] = useState("");
   const [isAsleep, setIsAsleep] = useState(false);
+  const [isShuttingDown, setIsShuttingDown] = useState(false);
   const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [error, setError] = useState(false);
   const [flashlightActive, setFlashlightActive] = useState(false);
@@ -192,8 +193,10 @@ const LoginScreen = ({ onLogin, isMobile }) => {
   }, [showPasswordInput, isMobile]);
 
   const handleShutDown = () => {
-    window.open("about:blank", "_blank");
-    window.close();
+    setIsShuttingDown(true);
+    setTimeout(() => {
+      window.location.href = "about:blank";
+    }, 2000);
   };
 
   const handleLogin = (e) => {
@@ -630,6 +633,13 @@ const LoginScreen = ({ onLogin, isMobile }) => {
         ></div>
       )}
 
+      {isShuttingDown && (
+        <div className="fixed inset-0 bg-black z-[9999999] flex flex-col items-center justify-center select-none cursor-none">
+          <img src="/icons/appleLogo.svg" alt="Apple Logo" className="w-14 h-14 invert dark:invert-0 opacity-95 animate-pulse mb-8" />
+          <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+        </div>
+      )}
+
       {/* Styles for shake and smooth SVG drawing */}
       <style>{`
         @keyframes shake {
@@ -842,7 +852,10 @@ const LoginScreen = ({ onLogin, isMobile }) => {
               </button>
               <button
                 className="flex flex-col items-center gap-2 group outline-none cursor-pointer"
-                onClick={() => window.location.reload()}
+                onClick={() => {
+                  sessionStorage.setItem("isRestartingSystem", "true");
+                  window.location.reload();
+                }}
               >
                 <div className="w-10 h-10 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center transition-colors border border-white/10">
                   <RotateCcw className="text-white w-4 h-4" />

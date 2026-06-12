@@ -15,6 +15,7 @@ const NavbarPowerMenu = ({ setIsAppleMenuOpen, setIsAsleep, setIsShuttingDown })
       className="apple-menu-item"
       onClick={() => {
         setIsAppleMenuOpen(false);
+        sessionStorage.setItem("isRestartingSystem", "true");
         window.location.reload();
       }}
     >
