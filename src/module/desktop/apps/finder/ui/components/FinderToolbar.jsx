@@ -12,7 +12,7 @@ const FinderToolbar = ({
 }) => (
   <div
     id="window-header"
-    className="!bg-[#f3f3f3] !border-b-[#d1d1d6] px-4 py-2 flex items-center justify-between shrink-0 text-gray-600 gap-4"
+    className="bg-[#f3f3f3]! border-b-[#d1d1d6]! px-4 py-2 flex items-center justify-between shrink-0 text-gray-600 gap-4"
   >
     <div className="flex items-center gap-6">
       <WindowControls target="finder" />

@@ -6,16 +6,15 @@ import useWindowsStore from "@store/window";
 import { Search, ChevronRight, FileText } from "lucide-react";
 import { useState, useEffect } from "react";
 import { fileIconMap } from "./finderData";
-import FinderToolbar from "./FinderToolbar";
-import FinderSidebar from "./FinderSidebar";
-import FinderFileList from "./FinderFileList";
 import FinderSection from "../section/FinderSection";
 
 const Finder = () => {
   const { openWindow } = useWindowsStore();
-  const { activeLocation, setActiveLocation } = useLocationStore();
+  const isOpen = useWindowsStore((state) => state.windows.finder?.isOpen);
+  const { activeLocation, setActiveLocation, resetActiveLocation } = useLocationStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [navStack, setNavStack] = useState([]);
+  const [redirectItem, setRedirectItem] = useState(null);
 
   // History and Search States
   const [history, setHistory] = useState([activeLocation]);
@@ -27,6 +26,17 @@ const Finder = () => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // Reset finder state to default when closed
+  useEffect(() => {
+    if (!isOpen) {
+      setHistory([locations.work]);
+      setHistoryIndex(0);
+      setSearchQuery("");
+      setNavStack([]);
+      resetActiveLocation();
+    }
+  }, [isOpen, resetActiveLocation]);
 
   // Sync initial location when store updates
   useEffect(() => {
@@ -74,7 +84,12 @@ const Finder = () => {
       }
       return;
     }
-    if (["fig", "url"].includes(item.fileType) && item.href) {
+    // GitHub links should open in new tab of the browser with a redirect popup
+    if ((item.fileType === "fig" || item.name?.toLowerCase().includes("github")) && item.href) {
+      setRedirectItem(item);
+      return;
+    }
+    if (item.fileType === "url" && item.href) {
       openWindow("safari", { url: item.href });
       return;
     }
@@ -272,6 +287,41 @@ const Finder = () => {
             </div>
           )}
         </div>
+
+        {/* Redirection Popup */}
+        {redirectItem && (
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] flex items-center justify-center z-[100] animate-in fade-in duration-150 rounded-b-2xl">
+            <div className="bg-white/95 border border-zinc-200/50 p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center space-y-4 transform animate-in zoom-in-95 duration-150 backdrop-blur-md">
+              <div className="w-12 h-12 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
+                <img src="/images/github.png" alt="GitHub" className="w-7 h-7 object-contain" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
+                <p className="text-[11px] text-gray-500 leading-relaxed">
+                  Do you want to open the GitHub repository for{" "}
+                  <span className="font-semibold text-gray-700">{activeLocation.name}</span> in a new tab?
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setRedirectItem(null)}
+                  className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer border border-zinc-200"
+                >
+                  Cancel
+                </button>
+                <a
+                  href={redirectItem.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setRedirectItem(null)}
+                  className="flex-1 py-2 bg-[#24292e] hover:bg-[#1f2327] active:bg-[#1a1e21] text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center cursor-pointer text-center"
+                >
+                  Open Link
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </>
     );
   }
@@ -282,18 +332,55 @@ const Finder = () => {
     ) || [];
 
   return (
-    <FinderSection
-      activeLocation={activeLocation}
-      setActiveLocation={handleNavigate}
-      openItem={openItem}
-      canGoBack={historyIndex > 0}
-      canGoForward={historyIndex < history.length - 1}
-      onGoBack={handleBack}
-      onGoForward={handleForward}
-      searchQuery={searchQuery}
-      onSearchChange={setSearchQuery}
-      filteredChildren={filteredChildren}
-    />
+    <>
+      <FinderSection
+        activeLocation={activeLocation}
+        setActiveLocation={handleNavigate}
+        openItem={openItem}
+        canGoBack={historyIndex > 0}
+        canGoForward={historyIndex < history.length - 1}
+        onGoBack={handleBack}
+        onGoForward={handleForward}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        filteredChildren={filteredChildren}
+      />
+
+      {/* Redirection Popup */}
+      {redirectItem && (
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] flex items-center justify-center z-[100] animate-in fade-in duration-150 rounded-b-2xl">
+          <div className="bg-white/95 border border-zinc-200/50 p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center space-y-4 transform animate-in zoom-in-95 duration-150 backdrop-blur-md">
+            <div className="w-12 h-12 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
+              <img src="/images/github.png" alt="GitHub" className="w-7 h-7 object-contain" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
+              <p className="text-[11px] text-gray-500 leading-relaxed">
+                Do you want to open the GitHub repository for{" "}
+                <span className="font-semibold text-gray-700">{activeLocation.name}</span> in a new tab?
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setRedirectItem(null)}
+                className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer border border-zinc-200"
+              >
+                Cancel
+              </button>
+              <a
+                href={redirectItem.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setRedirectItem(null)}
+                className="flex-1 py-2 bg-[#24292e] hover:bg-[#1f2327] active:bg-[#1a1e21] text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center cursor-pointer text-center"
+              >
+                Open Link
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
