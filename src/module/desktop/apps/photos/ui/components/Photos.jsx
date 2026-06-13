@@ -119,7 +119,7 @@ const enrichedGallery = gallery.map((item) => {
 });
 
 const Photos = () => {
-  const { favorites } = useWindowsStore();
+  const { favorites, openWindow } = useWindowsStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [activeTab, setActiveTab] = useState("Library");
 
@@ -206,7 +206,20 @@ const Photos = () => {
   };
 
   const _handlePhotoDoubleClick = (photo) => {
-    setInAppViewerPhoto(photo);
+    if (isMobile) {
+      setInAppViewerPhoto(photo);
+    } else {
+      const index = activePhotos.findIndex((p) => p.id === photo.id);
+      openWindow("imgfile", {
+        currentIndex: index >= 0 ? index : 0,
+        photos: activePhotos.map(p => ({
+          id: p.id,
+          name: p.title,
+          imageUrl: p.img,
+          resolution: p.resolution || "1920 × 1080",
+        }))
+      });
+    }
   };
 
   const handleRotateActivePhoto = () => {
@@ -247,6 +260,7 @@ const Photos = () => {
       inAppViewerPhoto={inAppViewerPhoto}
       setInAppViewerPhoto={setInAppViewerPhoto}
       onUpdateTitle={handleUpdateTitle}
+      onDoubleClick={_handlePhotoDoubleClick}
       // History navigation
       canGoBack={navIndex > 0}
       canGoForward={navIndex < navHistory.length - 1}

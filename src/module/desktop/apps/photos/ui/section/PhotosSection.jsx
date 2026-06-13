@@ -53,6 +53,7 @@ const PhotosSection = ({
   canGoBack,
   canGoForward,
   onNavigate,
+  onDoubleClick,
 }) => {
   const [showShareDropdown, setShowShareDropdown] = useState(false);
   const shareDropdownRef = useRef(null);
@@ -365,7 +366,7 @@ const PhotosSection = ({
           zoomLevel={zoomLevel}
           viewMode={viewMode}
           selectedPhotoId={selectedPhoto?.id}
-          onDoubleClick={setInAppViewerPhoto}
+          onDoubleClick={onDoubleClick}
         />
 
         {/* Info Inspector Sidebar */}
