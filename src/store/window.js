@@ -25,6 +25,7 @@ const useWindowsStore = create(
       isMuted: false,
     },
     isSiriOpen: false,
+    isAboutPortfolioOpen: false,
     systemSettings: {
       wifi: true,
       bluetooth: true,
@@ -68,6 +69,11 @@ const useWindowsStore = create(
     setSiriOpen: (isOpen) =>
       set((state) => {
         state.isSiriOpen = isOpen;
+      }),
+
+    setAboutPortfolioOpen: (isOpen) =>
+      set((state) => {
+        state.isAboutPortfolioOpen = isOpen;
       }),
 
     setDockHiddenByCollision: (isHidden) =>

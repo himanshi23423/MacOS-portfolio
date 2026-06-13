@@ -34,51 +34,64 @@ import VSCode from "@module/desktop/apps/vscode/ui/view/VSCodeView";
 import Weather from "@module/desktop/apps/weather/ui/view/WeatherView";
 import Welcome from "@module/desktop/apps/welcome/ui/view/WelcomeView";
 import Notch from "./notch/ui/view/NotchView";
+import useWindowsStore from "@store/window";
+import AboutPortfolioModal from "@module/desktop/navbar/ui/components/AboutPortfolioModal";
 
 const DesktopWidgets = dynamic(() => import("./widgets/ui/components/Widgets"), {
   ssr: false,
 });
 
-const Desktop = () => (
-  <main>
-    <Navbar />
-    <Notch />
-    <div
-      id="desktop-area"
-      className="absolute top-[35px] bottom-0 left-0 right-0 pointer-events-none z-0"
-    />
-    <DesktopWidgets />
-    <div id="folder-bounds" className="absolute pointer-events-none z-0" />
-    <Welcome />
-    <DockVisualizer />
-    <Dock />
-    <Terminal />
-    <Safari />
-    <Resume />
-    <Finder />
-    <Text />
-    <Image />
-    <Contact />
-    <Photos />
-    <Settings />
-    <Calculator />
-    <Notes />
-    <Messages />
-    <AppleTV />
-    <Call />
-    <AppStore />
-    <Calendar />
-    <Weather />
-    <Chrome />
-    <VSCode />
-    <Postman />
-    <Map />
-    <FontBook />
-    <Telegram />
-    <Music />
-    <Launchpad />
-    <Home />
-  </main>
-);
+const Desktop = () => {
+  const isAboutPortfolioOpen = useWindowsStore((state) => state.isAboutPortfolioOpen);
+  const setAboutPortfolioOpen = useWindowsStore((state) => state.setAboutPortfolioOpen);
+
+  return (
+    <main>
+      <Navbar />
+      <Notch />
+      <div
+        id="desktop-area"
+        className="absolute top-[35px] bottom-0 left-0 right-0 pointer-events-none z-0"
+      />
+      <DesktopWidgets />
+      <div id="folder-bounds" className="absolute pointer-events-none z-0" />
+      <Welcome />
+      <DockVisualizer />
+      <Dock />
+      <Terminal />
+      <Safari />
+      <Resume />
+      <Finder />
+      <Text />
+      <Image />
+      <Contact />
+      <Photos />
+      <Settings />
+      <Calculator />
+      <Notes />
+      <Messages />
+      <AppleTV />
+      <Call />
+      <AppStore />
+      <Calendar />
+      <Weather />
+      <Chrome />
+      <VSCode />
+      <Postman />
+      <Map />
+      <FontBook />
+      <Telegram />
+      <Music />
+      <Launchpad />
+      <Home />
+
+      {/* About Portfolio Dialog */}
+      <AboutPortfolioModal
+        show={isAboutPortfolioOpen}
+        onClose={() => setAboutPortfolioOpen(false)}
+      />
+    </main>
+  );
+};
 
 export default Desktop;

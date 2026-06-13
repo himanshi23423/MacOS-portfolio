@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import useWindowsStore from "@store/window";
 
 const NavbarAppMenu = ({ activeAppName, openWindow }) => {
+  const { setAboutPortfolioOpen } = useWindowsStore();
   const [openDropdown, setOpenDropdown] = useState(null); // 'portfolio' | 'projects' | 'contact' | 'resume' | null
   const containerRef = useRef(null);
 
@@ -46,6 +48,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               openWindow("safari", { openAbout: true });
             } else if (activeAppName === "Finder") {
               openWindow("finder", { openAbout: true });
+            } else if (activeAppName === "Kuldeep's Portfolio") {
+              setAboutPortfolioOpen(true);
             } else {
               openWindow("settings", { tab: "General" });
             }
@@ -61,6 +65,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               openWindow("safari", { openSettings: true });
             } else if (activeAppName === "Finder") {
               openWindow("settings", { tab: "General", subPage: "storage" });
+            } else if (activeAppName === "Kuldeep's Portfolio") {
+              openWindow("settings", { tab: "General", subPage: "about" });
             } else {
               openWindow("settings");
             }
