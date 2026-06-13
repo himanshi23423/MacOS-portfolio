@@ -240,7 +240,7 @@ const SafariDesktopToolbar = ({
                   </button>
                   <div className="h-[1px] bg-gray-200 my-1" />
                   <a
-                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(activeTab.url)}`}
+                    href="https://x.com/kuldeepdotcom"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setShowShare(false)}
@@ -252,7 +252,7 @@ const SafariDesktopToolbar = ({
                     <span>Twitter / X</span>
                   </a>
                   <a
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(activeTab.url)}`}
+                    href="https://www.linkedin.com/in/kuldeepdotcom/"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setShowShare(false)}
