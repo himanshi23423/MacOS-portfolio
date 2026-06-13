@@ -80,6 +80,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               openWindow("terminal", { openAbout: true });
             } else if (activeAppName === "Contact") {
               openWindow("contact", { openAbout: true });
+            } else if (activeAppName === "Notes") {
+              openWindow("notes", { openAbout: true });
             } else if (activeAppName === "Kuldeep's Portfolio") {
               setAboutPortfolioOpen(true);
             } else {
@@ -95,7 +97,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
           disabled:
             activeAppName === "Calculator" ||
             activeAppName === "Terminal" ||
-            activeAppName === "Contact",
+            activeAppName === "Contact" ||
+            activeAppName === "Notes",
           onClick: () => {
             if (activeAppName === "Safari") {
               openWindow("safari", { openSettings: true });
