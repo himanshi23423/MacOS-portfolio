@@ -1,5 +1,5 @@
-import { appNames } from "./navbarData";
-import useNavbar from "./useNavbar";
+import { appNames } from "../../data/navbarData";
+import useNavbar from "../../hooks/useNavbar";
 import NavbarSection from "../section/NavbarSection";
 
 const Navbar = () => {
