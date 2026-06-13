@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import windowWrapper from "@hoc/windowWrapper";
+import useWindowsStore from "@store/window";
 import useSettings from "./useSettings";
 import SettingsSidebar from "./SettingsSidebar";
 import SettingsPane from "./SettingsPane";
+import SettingsAboutModal from "./SettingsAboutModal";
 
 const Settings = () => {
   const { activeTab, setActiveTab, githubData, isLoading, isMobile, mobileView, setMobileView } =
     useSettings();
+  const { windows, setWindowData } = useWindowsStore();
+  const [showAbout, setShowAbout] = useState(false);
+
+  useEffect(() => {
+    if (windows.settings?.data?.openAbout) {
+      setShowAbout(true);
+      setWindowData("settings", { ...windows.settings.data, openAbout: false });
+    }
+  }, [windows.settings?.data?.openAbout, windows.settings?.data, setWindowData]);
 
   return (
     <div className="@container w-full h-full">
@@ -35,6 +46,7 @@ const Settings = () => {
           />
         </div>
       </div>
+      <SettingsAboutModal show={showAbout} onClose={() => setShowAbout(false)} />
     </div>
   );
 };

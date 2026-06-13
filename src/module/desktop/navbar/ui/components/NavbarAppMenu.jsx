@@ -72,6 +72,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               } else {
                 openWindow("photos", { openAbout: true });
               }
+            } else if (activeAppName === "Settings") {
+              openWindow("settings", { openAbout: true });
             } else if (activeAppName === "Kuldeep's Portfolio") {
               setAboutPortfolioOpen(true);
             } else {
@@ -91,6 +93,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               openWindow("settings", { tab: "General", subPage: "storage" });
             } else if (activeAppName === "Photos") {
               openWindow("settings", { tab: "General", subPage: "storage" });
+            } else if (activeAppName === "Settings") {
+              openWindow("settings", { tab: "Apple ID" });
             } else if (activeAppName === "Kuldeep's Portfolio") {
               openWindow("settings", { tab: "General", subPage: "about" });
             } else {

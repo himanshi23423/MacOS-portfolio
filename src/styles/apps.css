@@ -247,7 +247,7 @@
   }
 
   #settings {
-    @apply w-[850px] h-[520px] absolute left-36 top-24 shadow-2xl drop-shadow-2xl rounded-lg;
+    @apply w-[850px] h-[560px] absolute left-36 top-24 shadow-2xl drop-shadow-2xl rounded-lg;
   }
 
   #chrome {
