@@ -96,7 +96,7 @@
   }
 
   #terminal {
-    @apply w-[600px] h-[500px] absolute top-32 left-1/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-[600px] h-[600px] absolute top-32 left-1/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     h2 {
       @apply font-bold text-sm text-center w-full;
@@ -139,6 +139,21 @@
         }
       }
     }
+  }
+
+  /* ─── xterm scrollbar ─────────────────────────────── */
+  #terminal .xterm-viewport::-webkit-scrollbar {
+    width: 6px;
+  }
+  #terminal .xterm-viewport::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  #terminal .xterm-viewport::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 99px;
+  }
+  #terminal .xterm-viewport::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.32);
   }
 
   #contact {

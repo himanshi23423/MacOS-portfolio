@@ -93,6 +93,9 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
                 "\x1b[1;38;2;16;185;129mwhoami\x1b[0m    \x1b[38;2;75;85;99m- Print current user\x1b[0m",
               );
               println(
+                "\x1b[1;38;2;16;185;129mabout\x1b[0m     \x1b[38;2;75;85;99m- About Kuldeep Rajput\x1b[0m",
+              );
+              println(
                 "\x1b[1;38;2;16;185;129mtechstack\x1b[0m \x1b[38;2;75;85;99m- Display tech stack\x1b[0m",
               );
               println(
@@ -113,6 +116,19 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
               break;
             case "whoami":
               println("\x1b[38;2;75;85;99mkuldeep\x1b[0m");
+              break;
+            case "about":
+              println("\x1b[1;38;2;219;39;119m=== About Kuldeep Rajput ===\x1b[0m");
+              println("\x1b[1;38;2;16;185;129mName:      \x1b[38;2;75;85;99mKuldeep Rajput\x1b[0m");
+              println("\x1b[1;38;2;16;185;129mRole:      \x1b[38;2;75;85;99mFull-Stack Developer & Designer\x1b[0m");
+              println("\x1b[1;38;2;16;185;129mLocation:  \x1b[38;2;75;85;99mIndia 🇮🇳\x1b[0m");
+              println("\x1b[1;38;2;16;185;129mEmail:     \x1b[4;38;2;37;99;235mrajputkuldeep23345@gmail.com\x1b[0m");
+              println("\x1b[1;38;2;16;185;129mGitHub:    \x1b[4;38;2;37;99;235mhttps://github.com/kuldeeprajput-dev\x1b[0m");
+              println("\x1b[1;38;2;16;185;129mPortfolio: \x1b[4;38;2;37;99;235mhttps://kuldeeprajput.in\x1b[0m");
+              println("\x1b[1;38;2;6;182;212m\r\nBio:\x1b[0m");
+              println("\x1b[38;2;75;85;99mPassionate developer crafting premium macOS-inspired\x1b[0m");
+              println("\x1b[38;2;75;85;99mweb experiences with React, Next.js & Node.js.\x1b[0m");
+              println("\x1b[38;2;75;85;99mType \x1b[1;38;2;16;185;129mtechstack\x1b[0m\x1b[38;2;75;85;99m for skills or \x1b[1;38;2;16;185;129mprojects\x1b[0m\x1b[38;2;75;85;99m for work.\x1b[0m");
               break;
             case "sudo":
               println(
