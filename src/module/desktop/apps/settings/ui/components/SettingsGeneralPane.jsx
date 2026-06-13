@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import useWindowsStore from "@store/window";
 import {
   Monitor,
   RefreshCw,
@@ -11,7 +12,15 @@ import {
 } from "lucide-react";
 
 const SettingsGeneralPane = () => {
-  const [subPage, setSubPage] = useState(null); // 'about', 'update', 'storage', 'datetime', null
+  const { windows } = useWindowsStore();
+  const windowData = windows.settings?.data;
+  const [subPage, setSubPage] = useState(() => windowData?.subPage || null);
+
+  useEffect(() => {
+    if (windowData?.subPage !== undefined) {
+      setSubPage(windowData.subPage);
+    }
+  }, [windowData?.subPage]);
 
   // Software update state
   const [checkingUpdate, setCheckingUpdate] = useState(false);

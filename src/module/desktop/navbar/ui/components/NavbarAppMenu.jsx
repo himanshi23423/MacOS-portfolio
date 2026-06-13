@@ -44,6 +44,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
           onClick: () => {
             if (activeAppName === "Safari") {
               openWindow("safari", { openAbout: true });
+            } else if (activeAppName === "Finder") {
+              openWindow("finder", { openAbout: true });
             } else {
               openWindow("settings", { tab: "General" });
             }
@@ -57,6 +59,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
           onClick: () => {
             if (activeAppName === "Safari") {
               openWindow("safari", { openSettings: true });
+            } else if (activeAppName === "Finder") {
+              openWindow("settings", { tab: "General", subPage: "storage" });
             } else {
               openWindow("settings");
             }

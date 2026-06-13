@@ -7,14 +7,25 @@ import { Search, ChevronRight, FileText } from "lucide-react";
 import { useState, useEffect } from "react";
 import { fileIconMap } from "./finderData";
 import FinderSection from "../section/FinderSection";
+import FinderAboutModal from "./FinderAboutModal";
 
 const Finder = () => {
-  const { openWindow } = useWindowsStore();
+  const { openWindow, setWindowData } = useWindowsStore();
   const isOpen = useWindowsStore((state) => state.windows.finder?.isOpen);
+  const finderWindowData = useWindowsStore((state) => state.windows.finder?.data);
   const { activeLocation, setActiveLocation, resetActiveLocation } = useLocationStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [navStack, setNavStack] = useState([]);
   const [redirectItem, setRedirectItem] = useState(null);
+  const [showAbout, setShowAbout] = useState(false);
+
+  // Sync openAbout action from windowData
+  useEffect(() => {
+    if (finderWindowData?.openAbout) {
+      setShowAbout(true);
+      setWindowData("finder", null);
+    }
+  }, [finderWindowData, setWindowData]);
 
   // History and Search States
   const [history, setHistory] = useState([activeLocation]);
@@ -380,6 +391,9 @@ const Finder = () => {
           </div>
         </div>
       )}
+
+      {/* Finder About Dialog */}
+      <FinderAboutModal show={showAbout} onClose={() => setShowAbout(false)} />
     </>
   );
 };
