@@ -74,6 +74,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               }
             } else if (activeAppName === "Settings") {
               openWindow("settings", { openAbout: true });
+            } else if (activeAppName === "Calculator") {
+              openWindow("calculator", { openAbout: true });
             } else if (activeAppName === "Kuldeep's Portfolio") {
               setAboutPortfolioOpen(true);
             } else {
@@ -86,6 +88,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
         {
           label: "Preferences...",
           meta: "⌘,",
+          disabled: activeAppName === "Calculator",
           onClick: () => {
             if (activeAppName === "Safari") {
               openWindow("safari", { openSettings: true });
