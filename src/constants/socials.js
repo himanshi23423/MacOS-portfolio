@@ -11,11 +11,11 @@ export const socials = [
   },
   {
     id: 2,
-    text: "Platform",
+    text: "Portfolio",
     icon: "/icons/atom.svg",
     bg: "#4bcb63",
-    link: "#",
-    img: "/images/youtube.png",
+    link: "https://kuldeeprajput.in",
+    img: "/images/portfolio.png",
   },
   {
     id: 3,
