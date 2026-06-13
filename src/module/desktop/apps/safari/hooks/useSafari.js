@@ -37,9 +37,31 @@ const useSafari = () => {
 
   const { closeWindow, openWindow, setWindowData } = useWindowsStore();
   const safariWindowData = useWindowsStore((state) => state.windows.safari?.data);
+  const isOpen = useWindowsStore((state) => state.windows.safari?.isOpen);
 
   const activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
   const isBookmarked = bookmarks.some((b) => b.url === activeTab.url);
+
+  // Reset tabs when Safari window is closed
+  useEffect(() => {
+    if (!isOpen) {
+      setTabs([
+        {
+          id: "tab-1",
+          title: "Start Page",
+          url: "safari://start",
+          history: ["safari://start"],
+          historyIndex: 0,
+          isReaderMode: false,
+        },
+      ]);
+      setActiveTabId("tab-1");
+      setAddressInput("");
+      setShowSidebar(false);
+      setShowDownloads(false);
+      setShowTabOverview(false);
+    }
+  }, [isOpen]);
 
   // Sync addressInput with activeTab url
   useEffect(() => {
