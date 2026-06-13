@@ -17,7 +17,7 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "john",
     name: "Akash",
-    avatar: "/images/people/5.jpeg",
+    avatar: "/images/people/akash.png",
     avatarColor: "bg-gradient-to-tr from-green-400 to-teal-600",
     initials: "A",
     unread: false,
@@ -32,7 +32,7 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "apple",
     name: "Apple Support",
-    avatar: "/icons/appleLogo.svg",
+    avatar: "/icons/appleLogoBlack.svg",
     avatarColor: "bg-gray-100 border border-gray-250 flex items-center justify-center p-2.5",
     initials: "",
     unread: false,

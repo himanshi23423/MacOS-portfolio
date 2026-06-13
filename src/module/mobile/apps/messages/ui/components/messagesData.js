@@ -57,8 +57,9 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "apple",
     name: "Apple Support",
-    avatarColor: "bg-gradient-to-tr from-gray-700 to-slate-900",
+    avatarColor: "bg-gray-100 border border-gray-250 flex items-center justify-center p-2.5",
     initials: "",
+    avatar: "/icons/appleLogoBlack.svg",
     unread: false,
     email: "developer@apple.com",
     github: "https://developer.apple.com",
