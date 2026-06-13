@@ -7,11 +7,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <head>
         <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
-      <body>{children}</body>
+      <body suppressHydrationWarning={true}>{children}</body>
     </html>
   );
 }

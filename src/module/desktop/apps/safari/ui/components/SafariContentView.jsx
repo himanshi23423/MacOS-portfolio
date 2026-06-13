@@ -14,7 +14,7 @@ import {
   Minimize2,
   Search,
 } from "lucide-react";
-import { TRACKERS, WALLPAPERS } from "./safariData";
+import { TRACKERS, WALLPAPERS } from "../../data";
 
 const SafariContentView = ({
   activeTab,

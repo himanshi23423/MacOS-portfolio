@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
-import { DEFAULT_BOOKMARKS, WALLPAPERS, IFRAME_COMPATIBLE_SITES, MOCK_HISTORY } from "./safariData";
+import { DEFAULT_BOOKMARKS, WALLPAPERS, IFRAME_COMPATIBLE_SITES, MOCK_HISTORY } from "../data";
 
 const useSafari = () => {
   const [tabs, setTabs] = useState([

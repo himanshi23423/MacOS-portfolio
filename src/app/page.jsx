@@ -60,7 +60,7 @@ export default function Page() {
   }, []);
 
   if (!isMounted) {
-    return <div className="fixed inset-0 bg-black z-99999" />;
+    return <div className="fixed inset-0 bg-black z-99999" suppressHydrationWarning={true} />;
   }
 
   if (isMobile) {

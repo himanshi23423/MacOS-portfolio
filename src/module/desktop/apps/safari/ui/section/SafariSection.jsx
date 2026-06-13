@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { projects, socials } from "@constants";
-import useSafari from "../components/useSafari";
+import useSafari from "../../hooks/useSafari";
 import { SafariDesktopToolbar, SafariMobileHeader } from "../components/SafariToolbar";
 import SafariTabBar from "../components/SafariTabBar";
 import SafariSidebar from "../components/SafariSidebar";
