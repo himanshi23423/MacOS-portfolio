@@ -2,9 +2,25 @@ import { useState, useEffect, useRef } from "react";
 import useWindowsStore from "@store/window";
 
 const NavbarAppMenu = ({ activeAppName, openWindow }) => {
-  const { setAboutPortfolioOpen } = useWindowsStore();
+  const { setAboutPortfolioOpen, setWindowData, windows } = useWindowsStore();
   const [openDropdown, setOpenDropdown] = useState(null); // 'portfolio' | 'projects' | 'contact' | 'resume' | null
   const containerRef = useRef(null);
+
+  const getActiveApp = () => {
+    let activeKey = null;
+    let maxZ = -1;
+
+    Object.entries(windows).forEach(([key, win]) => {
+      if (win.isOpen && !win.isMinimized && win.zIndex > maxZ) {
+        maxZ = win.zIndex;
+        activeKey = key;
+      }
+    });
+
+    return activeKey;
+  };
+
+  const activeAppKey = getActiveApp();
 
   const toggleDropdown = (name, e) => {
     e.stopPropagation();
@@ -48,6 +64,14 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               openWindow("safari", { openAbout: true });
             } else if (activeAppName === "Finder") {
               openWindow("finder", { openAbout: true });
+            } else if (activeAppName === "Photos") {
+              if (activeAppKey === "imgfile") {
+                // Merge openAbout into existing data so the photos array is preserved
+                const existing = windows["imgfile"]?.data || {};
+                setWindowData("imgfile", { ...existing, openAbout: true });
+              } else {
+                openWindow("photos", { openAbout: true });
+              }
             } else if (activeAppName === "Kuldeep's Portfolio") {
               setAboutPortfolioOpen(true);
             } else {
@@ -64,6 +88,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
             if (activeAppName === "Safari") {
               openWindow("safari", { openSettings: true });
             } else if (activeAppName === "Finder") {
+              openWindow("settings", { tab: "General", subPage: "storage" });
+            } else if (activeAppName === "Photos") {
               openWindow("settings", { tab: "General", subPage: "storage" });
             } else if (activeAppName === "Kuldeep's Portfolio") {
               openWindow("settings", { tab: "General", subPage: "about" });

@@ -3,6 +3,7 @@ import useWindowsStore from "@store/window";
 import { gallery } from "@constants";
 import { useState, useEffect } from "react";
 import PhotosSection from "../section/PhotosSection";
+import PhotosAboutModal from "./PhotosAboutModal";
 
 // Enrich the static gallery with realistic metadata for macOS Photos experience
 const enrichedGallery = gallery.map((item) => {
@@ -119,9 +120,19 @@ const enrichedGallery = gallery.map((item) => {
 });
 
 const Photos = () => {
-  const { favorites, openWindow } = useWindowsStore();
+  const { favorites, openWindow, setWindowData } = useWindowsStore();
+  const photosWindowData = useWindowsStore((state) => state.windows.photos?.data);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [activeTab, setActiveTab] = useState("Library");
+  const [showAbout, setShowAbout] = useState(false);
+
+  // Sync openAbout from window data
+  useEffect(() => {
+    if (photosWindowData?.openAbout) {
+      setShowAbout(true);
+      setWindowData("photos", null);
+    }
+  }, [photosWindowData, setWindowData]);
 
   // Navigation history
   const [navHistory, setNavHistory] = useState(["Library"]);
@@ -240,32 +251,35 @@ const Photos = () => {
   };
 
   return (
-    <PhotosSection
-      isMobile={isMobile}
-      filteredGallery={activePhotos}
-      activeTab={activeTab}
-      onSelectPhoto={handlePhotoClick}
-      onSelectAlbum={handleSelectAlbum}
-      // Extended controls
-      zoomLevel={zoomLevel}
-      setZoomLevel={setZoomLevel}
-      viewMode={viewMode}
-      setViewMode={setViewMode}
-      searchQuery={searchQuery}
-      setSearchQuery={setSearchQuery}
-      selectedPhoto={selectedPhoto}
-      showInfo={showInfo}
-      setShowInfo={setShowInfo}
-      onRotate={handleRotateActivePhoto}
-      inAppViewerPhoto={inAppViewerPhoto}
-      setInAppViewerPhoto={setInAppViewerPhoto}
-      onUpdateTitle={handleUpdateTitle}
-      onDoubleClick={_handlePhotoDoubleClick}
-      // History navigation
-      canGoBack={navIndex > 0}
-      canGoForward={navIndex < navHistory.length - 1}
-      onNavigate={handleNavigate}
-    />
+    <>
+      <PhotosSection
+        isMobile={isMobile}
+        filteredGallery={activePhotos}
+        activeTab={activeTab}
+        onSelectPhoto={handlePhotoClick}
+        onSelectAlbum={handleSelectAlbum}
+        // Extended controls
+        zoomLevel={zoomLevel}
+        setZoomLevel={setZoomLevel}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedPhoto={selectedPhoto}
+        showInfo={showInfo}
+        setShowInfo={setShowInfo}
+        onRotate={handleRotateActivePhoto}
+        inAppViewerPhoto={inAppViewerPhoto}
+        setInAppViewerPhoto={setInAppViewerPhoto}
+        onUpdateTitle={handleUpdateTitle}
+        onDoubleClick={_handlePhotoDoubleClick}
+        // History navigation
+        canGoBack={navIndex > 0}
+        canGoForward={navIndex < navHistory.length - 1}
+        onNavigate={handleNavigate}
+      />
+      <PhotosAboutModal show={showAbout} onClose={() => setShowAbout(false)} />
+    </>
   );
 };
 

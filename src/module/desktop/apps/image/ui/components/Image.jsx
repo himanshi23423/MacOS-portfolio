@@ -14,11 +14,12 @@ import {
   X,
   Minus,
 } from "lucide-react";
+import PhotosAboutModal from "../../../photos/ui/components/PhotosAboutModal";
 
 const WINDOW_KEY = "imgfile";
 
 const ImageApp = () => {
-  const { windows, closeWindow, minimizeWindow, toggleMaximize, favorites, toggleFavorite } =
+  const { windows, closeWindow, minimizeWindow, toggleMaximize, favorites, toggleFavorite, setWindowData } =
     useWindowsStore();
 
   const data = windows[WINDOW_KEY]?.data || {};
@@ -28,6 +29,15 @@ const ImageApp = () => {
   const [rotation, setRotation] = useState(0);
   const [zoomScale, setZoomScale] = useState(1);
   const canvasRef = useRef(null);
+  const [showAbout, setShowAbout] = useState(false);
+
+  // Sync openAbout from window data
+  useEffect(() => {
+    if (data?.openAbout) {
+      setShowAbout(true);
+      setWindowData(WINDOW_KEY, { ...data, openAbout: false });
+    }
+  }, [data, setWindowData]);
 
   // Sync starting index when the window opens with new data
   useEffect(() => {
@@ -82,7 +92,8 @@ const ImageApp = () => {
   };
 
   return (
-    <div className="photos-preview-shell">
+    <>
+      <div className="photos-preview-shell">
       {/* ── Toolbar / Title bar ──────────────────────────────── */}
       <div className="pp-toolbar window-header" id="window-header">
         {/* Traffic lights */}
@@ -243,7 +254,10 @@ const ImageApp = () => {
           ))}
         </div>
       )}
-    </div>
+      </div>
+      {/* Photos About Dialog */}
+      <PhotosAboutModal show={showAbout} onClose={() => setShowAbout(false)} />
+    </>
   );
 };
 

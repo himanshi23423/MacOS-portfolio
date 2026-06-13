@@ -2,6 +2,7 @@ const appNames = {
   finder: "Finder",
   safari: "Safari",
   photos: "Photos",
+  imgfile: "Photos",
   contact: "Contact",
   terminal: "Terminal",
   settings: "Settings",
@@ -38,6 +39,7 @@ const getAppMenus = (appId) => {
     case "music":
       return ["File", "Edit", "Song", "View", "Controls", "Window", "Help"];
     case "photos":
+    case "imgfile":
       return ["File", "Edit", "Image", "View", "Window", "Help"];
     case "terminal":
       return ["Shell", "Edit", "View", "Window", "Help"];
