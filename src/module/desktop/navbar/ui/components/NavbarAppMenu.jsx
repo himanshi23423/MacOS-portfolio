@@ -41,14 +41,26 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
       [
         {
           label: `About ${activeAppName}`,
-          onClick: () => openWindow("settings", { tab: "General" }),
+          onClick: () => {
+            if (activeAppName === "Safari") {
+              openWindow("safari", { openAbout: true });
+            } else {
+              openWindow("settings", { tab: "General" });
+            }
+          },
         },
       ],
       [
         {
           label: "Preferences...",
           meta: "⌘,",
-          onClick: () => openWindow("settings"),
+          onClick: () => {
+            if (activeAppName === "Safari") {
+              openWindow("safari", { openSettings: true });
+            } else {
+              openWindow("settings");
+            }
+          },
         },
         {
           label: "Services",

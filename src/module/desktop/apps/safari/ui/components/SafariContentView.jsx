@@ -42,6 +42,9 @@ const SafariContentView = ({
   readerFontSize,
   setReaderFontSize,
   toggleReaderMode,
+  searchEngine = "Google",
+  enableJavaScript = true,
+  preventTracking = true,
 }) => {
   const [redirectProject, setRedirectProject] = React.useState(null);
   const [iframeLoading, setIframeLoading] = React.useState(true);
@@ -285,13 +288,11 @@ const SafariContentView = ({
               <Search size={14} className="text-gray-400" />
               <input
                 type="text"
-                placeholder="Search with Google"
+                placeholder={`Search with ${searchEngine}`}
                 className="w-full bg-transparent border-none outline-none text-gray-800 placeholder-zinc-400"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && e.target.value.trim()) {
-                    navigateTabTo(
-                      `https://www.google.com/search?q=${encodeURIComponent(e.target.value)}`,
-                    );
+                    navigateTabTo(e.target.value.trim());
                     e.target.value = "";
                   }
                 }}
@@ -359,8 +360,9 @@ const SafariContentView = ({
                       <div>
                         <h3 className="font-bold text-sm">Privacy Report</h3>
                         <p className={`text-[11px] ${subTextClass} mt-0.5`}>
-                          Safari has prevented 14 trackers from profiling you across your portfolio
-                          visit.
+                          {preventTracking
+                            ? "Safari has prevented 14 trackers from profiling you across your portfolio visit."
+                            : "Cross-site tracking prevention is disabled. Trackers may be profiling you."}
                         </p>
                       </div>
                     </div>
@@ -513,52 +515,63 @@ const SafariContentView = ({
             <div>
               <h1 className="text-2xl font-bold">Privacy Report</h1>
               <p className="text-xs text-gray-500">
-                How Safari protects your privacy when compiling portfolios
+                {preventTracking
+                  ? "How Safari protects your privacy when compiling portfolios"
+                  : "Tracking prevention is currently disabled in Safari Settings."}
               </p>
             </div>
           </div>
 
-          {/* Mini Tracker Charts (SVG graph) */}
-          <div className="bg-white border border-[#c8cbd0]/60 rounded-xl p-5 shadow-sm space-y-3">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-              Blocked Trackers (Past 7 Days)
-            </h3>
-            <div className="h-40 w-full flex items-end justify-between gap-2 pt-4">
-              {[12, 18, 14, 25, 9, 32, 14].map((count, idx) => (
-                <div
-                  key={idx}
-                  className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end"
-                >
-                  <span className="text-[10px] text-gray-500 font-bold">{count}</span>
-                  <div
-                    className="w-full bg-blue-500 hover:bg-blue-600 transition-all rounded-t-sm"
-                    style={{ height: `${(count / 35) * 100}%` }}
-                  />
-                  <span className="text-[9px] text-gray-400 font-semibold">Day {idx + 1}</span>
-                </div>
-              ))}
+          {!preventTracking ? (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-amber-800 text-xs leading-relaxed space-y-2">
+              <p className="font-bold">Tracking Prevention is Off</p>
+              <p>Because you've turned off "Prevent cross-site tracking" in Safari Settings, websites can track your browsing habits across different sites, and no trackers are blocked.</p>
             </div>
-          </div>
+          ) : (
+            <>
+              {/* Mini Tracker Charts (SVG graph) */}
+              <div className="bg-white border border-[#c8cbd0]/60 rounded-xl p-5 shadow-sm space-y-3">
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  Blocked Trackers (Past 7 Days)
+                </h3>
+                <div className="h-40 w-full flex items-end justify-between gap-2 pt-4">
+                  {[12, 18, 14, 25, 9, 32, 14].map((count, idx) => (
+                    <div
+                      key={idx}
+                      className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end"
+                    >
+                      <span className="text-[10px] text-gray-500 font-bold">{count}</span>
+                      <div
+                        className="w-full bg-blue-500 hover:bg-blue-600 transition-all rounded-t-sm"
+                        style={{ height: `${(count / 35) * 100}%` }}
+                      />
+                      <span className="text-[9px] text-gray-400 font-semibold">Day {idx + 1}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-          {/* Tracker list */}
-          <div className="bg-white border border-[#c8cbd0]/60 rounded-xl p-5 shadow-sm">
-            <h2 className="text-sm font-bold text-gray-800 mb-4">
-              Trackers Prevented from Profiling You
-            </h2>
-            <div className="divide-y divide-[#c8cbd0]/45">
-              {TRACKERS.map((tracker, idx) => (
-                <div key={idx} className="flex items-center justify-between py-2.5 text-xs">
-                  <div>
-                    <p className="font-bold text-gray-700">{tracker.name}</p>
-                    <p className="text-[10px] text-gray-400">{tracker.category}</p>
-                  </div>
-                  <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold text-[10px]">
-                    {tracker.count} Blocked
-                  </span>
+              {/* Tracker list */}
+              <div className="bg-white border border-[#c8cbd0]/60 rounded-xl p-5 shadow-sm">
+                <h2 className="text-sm font-bold text-gray-800 mb-4">
+                  Trackers Prevented from Profiling You
+                </h2>
+                <div className="divide-y divide-[#c8cbd0]/45">
+                  {TRACKERS.map((tracker, idx) => (
+                    <div key={idx} className="flex items-center justify-between py-2.5 text-xs">
+                      <div>
+                        <p className="font-bold text-gray-700">{tracker.name}</p>
+                        <p className="text-[10px] text-gray-400">{tracker.category}</p>
+                      </div>
+                      <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold text-[10px]">
+                        {tracker.count} Blocked
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     );
@@ -975,7 +988,7 @@ root.render(<App />);`}</div>
           className={`flex-1 w-full h-full border-none bg-white relative z-0 transition-opacity duration-300 ${
             iframeLoading ? "opacity-0" : "opacity-100"
           }`}
-          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+          sandbox={enableJavaScript ? "allow-scripts allow-same-origin allow-popups allow-forms" : "allow-same-origin allow-popups allow-forms"}
           onLoad={() => setIframeLoading(false)}
         />
       </div>

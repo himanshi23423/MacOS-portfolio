@@ -1,7 +1,7 @@
 import React from "react";
 import { Plus, X, Globe } from "lucide-react";
 
-const SafariTabBar = ({ tabs, activeTabId, setActiveTabId, onCloseTab, onNewTab }) => {
+const SafariTabBar = ({ tabs, activeTabId, setActiveTabId, onCloseTab, onNewTab, showTabIcons }) => {
   return (
     <div 
       className="flex items-end bg-[#eef1f5] border-b border-[#c8cbd0] px-2 h-10 select-none overflow-x-auto scrollbar-none"
@@ -29,13 +29,15 @@ const SafariTabBar = ({ tabs, activeTabId, setActiveTabId, onCloseTab, onNewTab 
               )}
 
               {/* Tab Icon */}
-              <span className="mr-1.5 flex-shrink-0">
-                {isStartPage ? (
-                  <span className="text-[10px]">🧭</span>
-                ) : (
-                  <Globe size={11} className={isActive ? "text-blue-500" : "text-gray-400"} />
-                )}
-              </span>
+              {showTabIcons && (
+                <span className="mr-1.5 flex-shrink-0">
+                  {isStartPage ? (
+                    <span className="text-[10px]">🧭</span>
+                  ) : (
+                    <Globe size={11} className={isActive ? "text-blue-500" : "text-gray-400"} />
+                  )}
+                </span>
+              )}
 
               {/* Title */}
               <span className="truncate pr-4 flex-1">

@@ -15,6 +15,7 @@ import {
   AlignLeft,
   Home,
   Copy,
+  Settings,
 } from "lucide-react";
 
 const SafariDesktopToolbar = ({
@@ -36,6 +37,8 @@ const SafariDesktopToolbar = ({
   setShowTabOverview,
   handleNewTab,
   openWindow,
+  homepage,
+  setShowSettings,
 }) => {
   const canGoBack = activeTab.historyIndex > 0;
   const canGoForward = activeTab.historyIndex < activeTab.history.length - 1;
@@ -106,7 +109,7 @@ const SafariDesktopToolbar = ({
 
         {/* Home Button */}
         <button
-          onClick={() => navigateTabTo("safari://start")}
+          onClick={() => navigateTabTo(homepage || "safari://start")}
           className="p-1 rounded hover:bg-black/5 text-gray-600 transition-colors flex-shrink-0"
           title="Go to Home"
           onMouseDown={(e) => e.stopPropagation()}

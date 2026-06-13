@@ -5,6 +5,8 @@ import { SafariDesktopToolbar, SafariMobileHeader } from "../components/SafariTo
 import SafariTabBar from "../components/SafariTabBar";
 import SafariSidebar from "../components/SafariSidebar";
 import SafariContentView from "../components/SafariContentView";
+import SafariSettingsModal from "../components/SafariSettingsModal";
+import SafariAboutModal from "../components/SafariAboutModal";
 
 const SafariSection = () => {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
@@ -58,13 +60,16 @@ const SafariSection = () => {
           readerFontSize={safari.readerFontSize}
           setReaderFontSize={safari.setReaderFontSize}
           toggleReaderMode={safari.toggleReaderMode}
+          searchEngine={safari.searchEngine}
+          enableJavaScript={safari.enableJavaScript}
+          preventTracking={safari.preventTracking}
         />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full w-full @container bg-white select-none overflow-hidden rounded-xl">
+    <div className="flex flex-col h-full w-full @container bg-white select-none overflow-hidden rounded-xl relative">
       {/* 1. Main Unified Toolbar */}
       <SafariDesktopToolbar
         showSidebar={safari.showSidebar}
@@ -85,6 +90,8 @@ const SafariSection = () => {
         setShowTabOverview={safari.setShowTabOverview}
         handleNewTab={safari.handleNewTab}
         openWindow={safari.openWindow}
+        homepage={safari.homepage}
+        setShowSettings={safari.setShowSettings}
       />
 
       {/* 2. Sleek Tab Bar */}
@@ -94,6 +101,7 @@ const SafariSection = () => {
         setActiveTabId={safari.setActiveTabId}
         onCloseTab={safari.handleCloseTab}
         onNewTab={safari.handleNewTab}
+        showTabIcons={safari.showTabIcons}
       />
 
       {/* 3. Sidebar + Main Content Split View */}
@@ -145,8 +153,37 @@ const SafariSection = () => {
           readerFontSize={safari.readerFontSize}
           setReaderFontSize={safari.setReaderFontSize}
           toggleReaderMode={safari.toggleReaderMode}
+          searchEngine={safari.searchEngine}
+          enableJavaScript={safari.enableJavaScript}
+          preventTracking={safari.preventTracking}
         />
       </div>
+
+      {/* 4. Safari Settings Dialog */}
+      <SafariSettingsModal
+        show={safari.showSettings}
+        onClose={() => safari.setShowSettings(false)}
+        homepage={safari.homepage}
+        setHomepage={safari.setHomepage}
+        searchEngine={safari.searchEngine}
+        setSearchEngine={safari.setSearchEngine}
+        showTabIcons={safari.showTabIcons}
+        setShowTabIcons={safari.setShowTabIcons}
+        preventTracking={safari.preventTracking}
+        setPreventTracking={safari.setPreventTracking}
+        blockCookies={safari.blockCookies}
+        setBlockCookies={safari.setBlockCookies}
+        enableJavaScript={safari.enableJavaScript}
+        setEnableJavaScript={safari.setEnableJavaScript}
+        developMenuEnabled={safari.developMenuEnabled}
+        setDevelopMenuEnabled={safari.setDevelopMenuEnabled}
+      />
+
+      {/* 5. Safari About Dialog */}
+      <SafariAboutModal
+        show={safari.showAbout}
+        onClose={() => safari.setShowAbout(false)}
+      />
     </div>
   );
 };

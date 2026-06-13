@@ -30,6 +30,16 @@ const useSafari = () => {
   const [bookmarks, setBookmarks] = useState(DEFAULT_BOOKMARKS);
   const [historyList, setHistoryList] = useState(MOCK_HISTORY);
 
+  // macOS Safari Settings states
+  const [showSettings, setShowSettings] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
+  const [homepage, setHomepage] = useState("safari://start");
+  const [showTabIcons, setShowTabIcons] = useState(true);
+  const [preventTracking, setPreventTracking] = useState(true);
+  const [blockCookies, setBlockCookies] = useState(false);
+  const [enableJavaScript, setEnableJavaScript] = useState(true);
+  const [developMenuEnabled, setDevelopMenuEnabled] = useState(false);
+
   // Custom reading settings
   const [readerFont, setReaderFont] = useState("serif"); // serif, sans
   const [readerTheme, setReaderTheme] = useState("sepia"); // white, sepia, gray, night
@@ -60,6 +70,8 @@ const useSafari = () => {
       setShowSidebar(false);
       setShowDownloads(false);
       setShowTabOverview(false);
+      setShowSettings(false);
+      setShowAbout(false);
     }
   }, [isOpen]);
 
@@ -157,7 +169,19 @@ const useSafari = () => {
           targetUrl = "https://" + targetUrl;
         } else {
           // search query
-          targetUrl = `https://www.google.com/search?q=${encodeURIComponent(targetUrl)}`;
+          let searchUrl;
+          if (searchEngine === "Google") {
+            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(targetUrl)}`;
+          } else if (searchEngine === "DuckDuckGo") {
+            searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(targetUrl)}`;
+          } else if (searchEngine === "Bing") {
+            searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(targetUrl)}`;
+          } else if (searchEngine === "Yahoo") {
+            searchUrl = `https://search.yahoo.com/search?p=${encodeURIComponent(targetUrl)}`;
+          } else {
+            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(targetUrl)}`;
+          }
+          targetUrl = searchUrl;
         }
       }
     }
@@ -177,12 +201,27 @@ const useSafari = () => {
             newTitle = "History";
           } else if (targetUrl === "safari://bookmarks") {
             newTitle = "Bookmarks";
-          } else if (targetUrl.includes("google.com/search")) {
+          } else if (
+            targetUrl.includes("google.com/search") ||
+            targetUrl.includes("duckduckgo.com") ||
+            targetUrl.includes("bing.com/search") ||
+            targetUrl.includes("yahoo.com/search")
+          ) {
             try {
-              const qParam = new URL(targetUrl).searchParams.get("q");
-              newTitle = qParam ? `${qParam} - Google Search` : "Google Search";
+              const urlObj = new URL(targetUrl);
+              const qParam = urlObj.searchParams.get("q") || urlObj.searchParams.get("p");
+              const engineName = urlObj.hostname.includes("google")
+                ? "Google"
+                : urlObj.hostname.includes("duckduckgo")
+                ? "DuckDuckGo"
+                : urlObj.hostname.includes("bing")
+                ? "Bing"
+                : urlObj.hostname.includes("yahoo")
+                ? "Yahoo"
+                : "Web";
+              newTitle = qParam ? `${qParam} - ${engineName} Search` : `${engineName} Search`;
             } catch {
-              newTitle = "Google Search";
+              newTitle = "Search";
             }
           } else {
             try {
@@ -207,10 +246,18 @@ const useSafari = () => {
     );
   };
 
-  // Navigate to URL passed in window data (placed after navigateTabTo is declared)
+  // Navigate to URL or open settings passed in window data (placed after navigateTabTo is declared)
   useEffect(() => {
-    if (safariWindowData && safariWindowData.url) {
-      navigateTabTo(safariWindowData.url);
+    if (safariWindowData) {
+      if (safariWindowData.url) {
+        navigateTabTo(safariWindowData.url);
+      }
+      if (safariWindowData.openSettings) {
+        setShowSettings(true);
+      }
+      if (safariWindowData.openAbout) {
+        setShowAbout(true);
+      }
       setWindowData("safari", null);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -263,12 +310,27 @@ const useSafari = () => {
     if (url === "safari://privacy-report") return "Privacy Report";
     if (url === "safari://history") return "History";
     if (url === "safari://bookmarks") return "Bookmarks";
-    if (url.includes("google.com/search")) {
+    if (
+      url.includes("google.com/search") ||
+      url.includes("duckduckgo.com") ||
+      url.includes("bing.com/search") ||
+      url.includes("yahoo.com/search")
+    ) {
       try {
-        const q = new URL(url).searchParams.get("q");
-        return q ? `${q} - Google` : "Google Search";
+        const urlObj = new URL(url);
+        const q = urlObj.searchParams.get("q") || urlObj.searchParams.get("p");
+        const engineName = urlObj.hostname.includes("google")
+          ? "Google"
+          : urlObj.hostname.includes("duckduckgo")
+          ? "DuckDuckGo"
+          : urlObj.hostname.includes("bing")
+          ? "Bing"
+          : urlObj.hostname.includes("yahoo")
+          ? "Yahoo"
+          : "Web";
+        return q ? `${q} - ${engineName}` : `${engineName} Search`;
       } catch {
-        return "Google Search";
+        return "Search";
       }
     }
     try {
@@ -375,6 +437,22 @@ const useSafari = () => {
     isIframeable,
     closeWindow,
     openWindow,
+    showSettings,
+    setShowSettings,
+    showAbout,
+    setShowAbout,
+    homepage,
+    setHomepage,
+    showTabIcons,
+    setShowTabIcons,
+    preventTracking,
+    setPreventTracking,
+    blockCookies,
+    setBlockCookies,
+    enableJavaScript,
+    setEnableJavaScript,
+    developMenuEnabled,
+    setDevelopMenuEnabled,
   };
 };
 
