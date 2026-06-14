@@ -1,7 +1,7 @@
 import PostmanResponseViewer from "../components/PostmanResponseViewer";
 
-const PostmanResponseSection = ({ loading, response }) => (
-  <PostmanResponseViewer loading={loading} response={response} />
+const PostmanResponseSection = (props) => (
+  <PostmanResponseViewer {...props} />
 );
 
 export default PostmanResponseSection;
