@@ -9,6 +9,7 @@ const WatchNowSection = ({
   onPlayMovie,
   onToggleUpNext,
   watchNowMovies,
+  popularShows,
   isCompact,
 }) => {
   const queuedMovies = MOVIES.filter((movie) => upNext.includes(movie.id));
@@ -125,6 +126,18 @@ const WatchNowSection = ({
           <h2 className="text-sm font-bold text-gray-800 px-1">Trending Movies</h2>
           <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
             {watchNowMovies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} onPlay={() => onPlayMovie(movie)} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Popular TV Shows Section */}
+      {popularShows && popularShows.length > 0 && (
+        <section className="space-y-3 pt-4 border-t border-gray-100">
+          <h2 className="text-sm font-bold text-gray-800 px-1">Popular Shows</h2>
+          <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
+            {popularShows.map((movie) => (
               <MovieCard key={movie.id} movie={movie} onPlay={() => onPlayMovie(movie)} />
             ))}
           </div>

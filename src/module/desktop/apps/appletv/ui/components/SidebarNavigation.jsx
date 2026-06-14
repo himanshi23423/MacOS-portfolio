@@ -42,6 +42,8 @@ const SidebarNavigation = ({
   onSearch,
   onSelectTab,
   isCompact,
+  githubProfile,
+  onProfileClick,
 }) => (
   <aside
     className={`
@@ -61,7 +63,7 @@ const SidebarNavigation = ({
       />
     </div>
 
-    <div className="space-y-5">
+    <div className="space-y-5 flex-1">
       <NavigationGroup
         title="Apple TV"
         items={appleTvItems}
@@ -74,6 +76,32 @@ const SidebarNavigation = ({
         activeTab={activeTab}
         onSelect={onSelectTab}
       />
+    </div>
+
+    {/* Profile switcher at the bottom */}
+    <div
+      onClick={onProfileClick}
+      className="mt-auto pt-4 border-t border-[#d4d4d8]/40 flex items-center gap-2.5 px-1 select-none cursor-pointer group/profile hover:bg-[#e5e5eb]/40 p-1.5 rounded-xl transition-all active:scale-95"
+    >
+      <div className="w-7 h-7 rounded-full overflow-hidden bg-transparent flex items-center justify-center text-zinc-600 text-[10px] font-black shrink-0 border border-[#d4d4d8]/40">
+        {githubProfile?.avatar_url ? (
+          <img
+            src={githubProfile.avatar_url}
+            alt={githubProfile.name || "Kunal"}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          "K"
+        )}
+      </div>
+      <div className="min-w-0">
+        <p className="text-[11px] font-bold text-zinc-700 group-hover/profile:text-zinc-950 truncate leading-none">
+          {githubProfile?.name || "Kuldeep Rajput"}
+        </p>
+        <span className="text-[9px] font-bold text-zinc-400 block mt-0.5">
+          @{githubProfile?.login || "kuldeeprajput-dev"}
+        </span>
+      </div>
     </div>
   </aside>
 );

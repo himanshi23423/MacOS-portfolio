@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import windowWrapper from "@hoc/windowWrapper";
 import PlayerOverlay from "../components/PlayerOverlay";
+import ProfileOverlay from "../components/ProfileOverlay";
 import { FEATURED_SHOW } from "../components/appleTvCatalog";
 import AppleTVHeaderSection from "../section/AppleTVHeaderSection";
 import AppleTVSection from "../section/AppleTVSection";
@@ -17,11 +18,22 @@ const AppleTVView = () => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [showControls, setShowControls] = useState(true);
+  const [showProfile, setShowProfile] = useState(false);
+  const [githubProfile, setGithubProfile] = useState(null);
 
   const videoRef = useRef(null);
   const controlsTimeoutRef = useRef(null);
 
   useEffect(() => {
+    fetch("https://api.github.com/users/kuldeeprajput-dev")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && !data.message) {
+          setGithubProfile(data);
+        }
+      })
+      .catch((err) => console.error("Error fetching avatar in desktop AppleTVView:", err));
+
     return () => {
       if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
     };
@@ -166,6 +178,7 @@ const AppleTVView = () => {
         onLoadedMetadata={handleLoadedMetadata}
         onChangeEpisode={changeEpisode}
       />
+      <ProfileOverlay isOpen={showProfile} onClose={() => setShowProfile(false)} />
       <AppleTVHeaderSection
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen((open) => !open)}
@@ -184,6 +197,8 @@ const AppleTVView = () => {
         onPlayMovie={playMovie}
         onToggleUpNext={toggleUpNext}
         isCompact={isCompact}
+        githubProfile={githubProfile}
+        onProfileClick={() => setShowProfile(true)}
       />
     </div>
   );

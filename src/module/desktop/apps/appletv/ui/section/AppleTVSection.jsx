@@ -23,6 +23,8 @@ const AppleTVSection = ({
   onPlayMovie,
   onToggleUpNext,
   isCompact = false,
+  githubProfile,
+  onProfileClick,
 }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,19 +32,22 @@ const AppleTVSection = ({
   const [hasMore, setHasMore] = useState(true);
 
   const [watchNowMovies, setWatchNowMovies] = useState([]);
+  const [popularShows, setPopularShows] = useState([]);
   const [watchNowPage, setWatchNowPage] = useState(1);
 
-  // Fetch Watch Now trending movies
+  // Fetch Watch Now trending movies & popular shows
   useEffect(() => {
-    const fetchWatchNowMovies = async () => {
+    const fetchWatchNowData = async () => {
       try {
         const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
-        const res = await fetch(
+        
+        // Trending Movies
+        const resMovies = await fetch(
           `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&page=${watchNowPage}`,
         );
-        const data = await res.json();
-        if (data.results) {
-          const formatted = data.results.map((item) => ({
+        const dataMovies = await resMovies.json();
+        if (dataMovies.results) {
+          const formatted = dataMovies.results.map((item) => ({
             id: `trending_${item.id}`,
             title: item.title,
             category: `${item.vote_average.toFixed(1)} ★ • Movie`,
@@ -58,11 +63,29 @@ const AppleTVSection = ({
             return [...prev, ...uniques];
           });
         }
+
+        // Popular TV Shows
+        const resShows = await fetch(
+          `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&page=1`,
+        );
+        const dataShows = await resShows.json();
+        if (dataShows.results) {
+          const formattedShows = dataShows.results.map((item) => ({
+            id: `show_${item.id}`,
+            title: item.name,
+            category: `${item.vote_average.toFixed(1)} ★ • TV Show`,
+            duration: "TV Show",
+            tmdbId: item.id.toString(),
+            type: "tv",
+            poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+          }));
+          setPopularShows(formattedShows);
+        }
       } catch (err) {
-        console.error("Error fetching watch now movies:", err);
+        console.error("Error fetching watch now data in AppleTVSection:", err);
       }
     };
-    fetchWatchNowMovies();
+    fetchWatchNowData();
   }, [watchNowPage]);
 
   // Reset page and results when search query changes
@@ -163,6 +186,8 @@ const AppleTVSection = ({
         onSearch={onSearch}
         onSelectTab={onSelectTab}
         isCompact={isCompact}
+        githubProfile={githubProfile}
+        onProfileClick={onProfileClick}
       />
       <main
         onScroll={handleScroll}
@@ -375,6 +400,7 @@ const AppleTVSection = ({
                 onPlayMovie={onPlayMovie}
                 onToggleUpNext={onToggleUpNext}
                 watchNowMovies={watchNowMovies}
+                popularShows={popularShows}
                 isCompact={isCompact}
               />
             )}
