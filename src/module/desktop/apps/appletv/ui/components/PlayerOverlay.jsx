@@ -10,7 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const formatTime = (timeInSecs) => {
   if (Number.isNaN(timeInSecs)) return "00:00";
@@ -46,6 +46,45 @@ const PlayerOverlay = ({
 }) => {
   const [_selectedSeason, setSelectedSeason] = useState(activeVideo?.season || 1);
   const [_selectedEpisode, setSelectedEpisode] = useState(activeVideo?.episode || 1);
+
+  // Ad interception state
+  const [adUrl, setAdUrl] = useState(null);
+  const [showAdOverlay, setShowAdOverlay] = useState(false);
+
+  // Intercept window.open calls — capture ad URLs and show inside the player
+  useEffect(() => {
+    const origOpen = window.open;
+
+    window.open = function (url) {
+      if (url && typeof url === "string") {
+        // Capture the ad URL and show it inside the player instead of a new tab
+        setAdUrl(url);
+        setShowAdOverlay(true);
+      }
+      return null; // Block the new tab
+    };
+
+    // Detect when iframe triggers a popup (window loses focus)
+    const handleBlur = () => {
+      // If the active element is the iframe, a popup was likely triggered
+      if (document.activeElement?.tagName === "IFRAME") {
+        // Refocus the main window immediately
+        setTimeout(() => window.focus(), 50);
+      }
+    };
+
+    window.addEventListener("blur", handleBlur);
+
+    return () => {
+      window.open = origOpen;
+      window.removeEventListener("blur", handleBlur);
+    };
+  }, []);
+
+  const handleSkipAd = useCallback(() => {
+    setShowAdOverlay(false);
+    setAdUrl(null);
+  }, []);
 
   if (!activeVideo) return null;
 
@@ -102,13 +141,53 @@ const PlayerOverlay = ({
       onMouseMove={onMouseMove}
     >
       {isStreaming ? (
-        <iframe
-          src={embedUrl}
-          className="w-full h-full border-none"
-          allowFullScreen
-          allow="autoplay; encrypted-media; picture-in-picture"
-          title={activeVideo.title}
-        />
+        <>
+          <iframe
+            src={embedUrl}
+            className="w-full h-full border-none"
+            allowFullScreen
+            allow="autoplay; encrypted-media; picture-in-picture"
+            title={activeVideo.title}
+          />
+
+          {/* Ad Overlay — shows intercepted ads INSIDE the player */}
+          {showAdOverlay && adUrl && (
+            <div className="absolute inset-0 z-[60] bg-black flex flex-col">
+              {/* Ad badge */}
+              <div className="absolute top-4 left-4 z-[70] bg-black/70 border border-white/10 px-3 py-1.5 rounded-lg text-xs font-bold text-white uppercase backdrop-blur-md flex items-center gap-2 select-none">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                Ad
+              </div>
+
+              {/* Skip Ad button */}
+              <button
+                onClick={handleSkipAd}
+                className="absolute bottom-6 right-6 z-[70] bg-white hover:bg-neutral-200 text-black px-5 py-2.5 rounded-lg text-xs font-extrabold flex items-center gap-1.5 shadow-2xl active:scale-95 transition-all cursor-pointer border border-black/5"
+              >
+                Skip Ad
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+
+              {/* Close button */}
+              <button
+                onClick={handleSkipAd}
+                className="absolute top-4 right-4 z-[70] p-2 bg-neutral-800/80 hover:bg-neutral-700/80 rounded-full border border-white/10 active:scale-95 transition-all cursor-pointer"
+                title="Close Ad"
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+
+              {/* The actual ad content, contained inside the player */}
+              <iframe
+                src={adUrl}
+                className="w-full h-full border-none"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
+                title="Advertisement"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          )}
+        </>
       ) : (
         <video
           ref={videoRef}

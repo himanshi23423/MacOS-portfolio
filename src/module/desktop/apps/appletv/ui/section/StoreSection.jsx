@@ -1,5 +1,5 @@
 import StoreMovieCard from "../components/StoreMovieCard";
-import { STORE_MOVIES } from "../components/appleTvCatalog";
+import { STORE_MOVIES } from "../../data";
 
 const StoreSection = ({ onPlayMovie, isCompact }) => (
   <div className="space-y-6">

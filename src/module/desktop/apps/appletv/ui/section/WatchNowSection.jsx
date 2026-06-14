@@ -1,7 +1,7 @@
 import { Check, Play, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
-import { FEATURED_SHOW, MOVIES } from "../components/appleTvCatalog";
+import { FEATURED_SHOW, MOVIES } from "../../data";
 
 const FEATURED_CAROUSEL_ITEMS = [
   {
@@ -85,7 +85,7 @@ const WatchNowSection = ({
       setActiveSlide((prev) => (prev + 1) % FEATURED_CAROUSEL_ITEMS.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [activeSlide]);
 
   // Union of static and dynamic items to compute Up Next rows
   const allAvailableMovies = [

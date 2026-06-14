@@ -59,7 +59,6 @@ export const MOVIES = [
   },
 ];
 
-
 export const STORE_MOVIES = [
   {
     title: "Dune: Part Two",
@@ -90,4 +89,3 @@ export const STORE_MOVIES = [
     type: "movie",
   },
 ];
-

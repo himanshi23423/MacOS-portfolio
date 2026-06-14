@@ -88,9 +88,9 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % CAROUSEL_ITEMS.length);
-    }, 8000);
+    }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [activeSlide]);
 
   // Fetch Apple TV+ content categories
   useEffect(() => {
@@ -269,19 +269,7 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
             : undefined
         }
       >
-        {/* Carousel Navigation Arrows */}
-        <button
-          onClick={handlePrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 border border-white/10 rounded-full text-white backdrop-blur-md transition-all active:scale-90"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <button
-          onClick={handleNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 border border-white/10 rounded-full text-white backdrop-blur-md transition-all active:scale-90"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
+
 
         {/* Slide Indicators */}
         <div className="absolute top-4 right-6 flex items-center gap-2 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">

@@ -7,7 +7,7 @@ import TVPlusSection from "./TVPlusSection";
 import WatchNowSection from "./WatchNowSection";
 import MovieCard from "../components/MovieCard";
 import StoreMovieCard from "../components/StoreMovieCard";
-import { MOVIES, STORE_MOVIES, FEATURED_SHOW } from "../components/appleTvCatalog";
+import { MOVIES, STORE_MOVIES, FEATURED_SHOW } from "../../data";
 import { Loader2, Play } from "lucide-react";
 
 const AppleTVSection = ({
