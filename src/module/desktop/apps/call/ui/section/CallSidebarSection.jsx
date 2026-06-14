@@ -1,7 +1,7 @@
 import { Users, Grid } from "lucide-react";
 import CallContactList from "../components/CallContactList";
 import CallDialPad from "../components/CallDialPad";
-import { CONTACTS } from "../components/callData";
+import { CONTACTS } from "../../data";
 
 const CallSidebarSection = ({
   sidebarTab,
