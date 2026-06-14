@@ -1,120 +1,91 @@
+import React from "react";
 import {
-  Files,
-  Search,
-  GitBranch,
-  Blocks,
-  Settings,
   ChevronDown,
   ChevronRight,
-  FileCode,
-  Play,
-  Terminal as TerminalIcon,
 } from "lucide-react";
 import { extensionsList } from "./vscodeData";
+import VSCodeFileIcon, { FolderIcon } from "./VSCodeFileIcon";
 
-const renderTreeItem = (
-  name,
-  isFolder,
-  path,
-  activeFile,
-  files,
-  explorerExpanded,
-  onToggleExpand,
-  onSelectFile,
-) => {
-  const isSelected = activeFile === path;
-  const isExpanded = explorerExpanded[name];
-
-  if (isFolder) {
-    return (
-      <div key={name} className="select-none">
-        <div
-          onClick={() => onToggleExpand(name)}
-          className="flex items-center gap-1 py-1 px-3 hover:bg-zinc-200 cursor-pointer text-zinc-700 hover:text-zinc-950 text-xs font-semibold"
-        >
-          {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          <span className="text-blue-500 font-extrabold text-[10px]">📁</span>
-          <span>{name}</span>
-        </div>
-        {isExpanded && (
-          <div className="pl-4">
-            {Object.keys(files)
-              .filter((p) => p.startsWith(name + "/"))
-              .map((p) => {
-                const filename = p.replace(name + "/", "");
-                return renderTreeItem(
-                  filename,
-                  false,
-                  p,
-                  activeFile,
-                  files,
-                  explorerExpanded,
-                  onToggleExpand,
-                  onSelectFile,
-                );
-              })}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div
-      key={path}
-      onClick={() => onSelectFile(path)}
-      className={`flex items-center gap-2 py-1 px-5 hover:bg-zinc-200 cursor-pointer text-xs transition-colors ${
-        isSelected
-          ? "bg-white text-blue-600 font-bold border-l-2 border-blue-500 shadow-sm"
-          : "text-zinc-600 hover:text-zinc-900"
-      }`}
-    >
-      <FileCode
-        size={13}
-        className={
-          path.endsWith(".json")
-            ? "text-yellow-600"
-            : path.endsWith(".md")
-              ? "text-sky-500"
-              : "text-amber-500"
+// Recursive tree layout for nested workspace folder structures (Light Theme)
+const FileTree = ({ files, activeFile, explorerExpanded, onToggleExpand, onSelectFile }) => {
+  const buildTree = (filePaths) => {
+    const root = {};
+    filePaths.forEach((path) => {
+      const parts = path.split("/");
+      let current = root;
+      let currentPath = "";
+      parts.forEach((part, i) => {
+        currentPath = currentPath ? `${currentPath}/${part}` : part;
+        if (!current[part]) {
+          current[part] =
+            i === parts.length - 1
+              ? { type: "file", path }
+              : { type: "folder", fullPath: currentPath, children: {} };
         }
-      />
-      <span className="truncate">{name}</span>
-    </div>
-  );
-};
+        current = current[part].children || {};
+      });
+    });
+    return root;
+  };
 
-const VSCodeActivityBar = ({ activeSidebarTab, onTabChange, modifiedCount }) => {
-  const tabs = [
-    { id: "explorer", icon: Files },
-    { id: "search", icon: Search },
-    { id: "git", icon: GitBranch },
-    { id: "extensions", icon: Blocks },
-  ];
+  const tree = buildTree(Object.keys(files));
+
+  const renderNode = (name, node, depth = 0) => {
+    const isFolder = node.type !== "file";
+    const path = isFolder ? null : node.path;
+    const isSelected = activeFile === path;
+    const fullPath = isFolder ? node.fullPath : path;
+    const isExpanded = explorerExpanded[fullPath];
+
+    if (isFolder) {
+      return (
+        <div key={fullPath} className="select-none">
+          <button
+            type="button"
+            onClick={() => onToggleExpand(fullPath)}
+            className="w-full flex items-center gap-1.5 py-[3px] hover:bg-[#e8e8e8] cursor-pointer text-[#333333] text-[12px] font-medium focus:outline-none text-left transition-colors"
+            style={{ paddingLeft: `${depth * 14 + 8}px` }}
+          >
+            {isExpanded ? (
+              <ChevronDown size={12} className="text-[#424242] shrink-0" />
+            ) : (
+              <ChevronRight size={12} className="text-[#424242] shrink-0" />
+            )}
+            <FolderIcon isOpen={isExpanded} size={15} />
+            <span>{name}</span>
+          </button>
+          {isExpanded && node.children && (
+            <div>
+              {Object.entries(node.children).map(([childName, childNode]) =>
+                renderNode(childName, childNode, depth + 1),
+              )}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <button
+        type="button"
+        key={path}
+        onClick={() => onSelectFile(path)}
+        className={`w-full flex items-center gap-2 py-[3px] hover:bg-[#e8e8e8] cursor-pointer text-[12px] transition-colors focus:outline-none text-left ${
+          isSelected
+            ? "bg-[#d6ebff] text-[#333333] font-semibold"
+            : "text-[#333333]"
+        }`}
+        style={{ paddingLeft: `${depth * 14 + 22}px` }}
+      >
+        <VSCodeFileIcon filename={name} size={15} />
+        <span className="truncate">{name}</span>
+      </button>
+    );
+  };
 
   return (
-    <div className="w-12 bg-[#ececec] border-r border-zinc-200 flex flex-col justify-between items-center py-2 shrink-0">
-      <div className="flex flex-col gap-5 items-center w-full">
-        {tabs.map(({ id, icon: Icon }) => (
-          <button
-            key={id}
-            onClick={() => onTabChange(id)}
-            className={`p-2 transition-colors relative ${activeSidebarTab === id ? "text-blue-600 border-l-2 border-blue-500 bg-white" : "text-zinc-500 hover:text-zinc-900"}`}
-          >
-            <Icon size={20} />
-            {id === "git" && modifiedCount > 0 && (
-              <span className="absolute top-1 right-1 bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[9px] font-bold">
-                {modifiedCount}
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
-      <div className="flex flex-col items-center">
-        <button className="p-2 text-zinc-500 hover:text-zinc-900">
-          <Settings size={20} />
-        </button>
-      </div>
+    <div className="flex-1 overflow-y-auto py-0.5">
+      {Object.entries(tree).map(([name, node]) => renderNode(name, node))}
     </div>
   );
 };
@@ -126,73 +97,58 @@ const VSCodeExplorerPanel = ({
   onToggleExpand,
   onSelectFile,
 }) => (
-  <div className="flex-1 flex flex-col min-h-0">
-    <div className="p-3 text-[10px] font-bold uppercase tracking-wider text-zinc-500 flex items-center justify-between">
+  <div className="flex-1 flex flex-col min-h-0 bg-[#f3f3f3]">
+    <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-[#616161] flex items-center justify-between border-b border-[#e5e5e5] shrink-0">
       <span>Explorer</span>
-      <ChevronDown size={14} />
     </div>
-    <div className="flex-1 overflow-y-auto">
-      <div className="flex items-center gap-1.5 py-1 px-2 text-xs font-bold text-zinc-700">
-        <ChevronDown size={14} />
-        <span>WORKSPACE</span>
+    <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+      <div className="flex items-center gap-1.5 py-1.5 px-2 text-[11px] font-bold text-[#424242] shrink-0">
+        <ChevronDown size={12} />
+        <span>MACOS-PORTFOLIO</span>
       </div>
-      {Object.keys(files)
-        .filter((p) => !p.includes("/"))
-        .map((p) =>
-          renderTreeItem(
-            p,
-            false,
-            p,
-            activeFile,
-            files,
-            explorerExpanded,
-            onToggleExpand,
-            onSelectFile,
-          ),
-        )}
-      {renderTreeItem(
-        "src",
-        true,
-        "src",
-        activeFile,
-        files,
-        explorerExpanded,
-        onToggleExpand,
-        onSelectFile,
-      )}
+      <FileTree
+        files={files}
+        activeFile={activeFile}
+        explorerExpanded={explorerExpanded}
+        onToggleExpand={onToggleExpand}
+        onSelectFile={onSelectFile}
+      />
     </div>
   </div>
 );
 
 const VSCodeSearchPanel = ({ searchQuery, onSearchChange, searchResults, onSelectFile }) => (
-  <div className="flex-1 flex flex-col p-3 gap-3 min-h-0">
-    <div className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Search</div>
+  <div className="flex-1 flex flex-col p-3 gap-3 min-h-0 bg-[#f3f3f3]">
+    <div className="text-[11px] font-bold uppercase tracking-wider text-[#616161]">Search</div>
     <input
       type="text"
       placeholder="Search text in workspace"
       value={searchQuery}
       onChange={(e) => onSearchChange(e.target.value)}
-      className="w-full bg-white border border-zinc-300 rounded px-2.5 py-1.5 text-xs text-zinc-800 outline-none focus:border-blue-500 shadow-sm"
+      className="w-full bg-white border border-[#cecece] rounded px-2.5 py-1.5 text-xs text-[#333333] outline-none focus:border-[#007acc] shadow-sm placeholder-[#a0a0a0] shrink-0"
     />
-    <div className="flex-1 overflow-y-auto space-y-2.5 pt-2">
+    <div className="flex-1 overflow-y-auto space-y-1.5 pt-1">
       {searchResults.length > 0
         ? searchResults.map((res, i) => (
             <div
               key={i}
               onClick={() => onSelectFile(res.path)}
-              className="text-[11px] p-2 hover:bg-zinc-200 rounded cursor-pointer border border-transparent hover:border-zinc-300 transition-all"
+              className="text-[11px] p-2 bg-white hover:bg-[#e8e8e8] rounded cursor-pointer border border-[#e5e5e5] hover:border-[#cccccc] transition-all text-[#333333]"
             >
-              <div className="font-semibold text-blue-600 truncate">{res.path}</div>
-              <div className="text-zinc-500 mt-0.5 italic">
+              <div className="font-semibold text-[#007acc] truncate flex items-center gap-1.5">
+                <VSCodeFileIcon filename={res.path.split("/").pop()} size={12} />
+                {res.path}
+              </div>
+              <div className="text-[#616161] mt-0.5 italic pl-4">
                 Line {res.lineNum}:{" "}
-                <span className="text-zinc-800 not-italic font-mono bg-yellow-105 px-0.5 rounded">
+                <span className="text-[#a31515] not-italic font-mono bg-[#fff6e6] px-1 rounded">
                   {res.text}
                 </span>
               </div>
             </div>
           ))
         : searchQuery.trim() && (
-            <div className="text-xs text-zinc-500 text-center py-4">No results found.</div>
+            <div className="text-xs text-[#616161] text-center py-4">No results found.</div>
           )}
     </div>
   </div>
@@ -205,27 +161,27 @@ const VSCodeGitPanel = ({
   onCommit,
   onSelectFile,
 }) => (
-  <div className="flex-1 flex flex-col p-3 gap-3 min-h-0">
-    <div className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+  <div className="flex-1 flex flex-col p-3 gap-3 min-h-0 bg-[#f3f3f3]">
+    <div className="text-[11px] font-bold uppercase tracking-wider text-[#616161]">
       Source Control: Git
     </div>
-    <div className="space-y-1">
+    <div className="space-y-1.5 shrink-0">
       <input
         type="text"
         placeholder="Commit message..."
         value={commitMessage}
         onChange={(e) => onCommitMessageChange(e.target.value)}
-        className="w-full bg-white border border-zinc-300 rounded px-2.5 py-1.5 text-xs text-zinc-800 outline-none focus:border-blue-500 shadow-sm"
+        className="w-full bg-white border border-[#cecece] rounded px-2.5 py-1.5 text-xs text-[#333333] outline-none focus:border-[#007acc] shadow-sm placeholder-[#a0a0a0]"
       />
       <button
         onClick={onCommit}
-        className="w-full py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition-colors mt-2"
+        className="w-full py-1.5 bg-[#007acc] hover:bg-[#0062b3] active:bg-[#004b93] text-white rounded text-xs font-semibold transition-colors mt-1.5 cursor-pointer"
       >
         Commit to main
       </button>
     </div>
     <div className="flex-1 overflow-y-auto pt-2">
-      <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">
+      <div className="text-[10px] font-bold text-[#616161] uppercase tracking-wider mb-2">
         Changes
       </div>
       {Object.keys(modifiedFiles).length > 0 ? (
@@ -233,47 +189,50 @@ const VSCodeGitPanel = ({
           <div
             key={file}
             onClick={() => onSelectFile(file)}
-            className="flex items-center justify-between p-1.5 hover:bg-zinc-200 rounded cursor-pointer text-xs text-zinc-700"
+            className="flex items-center justify-between p-1.5 hover:bg-[#e8e8e8] rounded cursor-pointer text-xs text-[#333333]"
           >
-            <span className="truncate">{file}</span>
-            <span className="text-[10px] text-amber-600 font-bold px-1.5 bg-amber-500/10 rounded">
+            <div className="flex items-center gap-1.5 truncate">
+              <VSCodeFileIcon filename={file.split("/").pop()} size={13} />
+              <span className="truncate">{file}</span>
+            </div>
+            <span className="text-[10px] text-[#8f6d00] font-bold px-1.5 bg-[#fff6e6] rounded border border-[#ffe6ba] shrink-0 ml-2">
               M
             </span>
           </div>
         ))
       ) : (
-        <div className="text-xs text-zinc-500 text-center py-4">No modified files.</div>
+        <div className="text-xs text-[#616161] text-center py-4">No modified files.</div>
       )}
     </div>
   </div>
 );
 
 const VSCodeExtensionsPanel = ({ installedExtensions, onToggleExtension }) => (
-  <div className="flex-1 flex flex-col p-3 gap-3 min-h-0">
-    <div className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+  <div className="flex-1 flex flex-col p-3 gap-3 min-h-0 bg-[#f3f3f3]">
+    <div className="text-[11px] font-bold uppercase tracking-wider text-[#616161]">
       Extensions Marketplace
     </div>
-    <div className="flex-1 overflow-y-auto space-y-3.5">
+    <div className="flex-1 overflow-y-auto space-y-2.5">
       {extensionsList.map((ext) => {
         const isInstalled = installedExtensions.includes(ext.name);
         return (
           <div
             key={ext.name}
-            className="p-2 border border-zinc-200 bg-white rounded space-y-1 shadow-sm"
+            className="p-2.5 border border-[#e5e5e5] bg-white rounded-lg space-y-1 shadow-sm text-[#333333]"
           >
             <div className="flex justify-between items-start">
-              <div className="font-semibold text-xs text-zinc-800">{ext.name}</div>
-              <span className="text-[9px] text-zinc-500">{ext.version}</span>
+              <div className="font-semibold text-xs text-[#333333]">{ext.name}</div>
+              <span className="text-[9px] text-[#616161]">{ext.version}</span>
             </div>
-            <p className="text-[10px] text-zinc-600 leading-tight">{ext.desc}</p>
-            <div className="flex justify-between items-center pt-1.5">
-              <span className="text-[9px] text-zinc-500">by {ext.publisher}</span>
+            <p className="text-[10px] text-[#616161] leading-tight">{ext.desc}</p>
+            <div className="flex justify-between items-center pt-2">
+              <span className="text-[9px] text-[#616161]">by {ext.publisher}</span>
               <button
                 onClick={() => onToggleExtension(ext.name)}
-                className={`px-2 py-0.5 rounded text-[9px] font-bold transition-all ${
+                className={`px-2.5 py-0.5 rounded text-[9px] font-bold transition-all cursor-pointer ${
                   isInstalled
-                    ? "bg-zinc-200 text-zinc-700 hover:bg-red-50 hover:text-red-600"
-                    : "bg-blue-600 text-white hover:bg-blue-700"
+                    ? "bg-[#e5e5e5] text-[#333333] hover:bg-red-50 hover:text-red-600 hover:border-red-200 border border-transparent"
+                    : "bg-[#007acc] text-white hover:bg-[#0062b3]"
                 }`}
               >
                 {isInstalled ? "Disable" : "Install"}
@@ -296,7 +255,6 @@ const VSCodeSidebar = ({
   commitMessage,
   modifiedFiles,
   installedExtensions,
-  _onActivityTabChange,
   onToggleExpand,
   onSelectFile,
   onSearchChange,
@@ -305,7 +263,7 @@ const VSCodeSidebar = ({
   onToggleExtension,
 }) => {
   return (
-    <div className="w-56 bg-[#f3f3f3] border-r border-zinc-200 flex flex-col shrink-0 min-w-0">
+    <div className="w-56 bg-[#f3f3f3] border-r border-[#e5e5e5] flex flex-col shrink-0 min-w-0">
       {activeSidebarTab === "explorer" && (
         <VSCodeExplorerPanel
           files={files}
@@ -343,7 +301,6 @@ const VSCodeSidebar = ({
 };
 
 export {
-  VSCodeActivityBar,
   VSCodeExplorerPanel,
   VSCodeSearchPanel,
   VSCodeGitPanel,

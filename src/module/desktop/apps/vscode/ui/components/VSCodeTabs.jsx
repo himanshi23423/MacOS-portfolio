@@ -1,22 +1,34 @@
-import { FileCode, X } from "lucide-react";
+import { X } from "lucide-react";
+import VSCodeFileIcon from "./VSCodeFileIcon";
 
 const VSCodeTabs = ({ openTabs, activeFile, onSelectFile, onCloseTab }) => {
   return (
-    <div className="h-9 bg-[#ececec] flex items-center border-b border-zinc-200 overflow-x-auto shrink-0 select-none">
-      {openTabs.map(tab => {
+    <div className="h-[35px] bg-[#f3f3f3] flex items-center border-b border-[#e5e5e5] overflow-x-auto shrink-0 select-none">
+      {openTabs.map((tab) => {
         const isActive = activeFile === tab;
+        const fileName = tab.split("/").pop();
         return (
           <div
             key={tab}
             onClick={() => onSelectFile(tab)}
-            className={`h-full flex items-center gap-2 px-3 border-r border-zinc-200 cursor-pointer text-xs relative shrink-0 transition-all ${
-              isActive ? "bg-white text-zinc-800 font-bold border-t-2 border-blue-500" : "bg-[#ececec] text-zinc-500 hover:bg-zinc-150 hover:text-zinc-800"
+            className={`h-full flex items-center gap-2 px-3 border-r border-[#e5e5e5] cursor-pointer text-[12px] relative shrink-0 transition-all group ${
+              isActive
+                ? "bg-white text-[#333333] font-semibold"
+                : "bg-[#ececec] text-[#616161] hover:bg-[#e8e8e8] hover:text-[#333333]"
             }`}
           >
-            <FileCode size={12} className={tab.endsWith(".json") ? "text-yellow-600" : tab.endsWith(".md") ? "text-sky-500" : "text-amber-500"} />
-            <span className="font-semibold">{tab.split("/").pop()}</span>
-            <button onClick={(e) => onCloseTab(tab, e)} className="p-0.5 rounded-full hover:bg-zinc-300 text-zinc-500 hover:text-zinc-800">
-              <X size={10} />
+            {isActive && (
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#007acc]" />
+            )}
+            <VSCodeFileIcon filename={fileName} size={14} />
+            <span>{fileName}</span>
+            <button
+              onClick={(e) => onCloseTab(tab, e)}
+              className={`p-0.5 rounded hover:bg-[#d5d5d5] text-[#616161] hover:text-[#333333] transition-colors ${
+                isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+              }`}
+            >
+              <X size={12} />
             </button>
           </div>
         );
