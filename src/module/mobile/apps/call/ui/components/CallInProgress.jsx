@@ -16,26 +16,20 @@ const CallInProgress = ({
     <div className="absolute inset-0 bg-zinc-50 text-zinc-800 z-40 flex flex-col justify-between p-5 pb-8 animate-fade-in h-full overflow-hidden select-none">
       {/* 1. Full-screen Video Background Simulating Remote Stream */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-tr from-zinc-100 via-zinc-50 to-emerald-50" />
-
-        {/* Subtle camera video simulation */}
-        {activeCall.type === "video" && !cameraMuted ? (
-          <div className="absolute inset-0 flex items-center justify-center opacity-30">
-            <div
-              className="absolute w-[300px] h-[300px] bg-green-500/10 rounded-full blur-[100px] animate-pulse"
-              style={{ animationDuration: "6s" }}
-            />
-            <div
-              className="absolute w-[200px] h-[200px] bg-indigo-500/10 rounded-full blur-[80px] animate-pulse"
-              style={{ animationDuration: "4s" }}
-            />
-          </div>
-        ) : null}
+        {activeCall.type === "video" && !cameraMuted && activeCall.status === "connected" ? (
+          <img
+            src="/images/facetime_call_preview.png"
+            alt="Active Video Call Stream"
+            className="w-full h-full object-cover brightness-[0.95]"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-tr from-zinc-100 via-zinc-50 to-emerald-50" />
+        )}
       </div>
 
       {/* 2. Top Header Info Overlay */}
       <div className="z-10 w-full flex flex-col items-center pt-6 text-center space-y-1">
-        <div className="flex items-center gap-1.5 bg-white/60 backdrop-blur-xl border border-zinc-200/50 px-3 py-1 rounded-full shadow-sm">
+        <div className="flex items-center gap-1.5 bg-white/65 backdrop-blur-xl border border-zinc-200/50 px-3 py-1 rounded-full shadow-sm">
           <span className="w-1.5 h-1.5 bg-[#30d158] rounded-full animate-pulse" />
           <span className="text-[10px] font-bold tracking-widest text-zinc-650 uppercase">
             FaceTime {activeCall.type === "video" ? "Video" : "Audio"}
@@ -57,15 +51,19 @@ const CallInProgress = ({
 
       {/* 3. Floating User PIP (Picture in Picture) Mock */}
       {activeCall.status === "connected" && activeCall.type === "video" && (
-        <div className="absolute top-20 right-5 w-24 h-36 bg-white/90 rounded-2xl border border-zinc-200 shadow-2xl overflow-hidden z-20 flex flex-col items-center justify-center transition-all hover:scale-105 active:scale-95">
+        <div className="absolute top-24 right-5 w-20 h-28 bg-white rounded-2xl border border-zinc-200 shadow-2xl overflow-hidden z-20 flex flex-col items-center justify-center transition-all hover:scale-105 active:scale-95">
           {cameraMuted ? (
             <VideoOff className="w-5 h-5 text-zinc-400" />
           ) : (
-            <div className="w-full h-full bg-gradient-to-tr from-emerald-50 to-zinc-100 flex flex-col items-center justify-center relative">
-              <span className="text-[8px] text-zinc-500 uppercase font-bold tracking-wider absolute bottom-2 select-none">
+            <div className="w-full h-full relative">
+              <img
+                src="/images/facetime_standby.png"
+                alt="Self Camera Preview"
+                className="w-full h-full object-cover brightness-[0.9]"
+              />
+              <span className="text-[8px] text-white bg-black/60 px-1 py-0.5 rounded font-extrabold tracking-wider absolute bottom-2 left-2 select-none">
                 Me
               </span>
-              <User className="w-6 h-6 text-emerald-555 mb-2" />
             </div>
           )}
         </div>
@@ -74,12 +72,20 @@ const CallInProgress = ({
       {/* Center avatar/indicator for audio calls or paused cameras */}
       {(activeCall.type === "audio" || cameraMuted || activeCall.status === "ringing") && (
         <div className="z-10 flex-1 flex flex-col items-center justify-center">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-zinc-200 to-zinc-100 text-zinc-700 flex items-center justify-center font-extrabold text-2xl uppercase shadow-xl border border-zinc-200">
-            {activeCall.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")}
-          </div>
+          {activeCall.avatar ? (
+            <img
+              src={activeCall.avatar}
+              alt={activeCall.name}
+              className="w-24 h-24 rounded-full object-cover shadow-2xl border border-white"
+            />
+          ) : (
+            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-zinc-200 to-zinc-100 text-zinc-700 flex items-center justify-center font-extrabold text-2xl uppercase shadow-xl border border-zinc-200">
+              {activeCall.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")}
+            </div>
+          )}
           {cameraMuted && activeCall.type === "video" && (
             <span className="text-[10px] text-red-500 bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full font-bold mt-4 shadow-sm">
               Camera Off

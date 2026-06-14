@@ -26,14 +26,22 @@ const CallContactList = ({ contacts, searchQuery, onSearchChange, onInitiateCall
             className="flex items-center justify-between p-2 rounded-xl hover:bg-zinc-50 group transition-all"
           >
             <div className="flex items-center gap-3 min-w-0">
-              <div
-                className={`w-9.5 h-9.5 rounded-full ${contact.avatarColor} text-white flex items-center justify-center font-bold text-xs uppercase shadow-md shrink-0`}
-              >
-                {contact.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
-              </div>
+              {contact.avatar ? (
+                <img
+                  src={contact.avatar}
+                  alt={contact.name}
+                  className="w-[38px] h-[38px] rounded-full object-cover shadow-sm shrink-0 border border-black/5"
+                />
+              ) : (
+                <div
+                  className={`w-9.5 h-9.5 rounded-full ${contact.avatarColor} text-white flex items-center justify-center font-bold text-xs uppercase shadow-md shrink-0`}
+                >
+                  {contact.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </div>
+              )}
               <div className="min-w-0">
                 <h4 className="text-xs font-bold text-zinc-800 truncate">{contact.name}</h4>
                 <p className="text-[10px] text-zinc-400 truncate mt-0.5">{contact.status}</p>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import useWindowsStore from "@store/window";
+import { CONTACTS } from "./callData";
 
 const useCall = () => {
   const { windows } = useWindowsStore();
@@ -135,7 +136,8 @@ const useCall = () => {
 
   const initiateCall = useCallback(
     (name, type = "video") => {
-      setActiveCall({ name, type, status: "ringing" });
+      const contact = CONTACTS.find((c) => c.name.toLowerCase() === name.toLowerCase());
+      setActiveCall({ name, type, status: "ringing", avatar: contact?.avatar });
       setCallTimer(0);
       startRingbackSound();
       setTimeout(() => {
