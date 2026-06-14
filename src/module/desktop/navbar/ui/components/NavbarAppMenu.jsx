@@ -82,6 +82,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               openWindow("appstore", { openAbout: true });
             } else if (activeAppName === "Calendar") {
               openWindow("calendar", { openAbout: true });
+            } else if (activeAppName === "Weather") {
+              openWindow("weather", { openAbout: true });
             } else if (activeAppName === "Terminal") {
               openWindow("terminal", { openAbout: true });
             } else if (activeAppName === "Contact") {
@@ -108,6 +110,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
             activeAppName === "Calculator" ||
             activeAppName === "App Store" ||
             activeAppName === "Calendar" ||
+            activeAppName === "Weather" ||
             activeAppName === "Terminal" ||
             activeAppName === "Contact" ||
             activeAppName === "Notes" ||
