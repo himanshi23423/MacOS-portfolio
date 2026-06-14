@@ -7,6 +7,8 @@ const AppStoreSidebarSection = ({
   onTabChange,
   isSidebarOpen,
   onCloseSidebar,
+  githubProfile,
+  onProfileClick,
 }) => (
   <>
     {isSidebarOpen && (
@@ -24,6 +26,8 @@ const AppStoreSidebarSection = ({
         activeTab={activeTab}
         onTabChange={onTabChange}
         onClose={onCloseSidebar}
+        githubProfile={githubProfile}
+        onProfileClick={onProfileClick}
       />
     </div>
   </>

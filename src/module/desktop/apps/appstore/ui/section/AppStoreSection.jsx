@@ -5,12 +5,27 @@ import { STORE_APPS } from "../components/appStoreData";
 import AppStoreNavSection from "./AppStoreNavSection";
 import AppStoreSidebarSection from "./AppStoreSidebarSection";
 import AppStoreContentSection from "./AppStoreContentSection";
+import ProfileOverlay from "../../../appletv/ui/components/ProfileOverlay";
 
 const AppStoreSection = () => {
   const { openWindow, closeWindow } = useWindowsStore();
   const [activeTab, setActiveTab] = useState("discover");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [githubProfile, setGithubProfile] = useState(null);
+  
+  useEffect(() => {
+    fetch("https://api.github.com/users/kuldeeprajput-dev")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && !data.message) {
+          setGithubProfile(data);
+        }
+      })
+      .catch((err) => console.error("Error fetching avatar in desktop AppStoreSection:", err));
+  }, []);
+
   const [installStates, setInstallStates] = useState(() => {
     const initial = {};
     STORE_APPS.forEach((app) => {
@@ -126,6 +141,8 @@ const AppStoreSection = () => {
           onTabChange={setActiveTab}
           isSidebarOpen={isSidebarOpen}
           onCloseSidebar={() => setIsSidebarOpen(false)}
+          githubProfile={githubProfile}
+          onProfileClick={() => setShowProfile(true)}
         />
 
         <AppStoreContentSection
@@ -140,6 +157,8 @@ const AppStoreSection = () => {
           updatingAll={updatingAll}
         />
       </div>
+
+      <ProfileOverlay isOpen={showProfile} onClose={() => setShowProfile(false)} appName="appstore" />
 
       {alertApp && (
         <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] z-50 flex items-center justify-center p-4">

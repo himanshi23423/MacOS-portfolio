@@ -9,6 +9,9 @@ import {
   Settings,
   HelpCircle,
   Shield,
+  Gamepad2,
+  Gift,
+  RefreshCw,
 } from "lucide-react";
 
 const GithubIcon = ({ size = 16, className = "" }) => (
@@ -28,7 +31,7 @@ const GithubIcon = ({ size = 16, className = "" }) => (
   </svg>
 );
 
-const ProfileOverlay = ({ isOpen, onClose }) => {
+const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
@@ -149,27 +152,65 @@ const ProfileOverlay = ({ isOpen, onClose }) => {
                 <span className="text-[11px] text-gray-400">View →</span>
               </a>
 
-              <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
-                    <PlayCircle size={16} />
+              {appName === "appstore" ? (
+                <>
+                  <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-orange-50 text-orange-600 rounded-xl">
+                        <Gamepad2 size={16} />
+                      </div>
+                      <span className="text-xs font-semibold text-gray-800">
+                        Apple Arcade Subscription
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-green-600 font-bold">Active</span>
                   </div>
-                  <span className="text-xs font-semibold text-gray-800">
-                    Apple TV+ Subscription
-                  </span>
-                </div>
-                <span className="text-[11px] text-green-600 font-bold">Active</span>
-              </div>
 
-              <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
-                    <CreditCard size={16} />
+                  <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-pink-50 text-pink-600 rounded-xl">
+                        <Gift size={16} />
+                      </div>
+                      <span className="text-xs font-semibold text-gray-800">Redeem Gift Card</span>
+                    </div>
+                    <span className="text-[11px] text-gray-400">Redeem</span>
                   </div>
-                  <span className="text-xs font-semibold text-gray-800">Payment & Billing</span>
-                </div>
-                <span className="text-[11px] text-gray-400">Manage</span>
-              </div>
+
+                  <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
+                        <CreditCard size={16} />
+                      </div>
+                      <span className="text-xs font-semibold text-gray-800">Account Balance</span>
+                    </div>
+                    <span className="text-[11px] text-gray-500 font-bold">$25.00</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
+                        <PlayCircle size={16} />
+                      </div>
+                      <span className="text-xs font-semibold text-gray-800">
+                        Apple TV+ Subscription
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-green-600 font-bold">Active</span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
+                        <CreditCard size={16} />
+                      </div>
+                      <span className="text-xs font-semibold text-gray-800">Payment & Billing</span>
+                    </div>
+                    <span className="text-[11px] text-gray-400">Manage</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -179,15 +220,39 @@ const ProfileOverlay = ({ isOpen, onClose }) => {
               App Preferences
             </h4>
             <div className="bg-white border border-zinc-100 rounded-2xl overflow-hidden divide-y divide-zinc-100">
-              <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-50 text-purple-600 rounded-xl">
-                    <Settings size={16} />
+              {appName === "appstore" ? (
+                <>
+                  <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-50 text-blue-500 rounded-xl">
+                        <RefreshCw size={16} />
+                      </div>
+                      <span className="text-xs font-semibold text-gray-800">Automatic Updates</span>
+                    </div>
+                    <span className="text-[11px] text-gray-400">On</span>
                   </div>
-                  <span className="text-xs font-semibold text-gray-800">Playback Quality</span>
+
+                  <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-purple-50 text-purple-600 rounded-xl">
+                        <PlayCircle size={16} />
+                      </div>
+                      <span className="text-xs font-semibold text-gray-800">Autoplay Videos</span>
+                    </div>
+                    <span className="text-[11px] text-gray-400">Wi-Fi Only</span>
+                  </div>
+                </>
+              ) : (
+                <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-purple-50 text-purple-600 rounded-xl">
+                      <Settings size={16} />
+                    </div>
+                    <span className="text-xs font-semibold text-gray-800">Playback Quality</span>
+                  </div>
+                  <span className="text-[11px] text-gray-400">Auto (4K)</span>
                 </div>
-                <span className="text-[11px] text-gray-400">Auto (4K)</span>
-              </div>
+              )}
 
               <div className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors cursor-pointer">
                 <div className="flex items-center gap-3">

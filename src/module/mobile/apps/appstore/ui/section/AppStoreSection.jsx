@@ -255,7 +255,7 @@ const AppStoreSection = () => {
       />
 
       {/* Profile Detail Bottom Sheet Modal */}
-      <ProfileOverlay isOpen={showProfile} onClose={() => setShowProfile(false)} />
+      <ProfileOverlay isOpen={showProfile} onClose={() => setShowProfile(false)} appName="appstore" />
 
       {/* Alert Overlay */}
       {alertApp && (
