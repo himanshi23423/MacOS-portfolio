@@ -8,6 +8,11 @@ const useWindowsStore = create(
     nextZIndex: INITIAL_Z_INDEX + 1,
     favorites: [],
     isDockHiddenByCollision: false,
+    githubRedirect: null,
+    setGithubRedirect: (redirect) =>
+      set((state) => {
+        state.githubRedirect = redirect;
+      }),
     music: {
       activeTrack: {
         id: 0,
