@@ -81,7 +81,7 @@ const AppStoreCard = ({ app, installState, onStartDownload, onOpenApp, variant =
   return (
     <div className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all">
       <div className="flex items-center gap-3 min-w-0">
-        {variant === "game" ? (
+        {variant === "game" && !app.icon ? (
           <div className="w-12 h-12 bg-gradient-to-tr from-amber-500 to-orange-600 rounded-xl flex items-center justify-center font-bold text-white shadow-sm shrink-0 uppercase">
             {app.name.slice(0, 2)}
           </div>
@@ -89,7 +89,7 @@ const AppStoreCard = ({ app, installState, onStartDownload, onOpenApp, variant =
           <AppStoreIcon
             icon={app.icon}
             name={app.name}
-            fallbackBg={variant === "develop" ? "bg-indigo-500" : "bg-blue-500"}
+            fallbackBg={variant === "develop" ? "bg-indigo-500" : (variant === "game" ? "bg-amber-500" : "bg-blue-500")}
           />
         )}
         <div className="min-w-0">

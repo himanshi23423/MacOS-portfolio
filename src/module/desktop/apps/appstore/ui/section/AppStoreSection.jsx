@@ -161,21 +161,26 @@ const AppStoreSection = () => {
       <ProfileOverlay isOpen={showProfile} onClose={() => setShowProfile(false)} appName="appstore" />
 
       {alertApp && (
-        <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-[320px] bg-white rounded-2xl shadow-2xl border border-black/10 p-5 text-center flex flex-col items-center gap-4 animate-fade-in">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
-              <AppWindow className="w-6 h-6" />
+        <div className="absolute inset-0 bg-black/15 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div
+            className="w-full max-w-[300px] rounded-2xl shadow-2xl border border-black/10 p-5 text-center flex flex-col items-center gap-4 animate-modal-pop"
+            style={{ backgroundColor: "#ffffff", color: "#000000" }}
+          >
+            <div className="w-10 h-10 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center shadow-inner">
+              <AppWindow className="w-5.5 h-5.5" />
             </div>
-            <div className="space-y-1">
-              <h3 className="text-sm font-bold text-gray-800">{alertApp.name} Installed</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
+            <div className="space-y-1.5">
+              <h3 className="text-sm font-extrabold leading-none" style={{ color: "#000000" }}>
+                {alertApp.name} Installed
+              </h3>
+              <p className="text-[11px] leading-relaxed" style={{ color: "#555555" }}>
                 {alertApp.name} is successfully installed on your desktop! You can now access and
                 run it via custom command simulations inside the Terminal application.
               </p>
             </div>
             <button
               onClick={() => setAlertApp(null)}
-              className="w-full py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-xs font-bold transition-all active:scale-98 shadow-md"
+              className="w-full py-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer"
             >
               Done
             </button>

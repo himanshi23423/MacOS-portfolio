@@ -48,18 +48,31 @@ const AppStoreContentSection = ({
               {FEATURED_APPS.map((item) => (
                 <div
                   key={item.id}
-                  className={`relative rounded-xl overflow-hidden bg-gradient-to-br ${item.bg} text-white p-6 flex flex-col justify-between min-h-[180px] shadow-md border border-black/5`}
+                  className={`relative rounded-xl overflow-hidden bg-gradient-to-br ${item.bg} text-white p-6 flex flex-col justify-between min-h-[180px] shadow-md border border-black/5 group/featured`}
                 >
-                  <div className="space-y-1">
+                  {item.image && (
+                    <div className="absolute inset-y-0 right-0 w-1/2 overflow-hidden pointer-events-none select-none">
+                      <img
+                        src={`/images/${item.image}`}
+                        alt={item.title}
+                        className="w-full h-full object-cover opacity-35 group-hover/featured:scale-105 transition-transform duration-500"
+                        style={{
+                          maskImage: "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                          WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div className="space-y-1 relative z-10">
                     <span className="text-[9px] font-bold uppercase tracking-wider text-white/50">{item.subtitle}</span>
                     <h3 className="text-xl font-extrabold tracking-tight leading-none">{item.title}</h3>
-                    <p className="text-[11px] text-white/70 max-w-xs mt-1 line-clamp-2">{item.desc}</p>
+                    <p className="text-[11px] text-white/70 max-w-[200px] mt-1 line-clamp-2">{item.desc}</p>
                   </div>
-                  <div className="flex items-center justify-between pt-4">
+                  <div className="flex items-center justify-between pt-4 relative z-10">
                     <span className="text-[10px] font-bold text-white/40">Developer Preview</span>
                     <button
                       onClick={() => onOpenApp(STORE_APPS.find((app) => app.id === item.id))}
-                      className="px-4 py-1.5 bg-white/20 hover:bg-white/30 border border-white/20 rounded-full text-xs font-bold text-white transition-all active:scale-95"
+                      className="px-4 py-1.5 bg-white/20 hover:bg-white/30 border border-white/20 rounded-full text-xs font-bold text-white transition-all active:scale-95 cursor-pointer"
                     >
                       View
                     </button>
