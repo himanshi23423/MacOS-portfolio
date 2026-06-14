@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
-import useWeather from "./useWeather";
+import useWeather from "../../hooks/useWeather";
 import WeatherHeader from "./WeatherHeader";
 import WeatherSection from "../section/WeatherSection";
 import WeatherAboutModal from "./WeatherAboutModal";

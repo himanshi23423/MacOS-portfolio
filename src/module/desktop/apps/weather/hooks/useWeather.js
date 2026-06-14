@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import WEATHER_DATA from "./weatherData";
-import { parseWttrResponse, generateWeatherData } from "./weatherUtils";
+import WEATHER_DATA from "../data/weatherData";
+import { parseWttrResponse, generateWeatherData } from "../data/weatherUtils";
 
 const useWeather = () => {
   const apiBase = process.env.NEXT_PUBLIC_WEATHER_API_URL || "https://wttr.in";

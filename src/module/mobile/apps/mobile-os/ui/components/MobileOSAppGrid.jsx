@@ -12,7 +12,7 @@ import {
   CheckCircle2,
   Mic,
 } from "lucide-react";
-import useWeather from "@module/desktop/apps/weather/ui/components/useWeather";
+import useWeather from "@module/desktop/apps/weather/hooks/useWeather";
 import { dockApps as allDockApps } from "@constants";
 import useTimeStore from "@store/time";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { renderIcon } from "./weatherUtils";
+import { renderIcon } from "../../data/weatherUtils";
 
 const TenDayForecast = ({ activeCity, unitMode }) => {
   return (

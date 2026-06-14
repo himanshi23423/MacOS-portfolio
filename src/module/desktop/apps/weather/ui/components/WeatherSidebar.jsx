@@ -1,6 +1,6 @@
 import React from "react";
 import { Search } from "lucide-react";
-import { getSafeTemp, renderIcon } from "./weatherUtils";
+import { getSafeTemp, renderIcon } from "../../data/weatherUtils";
 
 const WeatherSidebar = ({
   searchQuery, setSearchQuery,
