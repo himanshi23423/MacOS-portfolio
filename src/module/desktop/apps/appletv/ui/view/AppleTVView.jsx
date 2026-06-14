@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import windowWrapper from "@hoc/windowWrapper";
+import useWindowsStore from "@store/window";
 import PlayerOverlay from "../components/PlayerOverlay";
 import ProfileOverlay from "../components/ProfileOverlay";
+import AppleTVAboutModal from "../components/AppleTVAboutModal";
 import { FEATURED_SHOW } from "../../data";
 import AppleTVHeaderSection from "../section/AppleTVHeaderSection";
 import AppleTVSection from "../section/AppleTVSection";
 
 const AppleTVView = () => {
+  const { windows, setWindowData } = useWindowsStore();
+  const [showAbout, setShowAbout] = useState(false);
   const [activeTab, setActiveTab] = useState("watchNow");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeVideo, setActiveVideo] = useState(null);
@@ -23,6 +27,13 @@ const AppleTVView = () => {
 
   const videoRef = useRef(null);
   const controlsTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    if (windows.appletv?.data?.openAbout) {
+      setShowAbout(true);
+      setWindowData("appletv", { ...windows.appletv.data, openAbout: false });
+    }
+  }, [windows.appletv?.data?.openAbout, windows.appletv?.data, setWindowData]);
 
   useEffect(() => {
     fetch("https://api.github.com/users/kuldeeprajput-dev")
@@ -200,6 +211,7 @@ const AppleTVView = () => {
         githubProfile={githubProfile}
         onProfileClick={() => setShowProfile(true)}
       />
+      <AppleTVAboutModal show={showAbout} onClose={() => setShowAbout(false)} />
     </div>
   );
 };

@@ -74,6 +74,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               }
             } else if (activeAppName === "Settings") {
               openWindow("settings", { openAbout: true });
+            } else if (activeAppName === "Apple TV") {
+              openWindow("appletv", { openAbout: true });
             } else if (activeAppName === "Calculator") {
               openWindow("calculator", { openAbout: true });
             } else if (activeAppName === "Terminal") {
@@ -101,7 +103,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
             activeAppName === "Terminal" ||
             activeAppName === "Contact" ||
             activeAppName === "Notes" ||
-            activeAppName === "Messages",
+            activeAppName === "Messages" ||
+            activeAppName === "Apple TV",
           onClick: () => {
             if (activeAppName === "Safari") {
               openWindow("safari", { openSettings: true });
