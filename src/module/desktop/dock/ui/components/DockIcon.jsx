@@ -13,7 +13,6 @@ const scaleMap = {
   call: "scale-[0.71]",
   appstore: "scale-[0.90]",
   weather: "scale-[0.79]",
-  chrome: "scale-[0.90]",
   vscode: "scale-[0.95]",
   postman: "scale-[0.95]",
   map: "scale-[0.73]",

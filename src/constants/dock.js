@@ -14,7 +14,6 @@ export const dockApps = [
   { id: "appstore", name: "App Store", icon: "appstore.png", canOpen: true },
   { id: "calendar", name: "Calendar", icon: "calendar.png", canOpen: true },
   { id: "weather", name: "Weather", icon: "weather.png", canOpen: true },
-  { id: "chrome", name: "Google Chrome", icon: "chromee.png", canOpen: true },
   { id: "vscode", name: "VS Code", icon: "vscode.png", canOpen: true },
   { id: "postman", name: "Postman", icon: "postman.png", canOpen: true },
   { id: "map", name: "Maps", icon: "map.png", canOpen: true },

@@ -3,7 +3,6 @@ import AppStore from "@module/desktop/apps/appstore/ui/view/AppStoreView";
 import Calculator from "@module/desktop/apps/calculator/ui/view/CalculatorView";
 import Calendar from "@module/desktop/apps/calendar/ui/view/CalendarView";
 import Call from "@module/desktop/apps/call/ui/view/CallView";
-import Chrome from "@module/desktop/apps/chrome/ui/components/Chrome";
 import Contact from "@module/desktop/apps/contact/ui/view/ContactView";
 import Dock from "@module/desktop/dock/ui/view/DockView";
 import DockVisualizer from "./dock/ui/components/DockVisualizer";
@@ -111,7 +110,6 @@ const Desktop = () => {
       <AppStore />
       <Calendar />
       <Weather />
-      <Chrome />
       <VSCode />
       <Postman />
       <Map />

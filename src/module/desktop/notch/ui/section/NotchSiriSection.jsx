@@ -203,8 +203,8 @@ const Siri = () => {
       return "Pausing playback.";
     }
     if (query.includes("open chrome")) {
-      openWindow("chrome");
-      return "Opening Google Chrome.";
+      openWindow("safari");
+      return "Google Chrome is not installed, opening Safari browser instead.";
     }
     if (
       query.includes("open code") ||

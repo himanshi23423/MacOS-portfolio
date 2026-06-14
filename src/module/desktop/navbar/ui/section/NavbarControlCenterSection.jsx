@@ -214,13 +214,6 @@ const NavbarControlCenterSection = ({
       desc: "Apple Safari Web Browser",
     },
     {
-      name: "Chrome",
-      key: "chrome",
-      image: "chromee.png",
-      icon: "🌐",
-      desc: "Google Chrome Browser",
-    },
-    {
       name: "Calculator",
       key: "calculator",
       image: "calculator.png",

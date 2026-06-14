@@ -38,9 +38,8 @@ body {
 This is an interactive macOS desktop portfolio simulation built with React, Vite, Tailwind CSS, and GSAP.
 
 ## Features
+- Safari browser with interactive search and bookmark tabs
 - Fully draggable and resizable windows
-- Mock Chrome browser with interactive profile sites
-- Safari with clickable favorite bookmarks
 - Integrated VS Code editor (you are here!)
 
 ## Get Started

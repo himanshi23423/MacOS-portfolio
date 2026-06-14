@@ -14,7 +14,6 @@ const appNames = {
   appstore: "App Store",
   calendar: "Calendar",
   weather: "Weather",
-  chrome: "Chrome",
   vscode: "VS Code",
   postman: "Postman",
   map: "Maps",
@@ -31,8 +30,6 @@ const getAppMenus = (appId) => {
     case "finder":
       return ["File", "Edit", "View", "Go", "Window", "Help"];
     case "safari":
-      return ["File", "Edit", "View", "History", "Bookmarks", "Window", "Help"];
-    case "chrome":
       return ["File", "Edit", "View", "History", "Bookmarks", "Window", "Help"];
     case "vscode":
       return ["File", "Edit", "Selection", "View", "Go", "Run", "Terminal", "Window", "Help"];
