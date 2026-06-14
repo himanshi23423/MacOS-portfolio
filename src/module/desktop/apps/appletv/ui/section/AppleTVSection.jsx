@@ -40,7 +40,7 @@ const AppleTVSection = ({
     const fetchWatchNowData = async () => {
       try {
         const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
-        
+
         // Trending Movies
         const resMovies = await fetch(
           `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&page=${watchNowPage}`,
