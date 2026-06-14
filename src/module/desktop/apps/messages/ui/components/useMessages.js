@@ -49,7 +49,15 @@ const useMessages = () => {
   }, [conversations]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current) {
+      const container = messagesEndRef.current.parentNode;
+      if (container) {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    }
   }, [activeChat?.messages, isTyping]);
 
   useEffect(() => {

@@ -45,7 +45,15 @@ const useTelegram = () => {
   const activeChat = chats.find((c) => c.id === activeChatId) || chats[0];
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current) {
+      const container = messagesEndRef.current.parentNode;
+      if (container) {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    }
   }, [activeChat?.messages, isTyping]);
 
   const handleSend = () => {

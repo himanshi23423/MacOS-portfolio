@@ -190,7 +190,13 @@ const useVSCode = () => {
 
   useEffect(() => {
     if (terminalBottomRef.current) {
-      terminalBottomRef.current.scrollIntoView({ behavior: "smooth" });
+      const container = terminalBottomRef.current.parentNode;
+      if (container) {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: "smooth",
+        });
+      }
     }
   }, [terminalHistory]);
 
