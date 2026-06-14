@@ -78,6 +78,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               openWindow("appletv", { openAbout: true });
             } else if (activeAppName === "Calculator") {
               openWindow("calculator", { openAbout: true });
+            } else if (activeAppName === "App Store") {
+              openWindow("appstore", { openAbout: true });
             } else if (activeAppName === "Terminal") {
               openWindow("terminal", { openAbout: true });
             } else if (activeAppName === "Contact") {
@@ -102,6 +104,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
           meta: "⌘,",
           disabled:
             activeAppName === "Calculator" ||
+            activeAppName === "App Store" ||
             activeAppName === "Terminal" ||
             activeAppName === "Contact" ||
             activeAppName === "Notes" ||
