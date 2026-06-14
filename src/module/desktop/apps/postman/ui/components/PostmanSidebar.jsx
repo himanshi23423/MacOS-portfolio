@@ -1,5 +1,5 @@
 import { Plus, Folder, FolderOpen, ChevronRight, ChevronDown, Layers, History } from "lucide-react";
-import MOCK_COLLECTIONS from "./postmanData";
+import MOCK_COLLECTIONS from "../../data/postmanData";
 
 const getMethodColor = (m) => {
   switch (m) {
