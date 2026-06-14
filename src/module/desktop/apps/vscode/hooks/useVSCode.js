@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { INITIAL_FILES } from "./vscodeData";
+import { INITIAL_FILES } from "../data/vscodeData";
 
 const useVSCode = () => {
   const [files, setFiles] = useState(INITIAL_FILES);
@@ -21,7 +21,12 @@ const useVSCode = () => {
     { type: "output", text: "VS Code Integrated Terminal -- type 'help' for commands." },
   ]);
   const [terminalInput, setTerminalInput] = useState("");
+  const [notification, setNotification] = useState(null);
   const terminalBottomRef = useRef(null);
+
+  const showNotification = useCallback((message, type = "info") => {
+    setNotification({ message, type });
+  }, []);
 
   const handleContentChange = useCallback(
     (newVal) => {
@@ -373,6 +378,9 @@ const useVSCode = () => {
     terminalInput,
     setTerminalInput,
     terminalBottomRef,
+    notification,
+    setNotification,
+    showNotification,
     handleContentChange,
     selectFile,
     closeTab,

@@ -3,7 +3,7 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
-import { extensionsList } from "./vscodeData";
+import { extensionsList } from "../../data/vscodeData";
 import VSCodeFileIcon, { FolderIcon } from "./VSCodeFileIcon";
 
 // Recursive tree layout for nested workspace folder structures (Light Theme)

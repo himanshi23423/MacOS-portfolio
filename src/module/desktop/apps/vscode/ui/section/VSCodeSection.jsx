@@ -23,6 +23,7 @@ const VSCodeSection = ({
   terminalBottomRef,
   handleContentChange, selectFile, closeTab, runCommand,
   isTerminalOpen, onToggleTerminal,
+  showNotification,
 }) => {
   const ext = activeFile?.split(".").pop();
   const language = languageMap[ext] || "Plain Text";
@@ -54,8 +55,11 @@ const VSCodeSection = ({
           installedExtensions={installedExtensions}
           onCommitMessageChange={setCommitMessage}
           onCommit={() => {
-            if (!commitMessage.trim()) { alert("Please type a commit message first!"); return; }
-            alert(`Successfully committed changes to main:\n"${commitMessage}"`);
+            if (!commitMessage.trim()) {
+              showNotification("Please type a commit message first!", "error");
+              return;
+            }
+            showNotification(`Successfully committed changes to main:\n"${commitMessage}"`, "info");
             setModifiedFiles({});
             setCommitMessage("");
           }}
