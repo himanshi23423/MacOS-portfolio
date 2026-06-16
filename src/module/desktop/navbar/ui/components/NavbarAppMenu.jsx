@@ -98,6 +98,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
               openWindow("vscode", { openAbout: true });
             } else if (activeAppName === "Postman") {
               openWindow("postman", { openAbout: true });
+            } else if (activeAppName === "Maps") {
+              openWindow("map", { openAbout: true });
             } else if (activeAppName === "Kuldeep's Portfolio") {
               setAboutPortfolioOpen(true);
             } else {
@@ -122,7 +124,8 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
             activeAppName === "Apple TV" ||
             activeAppName === "FaceTime" ||
             activeAppName === "VS Code" ||
-            activeAppName === "Postman",
+            activeAppName === "Postman" ||
+            activeAppName === "Maps",
           onClick: () => {
             if (activeAppName === "Safari") {
               openWindow("safari", { openSettings: true });
