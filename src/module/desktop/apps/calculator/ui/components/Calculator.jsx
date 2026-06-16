@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
-import useCalculator from "./useCalculator";
+import useCalculator from "../../hooks/useCalculator";
 import CalculatorDisplay from "./CalculatorDisplay";
 import CalculatorKeypad from "./CalculatorKeypad";
 import CalculatorAboutModal from "./CalculatorAboutModal";
