@@ -92,6 +92,7 @@ const SafariSection = () => {
         openWindow={safari.openWindow}
         homepage={safari.homepage}
         setShowSettings={safari.setShowSettings}
+        isMaxTabsReached={safari.tabs.length >= 10}
       />
 
       {/* 2. Sleek Tab Bar */}

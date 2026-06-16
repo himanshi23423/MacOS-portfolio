@@ -39,6 +39,7 @@ const SafariDesktopToolbar = ({
   openWindow,
   homepage,
   setShowSettings,
+  isMaxTabsReached,
 }) => {
   const canGoBack = activeTab.historyIndex > 0;
   const canGoForward = activeTab.historyIndex < activeTab.history.length - 1;
@@ -334,9 +335,13 @@ const SafariDesktopToolbar = ({
 
           <button
             onClick={handleNewTab}
-            className="hidden @xl:inline-block p-1.5 rounded hover:bg-black/5 text-gray-600 transition-colors"
+            disabled={isMaxTabsReached}
+            className={`hidden @xl:inline-block p-1.5 rounded text-gray-600 transition-colors ${
+              isMaxTabsReached ? "opacity-30 cursor-not-allowed" : "hover:bg-black/5 cursor-pointer"
+            }`}
             onMouseDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
+            title={isMaxTabsReached ? "Tab limit reached (Max 10)" : "Open a new tab"}
           >
             <Plus size={16} />
           </button>
