@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
-import useNotes from "./useNotes";
+import useNotes from "../../hooks/useNotes";
 import NotesSection from "../section/NotesSection";
 import NotesAboutModal from "./NotesAboutModal";
 
