@@ -1,5 +1,5 @@
 "use client";
-import "../../../photospreview/ui/styles/PhotosPreview.css";
+import "../styles/Image.css";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
 import { useState, useEffect, useCallback, useRef } from "react";
