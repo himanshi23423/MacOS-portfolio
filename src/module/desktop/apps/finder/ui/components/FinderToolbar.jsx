@@ -1,5 +1,5 @@
 import WindowControls from "@components/WindowControls";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, PanelLeft } from "lucide-react";
 
 const FinderToolbar = ({
   title,
@@ -9,13 +9,27 @@ const FinderToolbar = ({
   onGoForward,
   searchQuery,
   onSearchChange,
+  isNarrow,
+  isSidebarOpen,
+  onToggleSidebar,
 }) => (
   <div
     id="window-header"
     className="bg-[#f3f3f3]! border-b-[#d1d1d6]! px-4 py-2 flex items-center justify-between shrink-0 text-gray-600 gap-4"
   >
     <div className="flex items-center gap-6">
-      <WindowControls target="finder" />
+      <div className="flex items-center gap-2">
+        <WindowControls target="finder" />
+        {isNarrow && (
+          <button
+            onClick={onToggleSidebar}
+            className="p-1 rounded hover:bg-zinc-200 transition-colors ml-1 cursor-pointer text-gray-700"
+            title="Toggle Sidebar List"
+          >
+            <PanelLeft className="w-4 h-4" />
+          </button>
+        )}
+      </div>
 
       {/* Navigation Arrows */}
       <div className="flex items-center gap-1">
