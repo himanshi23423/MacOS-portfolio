@@ -28,8 +28,39 @@ const ImageApp = () => {
   const [currentIndex, setCurrentIndex] = useState(() => data.currentIndex ?? 0);
   const [rotation, setRotation] = useState(0);
   const [zoomScale, setZoomScale] = useState(1);
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartRef = useRef({ x: 0, y: 0 });
   const canvasRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
+
+  const handlePointerDown = (e) => {
+    e.preventDefault();
+    if (zoomScale <= 1) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setIsDragging(true);
+    dragStartRef.current = {
+      x: e.clientX - panOffset.x,
+      y: e.clientY - panOffset.y,
+    };
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDragging) return;
+    const newX = e.clientX - dragStartRef.current.x;
+    const newY = e.clientY - dragStartRef.current.y;
+    setPanOffset({ x: newX, y: newY });
+  };
+
+  const handlePointerUp = (e) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch (err) {
+      // Ignored
+    }
+  };
 
   // Sync openAbout from window data
   useEffect(() => {
@@ -48,6 +79,7 @@ const ImageApp = () => {
   useEffect(() => {
     setRotation(0);
     setZoomScale(1);
+    setPanOffset({ x: 0, y: 0 });
   }, [currentIndex]);
 
   // Keyboard navigation
@@ -78,8 +110,19 @@ const ImageApp = () => {
 
   const handleRotate = () => setRotation((r) => (r + 90) % 360);
   const handleZoomIn = () => setZoomScale((s) => Math.min(4, parseFloat((s + 0.25).toFixed(2))));
-  const handleZoomOut = () => setZoomScale((s) => Math.max(0.25, parseFloat((s - 0.25).toFixed(2))));
-  const handleZoomFit = () => setZoomScale(1);
+  const handleZoomOut = () => {
+    setZoomScale((s) => {
+      const newScale = Math.max(0.25, parseFloat((s - 0.25).toFixed(2)));
+      if (newScale <= 1) {
+        setPanOffset({ x: 0, y: 0 });
+      }
+      return newScale;
+    });
+  };
+  const handleZoomFit = () => {
+    setZoomScale(1);
+    setPanOffset({ x: 0, y: 0 });
+  };
 
   const handleDownload = () => {
     if (!imageUrl) return;
@@ -217,14 +260,27 @@ const ImageApp = () => {
         </div>
       </div>
 
-      {/* ── Canvas ───────────────────────────────────────────── */}
-      <div className="pp-canvas" ref={canvasRef}>
+      <div
+        className="pp-canvas select-none"
+        ref={canvasRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onDragStart={(e) => e.preventDefault()}
+        style={{
+          cursor: zoomScale > 1 ? (isDragging ? "grabbing" : "grab") : "default",
+          touchAction: "none",
+          userSelect: "none",
+        }}
+      >
         {imageUrl ? (
           <div
             className="pp-image-wrap"
+            onDragStart={(e) => e.preventDefault()}
             style={{
-              transform: `rotate(${rotation}deg) scale(${zoomScale})`,
-              transition: "transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94)",
+              transform: `translate(${panOffset.x}px, ${panOffset.y}px) rotate(${rotation}deg) scale(${zoomScale})`,
+              transition: isDragging ? "none" : "transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94)",
             }}
           >
             <img
@@ -232,6 +288,7 @@ const ImageApp = () => {
               alt={name}
               className="pp-image"
               draggable={false}
+              onDragStart={(e) => e.preventDefault()}
             />
           </div>
         ) : (
