@@ -36,17 +36,19 @@ const TelegramChatViewSection = ({ activeChat, inputText, onInputChange, onSend,
               </span>
             )}
           </div>
-          <button
-            onClick={() => setShowProfileDrawer(!showProfileDrawer)}
-            className={`p-2 rounded-lg transition-colors ${
-              nightMode
-                ? `hover:bg-zinc-800/80 ${showProfileDrawer ? "text-[#3390ec]" : "text-zinc-400"}`
-                : `hover:bg-zinc-200/60 ${showProfileDrawer ? "text-[#3390ec]" : "text-gray-500"}`
-            }`}
-            title="Toggle Info"
-          >
-            <Info className="w-4.5 h-4.5" />
-          </button>
+          {containerWidth >= 700 && (
+            <button
+              onClick={() => setShowProfileDrawer(!showProfileDrawer)}
+              className={`p-2 rounded-lg transition-colors ${
+                nightMode
+                  ? `hover:bg-zinc-800/80 ${showProfileDrawer ? "text-[#3390ec]" : "text-zinc-400"}`
+                  : `hover:bg-zinc-200/60 ${showProfileDrawer ? "text-[#3390ec]" : "text-gray-500"}`
+              }`}
+              title="Toggle Info"
+            >
+              <Info className="w-4.5 h-4.5" />
+            </button>
+          )}
         </div>
         <div className="flex-1 flex min-h-0 overflow-hidden relative">
           <div className="flex-1 flex flex-col min-w-0 relative">
