@@ -5,6 +5,7 @@ import { DEFAULT_BOOKMARKS, WALLPAPERS, IFRAME_COMPATIBLE_SITES, MOCK_HISTORY } 
 const isIframeable = (url) => {
   if (url.startsWith("safari://")) return true;
   const urlLower = url.toLowerCase();
+  if (urlLower.includes("wikipedia.org")) return true;
   try {
     const parsedUrl = new URL(url);
     const host = parsedUrl.hostname.toLowerCase();
