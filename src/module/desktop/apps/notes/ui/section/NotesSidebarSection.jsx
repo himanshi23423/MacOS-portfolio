@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Folder, Search, X, FolderPlus, Trash2 } from "lucide-react";
+import { Folder, Search, FolderPlus, Trash2 } from "lucide-react";
 
 const NotesSidebarSection = ({
+  sidebarRef,
   folders,
   activeFolderId,
   onSelectFolder,
@@ -11,6 +12,7 @@ const NotesSidebarSection = ({
   searchQuery,
   onSearchChange,
   isSidebarOpen,
+  isLowWidth,
   onToggleSidebar,
   formatDate,
   getFolderCount,
@@ -32,17 +34,21 @@ const NotesSidebarSection = ({
 
   return (
     <div
-      className={`absolute md:relative inset-y-0 left-0 w-64 md:w-60 lg:w-64 bg-[#f4f3ef] border-r border-[#d1d1d1] flex flex-col z-20 transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+      ref={sidebarRef}
+      className={`bg-[#f4f3ef] border-r border-[#d1d1d1] flex flex-col z-20 transition-transform duration-300 ${
+        isLowWidth
+          ? `absolute inset-y-0 left-0 w-64 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`
+          : "relative translate-x-0 w-60 lg:w-64"
+      }`}
     >
       {/* Mobile Header Toggle */}
-      <div className="flex items-center justify-between px-3 pt-3 pb-1 md:hidden">
-        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-          Folders
-        </span>
-        <button onClick={onToggleSidebar} className="p-1 rounded hover:bg-gray-200">
-          <X className="w-4 h-4 text-gray-500" />
-        </button>
-      </div>
+      {isLowWidth && (
+        <div className="flex items-center justify-between px-3 pt-3 pb-1 border-b border-gray-200">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            Folders
+          </span>
+        </div>
+      )}
 
       {/* Folders List */}
       <div className="px-2.5 pt-2.5 pb-0 flex-1 overflow-y-auto min-h-0 flex flex-col">

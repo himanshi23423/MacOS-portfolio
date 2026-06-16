@@ -1,7 +1,14 @@
 import { Bold, Italic, Underline, Trash2, Type, List, ListOrdered } from "lucide-react";
 import NoteEditor from "../components/NoteEditor";
 
-const NotesEditorSection = ({ activeNote, onUpdateNote, onDeleteNote, wordCount, onCreateNote }) => {
+const NotesEditorSection = ({
+  activeNote,
+  onUpdateNote,
+  onDeleteNote,
+  wordCount,
+  onCreateNote,
+  isLowWidth,
+}) => {
   const handleFormat = (command) => {
     document.execCommand(command, false, null);
   };
@@ -50,12 +57,15 @@ const NotesEditorSection = ({ activeNote, onUpdateNote, onDeleteNote, wordCount,
             <ListOrdered className="w-4 h-4" />
           </button>
 
-          <div className="mx-2 w-px h-5 bg-gray-300" />
-          
-          <span className="text-xs text-gray-400 flex items-center gap-1 font-semibold">
-            <Type className="w-3.5 h-3.5 text-[#e4a52e]" />
-            {wordCount} {wordCount === 1 ? "word" : "words"}
-          </span>
+          {!isLowWidth && (
+            <>
+              <div className="mx-2 w-px h-5 bg-gray-300" />
+              <span className="text-xs text-gray-400 flex items-center gap-1 font-semibold">
+                <Type className="w-3.5 h-3.5 text-[#e4a52e]" />
+                {wordCount} {wordCount === 1 ? "word" : "words"}
+              </span>
+            </>
+          )}
         </div>
         
         <button

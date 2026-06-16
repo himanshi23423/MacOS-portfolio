@@ -57,6 +57,12 @@ export default function useNotes() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setIsSidebarOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("macos_portfolio_note_folders", JSON.stringify(folders));
   }, [folders]);
 
