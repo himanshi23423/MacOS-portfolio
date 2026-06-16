@@ -1,27 +1,21 @@
-# LICENSE
+MIT License
 
-Copyright (c) 2026 Kuldeep Rajput (https://kuldeeprajput.in). All rights reserved.
+Copyright (c) 2026 Kuldeep Rajput (https://kuldeeprajput.in)
 
-## Proprietary License Agreement
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-This software and all associated files, designs, assets, and documentation (the "Software") are proprietary and confidential.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-### Terms of Use
-
-1. **Reservation of Rights**: All rights, title, and interest in and to the Software—including all copyrights, trademarks, patents, design systems, layouts, animations, and other intellectual property rights—are and shall remain the sole and exclusive property of Kuldeep Rajput.
-2. **Prohibition of Use**: You are strictly prohibited from:
-   - Copying, duplicating, cloning, reproducing, or republishing the Software or any portion thereof.
-   - Modifying, altering, adapting, translating, or creating derivative works based on the Software.
-   - Distributing, licensing, sublicensing, selling, renting, or transferring the Software.
-   - Using the Software, its layout, or its visual design as the basis of your own personal or commercial portfolio website.
-3. **No Implied License**: No license or permission to use, copy, modify, or distribute the Software is granted, either express or implied, by making the source code viewable on public code repositories.
-
-### Violations
-
-Any unauthorized copy, modification, or distribution of this Software constitutes copyright infringement and a violation of intellectual property laws. Action will be taken to enforce these rights, including but not limited to Digital Millennium Copyright Act (DMCA) takedown requests.
-
----
-
-For inquiries, permissions, or licensing requests, please contact:
-**Kuldeep Rajput**  
-Website: [kuldeeprajput.in](https://kuldeeprajput.in)
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
