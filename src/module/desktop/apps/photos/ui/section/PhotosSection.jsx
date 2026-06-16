@@ -77,6 +77,7 @@ const PhotosSection = ({
   useEffect(() => {
     if (isNarrow) {
       setIsSidebarOpen(false);
+      setShowInfo(false);
     } else {
       setIsSidebarOpen(true);
     }
@@ -375,41 +376,30 @@ const PhotosSection = ({
               )}
             </div>
 
-            <button
-              onClick={() => setShowInfo(!showInfo)}
-              disabled={!selectedPhoto}
-              className={`p-1 rounded transition-colors ${
-                selectedPhoto
-                  ? `${showInfo ? "bg-blue-100 text-blue-600" : "hover:bg-black/5 text-gray-500"}`
-                  : "text-gray-300 cursor-not-allowed"
-              }`}
-              title="Show Info"
-            >
-              <Info size={13} />
-            </button>
+            {!isNarrow && (
+              <button
+                onClick={() => setShowInfo(!showInfo)}
+                disabled={!selectedPhoto}
+                className={`p-1 rounded transition-colors ${
+                  selectedPhoto
+                    ? `${showInfo ? "bg-blue-100 text-blue-600" : "hover:bg-black/5 text-gray-500"}`
+                    : "text-gray-300 cursor-not-allowed"
+                }`}
+                title="Show Info"
+              >
+                <Info size={13} />
+              </button>
+            )}
           </div>
         </div>
       </div>
 
       <div className="flex w-full flex-1 overflow-hidden photos-main bg-white relative">
-        {isNarrow && isSidebarOpen && (
-          <div
-            className="absolute inset-0 bg-black/10 z-25 transition-opacity duration-300 cursor-pointer"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
-
         <div
-          className={`flex-shrink-0 z-30 transition-all duration-300 ${
-            isNarrow
-              ? `absolute left-0 top-0 bottom-0 h-full bg-[#f5f5f5]/95 shadow-xl border-r border-[#d4d4d4] ${
-                  isSidebarOpen
-                    ? "translate-x-0 w-48 opacity-100"
-                    : "-translate-x-full w-0 opacity-0 overflow-hidden pointer-events-none"
-                }`
-              : isSidebarOpen
-              ? "w-48 translate-x-0 opacity-100 relative h-full bg-[#f5f5f5]/80 border-r border-[#d4d4d4] flex flex-col"
-              : "w-0 -translate-x-full opacity-0 overflow-hidden absolute pointer-events-none"
+          className={`flex-shrink-0 z-30 transition-all duration-300 relative h-full bg-[#f5f5f5]/80 border-r border-[#d4d4d4] flex flex-col ${
+            isSidebarOpen
+              ? "w-48 opacity-100"
+              : "w-0 opacity-0 overflow-hidden pointer-events-none"
           }`}
         >
           <PhotosSidebarSection
@@ -444,16 +434,6 @@ const PhotosSection = ({
               >
                 <X size={14} />
               </button>
-            </div>
-
-            {/* Photo preview inside info panel */}
-            <div className="aspect-video w-full rounded-md overflow-hidden bg-gray-200/50 shadow-inner mb-3 flex items-center justify-center border border-gray-300">
-              <img
-                src={selectedPhoto.img}
-                alt={selectedPhoto.title}
-                className="max-h-full max-w-full object-contain transition-transform"
-                style={{ transform: `rotate(${selectedPhoto.rotation}deg)` }}
-              />
             </div>
 
             {/* Editable Title */}
