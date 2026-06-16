@@ -1,9 +1,13 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import windowWrapper from "@hoc/windowWrapper";
+import useWindowsStore from "@store/window";
 import INITIAL_FONTS from "./fontData";
 import FontBookSection from "../section/FontBookSection";
+import FontBookAboutModal from "./FontBookAboutModal";
 
 const FontBook = () => {
+  const { windows, setWindowData } = useWindowsStore();
+  const [showAbout, setShowAbout] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All Fonts");
   const [fonts, setFonts] = useState(INITIAL_FONTS);
   const [activeFont, setActiveFont] = useState(INITIAL_FONTS[0]);
@@ -15,6 +19,13 @@ const FontBook = () => {
   );
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
+
+  useEffect(() => {
+    if (windows.font?.data?.openAbout) {
+      setShowAbout(true);
+      setWindowData("font", { ...windows.font.data, openAbout: false });
+    }
+  }, [windows.font?.data?.openAbout, windows.font?.data, setWindowData]);
 
   const handleInstallFont = () => {
     const name = googleFontInput.trim();
@@ -64,27 +75,30 @@ const FontBook = () => {
   });
 
   return (
-    <FontBookSection
-      fonts={fonts}
-      activeCategory={activeCategory}
-      setActiveCategory={setActiveCategory}
-      searchQuery={searchQuery}
-      setSearchQuery={setSearchQuery}
-      googleFontInput={googleFontInput}
-      setGoogleFontInput={setGoogleFontInput}
-      handleInstallFont={handleInstallFont}
-      filteredFonts={filteredFonts}
-      activeFont={activeFont}
-      setActiveFont={setActiveFont}
-      fontSize={fontSize}
-      setFontSize={setFontSize}
-      isBold={isBold}
-      setIsBold={setIsBold}
-      isItalic={isItalic}
-      setIsItalic={setIsItalic}
-      specimenText={specimenText}
-      setSpecimenText={setSpecimenText}
-    />
+    <>
+      <FontBookSection
+        fonts={fonts}
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        googleFontInput={googleFontInput}
+        setGoogleFontInput={setGoogleFontInput}
+        handleInstallFont={handleInstallFont}
+        filteredFonts={filteredFonts}
+        activeFont={activeFont}
+        setActiveFont={setActiveFont}
+        fontSize={fontSize}
+        setFontSize={setFontSize}
+        isBold={isBold}
+        setIsBold={setIsBold}
+        isItalic={isItalic}
+        setIsItalic={setIsItalic}
+        specimenText={specimenText}
+        setSpecimenText={setSpecimenText}
+      />
+      <FontBookAboutModal show={showAbout} onClose={() => setShowAbout(false)} />
+    </>
   );
 };
 
