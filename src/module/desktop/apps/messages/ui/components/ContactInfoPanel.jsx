@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { X, Phone, Video, Bell, BellOff, ExternalLink } from "lucide-react";
 
 const ContactInfoPanel = ({
@@ -7,6 +8,8 @@ const ContactInfoPanel = ({
   onTriggerCall,
   onClose,
 }) => {
+  const [showRedirectPrompt, setShowRedirectPrompt] = useState(false);
+
   return (
     <div className="absolute md:relative inset-y-0 right-0 w-64 bg-gray-50 border-l border-gray-200 p-5 overflow-y-auto flex flex-col items-center text-center shrink-0 z-30 transition-transform duration-300">
       <button
@@ -80,8 +83,10 @@ const ContactInfoPanel = ({
         {activeChat.github ? (
           <a
             href={activeChat.github}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowRedirectPrompt(true);
+            }}
             className="flex items-center justify-between p-2 bg-gray-100 hover:bg-gray-200 rounded text-xs text-blue-600 transition-colors w-full font-medium"
           >
             <span className="truncate max-w-[150px]">{activeChat.github.replace("https://", "")}</span>
@@ -91,6 +96,40 @@ const ContactInfoPanel = ({
           <span className="text-xs text-gray-400 italic">No links shared</span>
         )}
       </div>
+
+      {showRedirectPrompt && (
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center z-[100] p-6 text-center animate-in fade-in duration-150">
+          <div className="space-y-4 max-w-xs transform animate-in zoom-in-95 duration-150">
+            <div className="w-12 h-12 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
+              <img src="/images/github.png" alt="GitHub" className="w-7 h-7 object-contain" onError={(e) => { e.target.src = "/icons/safari.png" }} />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
+              <p className="text-[11px] text-gray-500 leading-relaxed">
+                Do you want to open the link{" "}
+                <span className="font-semibold text-gray-700">{activeChat.github.replace("https://", "")}</span> in a new tab?
+              </p>
+            </div>
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => setShowRedirectPrompt(false)}
+                className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer border border-zinc-200"
+              >
+                Cancel
+              </button>
+              <a
+                href={activeChat.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setShowRedirectPrompt(false)}
+                className="flex-1 py-2 bg-[#24292e] hover:bg-[#1f2327] active:bg-[#1a1e21] text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center cursor-pointer text-center"
+              >
+                Open Link
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
