@@ -70,6 +70,12 @@ const TelegramSection = ({
         containerWidth={containerWidth}
       />
       <div className="flex-1 flex min-h-0 relative">
+        {containerWidth < 550 && isSidebarOpen && (
+          <div
+            className="absolute inset-0 bg-black/10 z-10 transition-opacity duration-300 cursor-pointer"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
         <TelegramChatListSection
           chats={filteredChats}
           activeChatId={activeChatId}

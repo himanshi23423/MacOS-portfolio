@@ -1,6 +1,6 @@
 import React from "react";
 import WindowControls from "@components/WindowControls";
-import { PanelLeft, User } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 
 const TelegramHeaderSection = ({
   activeChat,
@@ -46,19 +46,7 @@ const TelegramHeaderSection = ({
         {activeChat ? activeChat.name : "Telegram"}
       </div>
 
-      <div className="w-14 flex justify-end">
-        {containerWidth >= 700 && (
-          <button
-            onClick={onToggleProfile}
-            className={`p-1.5 rounded transition-colors cursor-pointer ${
-              nightMode ? "hover:bg-zinc-800 text-zinc-300" : "hover:bg-zinc-200 text-gray-700"
-            }`}
-            title="Toggle Profile"
-          >
-            <User className="w-4 h-4" />
-          </button>
-        )}
-      </div>
+      <div className="w-14 flex justify-end" />
     </div>
   );
 };
