@@ -184,7 +184,11 @@
 
   @media (min-width: 768px) {
     #photos {
-      @apply w-[800px] h-[550px] max-w-3xl bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+      top: calc(50vh - 280px);
+      left: calc(50vw - 430px);
+      width: 860px;
+      height: 560px;
+      @apply bg-white absolute shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
     }
   }
 
