@@ -7,6 +7,7 @@ const MessageList = ({
   activeChatId,
   onSelectChat,
   mutedChats,
+  isLowWidth,
 }) => {
   const filteredConversations = conversations.filter(
     (c) =>
@@ -15,7 +16,7 @@ const MessageList = ({
   );
 
   return (
-    <div className="absolute md:relative inset-y-0 left-0 w-64 md:w-60 lg:w-64 bg-gray-50 border-r border-[#d1d1d1] flex flex-col z-20 transition-transform duration-300 h-full">
+    <div className="w-full bg-gray-50 border-r border-gray-200 flex flex-col h-full">
       <div className="p-2.5">
         <div className="relative flex items-center bg-gray-200/60 rounded-md px-2 py-1.5">
           <Search className="w-4 h-4 text-gray-400 mr-2 shrink-0" />

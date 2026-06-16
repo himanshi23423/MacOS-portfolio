@@ -14,12 +14,20 @@ const MessagesChatSection = ({
   mutedChats, setMutedChats,
   messagesEndRef,
   triggerCall, handleSend,
+  isLowWidth,
+  sidebarRef,
 }) => (
   <div className="flex-1 flex min-h-0 relative">
-    <div className={`
-      absolute md:relative inset-y-0 left-0 z-20 transition-transform duration-300 h-full
-      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-    `}>
+    <div
+      ref={sidebarRef}
+      className={`
+        z-20 transition-transform duration-300 h-full
+        ${isLowWidth
+          ? `absolute inset-y-0 left-0 w-64 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`
+          : "relative translate-x-0 w-60 lg:w-64"
+        }
+      `}
+    >
       <MessageList
         conversations={conversations}
         searchQuery={searchQuery}
@@ -27,9 +35,10 @@ const MessagesChatSection = ({
         activeChatId={activeChatId}
         onSelectChat={(id) => {
           setActiveChatId(id);
-          if (window.innerWidth < 768) setIsSidebarOpen(false);
+          if (isLowWidth) setIsSidebarOpen(false);
         }}
         mutedChats={mutedChats}
+        isLowWidth={isLowWidth}
       />
     </div>
 
@@ -38,7 +47,7 @@ const MessagesChatSection = ({
         <>
           <div className="px-5 py-3 border-b border-gray-100 flex justify-between items-center bg-white shrink-0">
             <div>
-              <h3 className="font-semibold text-sm text-gray-900">{activeChat.name}</h3>
+              <h3 className="font-semibold text-[13px] text-slate-700">{activeChat.name}</h3>
               <span className="text-[10px] text-green-500 font-medium">iMessage</span>
             </div>
             <div className="flex items-center gap-3">

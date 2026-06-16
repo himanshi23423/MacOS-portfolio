@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useRef } from "react";
 import MessagesHeaderSection from "./MessagesHeaderSection";
 import MessagesChatSection from "./MessagesChatSection";
 import MessagesCallSection from "./MessagesCallSection";
@@ -17,12 +18,62 @@ const MessagesSection = (props) => {
     onMicToggle, onCameraToggle, onEndCall, formatCallTime,
   } = props;
 
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(800);
+  const sidebarRef = useRef(null);
+  const toggleBtnRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const isLowWidth = containerWidth < 520;
+
+  useEffect(() => {
+    if (isLowWidth) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  }, [isLowWidth, setIsSidebarOpen]);
+
+  useEffect(() => {
+    if (!isLowWidth || !isSidebarOpen) return;
+
+    const handleClickOutside = (event) => {
+      if (
+        sidebarRef.current?.contains(event.target) ||
+        toggleBtnRef.current?.contains(event.target)
+      ) {
+        return;
+      }
+      setIsSidebarOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handleClickOutside);
+    return () => {
+      document.removeEventListener("pointerdown", handleClickOutside);
+    };
+  }, [isLowWidth, isSidebarOpen, setIsSidebarOpen]);
+
   return (
-    <div className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative">
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative"
+    >
       <MessagesHeaderSection
         activeChat={activeChat}
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isLowWidth={isLowWidth}
+        toggleBtnRef={toggleBtnRef}
       />
       <MessagesChatSection
         conversations={conversations}
@@ -43,6 +94,8 @@ const MessagesSection = (props) => {
         messagesEndRef={messagesEndRef}
         triggerCall={triggerCall}
         handleSend={handleSend}
+        isLowWidth={isLowWidth}
+        sidebarRef={sidebarRef}
       />
       <MessagesCallSection
         callState={callState}
