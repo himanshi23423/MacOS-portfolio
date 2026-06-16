@@ -12,7 +12,6 @@ const MapViewSection = forwardRef(
       _center,
       _zoom,
       mapStyle,
-      setMapStyle,
       handleZoom,
       currentCity,
       iframeSrc,
@@ -24,7 +23,7 @@ const MapViewSection = forwardRef(
       className="flex-1 flex flex-col min-w-0 bg-zinc-200 relative"
       onClick={onMapClick}
     >
-      <MapControls mapStyle={mapStyle} setMapStyle={setMapStyle} handleZoom={handleZoom} />
+      <MapControls handleZoom={handleZoom} />
       <MapCanvas currentCity={currentCity} mapStyle={mapStyle} iframeSrc={iframeSrc} />
     </div>
   ),
