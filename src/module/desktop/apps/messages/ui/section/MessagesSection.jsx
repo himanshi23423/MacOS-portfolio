@@ -38,14 +38,22 @@ const MessagesSection = (props) => {
 
   useEffect(() => {
     if (isLowWidth) {
+      setShowInfo(false);
+    }
+  }, [isLowWidth, setShowInfo]);
+
+  const shouldTreatAsLowWidth = isLowWidth || showInfo;
+
+  useEffect(() => {
+    if (shouldTreatAsLowWidth) {
       setIsSidebarOpen(false);
     } else {
       setIsSidebarOpen(true);
     }
-  }, [isLowWidth, setIsSidebarOpen]);
+  }, [shouldTreatAsLowWidth, setIsSidebarOpen]);
 
   useEffect(() => {
-    if (!isLowWidth || !isSidebarOpen) return;
+    if (!shouldTreatAsLowWidth || !isSidebarOpen) return;
 
     const handleClickOutside = (event) => {
       if (
@@ -61,7 +69,7 @@ const MessagesSection = (props) => {
     return () => {
       document.removeEventListener("pointerdown", handleClickOutside);
     };
-  }, [isLowWidth, isSidebarOpen, setIsSidebarOpen]);
+  }, [shouldTreatAsLowWidth, isSidebarOpen, setIsSidebarOpen]);
 
   return (
     <div
@@ -72,7 +80,7 @@ const MessagesSection = (props) => {
         activeChat={activeChat}
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        isLowWidth={isLowWidth}
+        isLowWidth={shouldTreatAsLowWidth}
         toggleBtnRef={toggleBtnRef}
       />
       <MessagesChatSection
@@ -94,7 +102,8 @@ const MessagesSection = (props) => {
         messagesEndRef={messagesEndRef}
         triggerCall={triggerCall}
         handleSend={handleSend}
-        isLowWidth={isLowWidth}
+        isLowWidth={shouldTreatAsLowWidth}
+        isActualLowWidth={isLowWidth}
         sidebarRef={sidebarRef}
       />
       <MessagesCallSection

@@ -15,6 +15,7 @@ const MessagesChatSection = ({
   messagesEndRef,
   triggerCall, handleSend,
   isLowWidth,
+  isActualLowWidth,
   sidebarRef,
 }) => (
   <div className="flex-1 flex min-h-0 relative">
@@ -57,13 +58,15 @@ const MessagesChatSection = ({
               <button onClick={() => triggerCall("video")} className="p-1.5 rounded hover:bg-gray-100 text-blue-500" title="Video FaceTime">
                 <Video className="w-4 h-4" />
               </button>
-              <button
-                onClick={() => setShowInfo(!showInfo)}
-                className={`p-1.5 rounded transition-colors ${showInfo ? "bg-blue-100 text-blue-600" : "hover:bg-gray-100 text-blue-500"}`}
-                title="Contact Details"
-              >
-                <Info className="w-4 h-4" />
-              </button>
+              {!isActualLowWidth && (
+                <button
+                  onClick={() => setShowInfo(!showInfo)}
+                  className={`p-1.5 rounded transition-colors ${showInfo ? "bg-blue-100 text-blue-600" : "hover:bg-gray-100 text-blue-500"}`}
+                  title="Contact Details"
+                >
+                  <Info className="w-4 h-4" />
+                </button>
+              )}
             </div>
           </div>
 
@@ -80,7 +83,7 @@ const MessagesChatSection = ({
                 onSend={handleSend}
               />
             </div>
-            {showInfo && (
+            {!isActualLowWidth && showInfo && (
               <ContactInfoPanel
                 activeChat={activeChat}
                 mutedChats={mutedChats}
