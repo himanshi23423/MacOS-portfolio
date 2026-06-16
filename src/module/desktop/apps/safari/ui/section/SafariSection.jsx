@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { projects, socials } from "@constants";
+import { Globe } from "lucide-react";
 import useSafari from "../../hooks/useSafari";
 import { SafariDesktopToolbar, SafariMobileHeader } from "../components/SafariToolbar";
 import SafariTabBar from "../components/SafariTabBar";
@@ -185,6 +186,70 @@ const SafariSection = () => {
         show={safari.showAbout}
         onClose={() => safari.setShowAbout(false)}
       />
+
+      {/* 6. Simulated Search Alert Dialog */}
+      {safari.showSearchAlert && (() => {
+        const isSearch = safari.searchQuery.startsWith("https://www.google.com/search?q=");
+        const displayName = isSearch 
+          ? decodeURIComponent(safari.searchQuery.split("?q=")[1])
+          : safari.searchQuery;
+
+        return (
+          <div 
+            className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/25 backdrop-blur-xxs select-none font-sans"
+            onClick={() => safari.setShowSearchAlert(false)}
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <div 
+              className="bg-white border border-[#c8cbd0]/80 p-5 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center space-y-4 transform animate-in zoom-in-95 duration-150 text-gray-800"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-11 h-11 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto shadow-inner animate-in fade-in">
+                <Globe className="w-5 h-5 animate-pulse" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-gray-950">Open in New Tab</h3>
+                <p className="text-[11.5px] text-gray-500 leading-relaxed px-1">
+                  {isSearch ? (
+                    <>
+                      Do you want to search for <span className="font-semibold text-gray-750">"{displayName}"</span> on Google in a new tab?
+                    </>
+                  ) : (
+                    <>
+                      Do you want to open <span className="font-semibold text-gray-750">"{displayName}"</span> in a new tab?
+                    </>
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => safari.setShowSearchAlert(false)}
+                  className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const link = document.createElement("a");
+                    link.href = safari.searchQuery;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    safari.setShowSearchAlert(false);
+                  }}
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center cursor-pointer text-center"
+                >
+                  Open Link
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };

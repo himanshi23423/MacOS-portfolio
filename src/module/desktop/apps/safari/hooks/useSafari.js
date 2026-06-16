@@ -2,6 +2,22 @@ import { useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
 import { DEFAULT_BOOKMARKS, WALLPAPERS, IFRAME_COMPATIBLE_SITES, MOCK_HISTORY } from "../data";
 
+const isIframeable = (url) => {
+  if (url.startsWith("safari://")) return true;
+  const urlLower = url.toLowerCase();
+  try {
+    const parsedUrl = new URL(url);
+    const host = parsedUrl.hostname.toLowerCase();
+    const currentHost = typeof window !== "undefined" ? window.location.hostname.toLowerCase() : "";
+    if (host === "localhost" || host === "127.0.0.1" || host === currentHost) {
+      return true;
+    }
+  } catch {
+    /* empty */
+  }
+  return IFRAME_COMPATIBLE_SITES.some((site) => urlLower.includes(site));
+};
+
 const useSafari = () => {
   const [tabs, setTabs] = useState([
     {
@@ -33,6 +49,8 @@ const useSafari = () => {
   // macOS Safari Settings states
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [showSearchAlert, setShowSearchAlert] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [homepage, setHomepage] = useState("safari://start");
   const [showTabIcons, setShowTabIcons] = useState(true);
   const [preventTracking, setPreventTracking] = useState(true);
@@ -147,20 +165,42 @@ const useSafari = () => {
     let targetUrl = url.trim();
     if (!targetUrl) return;
 
-    if (!targetUrl.startsWith("safari://")) {
+    const lowerQuery = targetUrl.toLowerCase();
+    let isRedirected = false;
+
+    if (lowerQuery.includes("youtube")) {
+      targetUrl = "https://newtube-ruddy.vercel.app/";
+      isRedirected = true;
+    } else if (lowerQuery.includes("insta")) {
+      targetUrl = "https://snsta.vercel.app/";
+      isRedirected = true;
+    } else if (lowerQuery.includes("resume")) {
+      targetUrl = "https://resume-ats-omega.vercel.app/";
+      isRedirected = true;
+    } else if (lowerQuery.includes("portfolio")) {
+      targetUrl = typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
+      isRedirected = true;
+    } else if (lowerQuery.includes("wikipedia")) {
+      targetUrl = "https://en.wikipedia.org";
+      isRedirected = true;
+    } else if (lowerQuery.includes("map")) {
+      targetUrl = "https://openstreetmap.org";
+      isRedirected = true;
+    }
+
+    if (!isRedirected && !targetUrl.startsWith("safari://")) {
       if (!/^https?:\/\//i.test(targetUrl)) {
-        const lowerUrl = targetUrl.toLowerCase();
         const isLocal =
-          lowerUrl.startsWith("localhost") ||
-          lowerUrl.startsWith("127.0.0.1") ||
-          lowerUrl.startsWith(window.location.host.toLowerCase()) ||
-          lowerUrl.startsWith(window.location.hostname.toLowerCase());
+          lowerQuery.startsWith("localhost") ||
+          lowerQuery.startsWith("127.0.0.1") ||
+          lowerQuery.startsWith(window.location.host.toLowerCase()) ||
+          lowerQuery.startsWith(window.location.hostname.toLowerCase());
 
         if (isLocal) {
           let protocol = "http://";
           if (
-            lowerUrl.startsWith(window.location.host.toLowerCase()) ||
-            lowerUrl.startsWith(window.location.hostname.toLowerCase())
+            lowerQuery.startsWith(window.location.host.toLowerCase()) ||
+            lowerQuery.startsWith(window.location.hostname.toLowerCase())
           ) {
             protocol = window.location.protocol + "//";
           }
@@ -168,22 +208,17 @@ const useSafari = () => {
         } else if (targetUrl.includes(".") && !targetUrl.includes(" ")) {
           targetUrl = "https://" + targetUrl;
         } else {
-          // search query
-          let searchUrl;
-          if (searchEngine === "Google") {
-            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(targetUrl)}`;
-          } else if (searchEngine === "DuckDuckGo") {
-            searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(targetUrl)}`;
-          } else if (searchEngine === "Bing") {
-            searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(targetUrl)}`;
-          } else if (searchEngine === "Yahoo") {
-            searchUrl = `https://search.yahoo.com/search?p=${encodeURIComponent(targetUrl)}`;
-          } else {
-            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(targetUrl)}`;
-          }
-          targetUrl = searchUrl;
+          // search query: convert to google search URL
+          targetUrl = `https://www.google.com/search?q=${encodeURIComponent(targetUrl)}`;
         }
       }
+    }
+
+    // Intercept any URLs/searches that are not iframeable
+    if (!targetUrl.startsWith("safari://") && !isIframeable(targetUrl)) {
+      setSearchQuery(targetUrl);
+      setShowSearchAlert(true);
+      return;
     }
 
     setTabs((prevTabs) =>
@@ -201,6 +236,18 @@ const useSafari = () => {
             newTitle = "History";
           } else if (targetUrl === "safari://bookmarks") {
             newTitle = "Bookmarks";
+          } else if (targetUrl === "https://newtube-ruddy.vercel.app/") {
+            newTitle = "NewTube";
+          } else if (targetUrl === "https://snsta.vercel.app/") {
+            newTitle = "Insta Downloader";
+          } else if (targetUrl === "https://resume-ats-omega.vercel.app/") {
+            newTitle = "Resume ATS";
+          } else if (targetUrl === "https://en.wikipedia.org") {
+            newTitle = "Wikipedia";
+          } else if (targetUrl === "https://openstreetmap.org") {
+            newTitle = "OpenStreetMap";
+          } else if (targetUrl === (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000")) {
+            newTitle = "Portfolio";
           } else if (
             targetUrl.includes("google.com/search") ||
             targetUrl.includes("duckduckgo.com") ||
@@ -310,6 +357,12 @@ const useSafari = () => {
     if (url === "safari://privacy-report") return "Privacy Report";
     if (url === "safari://history") return "History";
     if (url === "safari://bookmarks") return "Bookmarks";
+    if (url === "https://newtube-ruddy.vercel.app/") return "NewTube";
+    if (url === "https://snsta.vercel.app/") return "Insta Downloader";
+    if (url === "https://resume-ats-omega.vercel.app/") return "Resume ATS";
+    if (url === "https://en.wikipedia.org") return "Wikipedia";
+    if (url === "https://openstreetmap.org") return "OpenStreetMap";
+    if (url === (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000")) return "Portfolio";
     if (
       url.includes("google.com/search") ||
       url.includes("duckduckgo.com") ||
@@ -377,22 +430,6 @@ const useSafari = () => {
     }
   };
 
-  const isIframeable = (url) => {
-    if (url.startsWith("safari://")) return true;
-    const urlLower = url.toLowerCase();
-    try {
-      const parsedUrl = new URL(url);
-      const host = parsedUrl.hostname.toLowerCase();
-      const currentHost = window.location.hostname.toLowerCase();
-      if (host === "localhost" || host === "127.0.0.1" || host === currentHost) {
-        return true;
-      }
-    } catch {
-      /* empty */
-    }
-    return IFRAME_COMPATIBLE_SITES.some((site) => urlLower.includes(site));
-  };
-
   return {
     tabs,
     setTabs,
@@ -441,6 +478,10 @@ const useSafari = () => {
     setShowSettings,
     showAbout,
     setShowAbout,
+    showSearchAlert,
+    setShowSearchAlert,
+    searchQuery,
+    setSearchQuery,
     homepage,
     setHomepage,
     showTabIcons,
