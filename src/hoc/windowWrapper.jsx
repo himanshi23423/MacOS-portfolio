@@ -44,9 +44,7 @@ const windowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
     const { focusWindow, windows } = useWindowsStore();
     const { isOpen, zIndex: baseZIndex } = windows[windowKey] || { isOpen: false, zIndex: 1000 };
-    const isPreview = windowKey === "imgfile" || windowKey === "txtfile";
-    const isBrowser = windowKey === "safari" || windowKey === "chrome";
-    const zIndex = isPreview ? baseZIndex + 2000 : (isBrowser ? baseZIndex + 4000 : baseZIndex);
+    const zIndex = baseZIndex;
     const ref = useRef(null);
     const prevOpenRef = useRef(false);
     const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
@@ -324,7 +322,7 @@ const windowWrapper = (Component, windowKey) => {
         ref={ref}
         style={isMobile ? mobileStyles : desktopStyles}
         className={`${isMobile ? "" : "absolute"} ${windows[windowKey]?.isMaximized ? "maximized" : ""}`}
-        onMouseDown={() => {
+        onPointerDown={() => {
           if (!isMobile) focusWindow(windowKey);
         }}
       >
