@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import TelegramHeaderSection from "../section/TelegramHeaderSection";
 import TelegramChatListSection from "../section/TelegramChatListSection";
 import TelegramChatViewSection from "../section/TelegramChatViewSection";
@@ -27,12 +27,37 @@ const TelegramSection = ({
   filteredChats,
   getThemeClass,
 }) => {
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(800);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (containerWidth < 550) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  }, [containerWidth, setIsSidebarOpen]);
+
   return (
-    <div className={`flex flex-col h-full w-full rounded-xl overflow-hidden shadow-2xl border transition-colors select-none ${
-      nightMode
-        ? "bg-zinc-950 text-zinc-100 border-zinc-800/80"
-        : "bg-white text-gray-800 border-zinc-200"
-    }`}>
+    <div
+      ref={containerRef}
+      className={`flex flex-col h-full w-full rounded-xl overflow-hidden shadow-2xl border transition-colors select-none ${
+        nightMode
+          ? "bg-zinc-900 text-zinc-100 border-zinc-800/80"
+          : "bg-[#f4f4f5] text-gray-800 border-zinc-200"
+      }`}
+    >
       <TelegramHeaderSection
         activeChat={activeChat}
         isDrawerOpen={isDrawerOpen}
@@ -40,6 +65,9 @@ const TelegramSection = ({
         onToggleProfile={() => setShowProfileDrawer(!showProfileDrawer)}
         setShowProfileDrawer={setShowProfileDrawer}
         nightMode={nightMode}
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        containerWidth={containerWidth}
       />
       <div className="flex-1 flex min-h-0 relative">
         <TelegramChatListSection
@@ -54,6 +82,7 @@ const TelegramSection = ({
           isDrawerOpen={isDrawerOpen}
           setIsDrawerOpen={setIsDrawerOpen}
           setDrawerSection={setDrawerSection}
+          containerWidth={containerWidth}
         />
         <TelegramChatViewSection
           activeChat={activeChat}
@@ -85,6 +114,7 @@ const TelegramSection = ({
           openSavedMessages={openSavedMessages}
           setActiveChatId={setActiveChatId}
           setNightMode={setNightMode}
+          containerWidth={containerWidth}
         />
       </div>
     </div>

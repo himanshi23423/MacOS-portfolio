@@ -1,10 +1,13 @@
 import React from "react";
 import { ExternalLink } from "lucide-react";
+import useWindowsStore from "@store/window";
 
 const TelegramProfileDrawer = ({ activeChat, nightMode }) => {
+  const setGithubRedirect = useWindowsStore((state) => state.setGithubRedirect);
+
   return (
     <div className={`w-64 border-l p-5 overflow-y-auto flex flex-col items-center shrink-0 z-10 text-center relative select-none transition-colors ${
-      nightMode ? "bg-[#181818] border-zinc-800" : "bg-[#f8f9fa] border-zinc-200"
+      nightMode ? "bg-zinc-900 border-zinc-800" : "bg-[#f4f4f5] border-zinc-200"
     }`}>
       {activeChat.avatar ? (
         <img
@@ -55,17 +58,20 @@ const TelegramProfileDrawer = ({ activeChat, nightMode }) => {
       <div className="w-full text-left">
         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Shared Information</span>
         <div className="space-y-1.5">
-          <a
-            href="https://github.com/kuldeeprajput-dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`flex items-center justify-between p-2 border rounded-md text-[11px] text-[#3390ec] transition-colors w-full font-medium ${
+          <button
+            onClick={() =>
+              setGithubRedirect({
+                name: "Kuldeep (Developer) Profile",
+                href: "https://github.com/kuldeeprajput-dev",
+              })
+            }
+            className={`flex items-center justify-between p-2 border rounded-md text-[11px] text-[#3390ec] transition-colors w-full font-medium cursor-pointer ${
               nightMode ? "bg-zinc-850 border-zinc-750 hover:bg-zinc-800" : "bg-white border-zinc-200 hover:bg-zinc-50"
             }`}
           >
             <span className="truncate">GitHub Profile</span>
             <ExternalLink className="w-3 h-3" />
-          </a>
+          </button>
         </div>
       </div>
     </div>

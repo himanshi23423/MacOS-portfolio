@@ -5,7 +5,8 @@ const TelegramChatList = ({
   filteredChats, activeChatId, setActiveChatId,
   searchQuery, setSearchQuery,
   nightMode, isSidebarOpen, setIsSidebarOpen,
-  isDrawerOpen, setIsDrawerOpen, setDrawerSection
+  isDrawerOpen, setIsDrawerOpen, setDrawerSection,
+  containerWidth = 800
 }) => {
   const [activeFilter, setActiveFilter] = useState("All");
 
@@ -17,11 +18,14 @@ const TelegramChatList = ({
     return true;
   });
 
+  const isNarrow = containerWidth < 550;
+
   return (
     <div className={`
-      absolute md:relative inset-y-0 left-0 w-64 md:w-60 lg:w-64 border-r flex flex-col z-20 transition-all duration-300
-      ${nightMode ? "bg-zinc-900 border-zinc-850" : "bg-[#f1f1f3] border-zinc-200"}
-      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+      inset-y-0 left-0 w-64 border-r flex flex-col z-20 transition-all duration-300 h-full
+      ${nightMode ? "bg-zinc-900 border-zinc-800" : "bg-[#f4f4f5] border-zinc-200"}
+      ${isNarrow ? "absolute" : "relative"}
+      ${isNarrow && !isSidebarOpen ? "-translate-x-full" : "translate-x-0"}
     `}>
       <div className="p-3 pb-1.5 flex flex-col gap-2">
         <div className="flex items-center gap-2.5">
@@ -81,7 +85,7 @@ const TelegramChatList = ({
               key={chat.id}
               onClick={() => {
                 setActiveChatId(chat.id);
-                if (window.innerWidth < 768) {
+                if (isNarrow) {
                   setIsSidebarOpen(false);
                 }
               }}

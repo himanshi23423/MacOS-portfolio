@@ -4,7 +4,7 @@ import { Smile, Send, Paperclip } from "lucide-react";
 const TelegramChatInput = ({ inputText, setInputText, handleSend, activeChat, nightMode }) => {
   return (
     <div className={`p-3.5 border-t shrink-0 transition-colors ${
-      nightMode ? "bg-[#16171f] border-zinc-800/60" : "bg-white border-zinc-200/80"
+      nightMode ? "bg-zinc-900 border-zinc-800/60" : "bg-[#f4f4f5] border-zinc-200/80"
     }`}>
       <form
         onSubmit={(e) => {
@@ -15,8 +15,8 @@ const TelegramChatInput = ({ inputText, setInputText, handleSend, activeChat, ni
       >
         <div className={`flex items-center flex-1 rounded-full px-3 py-1.5 border transition-all ${
           nightMode
-            ? "bg-zinc-900 border-zinc-800 text-white focus-within:border-zinc-700"
-            : "bg-zinc-100 border-zinc-200/50 text-gray-800 focus-within:border-zinc-300"
+            ? "bg-zinc-950 border-zinc-800 text-white focus-within:border-zinc-750"
+            : "bg-white border-zinc-200/80 text-gray-800 focus-within:border-zinc-300"
         }`}>
           <button
             type="button"

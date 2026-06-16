@@ -5,7 +5,9 @@ import TelegramChatInput from "../components/TelegramChatInput";
 import TelegramProfileDrawer from "../components/TelegramProfileDrawer";
 import TelegramSidebarDrawer from "../components/TelegramSidebarDrawer";
 
-const TelegramChatViewSection = ({ activeChat, inputText, onInputChange, onSend, isTyping, messagesEndRef, showProfileDrawer, setShowProfileDrawer, isDrawerOpen, setIsDrawerOpen, nightMode, ...rest }) => {
+const TelegramChatViewSection = ({ activeChat, inputText, onInputChange, onSend, isTyping, messagesEndRef, showProfileDrawer, setShowProfileDrawer, isDrawerOpen, setIsDrawerOpen, nightMode, containerWidth = 800, ...rest }) => {
+  const shouldShowProfile = showProfileDrawer && containerWidth >= 700;
+
   return (
     <>
       <TelegramSidebarDrawer
@@ -18,22 +20,28 @@ const TelegramChatViewSection = ({ activeChat, inputText, onInputChange, onSend,
         nightMode ? "bg-zinc-900" : "bg-[#f4f4f5]"
       }`}>
         <div className={`px-5 py-2.5 border-b flex justify-between items-center shrink-0 transition-colors ${
-          nightMode ? "bg-zinc-950 border-zinc-850" : "bg-white border-zinc-200"
+          nightMode ? "bg-zinc-900 border-zinc-800/85" : "bg-[#f4f4f5] border-zinc-200/80"
         }`}>
           <div>
             <h3 className="font-bold text-xs leading-none">{activeChat?.name}</h3>
-            <span className={`text-[10px] font-medium block mt-1 ${
-              activeChat?.status === "online" || activeChat?.status?.includes("cloud") ? "text-[#3390ec]" : "text-gray-400"
-            }`}>
-              {activeChat?.status}
-            </span>
+            {isTyping ? (
+              <span className="text-[10px] font-medium block mt-1 text-[#3390ec] animate-pulse">
+                typing...
+              </span>
+            ) : (
+              <span className={`text-[10px] font-medium block mt-1 ${
+                activeChat?.status === "online" || activeChat?.status?.includes("cloud") ? "text-[#3390ec]" : "text-gray-400"
+              }`}>
+                {activeChat?.status}
+              </span>
+            )}
           </div>
           <button
             onClick={() => setShowProfileDrawer(!showProfileDrawer)}
             className={`p-2 rounded-lg transition-colors ${
               nightMode
-                ? `hover:bg-zinc-800 ${showProfileDrawer ? "text-[#3390ec]" : "text-zinc-400"}`
-                : `hover:bg-zinc-100 ${showProfileDrawer ? "text-[#3390ec]" : "text-gray-500"}`
+                ? `hover:bg-zinc-800/80 ${showProfileDrawer ? "text-[#3390ec]" : "text-zinc-400"}`
+                : `hover:bg-zinc-200/60 ${showProfileDrawer ? "text-[#3390ec]" : "text-gray-500"}`
             }`}
             title="Toggle Info"
           >
@@ -57,7 +65,7 @@ const TelegramChatViewSection = ({ activeChat, inputText, onInputChange, onSend,
               nightMode={nightMode}
             />
           </div>
-          {showProfileDrawer && (
+          {shouldShowProfile && (
             <TelegramProfileDrawer
               activeChat={activeChat}
               nightMode={nightMode}

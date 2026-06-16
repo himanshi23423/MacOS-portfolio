@@ -17,7 +17,7 @@ const TelegramChatView = ({ activeChat, getThemeClass, isTyping, messagesEndRef 
                   {msg.senderName}
                 </span>
               )}
-              <span className="whitespace-pre-wrap leading-relaxed select-text">{msg.text}</span>
+              <span className="whitespace-pre-wrap break-words leading-relaxed select-text">{msg.text}</span>
               <div className="flex items-center justify-end gap-1 mt-1 text-[9px] text-gray-400 text-right leading-none select-none">
                 <span>{msg.time}</span>
                 {isMe && (
