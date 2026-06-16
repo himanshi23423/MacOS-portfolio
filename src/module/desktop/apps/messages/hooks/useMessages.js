@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { INITIAL_CONVERSATIONS } from "./messagesData";
+import { INITIAL_CONVERSATIONS } from "../data/messagesData";
 
 const useMessages = () => {
   const [conversations, setConversations] = useState(() => {

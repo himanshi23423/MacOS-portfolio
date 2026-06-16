@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
-import useMessages from "./useMessages";
+import useMessages from "../../hooks/useMessages";
 import MessagesSection from "../section/MessagesSection";
 import MessagesAboutModal from "./MessagesAboutModal";
 
