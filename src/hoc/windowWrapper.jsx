@@ -78,26 +78,93 @@ const windowWrapper = (Component, windowKey) => {
       };
     }, [isMobile, isOpen]);
 
+    const isMinimized = windows[windowKey]?.isMinimized;
+    const [shouldRender, setShouldRender] = useState(isOpen && !isMinimized);
+    const prevMinimizedRef = useRef(isMinimized);
+    const lastPosRef = useRef({ x: 0, y: 0 });
+
     useEffect(() => {
       if (isMobile) return;
+      if (isOpen && !isMinimized) {
+        setShouldRender(true);
+      }
       checkDockCollision();
-    }, [isOpen, windows[windowKey]?.isMinimized, isMobile]);
+    }, [isOpen, isMinimized, isMobile]);
 
     useGSAP(() => {
       const el = ref.current;
       if (!el || isMobile) return;
-      if (isOpen && !prevOpenRef.current) {
-        el.style.display = "block";
+
+      // Case 1: Window opening
+      if (isOpen && !isMinimized && !prevOpenRef.current) {
+        gsap.killTweensOf(el);
         gsap.fromTo(
           el,
-          { scale: 0.88, opacity: 0, y: 30 },
-          { scale: 1, opacity: 1, y: 0, duration: 0.38, ease: "power3.out" },
+          { scale: 0.85, opacity: 0, y: 30, x: 0 },
+          { scale: 1, opacity: 1, y: 0, x: 0, duration: 0.35, ease: "back.out(1.1)" }
         );
-      } else if (!isOpen) {
-        el.style.display = "none";
       }
+      // Case 2: Window closing
+      else if (!isOpen && prevOpenRef.current) {
+        gsap.killTweensOf(el);
+        gsap.to(el, {
+          scale: 0.85,
+          opacity: 0,
+          y: 30,
+          duration: 0.25,
+          ease: "power2.inOut",
+          onComplete: () => {
+            setShouldRender(false);
+          }
+        });
+      }
+      // Case 3: Window minimizing
+      else if (isOpen && isMinimized && !prevMinimizedRef.current) {
+        // Save current coordinates
+        lastPosRef.current = {
+          x: gsap.getProperty(el, "x") || 0,
+          y: gsap.getProperty(el, "y") || 0,
+        };
+        const startRect = el.getBoundingClientRect();
+        gsap.killTweensOf(el);
+        gsap.to(el, {
+          scale: 0.15,
+          opacity: 0,
+          y: window.innerHeight - 80,
+          x: window.innerWidth / 2 - startRect.width / 2, // animate to bottom-center dock area
+          duration: 0.35,
+          ease: "power2.inOut",
+          onComplete: () => {
+            setShouldRender(false);
+          }
+        });
+      }
+      // Case 4: Window restoring (unminimizing)
+      else if (isOpen && !isMinimized && prevMinimizedRef.current) {
+        const startRect = el.getBoundingClientRect();
+        gsap.killTweensOf(el);
+        gsap.fromTo(
+          el,
+          {
+            scale: 0.15,
+            opacity: 0,
+            y: window.innerHeight - 80,
+            x: window.innerWidth / 2 - startRect.width / 2
+          },
+          {
+            scale: 1,
+            opacity: 1,
+            y: lastPosRef.current.y,
+            x: lastPosRef.current.x,
+            duration: 0.38,
+            ease: "back.out(1.1)"
+          }
+        );
+      }
+
       prevOpenRef.current = isOpen;
-    }, [isOpen, isMobile]);
+      prevMinimizedRef.current = isMinimized;
+    }, [isOpen, isMinimized, isMobile]);
 
     const [viewportHeight, setViewportHeight] = useState("100dvh");
     const [viewportOffsetTop, setViewportOffsetTop] = useState(0);
@@ -147,7 +214,7 @@ const windowWrapper = (Component, windowKey) => {
 
     const desktopStyles = {
       zIndex,
-      display: isOpen && !windows[windowKey]?.isMinimized ? "block" : "none",
+      display: shouldRender ? "block" : "none",
     };
 
     const handleResizeStart = (e, direction) => {

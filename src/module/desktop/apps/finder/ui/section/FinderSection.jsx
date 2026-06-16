@@ -31,6 +31,7 @@ const FinderSection = ({
   }, []);
 
   const isNarrow = containerWidth < 550;
+  const isVeryNarrow = containerWidth < 480;
 
   useEffect(() => {
     if (isNarrow) {
@@ -54,6 +55,7 @@ const FinderSection = ({
         searchQuery={searchQuery}
         onSearchChange={onSearchChange}
         isNarrow={isNarrow}
+        isVeryNarrow={isVeryNarrow}
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />

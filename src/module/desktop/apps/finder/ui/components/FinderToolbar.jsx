@@ -10,6 +10,7 @@ const FinderToolbar = ({
   searchQuery,
   onSearchChange,
   isNarrow,
+  isVeryNarrow,
   isSidebarOpen,
   onToggleSidebar,
 }) => (
@@ -53,24 +54,28 @@ const FinderToolbar = ({
     </div>
 
     {/* Center Title */}
-    <div className="flex-1 text-center font-bold text-gray-700 text-xs truncate">{title}</div>
+    {!isVeryNarrow && (
+      <div className="flex-1 text-center font-bold text-gray-700 text-xs truncate">{title}</div>
+    )}
 
     {/* Search Input */}
-    <div
-      className="w-48 relative flex items-center bg-zinc-200/50 border border-zinc-300/30 rounded-md px-2 py-0.5 cursor-text"
-      onMouseDownCapture={(e) => e.stopPropagation()}
-      onPointerDownCapture={(e) => e.stopPropagation()}
-      onClick={(e) => e.currentTarget.querySelector("input")?.focus()}
-    >
-      <Search className="w-3.5 h-3.5 text-gray-400 mr-1.5 shrink-0" />
-      <input
-        type="text"
-        placeholder="Search"
-        value={searchQuery}
-        onChange={(e) => onSearchChange(e.target.value)}
-        className="w-full bg-transparent border-none outline-none text-xs text-gray-800 placeholder-gray-400 select-text"
-      />
-    </div>
+    {!isVeryNarrow && (
+      <div
+        className="w-48 relative flex items-center bg-zinc-200/50 border border-zinc-300/30 rounded-md px-2 py-0.5 cursor-text"
+        onMouseDownCapture={(e) => e.stopPropagation()}
+        onPointerDownCapture={(e) => e.stopPropagation()}
+        onClick={(e) => e.currentTarget.querySelector("input")?.focus()}
+      >
+        <Search className="w-3.5 h-3.5 text-gray-400 mr-1.5 shrink-0" />
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="w-full bg-transparent border-none outline-none text-xs text-gray-800 placeholder-gray-400 select-text"
+        />
+      </div>
+    )}
   </div>
 );
 
