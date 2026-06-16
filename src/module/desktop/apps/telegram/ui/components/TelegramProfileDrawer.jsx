@@ -6,9 +6,17 @@ const TelegramProfileDrawer = ({ activeChat, nightMode }) => {
     <div className={`w-64 border-l p-5 overflow-y-auto flex flex-col items-center shrink-0 z-10 text-center relative select-none transition-colors ${
       nightMode ? "bg-[#181818] border-zinc-800" : "bg-[#f8f9fa] border-zinc-200"
     }`}>
-      <div className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-sm mt-3 ${activeChat.avatarColor}`}>
-        {activeChat.initials}
-      </div>
+      {activeChat.avatar ? (
+        <img
+          src={activeChat.avatar}
+          alt={activeChat.name}
+          className="w-16 h-16 rounded-full object-cover shrink-0 shadow-md mt-3 select-none pointer-events-none"
+        />
+      ) : (
+        <div className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-sm mt-3 ${activeChat.avatarColor}`}>
+          {activeChat.initials}
+        </div>
+      )}
 
       <h3 className={`font-bold text-sm mt-3 leading-tight ${
         nightMode ? "text-white" : "text-gray-900"

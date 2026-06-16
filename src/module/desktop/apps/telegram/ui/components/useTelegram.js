@@ -6,7 +6,18 @@ const useTelegram = () => {
     const saved = localStorage.getItem("macos_portfolio_telegram");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        return parsed.map(savedChat => {
+          const initialChat = INITIAL_CHATS.find(c => c.id === savedChat.id);
+          if (initialChat) {
+            return {
+              ...initialChat,
+              messages: savedChat.messages,
+              status: savedChat.status || initialChat.status,
+            };
+          }
+          return savedChat;
+        });
       } catch (e) {
         console.error(e);
       }
