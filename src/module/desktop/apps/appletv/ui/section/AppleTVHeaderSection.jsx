@@ -1,5 +1,5 @@
 import WindowControls from "@components/WindowControls";
-import { ChevronLeft } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 
 const AppleTVHeaderSection = ({ isSidebarOpen, onToggleSidebar, isCompact }) => (
   <div
@@ -10,14 +10,10 @@ const AppleTVHeaderSection = ({ isSidebarOpen, onToggleSidebar, isCompact }) => 
       <WindowControls target="appletv" />
       <button
         onClick={onToggleSidebar}
-        className={`${!isCompact ? "hidden" : ""} p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors`}
+        className={`${!isCompact ? "hidden" : ""} p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors flex items-center justify-center`}
         aria-label="Toggle Sidebar"
       >
-        <ChevronLeft
-          className={`w-5 h-5 transition-transform duration-200 ${
-            isSidebarOpen ? "rotate-0" : "rotate-180"
-          }`}
-        />
+        <PanelLeft className="w-4 h-4" />
       </button>
     </div>
     <div
