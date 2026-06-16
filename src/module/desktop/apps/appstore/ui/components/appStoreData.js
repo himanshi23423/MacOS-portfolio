@@ -221,7 +221,6 @@ export const FEATURED_APPS = [
     subtitle: "Figma Design System",
     desc: "Design together in real time with high fidelity mockup tools.",
     bg: "from-purple-900/90 to-indigo-950/95",
-    image: "appstore/figma_featured.png",
   },
   {
     id: "xcode",
