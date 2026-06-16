@@ -21,6 +21,7 @@ import {
   Send,
   FileText,
   FolderPlus,
+  PanelLeft,
 } from "lucide-react";
 import PhotosSidebarSection from "./PhotosSidebarSection";
 import PhotosGridSection from "./PhotosGridSection";
@@ -55,6 +56,32 @@ const PhotosSection = ({
   onNavigate,
   onDoubleClick,
 }) => {
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(800);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const isNarrow = containerWidth < 650;
+  const isVeryNarrow = containerWidth < 520;
+
+  useEffect(() => {
+    if (isNarrow) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  }, [isNarrow]);
+
   const [showShareDropdown, setShowShareDropdown] = useState(false);
   const shareDropdownRef = useRef(null);
 
@@ -147,7 +174,10 @@ const PhotosSection = ({
   }
 
   return (
-    <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden select-none relative">
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden select-none relative"
+    >
       {/* macOS Photos Toolbar */}
       <div
         id="window-header"
@@ -156,6 +186,15 @@ const PhotosSection = ({
         {/* Top toolbar row */}
         <div className="flex items-center gap-3 w-full">
           <WindowControls target="photos" />
+          {isNarrow && (
+            <button
+              onClick={() => setIsSidebarOpen((prev) => !prev)}
+              className="p-1 rounded hover:bg-black/5 transition-colors cursor-pointer text-gray-600"
+              title="Toggle Sidebar"
+            >
+              <PanelLeft size={14} />
+            </button>
+          )}
 
           {/* Navigation controls */}
           <div className="flex items-center gap-1 ml-2">
@@ -183,37 +222,39 @@ const PhotosSection = ({
           <div className="flex-1" />
 
           {/* Zoom Slider */}
-          <div
-            className="flex items-center gap-1.5 bg-[#e8e8e8]/50 px-2 py-0.5 rounded-md mr-2"
-            onMouseDownCapture={(e) => e.stopPropagation()}
-            onPointerDownCapture={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setZoomLevel((prev) => Math.max(1, prev - 1))}
-              className="text-gray-400 hover:text-gray-600 transition-colors p-0.5 rounded cursor-pointer"
-              title="Zoom Out"
+          {!isVeryNarrow && (
+            <div
+              className="flex items-center gap-1.5 bg-[#e8e8e8]/50 px-2 py-0.5 rounded-md mr-2"
+              onMouseDownCapture={(e) => e.stopPropagation()}
+              onPointerDownCapture={(e) => e.stopPropagation()}
             >
-              <ZoomOut size={11} />
-            </button>
-            <input
-              type="range"
-              min="1"
-              max="5"
-              value={zoomLevel}
-              onChange={(e) => setZoomLevel(Number(e.target.value))}
-              className="w-16 h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500"
-              style={{ outline: "none" }}
-              onMouseDown={(e) => e.stopPropagation()}
-              onPointerDown={(e) => e.stopPropagation()}
-            />
-            <button
-              onClick={() => setZoomLevel((prev) => Math.min(5, prev + 1))}
-              className="text-gray-400 hover:text-gray-600 transition-colors p-0.5 rounded cursor-pointer"
-              title="Zoom In"
-            >
-              <ZoomIn size={11} />
-            </button>
-          </div>
+              <button
+                onClick={() => setZoomLevel((prev) => Math.max(1, prev - 1))}
+                className="text-gray-400 hover:text-gray-600 transition-colors p-0.5 rounded cursor-pointer"
+                title="Zoom Out"
+              >
+                <ZoomOut size={11} />
+              </button>
+              <input
+                type="range"
+                min="1"
+                max="5"
+                value={zoomLevel}
+                onChange={(e) => setZoomLevel(Number(e.target.value))}
+                className="w-16 h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                style={{ outline: "none" }}
+                onMouseDown={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
+              />
+              <button
+                onClick={() => setZoomLevel((prev) => Math.min(5, prev + 1))}
+                className="text-gray-400 hover:text-gray-600 transition-colors p-0.5 rounded cursor-pointer"
+                title="Zoom In"
+              >
+                <ZoomIn size={11} />
+              </button>
+            </div>
+          )}
 
           {/* Search Bar */}
           <div
@@ -236,7 +277,7 @@ const PhotosSection = ({
         {/* Bottom toolbar row with view controls */}
         <div className="flex items-center -mt-0.5 w-full">
           {/* Left: Spacer matching sidebar width, then Section Label */}
-          <div className="w-48 flex-shrink-0" />
+          {!isNarrow && isSidebarOpen && <div className="w-48 flex-shrink-0" />}
 
           <span className="text-[11px] font-bold text-gray-800 uppercase tracking-wide pl-2">
             {activeTab}
@@ -350,14 +391,37 @@ const PhotosSection = ({
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex w-full flex-1 overflow-hidden photos-main bg-white">
-        <PhotosSidebarSection
-          albums={photosLinks}
-          activeAlbum={activeTab}
-          onSelectAlbum={onSelectAlbum}
-          isSidebarOpen
-        />
+      <div className="flex w-full flex-1 overflow-hidden photos-main bg-white relative">
+        {isNarrow && isSidebarOpen && (
+          <div
+            className="absolute inset-0 bg-black/10 z-25 transition-opacity duration-300 cursor-pointer"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        <div
+          className={`flex-shrink-0 z-30 transition-all duration-300 ${
+            isNarrow
+              ? `absolute left-0 top-0 bottom-0 h-full bg-[#f5f5f5]/95 shadow-xl border-r border-[#d4d4d4] ${
+                  isSidebarOpen
+                    ? "translate-x-0 w-48 opacity-100"
+                    : "-translate-x-full w-0 opacity-0 overflow-hidden pointer-events-none"
+                }`
+              : isSidebarOpen
+              ? "w-48 translate-x-0 opacity-100 relative h-full bg-[#f5f5f5]/80 border-r border-[#d4d4d4] flex flex-col"
+              : "w-0 -translate-x-full opacity-0 overflow-hidden absolute pointer-events-none"
+          }`}
+        >
+          <PhotosSidebarSection
+            albums={photosLinks}
+            activeAlbum={activeTab}
+            onSelectAlbum={(album) => {
+              onSelectAlbum(album);
+              if (isNarrow) setIsSidebarOpen(false);
+            }}
+            isSidebarOpen={true}
+          />
+        </div>
 
         <PhotosGridSection
           photos={filteredGallery}

@@ -188,6 +188,8 @@
       left: calc(50vw - 430px);
       width: 860px;
       height: 560px;
+      min-width: 520px;
+      min-height: 400px;
       @apply bg-white absolute shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
     }
   }
