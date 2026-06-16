@@ -1,13 +1,15 @@
 const LaunchpadGrid = ({ apps, onLaunch, searchQuery }) => (
   <div
-    onClick={(e) => e.stopPropagation()}
     className="w-full max-w-4.5xl flex-1 overflow-y-auto px-4"
   >
     <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-y-12 gap-x-8 justify-items-center justify-center">
       {apps.map((app) => (
         <button
           key={app.id}
-          onClick={() => onLaunch(app.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onLaunch(app.id);
+          }}
           className="flex flex-col items-center gap-2.5 group focus:outline-none cursor-pointer w-20"
         >
           <div className="w-[80px] h-[80px] rounded-[18px] bg-transparent transition-transform duration-200 ease-out group-hover:scale-105 group-active:scale-95 flex items-center justify-center relative select-none">
