@@ -224,15 +224,19 @@ const AppStoreContentSection = ({
             </button>
           </div>
           <div className="space-y-4">
-            {UPDATES_LIST.map((update) => (
-              <UpdateItem
-                key={update.id}
-                update={update}
-                progressVal={updateProgresses[update.id]}
-                onUpdate={handleSingleUpdate}
-                updatingAll={updatingAll}
-              />
-            ))}
+            {UPDATES_LIST.map((update) => {
+              const appItem = STORE_APPS.find((app) => app.id === update.id);
+              return (
+                <UpdateItem
+                  key={update.id}
+                  update={update}
+                  appIcon={appItem?.icon}
+                  progressVal={updateProgresses[update.id]}
+                  onUpdate={handleSingleUpdate}
+                  updatingAll={updatingAll}
+                />
+              );
+            })}
           </div>
         </div>
       )}
