@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
@@ -74,6 +74,36 @@ const VSCode = () => {
   const hook = useVSCode();
   const [isTerminalOpen, setIsTerminalOpen] = useState(true);
 
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(800);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const isNarrow = containerWidth < 650;
+
+  const { activeSidebarTab, setActiveSidebarTab } = hook;
+  const lastIsNarrow = useRef(isNarrow);
+
+  useEffect(() => {
+    if (isNarrow !== lastIsNarrow.current) {
+      if (isNarrow) {
+        setActiveSidebarTab(null);
+      } else {
+        setActiveSidebarTab("explorer");
+      }
+      lastIsNarrow.current = isNarrow;
+    }
+  }, [isNarrow, setActiveSidebarTab]);
+
   useEffect(() => {
     if (windows.vscode?.data?.openAbout) {
       setShowAbout(true);
@@ -83,35 +113,48 @@ const VSCode = () => {
 
   return (
     <>
-      <div className="relative flex flex-col h-full w-full bg-white text-[#333333] font-sans select-none rounded-xl overflow-hidden shadow-2xl border border-[#cccccc]">
+      <div
+        ref={containerRef}
+        className="relative flex flex-col h-full w-full bg-white text-[#333333] font-sans select-none rounded-xl overflow-hidden shadow-2xl border border-[#cccccc]"
+      >
         <div
           id="window-header"
           className="shrink-0 bg-[#f3f3f3] border-b border-[#e5e5e5] px-4 py-2 flex items-center justify-between text-xs text-[#333333] font-sans"
         >
           <div className="flex items-center gap-2">
             <WindowControls target="vscode" />
-            <div className="flex items-center gap-3 pl-4 font-semibold select-none hidden md:flex">
-              <span className="hover:text-black cursor-pointer transition-colors">File</span>
-              <span className="hover:text-black cursor-pointer transition-colors">Edit</span>
-              <span className="hover:text-black cursor-pointer transition-colors">Selection</span>
-              <span className="hover:text-black cursor-pointer transition-colors">View</span>
-              <span className="hover:text-black cursor-pointer transition-colors">Go</span>
+            {containerWidth >= 620 && (
+              <div className="flex items-center gap-3 pl-4 font-semibold select-none">
+                <span className="hover:text-black cursor-pointer transition-colors">File</span>
+                <span className="hover:text-black cursor-pointer transition-colors">Edit</span>
+                <span className="hover:text-black cursor-pointer transition-colors">Selection</span>
+                <span className="hover:text-black cursor-pointer transition-colors">View</span>
+                <span className="hover:text-black cursor-pointer transition-colors">Go</span>
+              </div>
+            )}
+          </div>
+          {containerWidth >= 400 && (
+            <div className="flex-1 text-center font-medium text-[11px] truncate px-4">
+              {containerWidth >= 520
+                ? `${hook.activeFile} — macos-portfolio (Workspace)`
+                : hook.activeFile.split("/").pop()}
             </div>
-          </div>
-          <div className="flex-1 text-center font-medium text-[11px] truncate px-4">
-            {hook.activeFile} — macos-portfolio (Workspace)
-          </div>
-          <div className="w-16 flex justify-end">
-            <span className="text-[10px] bg-[#e5e5e5] text-[#333333] px-2 py-0.5 rounded font-bold border border-[#cccccc]">
-              Local
-            </span>
-          </div>
+          )}
+          {containerWidth >= 480 && (
+            <div className="w-16 flex justify-end">
+              <span className="text-[10px] bg-[#e5e5e5] text-[#333333] px-2 py-0.5 rounded font-bold border border-[#cccccc]">
+                Local
+              </span>
+            </div>
+          )}
         </div>
 
         <VSCodeSection
           {...hook}
           isTerminalOpen={isTerminalOpen}
           onToggleTerminal={() => setIsTerminalOpen((prev) => !prev)}
+          isNarrow={isNarrow}
+          containerWidth={containerWidth}
         />
 
         {hook.notification && (

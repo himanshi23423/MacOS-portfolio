@@ -261,9 +261,15 @@ const VSCodeSidebar = ({
   onCommitMessageChange,
   onCommit,
   onToggleExtension,
+  containerWidth,
 }) => {
+  if (!activeSidebarTab) return null;
+
   return (
-    <div className="w-56 bg-[#f3f3f3] border-r border-[#e5e5e5] flex flex-col shrink-0 min-w-0">
+    <div
+      style={{ width: containerWidth && containerWidth < 500 ? "160px" : "224px" }}
+      className="bg-[#f3f3f3] border-r border-[#e5e5e5] flex flex-col shrink-0 min-w-0"
+    >
       {activeSidebarTab === "explorer" && (
         <VSCodeExplorerPanel
           files={files}

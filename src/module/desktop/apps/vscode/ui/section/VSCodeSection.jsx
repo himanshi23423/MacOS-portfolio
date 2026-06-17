@@ -24,6 +24,8 @@ const VSCodeSection = ({
   handleContentChange, selectFile, closeTab, runCommand,
   isTerminalOpen, onToggleTerminal,
   showNotification,
+  isNarrow,
+  containerWidth,
 }) => {
   const ext = activeFile?.split(".").pop();
   const language = languageMap[ext] || "Plain Text";
@@ -35,7 +37,9 @@ const VSCodeSection = ({
       <div className="flex-1 flex min-h-0">
         <VSCodeActivityBarSection
           activeSidebar={activeSidebarTab}
-          onSidebarChange={setActiveSidebarTab}
+          onSidebarChange={(tabId) => {
+            setActiveSidebarTab((prev) => (prev === tabId ? null : tabId));
+          }}
           modifiedCount={modifiedCount}
           onToggleTerminal={onToggleTerminal}
         />
@@ -70,6 +74,8 @@ const VSCodeSection = ({
               setInstalledExtensions(prev => [...prev, name]);
             }
           }}
+          isNarrow={isNarrow}
+          containerWidth={containerWidth}
         />
 
         <div className="flex-1 flex flex-col min-w-0 bg-white">
@@ -81,6 +87,7 @@ const VSCodeSection = ({
             files={files}
             modifiedFiles={modifiedFiles}
             onContentChange={handleContentChange}
+            isNarrow={isNarrow}
           />
         </div>
       </div>
@@ -93,12 +100,14 @@ const VSCodeSection = ({
         setTerminalInput={setTerminalInput}
         terminalBottomRef={terminalBottomRef}
         runCommand={runCommand}
+        isNarrow={isNarrow}
       />
 
       <VSCodeStatusBarSection
         activeFile={activeFile}
         language={language}
         lineCount={lineCount}
+        isNarrow={isNarrow}
       />
     </div>
   );

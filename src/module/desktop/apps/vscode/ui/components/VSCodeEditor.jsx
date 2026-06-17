@@ -2,6 +2,34 @@ import { useRef, useEffect, useMemo } from "react";
 import { FileText, ChevronRight } from "lucide-react";
 import VSCodeFileIcon from "./VSCodeFileIcon";
 
+
+// Syntax highlighter for JS/JSX/CSS/HTML (Light Theme)
+const highlight = (code) => {
+  if (!code) return " ";
+  
+  // Escape HTML tags to prevent execution/parsing bugs
+  let html = code
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  // Single-pass regex highlighter for keywords, comments, strings, tags, functions, attributes, and numbers
+  const combinedRegex = /(\/\/.*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(&lt;\/?[a-zA-Z][a-zA-Z0-9]*\b)|(\b(?:import|export|default|function|return|const|let|var|from|class|extends|if|else|for|while|switch|case|break|new|this|typeof|instanceof)\b)|(\b[a-zA-Z_][a-zA-Z0-9_]*(?=\())|(\b[a-zA-Z_][a-zA-Z0-9_-]*(?=\s*=\s*(?:["'{])))|(\b\d+\b)/g;
+
+  html = html.replace(combinedRegex, (match, comment, string, tag, keyword, fn, attr, number) => {
+    if (comment) return `<span style="color: #008000; font-style: italic;">${match}</span>`;
+    if (string) return `<span style="color: #a31515;">${match}</span>`;
+    if (tag) return `<span style="color: #800000; font-weight: 550;">${match}</span>`;
+    if (keyword) return `<span style="color: #0000ff; font-weight: 600;">${match}</span>`;
+    if (fn) return `<span style="color: #795e26;">${match}</span>`;
+    if (attr) return `<span style="color: #ff0000;">${match}</span>`;
+    if (number) return `<span style="color: #098658;">${match}</span>`;
+    return match;
+  });
+
+  return html;
+};
+
 // Breadcrumb bar showing the file path segments
 const Breadcrumb = ({ activeFile }) => {
   if (!activeFile) return null;
@@ -22,7 +50,8 @@ const Breadcrumb = ({ activeFile }) => {
 };
 
 // Minimap component — renders a tiny scaled-down preview of the code
-const Minimap = ({ content }) => {
+const Minimap = ({ content, isNarrow }) => {
+  if (isNarrow) return null;
   const lines = content.split("\n");
   const maxLines = 80;
   const displayLines = lines.slice(0, maxLines);
@@ -50,20 +79,20 @@ const Minimap = ({ content }) => {
   );
 };
 
-const VSCodeEditor = ({ files, activeFile, openTabs, modifiedFiles, onContentChange }) => {
+const VSCodeEditor = ({ files, activeFile, openTabs, modifiedFiles, onContentChange, isNarrow }) => {
   const textareaRef = useRef(null);
-  const lineNumbersRef = useRef(null);
+  const preRef = useRef(null);
 
-  // Sync scroll between textarea and line numbers column
+  // Sync scroll between textarea overlay and pre block underneath
   const handleScroll = () => {
-    if (textareaRef.current && lineNumbersRef.current) {
-      lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
+    if (textareaRef.current && preRef.current) {
+      preRef.current.scrollTop = textareaRef.current.scrollTop;
     }
   };
 
   useEffect(() => {
-    if (textareaRef.current && lineNumbersRef.current) {
-      lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
+    if (textareaRef.current && preRef.current) {
+      preRef.current.scrollTop = textareaRef.current.scrollTop;
     }
   }, [activeFile]);
 
@@ -96,32 +125,51 @@ const VSCodeEditor = ({ files, activeFile, openTabs, modifiedFiles, onContentCha
       <Breadcrumb activeFile={activeFile} />
 
       <div className="flex-1 min-h-0 flex relative bg-white">
-        {/* Line Numbers Column */}
-        <div
-          ref={lineNumbersRef}
-          className="w-[46px] text-right pr-3 text-[#b0b0b0] font-mono text-[12px] bg-white py-3 select-none overflow-hidden shrink-0"
-          style={{ lineHeight: "20px" }}
-        >
-          {lines.map((_, idx) => (
-            <div key={idx} className="h-5 leading-5">
-              {idx + 1}
-            </div>
-          ))}
+        <div className="flex-1 h-full relative overflow-hidden">
+          {/* Highlighted Pre Underneath */}
+          <pre
+            ref={preRef}
+            className="absolute inset-0 w-full h-full font-mono text-[12px] py-3 pointer-events-none overflow-hidden select-none"
+            style={{
+              lineHeight: "20px",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-all",
+              color: "#333333",
+            }}
+          >
+            {lines.map((line, idx) => (
+              <div key={idx} className="flex items-start">
+                <span className="w-[46px] text-right pr-3 text-[#b0b0b0] select-none shrink-0 bg-[#f8f8f8] border-r border-[#e5e5e5]">
+                  {idx + 1}
+                </span>
+                <span
+                  className="flex-1 whitespace-pre-wrap break-all pl-3 pr-4"
+                  dangerouslySetInnerHTML={{ __html: highlight(line) || " " }}
+                />
+              </div>
+            ))}
+          </pre>
+
+          {/* Transparent Textarea Overlay */}
+          <textarea
+            ref={textareaRef}
+            value={fileContent}
+            onChange={(e) => onContentChange(e.target.value)}
+            onScroll={handleScroll}
+            className="absolute inset-0 w-full h-full bg-transparent text-transparent caret-[#333333] py-3 border-none outline-none resize-none font-mono text-[12px] select-text overflow-y-auto selection:bg-[#add6ff] leading-5"
+            style={{
+              lineHeight: "20px",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-all",
+              paddingLeft: "58px",
+              paddingRight: "16px",
+            }}
+            spellCheck="false"
+          />
         </div>
 
-        {/* Code Textarea */}
-        <textarea
-          ref={textareaRef}
-          value={fileContent}
-          onChange={(e) => onContentChange(e.target.value)}
-          onScroll={handleScroll}
-          className="flex-1 h-full bg-white text-[#333333] py-3 px-1 border-none outline-none resize-none font-mono text-[12px] select-text overflow-y-auto selection:bg-[#add6ff] leading-5"
-          style={{ whiteSpace: "pre", lineHeight: "20px" }}
-          spellCheck="false"
-        />
-
         {/* Minimap */}
-        <Minimap content={fileContent} />
+        <Minimap content={fileContent} isNarrow={isNarrow} />
 
         {/* Unsaved changes badge */}
         {modifiedFiles[activeFile] && (

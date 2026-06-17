@@ -6,6 +6,7 @@ const VSCodeSidebarSection = ({
   searchQuery, onSearchChange,
   searchResults, commitMessage, modifiedFiles, installedExtensions,
   onCommitMessageChange, onCommit, onToggleExtension,
+  isNarrow, containerWidth,
 }) => (
   <VSCodeSidebar
     activeSidebarTab={activeSidebar}
@@ -23,6 +24,7 @@ const VSCodeSidebarSection = ({
     onCommitMessageChange={onCommitMessageChange}
     onCommit={onCommit}
     onToggleExtension={onToggleExtension}
+    containerWidth={containerWidth}
   />
 );
 

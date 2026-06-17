@@ -4,6 +4,7 @@ import VSCodeEditor from "../components/VSCodeEditor";
 const VSCodeEditorSection = ({
   openFiles, activeFile, onSelectFile, onCloseFile,
   files, modifiedFiles, onContentChange,
+  isNarrow,
 }) => (
   <>
     <VSCodeTabs
@@ -18,6 +19,7 @@ const VSCodeEditorSection = ({
       openTabs={openFiles}
       modifiedFiles={modifiedFiles}
       onContentChange={onContentChange}
+      isNarrow={isNarrow}
     />
   </>
 );

@@ -4,6 +4,7 @@ const VSCodeTerminalSection = ({
   isTerminalOpen, onToggleTerminal,
   terminalHistory, terminalInput, setTerminalInput,
   terminalBottomRef, runCommand,
+  isNarrow,
 }) => {
   if (!isTerminalOpen) return null;
 
@@ -11,9 +12,13 @@ const VSCodeTerminalSection = ({
     <div className="h-44 bg-[#ffffff] border-t border-[#e5e5e5] flex flex-col shrink-0 select-none">
       <div className="bg-[#f3f3f3] px-4 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between text-[11px] text-[#333333]">
         <div className="flex items-center gap-4 font-semibold">
-          <span className="hover:text-black cursor-pointer">Problems</span>
-          <span className="hover:text-black cursor-pointer">Output</span>
-          <span className="hover:text-black cursor-pointer">Debug Console</span>
+          {!isNarrow && (
+            <>
+              <span className="hover:text-black cursor-pointer animate-fade-in">Problems</span>
+              <span className="hover:text-black cursor-pointer animate-fade-in">Output</span>
+              <span className="hover:text-black cursor-pointer animate-fade-in">Debug Console</span>
+            </>
+          )}
           <span className="text-[#333333] border-b-2 border-[#007acc] pb-0.5 cursor-pointer font-bold">Terminal</span>
         </div>
         <div className="flex items-center gap-3">
@@ -47,7 +52,7 @@ const VSCodeTerminalSection = ({
               setTerminalInput("");
             }
           }}
-          placeholder="type 'help' for available workspace commands..."
+          placeholder={isNarrow ? "Type command..." : "type 'help' for available workspace commands..."}
           className="flex-1 bg-transparent border-none outline-none text-[#333333] text-xs font-mono select-text"
         />
       </div>
