@@ -5,7 +5,7 @@ const CallAboutModal = ({ show, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/15 backdrop-blur-xxs select-none font-sans"
+      className="fixed inset-0 z-1000 flex items-center justify-center bg-black/15 backdrop-blur-xxs select-none font-sans"
       onClick={onClose}
       onMouseDown={(e) => e.stopPropagation()}
       onPointerDown={(e) => e.stopPropagation()}

@@ -9,7 +9,7 @@ const CallStandbySection = () => (
         alt="Camera Standby Preview"
         className="absolute inset-0 w-full h-full object-cover brightness-[0.7] select-none pointer-events-none group-hover:scale-105 transition-transform duration-700 ease-out"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/30 pointer-events-none" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-black/30 pointer-events-none" />
       <div className="absolute top-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-green-500/80 rounded-full animate-ping" />
       <div className="absolute top-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-green-500 rounded-full" />
       <div className="flex flex-col items-center justify-center space-y-2 z-10">

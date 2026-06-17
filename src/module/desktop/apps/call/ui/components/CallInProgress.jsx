@@ -23,7 +23,7 @@ const CallInProgress = ({
             className="absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
           />
         ) : (
-          <div className={`absolute inset-0 bg-gradient-to-tr ${activeCall.avatarColor || "from-neutral-900 via-zinc-900 to-indigo-950"}`}>
+          <div className={`absolute inset-0 bg-linear-to-tr ${activeCall.avatarColor || "from-neutral-900 via-zinc-900 to-indigo-950"}`}>
             <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl" />
           </div>
         )}
@@ -63,7 +63,7 @@ const CallInProgress = ({
                 className="w-28 h-28 rounded-full object-cover shadow-2xl border-2 border-white/20 relative z-10 transition duration-500 hover:scale-105"
               />
             ) : (
-              <div className="w-28 h-28 rounded-full bg-gradient-to-tr from-slate-700 to-slate-800 text-white flex items-center justify-center font-bold text-3xl uppercase shadow-2xl border-2 border-white/20 relative z-10">
+              <div className="w-28 h-28 rounded-full bg-linear-to-tr from-slate-700 to-slate-800 text-white flex items-center justify-center font-bold text-3xl uppercase shadow-2xl border-2 border-white/20 relative z-10">
                 {activeCall.name.split(" ").map(n => n[0]).join("")}
               </div>
             )}
@@ -80,7 +80,7 @@ const CallInProgress = ({
               {[1, 2, 3, 4, 5, 6, 7].map((idx) => (
                 <span
                   key={idx}
-                  className="w-2 rounded-full bg-gradient-to-t from-blue-500 to-cyan-400 animate-pulse"
+                  className="w-2 rounded-full bg-linear-to-t from-blue-500 to-cyan-400 animate-pulse"
                   style={{
                     height: `${Math.sin(idx) * 16 + 24}px`,
                     animationDelay: `${idx * 150}ms`
