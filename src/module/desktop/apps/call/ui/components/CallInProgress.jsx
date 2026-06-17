@@ -39,16 +39,24 @@ const CallInProgress = ({
           <div className="absolute inset-0 bg-neutral-950 flex items-center justify-center overflow-hidden">
             {activeCall.status === "connected" ? (
               <img
-                src="/images/facetime_call_preview.png"
+                src={activeCall.callPreview || "/images/facetime_call_preview.png"}
                 alt="Active Video Call Stream"
                 className="w-full h-full object-cover animate-fade-in"
               />
             ) : (
               <div className="absolute inset-0 bg-gradient-to-tr from-neutral-800 via-indigo-950 to-neutral-900 flex items-center justify-center">
                 <div className="absolute inset-0 bg-black/20" />
-                <div className="w-20 h-20 rounded-full bg-blue-600/30 border border-blue-400/30 animate-pulse flex items-center justify-center z-10">
-                  <User className="w-10 h-10 text-blue-400" />
-                </div>
+                {activeCall.avatar ? (
+                  <img
+                    src={activeCall.avatar}
+                    alt={activeCall.name}
+                    className="w-20 h-20 rounded-full object-cover shadow-lg border border-white/20 animate-pulse z-10"
+                  />
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-blue-600/30 border border-blue-400/30 animate-pulse flex items-center justify-center z-10">
+                    <User className="w-10 h-10 text-blue-400" />
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -89,9 +97,9 @@ const CallInProgress = ({
             ) : (
               <div className="w-full h-full relative">
                 <img
-                  src="/images/facetime_standby.png"
+                  src="/images/contacts/kuldeep.png"
                   alt="Self Camera Preview"
-                  className="w-full h-full object-cover brightness-[0.85]"
+                  className="w-full h-full object-cover brightness-[0.9]"
                 />
                 <div className="absolute bottom-1 left-1.5 bg-black/60 px-1 py-0.5 rounded text-[8px] text-white/95 uppercase font-extrabold select-none pointer-events-none">
                   Me

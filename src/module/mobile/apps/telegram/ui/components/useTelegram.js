@@ -40,6 +40,8 @@ const useTelegram = () => {
   const [callDuration, setCallDuration] = useState("00:00");
   const callTimerRef = useRef(null);
   const callAudioRef = useRef(null);
+  const callingTimeoutRef = useRef(null);
+  const ringingTimeoutRef = useRef(null);
 
   const [callLogs, setCallLogs] = useState(() => {
     const saved = localStorage.getItem("macos_portfolio_telegram_calls");
@@ -85,6 +87,8 @@ const useTelegram = () => {
   useEffect(() => {
     return () => {
       if (callTimerRef.current) clearInterval(callTimerRef.current);
+      if (callingTimeoutRef.current) clearTimeout(callingTimeoutRef.current);
+      if (ringingTimeoutRef.current) clearTimeout(ringingTimeoutRef.current);
       if (callAudioRef.current) {
         callAudioRef.current.pause();
         callAudioRef.current = null;
@@ -92,12 +96,40 @@ const useTelegram = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (activeCall?.status === "Connected") {
+      let seconds = 0;
+      if (callTimerRef.current) clearInterval(callTimerRef.current);
+      callTimerRef.current = setInterval(() => {
+        seconds++;
+        const mins = Math.floor(seconds / 60)
+          .toString()
+          .padStart(2, "0");
+        const secs = (seconds % 60).toString().padStart(2, "0");
+        setCallDuration(`${mins}:${secs}`);
+      }, 1000);
+    } else {
+      if (callTimerRef.current) {
+        clearInterval(callTimerRef.current);
+        callTimerRef.current = null;
+      }
+    }
+    return () => {
+      if (callTimerRef.current) {
+        clearInterval(callTimerRef.current);
+        callTimerRef.current = null;
+      }
+    };
+  }, [activeCall?.status]);
+
   const handlePlaceCall = (name, avatarColor, initials) => {
     if (callTimerRef.current) clearInterval(callTimerRef.current);
     if (callAudioRef.current) {
       callAudioRef.current.pause();
       callAudioRef.current = null;
     }
+    if (callingTimeoutRef.current) clearTimeout(callingTimeoutRef.current);
+    if (ringingTimeoutRef.current) clearTimeout(ringingTimeoutRef.current);
 
     try {
       const audio = new Audio("/sound/callertune.mp3");
@@ -123,29 +155,17 @@ const useTelegram = () => {
     });
     setCallDuration("00:00");
 
-    setTimeout(() => {
+    callingTimeoutRef.current = setTimeout(() => {
       setActiveCall((prev) => (prev ? { ...prev, status: "Ringing..." } : null));
     }, 1000);
 
-    setTimeout(() => {
+    ringingTimeoutRef.current = setTimeout(() => {
       if (callAudioRef.current) {
         callAudioRef.current.pause();
         callAudioRef.current = null;
       }
       setActiveCall((prev) => {
         if (!prev) return null;
-
-        let seconds = 0;
-        if (callTimerRef.current) clearInterval(callTimerRef.current);
-        callTimerRef.current = setInterval(() => {
-          seconds++;
-          const mins = Math.floor(seconds / 60)
-            .toString()
-            .padStart(2, "0");
-          const secs = (seconds % 60).toString().padStart(2, "0");
-          setCallDuration(`${mins}:${secs}`);
-        }, 1000);
-
         return { ...prev, status: "Connected" };
       });
     }, 2500);
@@ -159,6 +179,14 @@ const useTelegram = () => {
     if (callAudioRef.current) {
       callAudioRef.current.pause();
       callAudioRef.current = null;
+    }
+    if (callingTimeoutRef.current) {
+      clearTimeout(callingTimeoutRef.current);
+      callingTimeoutRef.current = null;
+    }
+    if (ringingTimeoutRef.current) {
+      clearTimeout(ringingTimeoutRef.current);
+      ringingTimeoutRef.current = null;
     }
     if (activeCall) {
       const timeString = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });

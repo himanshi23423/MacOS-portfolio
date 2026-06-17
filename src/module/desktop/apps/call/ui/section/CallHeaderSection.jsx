@@ -1,7 +1,7 @@
 import WindowControls from "@components/WindowControls";
-import { ChevronLeft } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 
-const CallHeaderSection = ({ isSidebarOpen, onToggleSidebar }) => (
+const CallHeaderSection = ({ isSidebarOpen, onToggleSidebar, isNarrow }) => (
   <div
     id="window-header"
     className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2.5"
@@ -10,17 +10,13 @@ const CallHeaderSection = ({ isSidebarOpen, onToggleSidebar }) => (
       <WindowControls target="call" />
       <button
         onClick={onToggleSidebar}
-        className="sm:hidden p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors"
+        className={`${!isNarrow ? "hidden" : ""} p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors flex items-center justify-center`}
         aria-label="Toggle Sidebar"
       >
-        <ChevronLeft
-          className={`w-5 h-5 transition-transform duration-200 ${
-            isSidebarOpen ? "rotate-0" : "rotate-180"
-          }`}
-        />
+        <PanelLeft className="w-4 h-4" />
       </button>
     </div>
-    <div className="flex-1 text-center font-bold text-gray-700 text-sm hidden sm:block">
+    <div className={`flex-1 text-center font-bold text-gray-700 text-sm ${isNarrow ? "hidden" : "block"}`}>
       FaceTime
     </div>
     <div className="w-14" />

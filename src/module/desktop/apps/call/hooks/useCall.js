@@ -17,6 +17,7 @@ const useCall = () => {
   const ringbackAudioCtxRef = useRef(null);
   const ringIntervalRef = useRef(null);
   const timerIntervalRef = useRef(null);
+  const ringTimeoutRef = useRef(null);
 
   const isWindowFocused = useCallback(() => {
     const callWin = windows.call;
@@ -136,17 +137,22 @@ const useCall = () => {
 
   const initiateCall = useCallback(
     (name, type = "video") => {
+      if (ringTimeoutRef.current) {
+        clearTimeout(ringTimeoutRef.current);
+        ringTimeoutRef.current = null;
+      }
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
       const contact = CONTACTS.find((c) => c.name.toLowerCase() === name.toLowerCase());
-      setActiveCall({ name, type, status: "ringing", avatar: contact?.avatar });
+      setActiveCall({ name, type, status: "ringing", avatar: contact?.avatar, callPreview: contact?.callPreview });
       setCallTimer(0);
       startRingbackSound();
-      setTimeout(() => {
+      ringTimeoutRef.current = setTimeout(() => {
+        stopRingbackSound();
         setActiveCall((prev) => {
           if (!prev || prev.status !== "ringing") return prev;
-          stopRingbackSound();
-          timerIntervalRef.current = setInterval(() => {
-            setCallTimer((t) => t + 1);
-          }, 1000);
           return { ...prev, status: "connected" };
         });
       }, 4500);
@@ -156,6 +162,10 @@ const useCall = () => {
 
   const endCall = useCallback(() => {
     stopRingbackSound();
+    if (ringTimeoutRef.current) {
+      clearTimeout(ringTimeoutRef.current);
+      ringTimeoutRef.current = null;
+    }
     if (timerIntervalRef.current) {
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
@@ -220,9 +230,28 @@ const useCall = () => {
   useEffect(() => {
     return () => {
       stopRingbackSound();
-      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
     };
   }, [stopRingbackSound]);
+
+  useEffect(() => {
+    if (activeCall?.status === "connected") {
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = setInterval(() => {
+        setCallTimer((t) => t + 1);
+      }, 1000);
+    } else {
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+    }
+    return () => {
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+    };
+  }, [activeCall?.status]);
 
   const formatTimer = (secs) => {
     const mins = Math.floor(secs / 60)

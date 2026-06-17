@@ -16,12 +16,19 @@ const CallSidebarSection = ({
   onInputChange,
   isSidebarOpen,
   _onCloseSidebar,
+  isNarrow,
 }) => (
   <aside
     className={`
-    absolute sm:relative inset-y-0 left-0 w-64 bg-gray-100 border-r border-[#d1d1d1] flex flex-col z-30 transition-transform duration-300
-    ${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}
-  `}
+      transition-all duration-300 bg-gray-100 border-r border-[#d1d1d1] flex flex-col shrink-0
+      ${
+        isNarrow
+          ? `absolute inset-y-0 left-0 w-64 z-30 shadow-xl ${
+              isSidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0 pointer-events-none"
+            }`
+          : "relative w-64 translate-x-0 opacity-100"
+      }
+    `}
   >
     <div className="p-3.5 flex justify-center border-b border-gray-200/60 bg-gray-100 shrink-0">
       <div className="flex bg-gray-200/80 p-0.5 rounded-lg w-full max-w-[200px]">

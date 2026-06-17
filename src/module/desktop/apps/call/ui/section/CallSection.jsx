@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import CallHeaderSection from "./CallHeaderSection";
 import CallSidebarSection from "./CallSidebarSection";
 import CallStandbySection from "./CallStandbySection";
@@ -19,6 +20,29 @@ const CallSection = ({
   endCall,
   formatTimer,
 }) => {
+  const [isNarrow, setIsNarrow] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const width = entry.contentRect.width;
+        setIsNarrow(width < 580);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (isNarrow) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  }, [isNarrow, setIsSidebarOpen]);
+
   const handleInitiateCall = (name, type) => {
     initiateCall(name, type);
     setIsSidebarOpen(false);
@@ -27,14 +51,21 @@ const CallSection = ({
   const handleClear = () => setDialNumber("");
 
   return (
-    <div className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative">
-      <CallHeaderSection isSidebarOpen={isSidebarOpen} onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative"
+    >
+      <CallHeaderSection
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isNarrow={isNarrow}
+      />
 
       <div className="flex-1 flex min-h-0 relative">
-        {isSidebarOpen && (
+        {isNarrow && isSidebarOpen && (
           <div
             onClick={() => setIsSidebarOpen(false)}
-            className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-20 sm:hidden"
+            className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-20 cursor-pointer"
           />
         )}
 
@@ -51,6 +82,7 @@ const CallSection = ({
           onInputChange={setDialNumber}
           isSidebarOpen={isSidebarOpen}
           onCloseSidebar={() => setIsSidebarOpen(false)}
+          isNarrow={isNarrow}
         />
 
         <main className="flex-1 bg-gray-50 flex flex-col h-full min-h-0 relative select-none">
