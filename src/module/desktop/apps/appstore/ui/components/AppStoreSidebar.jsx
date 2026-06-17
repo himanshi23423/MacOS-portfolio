@@ -10,9 +10,7 @@ const NAV_ITEMS = [
 const AppStoreSidebar = ({ searchQuery, onSearchChange, activeTab, onTabChange, onClose, githubProfile, onProfileClick }) => {
   return (
     <aside
-      className={`
-        absolute sm:relative inset-y-0 left-0 w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col z-30 transition-transform duration-300 h-full
-      `}
+      className="w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col h-full shrink-0"
     >
       <div className="relative flex items-center bg-gray-200/60 border border-gray-300/40 rounded-lg px-2.5 py-1.5 shrink-0">
         <Search className="w-4 h-4 text-gray-400 mr-2 shrink-0" />

@@ -18,6 +18,7 @@ const AppStoreContentSection = ({
   handleSingleUpdate,
   updateProgresses,
   updatingAll,
+  isNarrow,
 }) => {
   const filteredApps = STORE_APPS.filter(
     (app) =>
@@ -44,7 +45,7 @@ const AppStoreContentSection = ({
         <>
           <section className="space-y-3">
             <h2 className="text-base font-extrabold tracking-tight px-1">Featured</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={`grid gap-4 ${isNarrow ? "grid-cols-1" : "grid-cols-2"}`}>
               {FEATURED_APPS.map((item) => (
                 <div
                   key={item.id}
@@ -84,7 +85,7 @@ const AppStoreContentSection = ({
 
           <section className="space-y-3">
             <h2 className="text-base font-extrabold tracking-tight px-1">Top Utilities & Productivity</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={`grid gap-4 ${isNarrow ? "grid-cols-1" : "grid-cols-2"}`}>
               {filteredApps
                 .filter((app) => !app.isGame)
                 .slice(0, 6)
@@ -108,7 +109,7 @@ const AppStoreContentSection = ({
             <h2 className="text-base font-extrabold tracking-tight">Play Games</h2>
             <p className="text-xs text-gray-400 mt-0.5">Explore immersive arcade and adventure games designed for Mac.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid gap-4 ${isNarrow ? "grid-cols-1" : "grid-cols-2"}`}>
             {getAppsByTab().map((app) => (
               <AppStoreCard
                 key={app.id}
@@ -129,7 +130,7 @@ const AppStoreContentSection = ({
             <h2 className="text-base font-extrabold tracking-tight">Developer & Work Tools</h2>
             <p className="text-xs text-gray-400 mt-0.5">Build apps, manage workspaces, and collaborate with your team.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid gap-4 ${isNarrow ? "grid-cols-1" : "grid-cols-2"}`}>
             {getAppsByTab().map((app) => (
               <AppStoreCard
                 key={app.id}

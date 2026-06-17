@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AppWindow } from "lucide-react";
 import useWindowsStore from "@store/window";
 import { STORE_APPS } from "../components/appStoreData";
@@ -11,9 +11,47 @@ const AppStoreSection = () => {
   const { openWindow, closeWindow } = useWindowsStore();
   const [activeTab, setActiveTab] = useState("discover");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(800);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [showProfile, setShowProfile] = useState(false);
   const [githubProfile, setGithubProfile] = useState(null);
+  const [isFirstLayout, setIsFirstLayout] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current) return;
+    
+    const initialWidth = containerRef.current.getBoundingClientRect().width;
+    setContainerWidth(initialWidth);
+    if (initialWidth < 800) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+    
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+        setIsFirstLayout(false);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const isNarrow = containerWidth < 800;
+  const isVeryNarrow = containerWidth < 480;
+
+  useEffect(() => {
+    // Only update if it's not the first layout (to let the initial mount state be set synchronously)
+    if (!isFirstLayout) {
+      if (isNarrow) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    }
+  }, [isNarrow, isFirstLayout]);
   
   useEffect(() => {
     fetch("https://api.github.com/users/kuldeeprajput-dev")
@@ -127,10 +165,14 @@ const AppStoreSection = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative">
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative"
+    >
       <AppStoreNavSection
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isNarrow={isNarrow}
       />
 
       <div className="flex-1 flex min-h-0 relative">
@@ -143,6 +185,8 @@ const AppStoreSection = () => {
           onCloseSidebar={() => setIsSidebarOpen(false)}
           githubProfile={githubProfile}
           onProfileClick={() => setShowProfile(true)}
+          isNarrow={isNarrow}
+          isFirstLayout={isFirstLayout}
         />
 
         <AppStoreContentSection
@@ -155,6 +199,7 @@ const AppStoreSection = () => {
           handleSingleUpdate={handleSingleUpdate}
           updateProgresses={updateProgresses}
           updatingAll={updatingAll}
+          isNarrow={isNarrow}
         />
       </div>
 

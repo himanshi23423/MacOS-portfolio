@@ -232,6 +232,8 @@ const windowWrapper = (Component, windowKey) => {
       const startGsapX = gsap.getProperty(el, "x") || 0;
       const startGsapY = gsap.getProperty(el, "y") || 0;
 
+      const minWidth = windowKey === "appstore" ? 550 : 300;
+
       const handlePointerMove = (moveEvent) => {
         const deltaX = moveEvent.clientX - startX;
         const deltaY = moveEvent.clientY - startY;
@@ -242,15 +244,15 @@ const windowWrapper = (Component, windowKey) => {
         let newY = startGsapY;
 
         if (direction.includes("e")) {
-          newWidth = Math.max(300, startRect.width + deltaX);
+          newWidth = Math.max(minWidth, startRect.width + deltaX);
         } else if (direction.includes("w")) {
           const possibleWidth = startRect.width - deltaX;
-          if (possibleWidth >= 300) {
+          if (possibleWidth >= minWidth) {
             newWidth = possibleWidth;
             newX = startGsapX + deltaX;
           } else {
-            newWidth = 300;
-            newX = startGsapX + (startRect.width - 300);
+            newWidth = minWidth;
+            newX = startGsapX + (startRect.width - minWidth);
           }
         }
 

@@ -9,16 +9,24 @@ const AppStoreSidebarSection = ({
   onCloseSidebar,
   githubProfile,
   onProfileClick,
+  isNarrow,
+  isFirstLayout,
 }) => (
   <>
-    {isSidebarOpen && (
+    {isNarrow && isSidebarOpen && (
       <div
         onClick={onCloseSidebar}
-        className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-20 sm:hidden"
+        className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-20"
       />
     )}
     <div
-      className={`absolute sm:relative inset-y-0 left-0 z-30 transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}`}
+      className={`inset-y-0 left-0 z-30 shrink-0 h-full w-52 ${
+        isFirstLayout ? "" : "transition-transform duration-300 ease-in-out"
+      } ${
+        isNarrow ? "absolute bg-gray-50/95 shadow-lg border-r border-[#d1d1d1]" : "relative"
+      } ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      }`}
     >
       <AppStoreSidebar
         searchQuery={searchQuery}
