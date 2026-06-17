@@ -57,7 +57,7 @@ const CallInProgress = ({
           ) : (
             <div className="w-full h-full relative">
               <img
-                src="/images/facetime_standby.png"
+                src="/images/profile.jpg"
                 alt="Self Camera Preview"
                 className="w-full h-full object-cover brightness-[0.9]"
               />
