@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { CATEGORIES, DAYS_SHORT } from "./calendarData";
+import { CATEGORIES, DAYS_SHORT } from "../../data/calendarData";
 
 const CalendarGrid = ({
   gridCells,

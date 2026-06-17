@@ -1,5 +1,5 @@
 import { Trash2 } from "lucide-react";
-import { CATEGORIES } from "./calendarData";
+import { CATEGORIES } from "../../data/calendarData";
 
 const CalendarSidebar = ({
   activeCategories,

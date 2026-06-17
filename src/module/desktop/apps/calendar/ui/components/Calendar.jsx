@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
-import useCalendar from "./useCalendar";
+import useCalendar from "../../hooks/useCalendar";
 import CalendarSection from "../section/CalendarSection";
 import CalendarAboutModal from "./CalendarAboutModal";
 
