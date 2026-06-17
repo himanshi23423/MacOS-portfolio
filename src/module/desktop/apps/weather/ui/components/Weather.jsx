@@ -25,7 +25,7 @@ const Weather = () => {
     return () => observer.disconnect();
   }, []);
 
-  const isNarrow = containerWidth < 550;
+  const isNarrow = containerWidth < 700;
 
   useEffect(() => {
     if (isNarrow) {

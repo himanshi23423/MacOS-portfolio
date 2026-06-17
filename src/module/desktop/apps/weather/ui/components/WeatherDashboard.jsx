@@ -30,16 +30,18 @@ const WeatherDashboard = ({ activeCity, unitMode, loading, error, setError, isNa
       <div className={`grid gap-4 flex-1 ${isNarrow ? "grid-cols-1" : "grid-cols-2"}`}>
         <TenDayForecast activeCity={activeCity} unitMode={unitMode} />
 
-        <div className="grid grid-cols-2 gap-4">
-          <UvIndexCard uv={activeCity.uv} uvLabel={activeCity.uvLabel} />
-          <WindCard
-            windSpeed={activeCity.windSpeed}
-            windDir={activeCity.windDir}
-            windAngle={activeCity.windAngle}
-          />
-          <SunriseSunsetCard sunrise={activeCity.sunrise} sunset={activeCity.sunset} />
-          <AirQualityCard aqi={activeCity.aqi} aqiLabel={activeCity.aqiLabel} />
-        </div>
+        {!isNarrow && (
+          <div className="grid grid-cols-2 gap-4">
+            <UvIndexCard uv={activeCity.uv} uvLabel={activeCity.uvLabel} />
+            <WindCard
+              windSpeed={activeCity.windSpeed}
+              windDir={activeCity.windDir}
+              windAngle={activeCity.windAngle}
+            />
+            <SunriseSunsetCard sunrise={activeCity.sunrise} sunset={activeCity.sunset} />
+            <AirQualityCard aqi={activeCity.aqi} aqiLabel={activeCity.aqiLabel} />
+          </div>
+        )}
       </div>
 
     </main>

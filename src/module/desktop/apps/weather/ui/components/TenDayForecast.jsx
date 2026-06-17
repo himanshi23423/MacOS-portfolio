@@ -11,13 +11,12 @@ const TenDayForecast = ({ activeCity, unitMode }) => {
           const minF = f.tempMinF !== undefined ? f.tempMinF : (f.tempMin !== undefined ? (f.tempMin > 45 ? f.tempMin : Math.round((f.tempMin * 9/5) + 32)) : "--");
           const maxC = f.tempMaxC !== undefined ? f.tempMaxC : (f.tempMax !== undefined ? (f.tempMax <= 45 ? f.tempMax : Math.round((f.tempMax - 32) * 5/9)) : "--");
           const maxF = f.tempMaxF !== undefined ? f.tempMaxF : (f.tempMax !== undefined ? (f.tempMax > 45 ? f.tempMax : Math.round((f.tempMax * 9/5) + 32)) : "--");
-
           return (
-            <div key={i} className="flex items-center justify-between gap-2 font-semibold">
-              <span className="w-12 text-left opacity-80">{f.day}</span>
-              <div className="w-6 flex justify-center">{renderIcon(f.icon, "w-4 h-4")}</div>
-              <div className="flex-1 flex items-center justify-between gap-3 max-w-[140px]">
-                <div className="flex flex-col items-end leading-none text-[9px] w-12 opacity-65">
+            <div key={i} className="flex items-center justify-between gap-1.5 font-semibold">
+              <span className="text-left opacity-80" style={{ width: "40px", minWidth: "40px" }}>{f.day}</span>
+              <div className="flex justify-center" style={{ width: "24px", minWidth: "24px" }}>{renderIcon(f.icon, "w-4 h-4")}</div>
+              <div className="flex-1 flex items-center justify-between gap-2" style={{ maxWidth: "110px", minWidth: "80px" }}>
+                <div className="flex flex-col items-end leading-none text-[9px] opacity-65" style={{ width: "32px", minWidth: "32px" }}>
                   {unitMode === "both" && (
                     <>
                       <span>{minC}°C</span>
@@ -37,7 +36,7 @@ const TenDayForecast = ({ activeCity, unitMode }) => {
                     style={{ left: "20%", right: "15%" }}
                   />
                 </div>
-                <div className="flex flex-col items-end leading-none text-[9px] w-12">
+                <div className="flex flex-col items-end leading-none text-[9px]" style={{ width: "32px", minWidth: "32px" }}>
                   {unitMode === "both" && (
                     <>
                       <span>{maxC}°C</span>

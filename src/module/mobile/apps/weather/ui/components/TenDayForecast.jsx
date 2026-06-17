@@ -64,12 +64,12 @@ const TenDayForecast = ({ activeCity, unitMode }) => {
           const rightPercent = 100 - ((f.valMax - absMin) / absRange) * 100;
 
           return (
-            <div key={i} className="flex items-center justify-between gap-2 font-semibold">
-              <span className="w-14 text-left opacity-90">{f.day}</span>
-              <div className="w-6 flex justify-center">{renderIcon(f.icon, "w-4 h-4")}</div>
+            <div key={i} className="flex items-center justify-between gap-1.5 font-semibold">
+              <span className="text-left opacity-90" style={{ width: "40px", minWidth: "40px" }}>{f.day}</span>
+              <div className="flex justify-center" style={{ width: "24px", minWidth: "24px" }}>{renderIcon(f.icon, "w-4 h-4")}</div>
 
-              <div className="flex-1 flex items-center justify-between gap-3 max-w-[150px]">
-                <div className="flex flex-col items-end leading-none text-[10px] w-8 opacity-70">
+              <div className="flex-1 flex items-center justify-between gap-2" style={{ maxWidth: "110px", minWidth: "80px" }}>
+                <div className="flex flex-col items-end leading-none text-[10px] opacity-70" style={{ width: "32px", minWidth: "32px" }}>
                   {unitMode === "both" && (
                     <>
                       <span>{f.minC}°</span>
@@ -87,7 +87,7 @@ const TenDayForecast = ({ activeCity, unitMode }) => {
                   />
                 </div>
 
-                <div className="flex flex-col items-end leading-none text-[10px] w-8">
+                <div className="flex flex-col items-end leading-none text-[10px]" style={{ width: "32px", minWidth: "32px" }}>
                   {unitMode === "both" && (
                     <>
                       <span>{f.maxC}°</span>
