@@ -7,7 +7,7 @@ const NAV_ITEMS = [
   { id: "updates", label: "Updates", icon: ArrowDownCircle },
 ];
 
-const AppStoreSidebar = ({ searchQuery, onSearchChange, activeTab, onTabChange, onClose, githubProfile, onProfileClick }) => {
+const AppStoreSidebar = ({ searchQuery, onSearchChange, activeTab, onTabChange, onClose, githubProfile, onProfileClick, isNarrow }) => {
   return (
     <aside
       className="w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col h-full shrink-0"
@@ -29,7 +29,9 @@ const AppStoreSidebar = ({ searchQuery, onSearchChange, activeTab, onTabChange, 
               key={item.id}
               onClick={() => {
                 onTabChange(item.id);
-                onClose();
+                if (isNarrow) {
+                  onClose();
+                }
               }}
               className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-left transition-colors cursor-pointer ${
                 activeTab === item.id

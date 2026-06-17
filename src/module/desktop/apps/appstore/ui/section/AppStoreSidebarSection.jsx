@@ -36,6 +36,7 @@ const AppStoreSidebarSection = ({
         onClose={onCloseSidebar}
         githubProfile={githubProfile}
         onProfileClick={onProfileClick}
+        isNarrow={isNarrow}
       />
     </div>
   </>
