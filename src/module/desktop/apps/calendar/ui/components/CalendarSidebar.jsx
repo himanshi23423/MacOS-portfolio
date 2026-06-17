@@ -8,18 +8,20 @@ const CalendarSidebar = ({
   handleDeleteEvent,
   isSidebarOpen,
   setIsSidebarOpen,
+  isNarrow,
 }) => (
   <>
-    {isSidebarOpen && (
+    {isNarrow && isSidebarOpen && (
       <div
         onClick={() => setIsSidebarOpen(false)}
-        className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-10 sm:hidden animate-fade-in"
+        className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-10 animate-fade-in cursor-pointer"
       />
     )}
     <aside
       className={`
-      absolute sm:relative inset-y-0 left-0 w-56 bg-gray-50 border-r border-[#d1d1d1] p-4 flex flex-col z-20 transition-transform duration-300 shrink-0
-      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}
+      absolute inset-y-0 left-0 w-56 bg-gray-50 border-r border-[#d1d1d1] p-4 flex flex-col z-20 transition-all duration-300 shrink-0
+      ${isNarrow ? "absolute bg-gray-50/95 shadow-lg" : "relative"}
+      ${isSidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-full w-0 opacity-0 overflow-hidden pointer-events-none"}
     `}
     >
       <div className="space-y-4 flex-1 overflow-y-auto thin-scrollbar">

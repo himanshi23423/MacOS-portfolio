@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useRef } from "react";
 import CalendarHeaderSection from "./CalendarHeaderSection";
 import CalendarSidePanelSection from "./CalendarSidePanelSection";
 import CalendarGridSection from "./CalendarGridSection";
@@ -46,8 +47,36 @@ const CalendarSection = (props) => {
     isSelected,
   } = props;
 
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(800);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const isNarrow = containerWidth < 550;
+  const isVeryNarrow = containerWidth < 480;
+
+  useEffect(() => {
+    if (isNarrow) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  }, [isNarrow, setIsSidebarOpen]);
+
   return (
-    <div className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative font-sans">
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative font-sans"
+    >
       <CalendarHeaderSection
         month={month}
         year={year}
@@ -60,6 +89,8 @@ const CalendarSection = (props) => {
         }}
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isNarrow={isNarrow}
+        isVeryNarrow={isVeryNarrow}
       />
       <div className="flex-1 flex min-h-0 relative">
         <CalendarSidePanelSection
@@ -69,6 +100,7 @@ const CalendarSection = (props) => {
           handleDeleteEvent={handleDeleteEvent}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
+          isNarrow={isNarrow}
         />
         <CalendarGridSection
           gridCells={gridCells}
@@ -79,6 +111,7 @@ const CalendarSection = (props) => {
           setSelectedDate={setSelectedDate}
           triggerAddEventOnDate={triggerAddEventOnDate}
           setDayEventsPopover={setDayEventsPopover}
+          isNarrow={isNarrow}
         />
       </div>
       <CalendarEventModal

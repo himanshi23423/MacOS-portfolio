@@ -232,7 +232,7 @@ const windowWrapper = (Component, windowKey) => {
       const startGsapX = gsap.getProperty(el, "x") || 0;
       const startGsapY = gsap.getProperty(el, "y") || 0;
 
-      const minWidth = windowKey === "appstore" ? 550 : 300;
+      const minWidth = windowKey === "appstore" ? 550 : (windowKey === "calendar" ? 360 : 300);
 
       const handlePointerMove = (moveEvent) => {
         const deltaX = moveEvent.clientX - startX;
