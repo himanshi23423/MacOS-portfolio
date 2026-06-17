@@ -14,6 +14,7 @@ const WeatherSection = (props) => {
     setUnitMode,
     activeCity,
     handleSearch,
+    isNarrow,
   } = props;
 
   return (
@@ -27,6 +28,7 @@ const WeatherSection = (props) => {
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={setIsSidebarOpen}
         unitMode={unitMode}
+        isNarrow={isNarrow}
       />
       <WeatherDashboardSection
         activeCity={activeCity}
@@ -34,6 +36,7 @@ const WeatherSection = (props) => {
         isLoading={loading}
         unit={unitMode}
         onToggleUnit={() => setUnitMode(prev => prev === "c" ? "f" : prev === "f" ? "both" : "c")}
+        isNarrow={isNarrow}
       />
     </div>
   );

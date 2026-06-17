@@ -1,24 +1,24 @@
 import React from "react";
 import WindowControls from "@components/WindowControls";
-import { ChevronLeft } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 
-const WeatherHeader = ({ activeCity, unitMode, setUnitMode, isSidebarOpen, setIsSidebarOpen }) => {
+const WeatherHeader = ({ activeCity, unitMode, setUnitMode, isSidebarOpen, setIsSidebarOpen, isNarrow }) => {
   return (
     <div
       id="window-header"
-      className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2.5 z-20"
+      className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-0.5 z-20"
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <WindowControls target="weather" />
-        <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="sm:hidden p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors"
-          aria-label="Toggle Sidebar"
-        >
-          <ChevronLeft
-            className={`w-5 h-5 transition-transform duration-200 ${isSidebarOpen ? "rotate-0" : "rotate-180"}`}
-          />
-        </button>
+        {isNarrow && (
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer flex items-center justify-center"
+            aria-label="Toggle Sidebar"
+          >
+            <PanelLeft className="w-4 h-4" />
+          </button>
+        )}
       </div>
       <div className="flex-1 text-center font-bold text-gray-700 text-sm block truncate px-2">
         Weather — {activeCity.name}

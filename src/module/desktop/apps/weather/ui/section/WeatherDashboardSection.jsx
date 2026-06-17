@@ -7,6 +7,7 @@ const WeatherDashboardSection = ({
   isLoading,
   unit: unitMode = "both",
   _onToggleUnit,
+  isNarrow,
 }) => {
   const city = weatherData || activeCity;
   const [error, setError] = useState(null);
@@ -26,6 +27,7 @@ const WeatherDashboardSection = ({
       loading={isLoading}
       error={error}
       setError={setError}
+      isNarrow={isNarrow}
     />
   );
 };

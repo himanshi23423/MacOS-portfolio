@@ -8,11 +8,22 @@ const WeatherSidebar = ({
   filteredCityKeys, citiesData,
   activeCityId, setActiveCityId,
   setIsSidebarOpen,
+  isSidebarOpen,
+  isNarrow,
   unitMode
 }) => {
   return (
-    <aside className="absolute sm:relative inset-y-0 left-0 w-56 bg-gray-50 border-r border-[#d1d1d1] p-3.5 space-y-4 flex flex-col z-20 transition-transform duration-300 shrink-0 h-full">
-      <div className="relative flex items-center bg-gray-200/60 border border-gray-300/40 rounded-lg px-2.5 py-1.5 shrink-0">
+    <aside
+      className={`
+      absolute inset-y-0 left-0 bg-gray-50 flex flex-col z-20 transition-all duration-300 shrink-0 h-full
+      ${isNarrow ? "absolute bg-gray-50/95 shadow-lg" : "relative"}
+      ${isSidebarOpen
+        ? "w-56 min-w-[224px] max-w-[224px] p-3.5 border-r border-[#d1d1d1] translate-x-0 opacity-100"
+        : "w-0 min-w-0 max-w-0 p-0 border-r-0 -translate-x-full opacity-0 overflow-hidden pointer-events-none"
+      }
+    `}
+    >
+      <div className="relative flex items-center bg-gray-200/60 border border-gray-300/40 rounded-lg px-2.5 py-1.5 shrink-0 mb-4">
         <button
           onClick={() => searchQuery.trim() && handleSearch(searchQuery)}
           className="focus:outline-none cursor-pointer text-gray-400 hover:text-blue-500 transition-colors mr-2 flex items-center justify-center"
@@ -45,7 +56,7 @@ const WeatherSidebar = ({
               key={key}
               onClick={() => {
                 setActiveCityId(key);
-                if (window.innerWidth < 768) {
+                if (isNarrow) {
                   setIsSidebarOpen(false);
                 }
               }}

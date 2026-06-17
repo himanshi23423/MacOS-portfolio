@@ -4,7 +4,7 @@ import HourlyForecast from "./HourlyForecast";
 import TenDayForecast from "./TenDayForecast";
 import { UvIndexCard, WindCard, SunriseSunsetCard, AirQualityCard } from "./WeatherMetricCard";
 
-const WeatherDashboard = ({ activeCity, unitMode, loading, error, setError }) => {
+const WeatherDashboard = ({ activeCity, unitMode, loading, error, setError, isNarrow }) => {
   return (
     <main className={`flex-1 h-full min-h-0 overflow-y-auto thin-scrollbar bg-gradient-to-b ${activeCity.bgClass} text-white p-6 space-y-6 flex flex-col justify-start relative`}>
 
@@ -27,7 +27,7 @@ const WeatherDashboard = ({ activeCity, unitMode, loading, error, setError }) =>
       <WeatherHero activeCity={activeCity} unitMode={unitMode} />
       <HourlyForecast activeCity={activeCity} unitMode={unitMode} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+      <div className={`grid gap-4 flex-1 ${isNarrow ? "grid-cols-1" : "grid-cols-2"}`}>
         <TenDayForecast activeCity={activeCity} unitMode={unitMode} />
 
         <div className="grid grid-cols-2 gap-4">

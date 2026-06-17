@@ -11,6 +11,7 @@ const WeatherSidebarSection = ({
   isSidebarOpen,
   onToggleSidebar,
   unitMode = "both",
+  isNarrow,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [localLoading, setLocalLoading] = useState(false);
@@ -49,10 +50,10 @@ const WeatherSidebarSection = ({
           </div>
         </div>
       )}
-      {isSidebarOpen && (
+      {isNarrow && isSidebarOpen && (
         <div
-          onClick={onToggleSidebar}
-          className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-10 sm:hidden animate-fade-in"
+          onClick={() => onToggleSidebar(false)}
+          className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-10 animate-fade-in cursor-pointer"
         />
       )}
       <WeatherSidebar
@@ -64,6 +65,8 @@ const WeatherSidebarSection = ({
         activeCityId={activeCityId}
         setActiveCityId={onSelectCity}
         setIsSidebarOpen={onToggleSidebar}
+        isSidebarOpen={isSidebarOpen}
+        isNarrow={isNarrow}
         unitMode={unitMode}
       />
     </>
