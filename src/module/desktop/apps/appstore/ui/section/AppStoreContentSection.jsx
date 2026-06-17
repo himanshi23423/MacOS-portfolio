@@ -1,5 +1,5 @@
 import { RefreshCw } from "lucide-react";
-import { STORE_APPS, FEATURED_APPS } from "../components/appStoreData";
+import { STORE_APPS, FEATURED_APPS } from "../../data";
 import { AppStoreCard, UpdateItem } from "../components/AppStoreCard";
 
 const UPDATES_LIST = [

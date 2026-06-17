@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { AppWindow } from "lucide-react";
 import useWindowsStore from "@store/window";
-import { STORE_APPS } from "../components/appStoreData";
+import { STORE_APPS } from "../../data";
 import AppStoreNavSection from "./AppStoreNavSection";
 import AppStoreSidebarSection from "./AppStoreSidebarSection";
 import AppStoreContentSection from "./AppStoreContentSection";
