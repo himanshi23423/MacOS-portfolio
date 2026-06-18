@@ -12,7 +12,7 @@ const InfoPanel = ({
   _filteredKeys,
   _searchQuery,
 }) => (
-  <div className="w-60 bg-[#fbfbfb] border-r border-zinc-200 flex flex-col shrink-0 min-w-0">
+  <div className="flex-1 flex flex-col min-h-0 min-w-0">
     <div className="flex border-b border-zinc-200 bg-gray-100/50 text-xs font-semibold text-gray-500 shrink-0 select-none">
       <button
         onClick={() => setActiveTab("explore")}

@@ -348,4 +348,15 @@
       }
     }
   }
+
+  /* ─── Pointer events & Performance Optimization ─── */
+  body.window-resizing iframe,
+  body.window-dragging iframe {
+    pointer-events: none !important;
+  }
+
+  /* Hide maps iframe completely during active resize to avoid heavy browser layout lag */
+  body.window-resizing #map iframe {
+    visibility: hidden !important;
+  }
 }

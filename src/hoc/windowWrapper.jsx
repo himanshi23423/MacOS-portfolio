@@ -66,8 +66,14 @@ const windowWrapper = (Component, windowKey) => {
         cursor: "default",
         bounds: "#desktop-area",
         onPress: () => focusWindow(windowKey),
+        onDragStart: () => {
+          document.body.classList.add("window-dragging");
+        },
         onDrag: checkDockCollision,
-        onDragEnd: checkDockCollision,
+        onDragEnd: () => {
+          document.body.classList.remove("window-dragging");
+          checkDockCollision();
+        },
       });
 
       return () => {
@@ -225,6 +231,8 @@ const windowWrapper = (Component, windowKey) => {
       // Ensure the window comes to front when resizing
       focusWindow(windowKey);
 
+      document.body.classList.add("window-resizing");
+
       const startX = e.clientX;
       const startY = e.clientY;
       const startRect = el.getBoundingClientRect();
@@ -295,6 +303,7 @@ const windowWrapper = (Component, windowKey) => {
       };
 
       const handlePointerUp = () => {
+        document.body.classList.remove("window-resizing");
         window.removeEventListener("pointermove", handlePointerMove);
         window.removeEventListener("pointerup", handlePointerUp);
       };
