@@ -288,6 +288,7 @@
   }
 
   #font {
+    min-width: 480px;
     @apply w-[860px] h-[560px] absolute top-10 left-20 shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
   }
 

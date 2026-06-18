@@ -243,11 +243,13 @@ const windowWrapper = (Component, windowKey) => {
       const minWidth =
         windowKey === "appstore"
           ? 550
-          : windowKey === "postman"
-            ? 360
-            : windowKey === "calendar"
+          : windowKey === "font"
+            ? 480
+            : windowKey === "postman"
               ? 360
-              : 300;
+              : windowKey === "calendar"
+                ? 360
+                : 300;
 
       const handlePointerMove = (moveEvent) => {
         const deltaX = moveEvent.clientX - startX;
