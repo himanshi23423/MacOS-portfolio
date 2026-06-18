@@ -39,12 +39,12 @@ const FontPreview = ({ activeFont, fontSize, setFontSize, isBold, setIsBold, isI
       </div>
     </div>
 
-    <div className="flex-1 p-6 overflow-y-auto">
+    <div className="flex-1 p-6 overflow-hidden flex flex-col">
       <textarea
         value={specimenText}
         onChange={(e) => setSpecimenText(e.target.value)}
         placeholder="Type custom text here to preview..."
-        className="w-full h-full bg-transparent border-none outline-none resize-none select-text leading-relaxed placeholder-gray-300"
+        className="w-full h-full bg-transparent border-none outline-none resize-none select-text leading-relaxed placeholder-gray-300 overflow-y-auto"
         style={{
           fontFamily: activeFont?.name || "inherit",
           fontSize: `${fontSize}px`,

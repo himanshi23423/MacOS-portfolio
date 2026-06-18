@@ -1,9 +1,25 @@
+import clsx from "clsx";
 import { Plus } from "lucide-react";
 
 const CATEGORIES = ["All Fonts", "Sans-Serif", "Serif", "Monospaced", "Handwriting", "Retro/Display", "Google Fonts"];
 
-const FontBookSidebarSection = ({ fonts = [], activeCategory, onSelectCategory, googleFontInput, onGoogleFontInputChange, onInstallFont }) => (
-  <div className="w-48 bg-[#f8f9fa] border-r border-zinc-200 flex flex-col shrink-0 min-w-0">
+const FontBookSidebarSection = ({
+  fonts = [],
+  activeCategory,
+  onSelectCategory,
+  googleFontInput,
+  onGoogleFontInputChange,
+  onInstallFont,
+  isSidebarOpen,
+  isNarrow,
+}) => (
+  <div
+    className={clsx(
+      "bg-[#f8f9fa] border-r border-zinc-200 flex flex-col shrink-0 min-w-0 transition-all duration-300 h-full z-20",
+      isNarrow ? "absolute shadow-lg" : "relative",
+      isNarrow && !isSidebarOpen ? "-translate-x-full w-0 overflow-hidden opacity-0" : "translate-x-0 w-48"
+    )}
+  >
     <div className="p-3 text-[10px] font-bold uppercase tracking-wider text-gray-500 border-b border-zinc-200">
       Collections
     </div>
