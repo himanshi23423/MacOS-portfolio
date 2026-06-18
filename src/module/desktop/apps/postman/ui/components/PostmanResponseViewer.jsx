@@ -5,10 +5,11 @@ const PostmanResponseViewer = ({
   response,
   activeResponseTab,
   setActiveResponseTab,
+  isNarrow,
 }) => (
   <div className="flex-1 border border-zinc-200 rounded-lg flex flex-col bg-gray-50/50 min-h-[220px] font-sans">
     {/* Response Header Info & Tabs */}
-    <div className="bg-gray-100/60 px-4 py-2 border-b border-zinc-200 flex flex-col sm:flex-row justify-between items-stretch sm:items-center text-xs shrink-0 select-none gap-2">
+    <div className={`bg-gray-100/60 px-4 py-2 border-b border-zinc-200 flex ${isNarrow ? "flex-col items-stretch" : "flex-row justify-between items-center"} text-xs shrink-0 select-none gap-2`}>
       <div className="flex items-center gap-4">
         <span className="font-bold text-gray-600">Response</span>
         {response && (
@@ -42,7 +43,7 @@ const PostmanResponseViewer = ({
       </div>
 
       {response && (
-        <div className="flex items-center gap-3 text-[10px] font-semibold text-gray-500 justify-end">
+        <div className={`flex items-center gap-3 text-[10px] font-semibold text-gray-500 ${isNarrow ? "justify-start mt-1" : "justify-end"}`}>
           <span className={`px-1.5 py-0.5 rounded font-bold text-white ${
             response.status >= 200 && response.status < 300 ? "bg-emerald-500" : "bg-rose-500"
           }`}>
