@@ -34,8 +34,45 @@ const Resume = () => {
     setNumPages(numPages);
   }
 
-  const handleZoomIn = () => setScale((prev) => Math.min(prev + 0.1, 2.0));
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartRef = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
+
+  const handlePointerDown = (e) => {
+    if (e.button !== 0) return;
+    if (e.target.closest("button, a, input, select")) return;
+
+    e.preventDefault();
+    setIsDragging(true);
+    dragStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      scrollLeft: containerRef.current.scrollLeft,
+      scrollTop: containerRef.current.scrollTop,
+    };
+    containerRef.current.setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDragging || !containerRef.current) return;
+    const dx = e.clientX - dragStartRef.current.x;
+    const dy = e.clientY - dragStartRef.current.y;
+    containerRef.current.scrollLeft = dragStartRef.current.scrollLeft - dx;
+    containerRef.current.scrollTop = dragStartRef.current.scrollTop - dy;
+  };
+
+  const handlePointerUp = (e) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    try {
+      containerRef.current.releasePointerCapture(e.pointerId);
+    } catch {
+      // Ignored
+    }
+  };
+
+  const handleZoomIn = () => setScale((prev) => Math.min(prev + 0.1, 3.0));
   const handleZoomOut = () => setScale((prev) => Math.max(prev - 0.1, 0.5));
+  const handleZoomReset = () => setScale(1.0);
   const handleRotate = () => setRotation((prev) => (prev + 90) % 360);
 
   return (
@@ -60,12 +97,16 @@ const Resume = () => {
             >
               <ZoomOut size={13} className="text-gray-600" />
             </button>
-            <span className="text-[10px] font-semibold min-w-[32px] text-center text-gray-600">
+            <button
+              onClick={handleZoomReset}
+              className="text-[10px] font-semibold min-w-[32px] text-center text-gray-600 hover:bg-gray-300/60 rounded px-1 transition"
+              title="Reset Zoom (100%)"
+            >
               {Math.round(scale * 100)}%
-            </span>
+            </button>
             <button
               onClick={handleZoomIn}
-              disabled={scale >= 2.0}
+              disabled={scale >= 3.0}
               className="p-1 hover:bg-gray-300/60 rounded transition disabled:opacity-40"
               title="Zoom In"
             >
@@ -94,8 +135,20 @@ const Resume = () => {
         </div>
       </div>
 
-      <div ref={containerRef} className="resume-main flex-1 overflow-y-auto bg-gray-100">
-        <div className="flex flex-col items-center justify-center min-h-full py-6 px-4">
+      <div
+        ref={containerRef}
+        className="resume-main flex-1 overflow-auto bg-gray-100 select-none"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        style={{
+          cursor: isDragging ? "grabbing" : "grab",
+          touchAction: "none",
+          userSelect: "none"
+        }}
+      >
+        <div className="flex flex-col items-center justify-center min-h-full py-6 px-4 w-fit mx-auto">
           <Document
             file="/files/resume.pdf"
             onLoadSuccess={onDocumentLoadSuccess}
