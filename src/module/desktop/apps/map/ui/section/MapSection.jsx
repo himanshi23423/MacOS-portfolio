@@ -1,18 +1,31 @@
-import { useState } from "react";
 import MapSidebarSection from "./MapSidebarSection";
 import MapViewSection from "./MapViewSection";
 
 const MapSection = (props) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { isSidebarOpen, setIsSidebarOpen, isNarrow } = props;
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-full w-full relative">
+      {isNarrow && isSidebarOpen && (
+        <div
+          className="absolute inset-0 bg-black/10 z-10 transition-opacity duration-300 cursor-pointer"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
       <MapSidebarSection
         searchQuery={props.searchQuery}
         onSearchChange={props.setSearchQuery}
         searchResults={props.filteredKeys}
-        onSelectResult={(key) => { props.setActiveKey(key); props.setZoomLevel(1); }}
+        onSelectResult={(key) => {
+          props.setActiveKey(key);
+          props.setZoomLevel(1);
+          if (isNarrow) {
+            setIsSidebarOpen(false);
+          }
+        }}
         isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        isNarrow={isNarrow}
         onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
         activeTab={props.activeTab}
         setActiveTab={props.setActiveTab}

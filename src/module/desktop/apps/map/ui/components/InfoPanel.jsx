@@ -11,6 +11,8 @@ const InfoPanel = ({
   customPlace,
   _filteredKeys,
   _searchQuery,
+  isNarrow,
+  setIsSidebarOpen,
 }) => (
   <div className="flex-1 flex flex-col min-h-0 min-w-0">
     <div className="flex border-b border-zinc-200 bg-gray-100/50 text-xs font-semibold text-gray-500 shrink-0 select-none">
@@ -44,7 +46,14 @@ const InfoPanel = ({
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider pl-1.5 font-sans">
                 Search Result
               </span>
-              <div className="flex items-center justify-between py-1.5 px-2.5 rounded-lg bg-blue-600 text-white font-semibold shadow-sm">
+              <div
+                onClick={() => {
+                  if (isNarrow && setIsSidebarOpen) {
+                    setIsSidebarOpen(false);
+                  }
+                }}
+                className="flex items-center justify-between py-1.5 px-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-98 transition-all text-white font-semibold shadow-sm cursor-pointer"
+              >
                 <div className="flex items-center gap-2 truncate">
                   <MapPin size={13} className="text-white" />
                   <span className="truncate">{customPlace.name}</span>
@@ -66,6 +75,9 @@ const InfoPanel = ({
                   onClick={() => {
                     setActiveKey(key);
                     setZoomLevel(1);
+                    if (isNarrow && setIsSidebarOpen) {
+                      setIsSidebarOpen(false);
+                    }
                   }}
                   className={`flex items-center justify-between py-1.5 px-2.5 rounded-lg cursor-pointer text-xs transition-colors ${
                     isActive

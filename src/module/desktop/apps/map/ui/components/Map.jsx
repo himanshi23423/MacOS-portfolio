@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
-import { Compass } from "lucide-react";
+import { Compass, PanelLeft } from "lucide-react";
 import useMap from "./useMap";
 import MapSection from "../section/MapSection";
 import MapAboutModal from "./MapAboutModal";
@@ -11,6 +11,32 @@ const Map = () => {
   const { windows, setWindowData } = useWindowsStore();
   const [showAbout, setShowAbout] = useState(false);
   const props = useMap();
+
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(800);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const isNarrow = containerWidth < 680;
+  const isVeryNarrow = containerWidth < 500;
+
+  useEffect(() => {
+    if (isNarrow) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  }, [isNarrow]);
 
   useEffect(() => {
     if (windows.map?.data?.openAbout) {
@@ -21,17 +47,31 @@ const Map = () => {
 
   return (
     <>
-      <div className="flex flex-col h-full w-full bg-[#f6f6f6] text-gray-800 font-sans select-none rounded-xl overflow-hidden shadow-2xl border border-zinc-200/80">
+      <div
+        ref={containerRef}
+        className="flex flex-col h-full w-full bg-[#f6f6f6] text-gray-800 font-sans select-none rounded-xl overflow-hidden shadow-2xl border border-zinc-200/80 relative @container"
+      >
         <div
           id="window-header"
           className="shrink-0 bg-[#f3f3f3] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600"
         >
           <div className="flex items-center gap-2">
             <WindowControls target="map" />
-            <div className="font-semibold pl-4 hidden md:flex items-center gap-1.5 select-none">
-              <Compass size={14} className="text-blue-500 shrink-0" />
-              <span>Maps</span>
-            </div>
+            {isNarrow && (
+              <button
+                onClick={() => setIsSidebarOpen((prev) => !prev)}
+                className="p-1 rounded hover:bg-zinc-200 transition-colors ml-1 cursor-pointer text-gray-700 flex items-center justify-center active:scale-95"
+                title="Toggle Sidebar"
+              >
+                <PanelLeft className="w-4 h-4" />
+              </button>
+            )}
+            {!isNarrow && (
+              <div className="font-semibold pl-4 flex items-center gap-1.5 select-none">
+                <Compass size={14} className="text-blue-500 shrink-0" />
+                <span>Maps</span>
+              </div>
+            )}
           </div>
 
           <div className="w-16 flex justify-end">
@@ -42,7 +82,13 @@ const Map = () => {
         </div>
 
         <div className="flex-1 flex min-h-0 relative">
-          <MapSection {...props} />
+          <MapSection
+            {...props}
+            isNarrow={isNarrow}
+            isVeryNarrow={isVeryNarrow}
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
         </div>
       </div>
       <MapAboutModal show={showAbout} onClose={() => setShowAbout(false)} />
