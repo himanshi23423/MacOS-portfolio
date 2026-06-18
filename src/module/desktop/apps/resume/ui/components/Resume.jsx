@@ -3,11 +3,13 @@ import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
 import { Download, ZoomIn, ZoomOut, RotateCw } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
+import useWindowsStore from "@store/window";
 
-// Configure pdfjs worker to render the PDF properly via CDN
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// Configure pdfjs worker to render the PDF properly from the local public directory
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
 const Resume = () => {
+  const isOpen = useWindowsStore((state) => state.windows.resume?.isOpen);
   const [numPages, setNumPages] = useState(null);
   const [scale, setScale] = useState(1.0);
   const [rotation, setRotation] = useState(0);
@@ -15,17 +17,18 @@ const Resume = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        // Fit container width dynamically
-        const width = Math.min(containerRef.current.clientWidth - 40, 720);
-        setContainerWidth(width);
+    if (!containerRef.current || !isOpen) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const width = Math.min(entry.contentRect.width - 40, 720);
+        setContainerWidth(Math.max(width, 280));
       }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    });
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [isOpen]);
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);

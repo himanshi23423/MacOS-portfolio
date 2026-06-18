@@ -4,8 +4,8 @@ import windowWrapper from "@hoc/windowWrapper";
 import { Download, ZoomIn, ZoomOut, RefreshCw } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 
-// Configure pdfjs worker to render the PDF properly via CDN
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// Configure pdfjs worker to render the PDF properly from the local public directory
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
 const Resume = () => {
   const [numPages, setNumPages] = useState(null);

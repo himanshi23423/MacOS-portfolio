@@ -195,7 +195,8 @@
   }
 
   #resume {
-    @apply w-[800px] h-[80vh] absolute top-16 left-7/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    left: calc(50vw - 400px);
+    @apply w-[800px] h-[80vh] absolute top-16 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     .resume-main {
       @apply overflow-auto;

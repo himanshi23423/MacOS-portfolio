@@ -242,7 +242,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
           label: "Download PDF Resume",
           onClick: () => {
             const link = document.createElement("a");
-            link.href = "/resume.pdf";
+            link.href = "/files/resume.pdf";
             link.download = "Kuldeep_Rajput_Resume.pdf";
             link.click();
           },
