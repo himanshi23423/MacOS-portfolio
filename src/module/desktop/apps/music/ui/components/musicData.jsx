@@ -38,29 +38,29 @@ export const TracksTable = React.memo(({ tracks, activeTrackId, isPlaying, onSel
           return (
             <tr
               key={track.id}
-              onDoubleClick={() => onSelectTrack(track)}
+              onClick={() => onSelectTrack(track)}
               className={`hover:bg-zinc-50 cursor-pointer group ${
                 isActive ? "bg-red-50/50 font-semibold" : ""
               }`}
             >
               <td className="py-3 px-4 text-gray-400">
-                {isActive && isPlaying ? (
-                  <div className="flex items-center gap-0.5 justify-center w-4 h-4">
-                    <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "300ms" }} />
-                  </div>
-                ) : (
-                  <span className="group-hover:hidden">{index + 1}</span>
-                )}
-                <Play
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSelectTrack(track);
-                  }}
-                  size={12}
-                  className="hidden group-hover:inline text-red-500 transition-transform active:scale-90"
-                />
+                <div className="w-6 h-6 flex items-center justify-center">
+                  {isActive && isPlaying ? (
+                    <div className="flex items-center gap-0.5 justify-center w-4 h-4">
+                      <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: "300ms" }} />
+                    </div>
+                  ) : (
+                    <>
+                      <span className="group-hover:hidden">{index + 1}</span>
+                      <Play
+                        size={12}
+                        className="hidden group-hover:block text-red-500 transition-transform active:scale-95"
+                      />
+                    </>
+                  )}
+                </div>
               </td>
               <td className={`py-3 px-3 truncate ${isActive ? "text-red-600" : "text-gray-900"}`}>
                 {track.title}

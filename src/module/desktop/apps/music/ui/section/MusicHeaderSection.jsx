@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import WindowControls from "@components/WindowControls";
-import { Search, ChevronLeft } from "lucide-react";
+import { Search, PanelLeft } from "lucide-react";
 
 const MusicHeaderSection = ({
   searchQuery,
   onSearchChange,
   onToggleSidebar,
-  isSidebarOpen,
+  isNarrow,
   searchInputRef,
   _onFocusWindow,
 }) => {
@@ -32,25 +32,26 @@ const MusicHeaderSection = ({
   return (
     <div
       id="window-header"
-      className="shrink-0 bg-[#f4f4f6] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600"
+      className="shrink-0 bg-[#f4f4f6] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600 gap-4"
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <WindowControls target="music" />
-        <button
-          onClick={onToggleSidebar}
-          className="md:hidden p-1 hover:bg-zinc-200 rounded text-gray-500 transition-transform"
-          title={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-        >
-          <ChevronLeft
-            size={16}
-            className={`transition-transform ${isSidebarOpen ? "" : "rotate-180"}`}
-          />
-        </button>
-        <span className="font-bold text-gray-700 hidden md:flex pl-3 items-center gap-1.5">
-          <span className="text-red-500 text-lg leading-none">♪</span> Music
-        </span>
+        {isNarrow && (
+          <button
+            onClick={onToggleSidebar}
+            className="p-1 rounded hover:bg-zinc-200 transition-colors ml-1 cursor-pointer text-gray-700 flex items-center justify-center active:scale-95"
+            title="Toggle Sidebar"
+          >
+            <PanelLeft className="w-4 h-4" />
+          </button>
+        )}
+        {!isNarrow && (
+          <span className="font-bold text-gray-700 flex pl-4 items-center gap-1.5">
+            <span className="text-red-500 text-lg leading-none">♪</span> Music
+          </span>
+        )}
       </div>
-      <div className="w-56 relative flex items-center">
+      <div className={`${isNarrow ? "w-40" : "w-56"} relative flex items-center transition-all duration-200`}>
         <input
           ref={searchInputRef}
           type="text"

@@ -60,7 +60,7 @@ const useMusic = () => {
           process.env.NEXT_PUBLIC_JIOSAAVN_API_URL ||
           "https://jiosaavn-apix.arcadopredator.workers.dev";
 
-        if (searchQuery.trim() === "") {
+        if (searchQuery.trim() === "" && activeCategory === "Browse") {
           const PRELOADED_SONG_NAMES = [
             "Apna Bana Le Bhediya",
             "Zaalima Raees",
@@ -236,10 +236,15 @@ const useMusic = () => {
   useEffect(() => {
     if (audioRef.current && activeTrack.url) {
       if (isPlaying) {
-        audioRef.current.play().catch((err) => {
-          console.log("Audio playback blocked or interrupted:", err);
-          setMusicState({ isPlaying: false });
-        });
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            if (err.name !== "AbortError") {
+              console.log("Audio playback blocked or interrupted:", err);
+              setMusicState({ isPlaying: false });
+            }
+          });
+        }
       } else {
         audioRef.current.pause();
       }

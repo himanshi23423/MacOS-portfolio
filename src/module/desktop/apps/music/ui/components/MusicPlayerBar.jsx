@@ -71,7 +71,7 @@ const MusicPlayerBar = ({
           </button>
           <button
             onClick={onPlayPause}
-            className="p-2.5 bg-red-500 hover:bg-red-600 text-white rounded-full transition-all active:scale-95 shadow-md flex items-center justify-center cursor-pointer"
+            className="w-9 h-9 bg-red-500 hover:bg-red-600 text-white rounded-full transition-all active:scale-95 shadow-md flex items-center justify-center cursor-pointer shrink-0"
             title={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? <Pause size={15} /> : <Play size={15} className="pl-0.5" />}

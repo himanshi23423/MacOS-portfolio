@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MusicHeaderSection from "./MusicHeaderSection";
 import MusicSidebarSection from "./MusicSidebarSection";
 import MusicTrackSection from "./MusicTrackSection";
@@ -36,25 +36,64 @@ const MusicSection = (props) => {
     setMusicState,
   } = props;
 
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(800);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const isNarrow = containerWidth < 650;
+
+  useEffect(() => {
+    if (isNarrow) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  }, [isNarrow]);
+
   return (
-    <div className="flex flex-col h-full w-full bg-white text-gray-800 rounded-xl overflow-hidden shadow-2xl border border-zinc-200 select-none">
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full w-full bg-white text-gray-800 rounded-xl overflow-hidden shadow-2xl border border-zinc-200 select-none"
+    >
       <MusicHeaderSection
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
         isSidebarOpen={isSidebarOpen}
+        isNarrow={isNarrow}
         searchInputRef={searchInputRef}
         onFocusWindow={focusWindow}
       />
 
-      <div className="flex-1 flex min-h-0 relative">
+      <div className="flex-1 flex min-h-0 relative bg-white">
+        {isNarrow && isSidebarOpen && (
+          <div
+            className="absolute inset-0 bg-black/15 z-10 transition-opacity duration-300 cursor-pointer"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
         <MusicSidebarSection
           activeCategory={activeCategory}
-          setActiveCategory={setActiveCategory}
+          setActiveCategory={(cat) => {
+            setActiveCategory(cat);
+            if (isNarrow) {
+              setIsSidebarOpen(false);
+            }
+          }}
           isSidebarOpen={isSidebarOpen}
           isPlaying={isPlaying}
+          isNarrow={isNarrow}
         />
 
         <MusicTrackSection
@@ -74,6 +113,7 @@ const MusicSection = (props) => {
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleAudioEnded}
+        autoPlay={isPlaying}
       />
 
       <MusicPlayerSection
