@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import useWindowsStore from "@store/window";
 
-const NavbarAppMenu = ({ activeAppName, openWindow }) => {
+const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleMenuOpen }) => {
   const { setAboutPortfolioOpen, setWindowData, windows } = useWindowsStore();
   const [openDropdown, setOpenDropdown] = useState(null); // 'portfolio' | 'projects' | 'contact' | 'resume' | null
   const containerRef = useRef(null);
@@ -24,8 +24,17 @@ const NavbarAppMenu = ({ activeAppName, openWindow }) => {
 
   const toggleDropdown = (name, e) => {
     e.stopPropagation();
+    if (isAppleMenuOpen) {
+      setIsAppleMenuOpen(false);
+    }
     setOpenDropdown((prev) => (prev === name ? null : name));
   };
+
+  useEffect(() => {
+    if (isAppleMenuOpen) {
+      setOpenDropdown(null);
+    }
+  }, [isAppleMenuOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

@@ -39,7 +39,12 @@ const NavbarSection = ({
           setIsAsleep={setIsAsleep}
           setIsShuttingDown={setIsShuttingDown}
         />
-        <NavbarAppMenuSection activeAppName={activeAppName} openWindow={openWindow} />
+        <NavbarAppMenuSection
+          activeAppName={activeAppName}
+          openWindow={openWindow}
+          isAppleMenuOpen={isAppleMenuOpen}
+          setIsAppleMenuOpen={setIsAppleMenuOpen}
+        />
       </div>
       <div className="nav-right relative max-sm:hidden" onClick={openControlCenterFromNavbar}>
         <NavbarControlCenterSection
