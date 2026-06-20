@@ -1,15 +1,30 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import useWindowsStore from "@store/window";
 
 const useDockAnimation = () => {
   const dockRef = useRef(null);
+  const isDockDragging = useWindowsStore((state) => state.isDockDragging);
+
+  useEffect(() => {
+    if (dockRef.current) {
+      // Instantly kill active tweens and completely clear inline GSAP styles
+      // to prevent layout distortion and overlapping during reordering/drag-and-drop.
+      const icons = dockRef.current.querySelectorAll(".dock-icon");
+      icons.forEach((icon) => {
+        gsap.killTweensOf(icon);
+        gsap.set(icon, { clearProps: "all" });
+      });
+    }
+  }, [isDockDragging]);
 
   useGSAP(() => {
     const dock = dockRef.current;
     if (!dock) return;
 
     const animateIcons = (mouseX) => {
+      if (isDockDragging) return;
       const icons = dock.querySelectorAll(".dock-icon");
       const { left } = dock.getBoundingClientRect();
       icons.forEach((icon) => {
@@ -28,10 +43,13 @@ const useDockAnimation = () => {
     };
 
     const handleMouseMove = (e) => {
+      if (isDockDragging) return;
       const { left } = dock.getBoundingClientRect();
       animateIcons(e.clientX - left);
     };
+
     const resetIcons = () => {
+      if (isDockDragging) return;
       const icons = dock.querySelectorAll(".dock-icon");
       icons.forEach((icon) =>
         gsap.to(icon, {
@@ -42,7 +60,9 @@ const useDockAnimation = () => {
         }),
       );
     };
+
     const handlePointerDown = (e) => {
+      if (isDockDragging) return;
       const icon = e.target.closest(".dock-icon");
       if (!icon || icon.disabled) return;
       gsap.fromTo(
@@ -61,7 +81,7 @@ const useDockAnimation = () => {
       dock.removeEventListener("mouseleave", resetIcons);
       dock.removeEventListener("pointerdown", handlePointerDown);
     };
-  }, []);
+  }, [isDockDragging]);
 
   return dockRef;
 };
