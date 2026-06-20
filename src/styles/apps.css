@@ -332,7 +332,8 @@
   }
 
   #home {
-    @apply relative max-sm:hidden;
+    @apply absolute top-[35px] left-0 right-0 max-sm:hidden;
+    bottom: 100px;
     z-index: 1;
 
     ul {
