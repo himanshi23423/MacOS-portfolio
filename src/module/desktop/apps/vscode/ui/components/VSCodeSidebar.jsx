@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { extensionsList } from "../../data/vscodeData";
 import VSCodeFileIcon, { FolderIcon } from "./VSCodeFileIcon";
 
@@ -71,9 +68,7 @@ const FileTree = ({ files, activeFile, explorerExpanded, onToggleExpand, onSelec
         key={path}
         onClick={() => onSelectFile(path)}
         className={`w-full flex items-center gap-2 py-[3px] hover:bg-[#e8e8e8] cursor-pointer text-[12px] transition-colors focus:outline-none text-left ${
-          isSelected
-            ? "bg-[#d6ebff] text-[#333333] font-semibold"
-            : "text-[#333333]"
+          isSelected ? "bg-[#d6ebff] text-[#333333] font-semibold" : "text-[#333333]"
         }`}
         style={{ paddingLeft: `${depth * 14 + 22}px` }}
       >
@@ -306,10 +301,5 @@ const VSCodeSidebar = ({
   );
 };
 
-export {
-  VSCodeExplorerPanel,
-  VSCodeSearchPanel,
-  VSCodeGitPanel,
-  VSCodeExtensionsPanel,
-};
+export { VSCodeExplorerPanel, VSCodeSearchPanel, VSCodeGitPanel, VSCodeExtensionsPanel };
 export default VSCodeSidebar;

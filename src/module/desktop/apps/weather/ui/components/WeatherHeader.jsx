@@ -2,7 +2,14 @@ import React from "react";
 import WindowControls from "@components/WindowControls";
 import { PanelLeft } from "lucide-react";
 
-const WeatherHeader = ({ activeCity, unitMode, setUnitMode, isSidebarOpen, setIsSidebarOpen, isNarrow }) => {
+const WeatherHeader = ({
+  activeCity,
+  unitMode,
+  setUnitMode,
+  isSidebarOpen,
+  setIsSidebarOpen,
+  isNarrow,
+}) => {
   return (
     <div
       id="window-header"

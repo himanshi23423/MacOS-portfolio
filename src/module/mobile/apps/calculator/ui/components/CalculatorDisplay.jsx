@@ -10,7 +10,7 @@ const CalculatorDisplay = ({ value, operator, displayValue }) => (
   <div className="flex flex-col items-end justify-end h-24 mb-2 pr-2 w-full overflow-hidden">
     {value != null && operator && (
       <span className="text-white/50 text-xl font-light tracking-wider mb-1 whitespace-nowrap">
-        {value} {operator.replace('*', '×').replace('/', '÷')}
+        {value} {operator.replace("*", "×").replace("/", "÷")}
       </span>
     )}
     <span

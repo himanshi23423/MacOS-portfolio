@@ -1,6 +1,14 @@
 import CalendarSidebar from "../components/CalendarSidebar";
 
-const CalendarSidePanelSection = ({ activeCategories, toggleCategory, filteredEvents, handleDeleteEvent, isSidebarOpen, setIsSidebarOpen, isNarrow }) => (
+const CalendarSidePanelSection = ({
+  activeCategories,
+  toggleCategory,
+  filteredEvents,
+  handleDeleteEvent,
+  isSidebarOpen,
+  setIsSidebarOpen,
+  isNarrow,
+}) => (
   <CalendarSidebar
     activeCategories={activeCategories}
     toggleCategory={toggleCategory}

@@ -13,7 +13,9 @@ const NotesSidebarSection = ({
   onToggleSidebar,
   formatDate,
 }) => (
-  <div className={`absolute md:relative inset-y-0 left-0 w-64 md:w-60 lg:w-64 bg-gray-50 border-r border-[#d1d1d1] flex flex-col z-20 transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}>
+  <div
+    className={`absolute md:relative inset-y-0 left-0 w-64 md:w-60 lg:w-64 bg-gray-50 border-r border-[#d1d1d1] flex flex-col z-20 transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+  >
     <div className="flex items-center justify-between px-3 pt-3 pb-1 md:hidden">
       <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Folders</span>
       <button onClick={onToggleSidebar} className="p-1 rounded hover:bg-gray-200">
@@ -79,7 +81,9 @@ const NotesSidebarSection = ({
             >
               <h4 className="font-semibold text-sm truncate text-gray-900">{note.title}</h4>
               <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
-                <span className="shrink-0 font-medium text-blue-600">{formatDate(note.updatedAt)}</span>
+                <span className="shrink-0 font-medium text-blue-600">
+                  {formatDate(note.updatedAt)}
+                </span>
                 <span className="truncate text-gray-500">{preview}</span>
               </div>
             </div>

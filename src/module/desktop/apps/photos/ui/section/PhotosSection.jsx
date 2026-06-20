@@ -397,9 +397,7 @@ const PhotosSection = ({
       <div className="flex w-full flex-1 overflow-hidden photos-main bg-white relative">
         <div
           className={`flex-shrink-0 z-30 transition-all duration-300 relative h-full bg-[#f5f5f5]/80 border-r border-[#d4d4d4] flex flex-col ${
-            isSidebarOpen
-              ? "w-48 opacity-100"
-              : "w-0 opacity-0 overflow-hidden pointer-events-none"
+            isSidebarOpen ? "w-48 opacity-100" : "w-0 opacity-0 overflow-hidden pointer-events-none"
           }`}
         >
           <PhotosSidebarSection

@@ -16,7 +16,9 @@ const CallHeaderSection = ({ isSidebarOpen, onToggleSidebar, isNarrow }) => (
         <PanelLeft className="w-4 h-4" />
       </button>
     </div>
-    <div className={`flex-1 text-center font-bold text-gray-700 text-sm ${isNarrow ? "hidden" : "block"}`}>
+    <div
+      className={`flex-1 text-center font-bold text-gray-700 text-sm ${isNarrow ? "hidden" : "block"}`}
+    >
       FaceTime
     </div>
     <div className="w-14" />

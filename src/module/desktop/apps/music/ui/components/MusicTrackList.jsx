@@ -1,6 +1,13 @@
 import { TracksTable } from "./musicData";
 
-const MusicTrackList = ({ tracks, activeTrackId, isPlaying, onSelectTrack, formatTime, isLoading }) => {
+const MusicTrackList = ({
+  tracks,
+  activeTrackId,
+  isPlaying,
+  onSelectTrack,
+  formatTime,
+  isLoading,
+}) => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-48 flex-col gap-3">

@@ -1,8 +1,12 @@
 import {
-  PROJECT_1_URL, PROJECT_1_GITHUB,
-  PROJECT_2_URL, PROJECT_2_GITHUB,
-  PROJECT_3_URL, PROJECT_3_GITHUB,
-  PROJECT_4_URL, PROJECT_4_GITHUB,
+  PROJECT_1_URL,
+  PROJECT_1_GITHUB,
+  PROJECT_2_URL,
+  PROJECT_2_GITHUB,
+  PROJECT_3_URL,
+  PROJECT_3_GITHUB,
+  PROJECT_4_URL,
+  PROJECT_4_GITHUB,
 } from "./env";
 
 export const projects = [
@@ -18,8 +22,7 @@ export const projects = [
   {
     id: 2,
     title: "Free Course Finder",
-    description:
-      "An AI-powered learning platform to discover free courses from multiple sources.",
+    description: "An AI-powered learning platform to discover free courses from multiple sources.",
     image: "/projects/snsta.png",
     link: PROJECT_2_URL,
     github: PROJECT_2_GITHUB,
@@ -27,8 +30,7 @@ export const projects = [
   {
     id: 3,
     title: "Resume Ats Scanner",
-    description:
-      "AI-powered resume parsing and analysis platform optimized for ATS.",
+    description: "AI-powered resume parsing and analysis platform optimized for ATS.",
     image: "/projects/resume-ats.png",
     link: PROJECT_3_URL,
     github: PROJECT_3_GITHUB,

@@ -46,7 +46,7 @@ export default function useCalculator() {
       }
     } else {
       setDisplayValue(
-        displayValue === "0" || displayValue === "Error" ? String(digit) : displayValue + digit
+        displayValue === "0" || displayValue === "Error" ? String(digit) : displayValue + digit,
       );
     }
   };

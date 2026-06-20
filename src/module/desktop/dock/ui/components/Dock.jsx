@@ -30,9 +30,7 @@ const Dock = () => {
 
   const orderedDockApps = useMemo(() => {
     if (!dockAppIds) return dockApps;
-    return dockAppIds
-      .map((id) => dockApps.find((app) => app.id === id))
-      .filter(Boolean);
+    return dockAppIds.map((id) => dockApps.find((app) => app.id === id)).filter(Boolean);
   }, [dockAppIds]);
 
   const toggleApp = (app) => {
@@ -62,7 +60,8 @@ const Dock = () => {
     e.dataTransfer.effectAllowed = "copyMove";
 
     // Set custom clean drag image using the inner icon/image element only
-    const img = e.currentTarget.querySelector("img") || e.currentTarget.querySelector(".size-full > div");
+    const img =
+      e.currentTarget.querySelector("img") || e.currentTarget.querySelector(".size-full > div");
     if (img) {
       e.dataTransfer.setDragImage(img, 24, 24);
     }

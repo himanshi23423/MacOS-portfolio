@@ -1,6 +1,11 @@
 import NavbarAppMenu from "../components/NavbarAppMenu";
 
-const NavbarAppMenuSection = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleMenuOpen }) => (
+const NavbarAppMenuSection = ({
+  activeAppName,
+  openWindow,
+  isAppleMenuOpen,
+  setIsAppleMenuOpen,
+}) => (
   <NavbarAppMenu
     activeAppName={activeAppName}
     openWindow={openWindow}

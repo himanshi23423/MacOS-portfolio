@@ -35,7 +35,9 @@ const WeatherSection = (props) => {
         weatherData={activeCity}
         isLoading={loading}
         unit={unitMode}
-        onToggleUnit={() => setUnitMode(prev => prev === "c" ? "f" : prev === "f" ? "both" : "c")}
+        onToggleUnit={() =>
+          setUnitMode((prev) => (prev === "c" ? "f" : prev === "f" ? "both" : "c"))
+        }
         isNarrow={isNarrow}
       />
     </div>

@@ -1,7 +1,16 @@
 import React from "react";
 import TelegramChatList from "../components/TelegramChatList";
 
-const TelegramChatListSection = ({ chats, activeChatId, onSelectChat, searchQuery, onSearchChange, isSidebarOpen, onCloseSidebar, ...rest }) => {
+const TelegramChatListSection = ({
+  chats,
+  activeChatId,
+  onSelectChat,
+  searchQuery,
+  onSearchChange,
+  isSidebarOpen,
+  onCloseSidebar,
+  ...rest
+}) => {
   return (
     <TelegramChatList
       filteredChats={chats}

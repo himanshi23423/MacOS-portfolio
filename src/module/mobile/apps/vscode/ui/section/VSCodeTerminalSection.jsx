@@ -1,9 +1,13 @@
 import { Play, Terminal as TerminalIcon } from "lucide-react";
 
 const VSCodeTerminalSection = ({
-  isTerminalOpen, onToggleTerminal,
-  terminalHistory, terminalInput, setTerminalInput,
-  terminalBottomRef, runCommand,
+  isTerminalOpen,
+  onToggleTerminal,
+  terminalHistory,
+  terminalInput,
+  setTerminalInput,
+  terminalBottomRef,
+  runCommand,
 }) => {
   if (!isTerminalOpen) return null;
 
@@ -14,7 +18,9 @@ const VSCodeTerminalSection = ({
           <span className="hover:text-zinc-800 cursor-pointer">Problems</span>
           <span className="hover:text-zinc-800 cursor-pointer">Output</span>
           <span className="hover:text-zinc-800 cursor-pointer">Debug Console</span>
-          <span className="text-zinc-950 border-b-2 border-blue-600 pb-0.5 cursor-pointer font-bold">Terminal</span>
+          <span className="text-zinc-950 border-b-2 border-blue-600 pb-0.5 cursor-pointer font-bold">
+            Terminal
+          </span>
         </div>
         <div className="flex items-center gap-3">
           <Play size={12} className="text-green-600 cursor-pointer" />
@@ -27,7 +33,12 @@ const VSCodeTerminalSection = ({
       <div className="flex-1 overflow-y-auto p-3 font-mono text-[11px] select-text">
         <div className="space-y-1">
           {terminalHistory.map((item, idx) => (
-            <div key={idx} className={item.type === "input" ? "text-green-600 font-bold" : "text-zinc-700 leading-normal"}>
+            <div
+              key={idx}
+              className={
+                item.type === "input" ? "text-green-600 font-bold" : "text-zinc-700 leading-normal"
+              }
+            >
               {item.type === "input" ? `➜ /workspace $ ${item.text}` : item.text}
             </div>
           ))}

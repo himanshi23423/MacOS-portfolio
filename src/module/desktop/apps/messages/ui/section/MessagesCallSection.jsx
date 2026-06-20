@@ -1,6 +1,14 @@
 import CallOverlay from "../components/CallOverlay";
 
-const MessagesCallSection = ({ callState, callDuration, activeChat, onMicToggle, onCameraToggle, onEndCall, formatCallTime }) => {
+const MessagesCallSection = ({
+  callState,
+  callDuration,
+  activeChat,
+  onMicToggle,
+  onCameraToggle,
+  onEndCall,
+  formatCallTime,
+}) => {
   if (!callState.isOpen) return null;
 
   return (

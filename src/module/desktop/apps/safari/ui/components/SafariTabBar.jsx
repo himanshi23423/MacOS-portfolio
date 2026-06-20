@@ -1,11 +1,18 @@
 import React from "react";
 import { Plus, X, Globe } from "lucide-react";
 
-const SafariTabBar = ({ tabs, activeTabId, setActiveTabId, onCloseTab, onNewTab, showTabIcons }) => {
+const SafariTabBar = ({
+  tabs,
+  activeTabId,
+  setActiveTabId,
+  onCloseTab,
+  onNewTab,
+  showTabIcons,
+}) => {
   const isMaxTabsReached = tabs.length >= 10;
 
   return (
-    <div 
+    <div
       className="flex items-end bg-[#eef1f5] border-b border-[#c8cbd0] px-2 h-10 select-none w-full"
       onMouseDown={(e) => e.stopPropagation()}
       onPointerDown={(e) => e.stopPropagation()}
@@ -15,7 +22,7 @@ const SafariTabBar = ({ tabs, activeTabId, setActiveTabId, onCloseTab, onNewTab,
         {tabs.map((tab) => {
           const isActive = tab.id === activeTabId;
           const isStartPage = tab.url === "safari://start";
-          
+
           return (
             <div
               key={tab.id}
@@ -35,9 +42,11 @@ const SafariTabBar = ({ tabs, activeTabId, setActiveTabId, onCloseTab, onNewTab,
 
               {/* Tab Icon */}
               {showTabIcons && (
-                <span className={`mr-0 @sm:mr-1.5 flex-shrink-0 transition-opacity duration-150 ${
-                  tabs.length > 2 ? "group-hover:opacity-0 @sm:group-hover:opacity-100" : ""
-                }`}>
+                <span
+                  className={`mr-0 @sm:mr-1.5 flex-shrink-0 transition-opacity duration-150 ${
+                    tabs.length > 2 ? "group-hover:opacity-0 @sm:group-hover:opacity-100" : ""
+                  }`}
+                >
                   {isStartPage ? (
                     <span className="text-[10px]">🧭</span>
                   ) : (
@@ -47,9 +56,11 @@ const SafariTabBar = ({ tabs, activeTabId, setActiveTabId, onCloseTab, onNewTab,
               )}
 
               {/* Title */}
-              <span className={`truncate pr-4 flex-1 ${
-                tabs.length <= 2 ? "inline" : "hidden @sm:inline"
-              }`}>
+              <span
+                className={`truncate pr-4 flex-1 ${
+                  tabs.length <= 2 ? "inline" : "hidden @sm:inline"
+                }`}
+              >
                 {tab.title}
               </span>
 
@@ -62,8 +73,8 @@ const SafariTabBar = ({ tabs, activeTabId, setActiveTabId, onCloseTab, onNewTab,
                         isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                       }`
                     : `absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 @sm:left-auto @sm:right-1.5 @sm:translate-x-0 @sm:-translate-y-1/2 p-0.5 rounded-full hover:bg-black/10 transition-colors text-gray-400 hover:text-gray-700 transition-opacity duration-150 ${
-                        isActive 
-                          ? "opacity-0 group-hover:opacity-100 @sm:opacity-100" 
+                        isActive
+                          ? "opacity-0 group-hover:opacity-100 @sm:opacity-100"
                           : "opacity-0 group-hover:opacity-100"
                       }`
                 }

@@ -1,6 +1,16 @@
 import CalendarGrid from "../components/CalendarGrid";
 
-const CalendarGridSection = ({ gridCells, getEventsForDate, isToday, isSelected, selectedDate, setSelectedDate, triggerAddEventOnDate, setDayEventsPopover, isNarrow }) => (
+const CalendarGridSection = ({
+  gridCells,
+  getEventsForDate,
+  isToday,
+  isSelected,
+  selectedDate,
+  setSelectedDate,
+  triggerAddEventOnDate,
+  setDayEventsPopover,
+  isNarrow,
+}) => (
   <CalendarGrid
     gridCells={gridCells}
     getEventsForDate={getEventsForDate}

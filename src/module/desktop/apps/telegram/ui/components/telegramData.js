@@ -11,9 +11,21 @@ export const INITIAL_CHATS = [
     bio: "The official helper bot for this macOS Portfolio. Ask me anything!",
     phone: "None",
     messages: [
-      { id: 1, text: "Welcome to the Telegram macOS Simulator! ✈️", sender: "them", time: "12:00 PM", status: "read" },
-      { id: 2, text: "I can help you navigate this portfolio. Try sending: \n• /start - Reset helper\n• /projects - Browse developer projects\n• /skills - View tech stack\n• /contact - Get contact details", sender: "them", time: "12:01 PM", status: "read" }
-    ]
+      {
+        id: 1,
+        text: "Welcome to the Telegram macOS Simulator! ✈️",
+        sender: "them",
+        time: "12:00 PM",
+        status: "read",
+      },
+      {
+        id: 2,
+        text: "I can help you navigate this portfolio. Try sending: \n• /start - Reset helper\n• /projects - Browse developer projects\n• /skills - View tech stack\n• /contact - Get contact details",
+        sender: "them",
+        time: "12:01 PM",
+        status: "read",
+      },
+    ],
   },
   {
     id: "kuldeep",
@@ -27,8 +39,14 @@ export const INITIAL_CHATS = [
     bio: "Full Stack Engineer | React, Next.js, Node.js & TypeScript enthusiast.",
     phone: "+91 ••••• •••••",
     messages: [
-      { id: 1, text: "Hey! Glad you opened Telegram. Let me know if you have any questions or want to collaborate.", sender: "them", time: "10:30 AM", status: "read" }
-    ]
+      {
+        id: 1,
+        text: "Hey! Glad you opened Telegram. Let me know if you have any questions or want to collaborate.",
+        sender: "them",
+        time: "10:30 AM",
+        status: "read",
+      },
+    ],
   },
   {
     id: "react_group",
@@ -42,10 +60,31 @@ export const INITIAL_CHATS = [
     bio: "India's largest community for React & Next.js developers.",
     phone: "None",
     messages: [
-      { id: 1, text: "Vite 6 is extremely fast! Has anyone migrated their Next.js project yet?", sender: "amit", time: "09:15 AM", status: "read", senderName: "Amit" },
-      { id: 2, text: "Vite is primarily for SPAs. For Next.js, you'd use Turbopack.", sender: "sneha", time: "09:18 AM", status: "read", senderName: "Sneha" },
-      { id: 3, text: "Ah, right! Thanks for the clarification.", sender: "amit", time: "09:20 AM", status: "read", senderName: "Amit" }
-    ]
+      {
+        id: 1,
+        text: "Vite 6 is extremely fast! Has anyone migrated their Next.js project yet?",
+        sender: "amit",
+        time: "09:15 AM",
+        status: "read",
+        senderName: "Amit",
+      },
+      {
+        id: 2,
+        text: "Vite is primarily for SPAs. For Next.js, you'd use Turbopack.",
+        sender: "sneha",
+        time: "09:18 AM",
+        status: "read",
+        senderName: "Sneha",
+      },
+      {
+        id: 3,
+        text: "Ah, right! Thanks for the clarification.",
+        sender: "amit",
+        time: "09:20 AM",
+        status: "read",
+        senderName: "Amit",
+      },
+    ],
   },
   {
     id: "portfolio_channel",
@@ -59,8 +98,20 @@ export const INITIAL_CHATS = [
     bio: "Official channel for release logs, new features, and design updates on this macOS portfolio project.",
     phone: "None",
     messages: [
-      { id: 1, text: "Release v1.2: Added fully functional light-themed Maps app, Postman client, and interactive Launchpad overlay! 🎉", sender: "channel", time: "Yesterday", status: "read" },
-      { id: 2, text: "Release v1.3: Brand new Telegram client interface now live! Open it from the Dock to chat with custom bots and explore channels.", sender: "channel", time: "11:00 AM", status: "read" }
-    ]
-  }
+      {
+        id: 1,
+        text: "Release v1.2: Added fully functional light-themed Maps app, Postman client, and interactive Launchpad overlay! 🎉",
+        sender: "channel",
+        time: "Yesterday",
+        status: "read",
+      },
+      {
+        id: 2,
+        text: "Release v1.3: Brand new Telegram client interface now live! Open it from the Dock to chat with custom bots and explore channels.",
+        sender: "channel",
+        time: "11:00 AM",
+        status: "read",
+      },
+    ],
+  },
 ];

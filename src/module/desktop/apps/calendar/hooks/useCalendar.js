@@ -28,7 +28,11 @@ const useCalendar = () => {
   const [events, setEvents] = useState(() => {
     const saved = localStorage.getItem("macos_portfolio_calendar_events");
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { console.error(e); }
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
     }
     return [
       {
@@ -38,7 +42,7 @@ const useCalendar = () => {
         start: "00:00",
         end: "23:59",
         category: "birthdays",
-        desc: "Celebrate Kuldeep's birthday and review macos portfolio improvements!"
+        desc: "Celebrate Kuldeep's birthday and review macos portfolio improvements!",
       },
       {
         id: "2",
@@ -47,7 +51,7 @@ const useCalendar = () => {
         start: "14:00",
         end: "15:30",
         category: "work",
-        desc: "Review design elements, dynamic dock, and calendar integration."
+        desc: "Review design elements, dynamic dock, and calendar integration.",
       },
       {
         id: "3",
@@ -56,7 +60,7 @@ const useCalendar = () => {
         start: "12:30",
         end: "13:30",
         category: "personal",
-        desc: "Discuss visual animations and glassmorphism elements."
+        desc: "Discuss visual animations and glassmorphism elements.",
       },
       {
         id: "4",
@@ -65,7 +69,7 @@ const useCalendar = () => {
         start: "09:00",
         end: "10:30",
         category: "work",
-        desc: "Build bundle and perform end-to-end user experience checks."
+        desc: "Build bundle and perform end-to-end user experience checks.",
       },
       {
         id: "5",
@@ -74,8 +78,8 @@ const useCalendar = () => {
         start: "00:00",
         end: "23:59",
         category: "holidays",
-        desc: "Federal public holiday."
-      }
+        desc: "Federal public holiday.",
+      },
     ];
   });
 
@@ -145,12 +149,12 @@ const useCalendar = () => {
 
   const gridCells = generateGrid();
 
-  const getFilteredEvents = () => events.filter(event => activeCategories[event.category]);
+  const getFilteredEvents = () => events.filter((event) => activeCategories[event.category]);
   const filteredEvents = getFilteredEvents();
 
   const getEventsForDate = (dateObj) => {
-    const dateString = dateObj.toLocaleDateString('en-CA');
-    return filteredEvents.filter(event => event.date === dateString);
+    const dateString = dateObj.toLocaleDateString("en-CA");
+    return filteredEvents.filter((event) => event.date === dateString);
   };
 
   const handleAddEvent = (e) => {
@@ -174,44 +178,79 @@ const useCalendar = () => {
   };
 
   const handleDeleteEvent = (eventId) => {
-    setEvents((prev) => prev.filter(ev => ev.id !== eventId));
+    setEvents((prev) => prev.filter((ev) => ev.id !== eventId));
     if (dayEventsPopover) {
-      setDayEventsPopover(prev => ({
+      setDayEventsPopover((prev) => ({
         ...prev,
-        events: prev.events.filter(ev => ev.id !== eventId)
+        events: prev.events.filter((ev) => ev.id !== eventId),
       }));
     }
   };
 
   const triggerAddEventOnDate = (dateObj) => {
-    const formattedDate = dateObj.toLocaleDateString('en-CA');
+    const formattedDate = dateObj.toLocaleDateString("en-CA");
     setEventDate(formattedDate);
     setIsModalOpen(true);
   };
 
   const isToday = (dateObj) => {
     const today = new Date();
-    return dateObj.getDate() === today.getDate() &&
-           dateObj.getMonth() === today.getMonth() &&
-           dateObj.getFullYear() === today.getFullYear();
+    return (
+      dateObj.getDate() === today.getDate() &&
+      dateObj.getMonth() === today.getMonth() &&
+      dateObj.getFullYear() === today.getFullYear()
+    );
   };
 
   const isSelected = (dateObj) => {
-    return dateObj.getDate() === selectedDate.getDate() &&
-           dateObj.getMonth() === selectedDate.getMonth() &&
-           dateObj.getFullYear() === selectedDate.getFullYear();
+    return (
+      dateObj.getDate() === selectedDate.getDate() &&
+      dateObj.getMonth() === selectedDate.getMonth() &&
+      dateObj.getFullYear() === selectedDate.getFullYear()
+    );
   };
 
   return {
-    month, year, selectedDate, isSidebarOpen, activeCategories,
-    isModalOpen, eventTitle, eventDate, eventStart, eventEnd,
-    eventCategory, eventDesc, dayEventsPopover, events, gridCells, filteredEvents,
-    setMonth, setYear, setSelectedDate, setIsSidebarOpen, setActiveCategories,
-    setIsModalOpen, setEventTitle, setEventDate, setEventStart, setEventEnd,
-    setEventCategory, setEventDesc, setDayEventsPopover, setEvents,
-    toggleCategory, handlePrevMonth, handleNextMonth, handleGoToToday,
-    getEventsForDate, handleAddEvent, handleDeleteEvent, triggerAddEventOnDate,
-    isToday, isSelected,
+    month,
+    year,
+    selectedDate,
+    isSidebarOpen,
+    activeCategories,
+    isModalOpen,
+    eventTitle,
+    eventDate,
+    eventStart,
+    eventEnd,
+    eventCategory,
+    eventDesc,
+    dayEventsPopover,
+    events,
+    gridCells,
+    filteredEvents,
+    setMonth,
+    setYear,
+    setSelectedDate,
+    setIsSidebarOpen,
+    setActiveCategories,
+    setIsModalOpen,
+    setEventTitle,
+    setEventDate,
+    setEventStart,
+    setEventEnd,
+    setEventCategory,
+    setEventDesc,
+    setDayEventsPopover,
+    setEvents,
+    toggleCategory,
+    handlePrevMonth,
+    handleNextMonth,
+    handleGoToToday,
+    getEventsForDate,
+    handleAddEvent,
+    handleDeleteEvent,
+    triggerAddEventOnDate,
+    isToday,
+    isSelected,
   };
 };
 

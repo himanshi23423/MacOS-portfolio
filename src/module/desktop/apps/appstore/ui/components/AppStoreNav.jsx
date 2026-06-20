@@ -19,9 +19,7 @@ const AppStoreNav = ({ isSidebarOpen, onToggleSidebar, isNarrow }) => {
           </button>
         )}
       </div>
-      <div className="flex-1 text-center font-bold text-gray-700 text-xs truncate">
-        App Store
-      </div>
+      <div className="flex-1 text-center font-bold text-gray-700 text-xs truncate">App Store</div>
       <div className="w-14" />
     </div>
   );

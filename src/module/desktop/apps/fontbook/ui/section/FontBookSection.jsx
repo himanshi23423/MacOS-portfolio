@@ -78,7 +78,9 @@ const FontBookSection = ({
           )}
         </div>
 
-        <div className={`${isNarrow ? "w-40" : "w-64"} max-w-xs relative flex items-center transition-all duration-200`}>
+        <div
+          className={`${isNarrow ? "w-40" : "w-64"} max-w-xs relative flex items-center transition-all duration-200`}
+        >
           <input
             type="text"
             placeholder="Search fonts..."

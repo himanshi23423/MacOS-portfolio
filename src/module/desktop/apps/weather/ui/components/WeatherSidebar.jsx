@@ -3,23 +3,27 @@ import { Search } from "lucide-react";
 import { getSafeTemp, renderIcon } from "../../data/weatherUtils";
 
 const WeatherSidebar = ({
-  searchQuery, setSearchQuery,
+  searchQuery,
+  setSearchQuery,
   handleSearch,
-  filteredCityKeys, citiesData,
-  activeCityId, setActiveCityId,
+  filteredCityKeys,
+  citiesData,
+  activeCityId,
+  setActiveCityId,
   setIsSidebarOpen,
   isSidebarOpen,
   isNarrow,
-  unitMode
+  unitMode,
 }) => {
   return (
     <aside
       className={`
       absolute inset-y-0 left-0 bg-gray-50 flex flex-col z-20 transition-all duration-300 shrink-0 h-full
       ${isNarrow ? "absolute bg-gray-50/95 shadow-lg" : "relative"}
-      ${isSidebarOpen
-        ? "w-56 min-w-[224px] max-w-[224px] p-3.5 border-r border-[#d1d1d1] translate-x-0 opacity-100"
-        : "w-0 min-w-0 max-w-0 p-0 border-r-0 -translate-x-full opacity-0 overflow-hidden pointer-events-none"
+      ${
+        isSidebarOpen
+          ? "w-56 min-w-[224px] max-w-[224px] p-3.5 border-r border-[#d1d1d1] translate-x-0 opacity-100"
+          : "w-0 min-w-0 max-w-0 p-0 border-r-0 -translate-x-full opacity-0 overflow-hidden pointer-events-none"
       }
     `}
     >
@@ -64,7 +68,9 @@ const WeatherSidebar = ({
                 isActive ? "ring-2 ring-blue-500/50" : ""
               }`}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${city.bgClass} opacity-90 z-0`} />
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${city.bgClass} opacity-90 z-0`}
+              />
               <div className="relative z-10 space-y-0.5">
                 <h4 className="font-bold text-xs leading-none">{city.name}</h4>
                 <p className="text-[10px] text-white/70 leading-none">{city.condition}</p>
@@ -74,15 +80,23 @@ const WeatherSidebar = ({
                 <div className="text-right flex flex-col justify-center">
                   {unitMode === "both" && (
                     <>
-                      <span className="font-bold text-base tracking-tighter leading-none">{temps.tempC}°C</span>
-                      <span className="text-[10px] opacity-75 font-semibold leading-none mt-0.5">{temps.tempF}°F</span>
+                      <span className="font-bold text-base tracking-tighter leading-none">
+                        {temps.tempC}°C
+                      </span>
+                      <span className="text-[10px] opacity-75 font-semibold leading-none mt-0.5">
+                        {temps.tempF}°F
+                      </span>
                     </>
                   )}
                   {unitMode === "c" && (
-                    <span className="font-bold text-base tracking-tighter leading-none">{temps.tempC}°C</span>
+                    <span className="font-bold text-base tracking-tighter leading-none">
+                      {temps.tempC}°C
+                    </span>
                   )}
                   {unitMode === "f" && (
-                    <span className="font-bold text-base tracking-tighter leading-none">{temps.tempF}°F</span>
+                    <span className="font-bold text-base tracking-tighter leading-none">
+                      {temps.tempF}°F
+                    </span>
                   )}
                 </div>
               </div>

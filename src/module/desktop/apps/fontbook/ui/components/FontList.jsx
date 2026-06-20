@@ -4,14 +4,16 @@ const FontList = ({ filteredFonts, activeFont, setActiveFont }) => (
       Fonts list ({filteredFonts.length})
     </div>
     <div className="flex-1 overflow-y-auto divide-y divide-zinc-100">
-      {filteredFonts.map(font => {
+      {filteredFonts.map((font) => {
         const isActive = activeFont?.name === font.name;
         return (
           <div
             key={font.name}
             onClick={() => setActiveFont(font)}
             className={`p-3 cursor-pointer text-xs transition-colors truncate ${
-              isActive ? "bg-indigo-50 text-indigo-700 font-bold border-l-4 border-indigo-500" : "text-gray-700 hover:bg-gray-100"
+              isActive
+                ? "bg-indigo-50 text-indigo-700 font-bold border-l-4 border-indigo-500"
+                : "text-gray-700 hover:bg-gray-100"
             }`}
             style={{ fontFamily: font.name }}
           >

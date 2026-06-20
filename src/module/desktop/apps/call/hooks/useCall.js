@@ -146,7 +146,13 @@ const useCall = () => {
         timerIntervalRef.current = null;
       }
       const contact = CONTACTS.find((c) => c.name.toLowerCase() === name.toLowerCase());
-      setActiveCall({ name, type, status: "ringing", avatar: contact?.avatar, callPreview: contact?.callPreview });
+      setActiveCall({
+        name,
+        type,
+        status: "ringing",
+        avatar: contact?.avatar,
+        callPreview: contact?.callPreview,
+      });
       setCallTimer(0);
       startRingbackSound();
       ringTimeoutRef.current = setTimeout(() => {

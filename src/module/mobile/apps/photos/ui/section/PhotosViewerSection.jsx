@@ -16,7 +16,10 @@ const PhotosViewerSection = ({ selectedPhoto, onClose, onPrev, onNext }) => {
       </button>
       {onPrev && (
         <button
-          onClick={(e) => { e.stopPropagation(); onPrev(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPrev();
+          }}
           className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white"
         >
           <ChevronLeft size={32} />
@@ -30,7 +33,10 @@ const PhotosViewerSection = ({ selectedPhoto, onClose, onPrev, onNext }) => {
       />
       {onNext && (
         <button
-          onClick={(e) => { e.stopPropagation(); onNext(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onNext();
+          }}
           className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white"
         >
           <ChevronRight size={32} />

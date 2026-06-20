@@ -6,7 +6,9 @@ const VSCodeEditor = ({ files, activeFile, openTabs, modifiedFiles, onContentCha
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-zinc-500 text-center select-none">
         <FileText size={48} className="text-zinc-400 mb-3 animate-pulse" />
         <h4 className="text-sm font-bold text-zinc-400">No Editors Open</h4>
-        <p className="text-xs text-zinc-500 mt-1 max-w-xs">Select a file from the explorer list on the left side panel to view or edit.</p>
+        <p className="text-xs text-zinc-500 mt-1 max-w-xs">
+          Select a file from the explorer list on the left side panel to view or edit.
+        </p>
       </div>
     );
   }

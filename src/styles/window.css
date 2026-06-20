@@ -24,18 +24,18 @@
     border-radius: 0 !important;
     max-width: none !important;
     max-height: none !important;
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                top 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                border-radius 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+      width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      top 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      border-radius 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .maximized > div,
   .maximized > div > div {
     border-radius: 0 !important;
   }
-
 
   #window-header {
     @apply flex items-center justify-between px-4 py-3 rounded-t-lg bg-gray-50 border-b border-gray-200 select-none text-sm text-gray-400;
@@ -48,11 +48,63 @@
   touch-action: none;
 }
 
-.resize-n { top: -4px; left: 0; right: 0; height: 8px; cursor: ns-resize; }
-.resize-s { bottom: -4px; left: 0; right: 0; height: 8px; cursor: ns-resize; }
-.resize-e { top: 0; bottom: 0; right: -4px; width: 8px; cursor: ew-resize; }
-.resize-w { top: 0; bottom: 0; left: -4px; width: 8px; cursor: ew-resize; }
-.resize-ne { top: -4px; right: -4px; width: 12px; height: 12px; cursor: nesw-resize; z-index: 101; }
-.resize-nw { top: -4px; left: -4px; width: 12px; height: 12px; cursor: nwse-resize; z-index: 101; }
-.resize-se { bottom: -4px; right: -4px; width: 12px; height: 12px; cursor: nwse-resize; z-index: 101; }
-.resize-sw { bottom: -4px; left: -4px; width: 12px; height: 12px; cursor: nesw-resize; z-index: 101; }
+.resize-n {
+  top: -4px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  cursor: ns-resize;
+}
+.resize-s {
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  cursor: ns-resize;
+}
+.resize-e {
+  top: 0;
+  bottom: 0;
+  right: -4px;
+  width: 8px;
+  cursor: ew-resize;
+}
+.resize-w {
+  top: 0;
+  bottom: 0;
+  left: -4px;
+  width: 8px;
+  cursor: ew-resize;
+}
+.resize-ne {
+  top: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  cursor: nesw-resize;
+  z-index: 101;
+}
+.resize-nw {
+  top: -4px;
+  left: -4px;
+  width: 12px;
+  height: 12px;
+  cursor: nwse-resize;
+  z-index: 101;
+}
+.resize-se {
+  bottom: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  cursor: nwse-resize;
+  z-index: 101;
+}
+.resize-sw {
+  bottom: -4px;
+  left: -4px;
+  width: 12px;
+  height: 12px;
+  cursor: nesw-resize;
+  z-index: 101;
+}

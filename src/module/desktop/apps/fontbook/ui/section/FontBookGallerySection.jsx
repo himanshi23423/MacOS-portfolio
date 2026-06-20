@@ -1,13 +1,21 @@
 import FontList from "../components/FontList";
 import FontPreview from "../components/FontPreview";
 
-const FontBookGallerySection = ({ filteredFonts, activeFont, setActiveFont, fontSize, setFontSize, isBold, setIsBold, isItalic, setIsItalic, specimenText, setSpecimenText }) => (
+const FontBookGallerySection = ({
+  filteredFonts,
+  activeFont,
+  setActiveFont,
+  fontSize,
+  setFontSize,
+  isBold,
+  setIsBold,
+  isItalic,
+  setIsItalic,
+  specimenText,
+  setSpecimenText,
+}) => (
   <>
-    <FontList
-      filteredFonts={filteredFonts}
-      activeFont={activeFont}
-      setActiveFont={setActiveFont}
-    />
+    <FontList filteredFonts={filteredFonts} activeFont={activeFont} setActiveFont={setActiveFont} />
     <FontPreview
       activeFont={activeFont}
       fontSize={fontSize}

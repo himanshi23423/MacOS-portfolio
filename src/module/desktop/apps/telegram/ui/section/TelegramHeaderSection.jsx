@@ -8,7 +8,7 @@ const TelegramHeaderSection = ({
   nightMode,
   isSidebarOpen,
   onToggleSidebar,
-  containerWidth = 800
+  containerWidth = 800,
 }) => {
   const isNarrow = containerWidth < 550;
 
@@ -35,13 +35,11 @@ const TelegramHeaderSection = ({
           </button>
         )}
       </div>
-      
+
       <div
         className={`flex-1 text-center font-bold transition-all duration-200 ${
           containerWidth < 450 ? "opacity-0 pointer-events-none" : "opacity-100"
-        } ${
-          nightMode ? "text-zinc-250" : "text-gray-700"
-        }`}
+        } ${nightMode ? "text-zinc-250" : "text-gray-700"}`}
       >
         {activeChat ? activeChat.name : "Telegram"}
       </div>

@@ -105,8 +105,6 @@ const useSafari = () => {
     }
   }, [activeTab, activeTabId]);
 
-
-
   // Log history
   useEffect(() => {
     if (activeTab && activeTab.url && !activeTab.url.startsWith("safari://")) {
@@ -247,7 +245,10 @@ const useSafari = () => {
             newTitle = "Wikipedia";
           } else if (targetUrl === "https://openstreetmap.org") {
             newTitle = "OpenStreetMap";
-          } else if (targetUrl === (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000")) {
+          } else if (
+            targetUrl ===
+            (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000")
+          ) {
             newTitle = "Portfolio";
           } else if (
             targetUrl.includes("google.com/search") ||
@@ -261,12 +262,12 @@ const useSafari = () => {
               const engineName = urlObj.hostname.includes("google")
                 ? "Google"
                 : urlObj.hostname.includes("duckduckgo")
-                ? "DuckDuckGo"
-                : urlObj.hostname.includes("bing")
-                ? "Bing"
-                : urlObj.hostname.includes("yahoo")
-                ? "Yahoo"
-                : "Web";
+                  ? "DuckDuckGo"
+                  : urlObj.hostname.includes("bing")
+                    ? "Bing"
+                    : urlObj.hostname.includes("yahoo")
+                      ? "Yahoo"
+                      : "Web";
               newTitle = qParam ? `${qParam} - ${engineName} Search` : `${engineName} Search`;
             } catch {
               newTitle = "Search";
@@ -308,7 +309,7 @@ const useSafari = () => {
       }
       setWindowData("safari", null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safariWindowData]);
 
   const handleGoBack = () => {
@@ -363,7 +364,8 @@ const useSafari = () => {
     if (url === "https://resume-ats-omega.vercel.app/") return "Resume ATS";
     if (url === "https://en.wikipedia.org") return "Wikipedia";
     if (url === "https://openstreetmap.org") return "OpenStreetMap";
-    if (url === (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000")) return "Portfolio";
+    if (url === (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000"))
+      return "Portfolio";
     if (
       url.includes("google.com/search") ||
       url.includes("duckduckgo.com") ||
@@ -376,12 +378,12 @@ const useSafari = () => {
         const engineName = urlObj.hostname.includes("google")
           ? "Google"
           : urlObj.hostname.includes("duckduckgo")
-          ? "DuckDuckGo"
-          : urlObj.hostname.includes("bing")
-          ? "Bing"
-          : urlObj.hostname.includes("yahoo")
-          ? "Yahoo"
-          : "Web";
+            ? "DuckDuckGo"
+            : urlObj.hostname.includes("bing")
+              ? "Bing"
+              : urlObj.hostname.includes("yahoo")
+                ? "Yahoo"
+                : "Web";
         return q ? `${q} - ${engineName}` : `${engineName} Search`;
       } catch {
         return "Search";

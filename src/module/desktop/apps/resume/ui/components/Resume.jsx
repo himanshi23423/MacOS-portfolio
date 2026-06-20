@@ -145,7 +145,7 @@ const Resume = () => {
         style={{
           cursor: isDragging ? "grabbing" : "grab",
           touchAction: "none",
-          userSelect: "none"
+          userSelect: "none",
         }}
       >
         <div className="flex flex-col items-center justify-center min-h-full py-6 px-4 w-fit mx-auto">

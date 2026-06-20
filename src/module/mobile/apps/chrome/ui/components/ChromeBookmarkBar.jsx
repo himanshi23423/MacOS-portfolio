@@ -5,7 +5,9 @@ const ChromeBookmarkBar = ({ showBookmarks, bookmarks, navigateTabTo, themeClass
   if (!showBookmarks) return null;
 
   return (
-    <div className={`shrink-0 px-4 py-1 border-b flex items-center gap-4 text-[10px] font-medium select-none ${themeClasses.bookmarksBg}`}>
+    <div
+      className={`shrink-0 px-4 py-1 border-b flex items-center gap-4 text-[10px] font-medium select-none ${themeClasses.bookmarksBg}`}
+    >
       {bookmarks.map((bookmark, idx) => (
         <button
           key={idx}

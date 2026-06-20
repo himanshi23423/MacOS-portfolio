@@ -1,6 +1,12 @@
 import NavbarAppleMenu from "../components/NavbarAppleMenu";
 
-const NavbarAppleSection = ({ isAppleMenuOpen, setIsAppleMenuOpen, openWindow, setIsAsleep, setIsShuttingDown }) => (
+const NavbarAppleSection = ({
+  isAppleMenuOpen,
+  setIsAppleMenuOpen,
+  openWindow,
+  setIsAsleep,
+  setIsShuttingDown,
+}) => (
   <>
     <img
       src="/icons/logo.svg"

@@ -9,9 +9,24 @@ export const INITIAL_CONVERSATIONS = [
     email: "kuldeeprajput.dev@gmail.com",
     github: "https://github.com/kuldeeprajput-dev",
     messages: [
-      { id: 1, text: "Hey there! Welcome to my macOS portfolio.", sender: "them", time: "10:00 AM" },
-      { id: 2, text: "Feel free to ask me anything here. I have automated some quick replies!", sender: "them", time: "10:01 AM" },
-      { id: 3, text: "Try asking about: 'projects', 'skills', or 'contact'.", sender: "them", time: "10:01 AM" },
+      {
+        id: 1,
+        text: "Hey there! Welcome to my macOS portfolio.",
+        sender: "them",
+        time: "10:00 AM",
+      },
+      {
+        id: 2,
+        text: "Feel free to ask me anything here. I have automated some quick replies!",
+        sender: "them",
+        time: "10:01 AM",
+      },
+      {
+        id: 3,
+        text: "Try asking about: 'projects', 'skills', or 'contact'.",
+        sender: "them",
+        time: "10:01 AM",
+      },
     ],
   },
   {
@@ -24,8 +39,18 @@ export const INITIAL_CONVERSATIONS = [
     email: "akash@example.com",
     github: "https://github.com",
     messages: [
-      { id: 1, text: "Hey Kuldeep, did you check the new desktop mockup?", sender: "them", time: "Yesterday" },
-      { id: 2, text: "Yeah, it looks super clean! The glassmorphism fits perfectly.", sender: "me", time: "Yesterday" },
+      {
+        id: 1,
+        text: "Hey Kuldeep, did you check the new desktop mockup?",
+        sender: "them",
+        time: "Yesterday",
+      },
+      {
+        id: 2,
+        text: "Yeah, it looks super clean! The glassmorphism fits perfectly.",
+        sender: "me",
+        time: "Yesterday",
+      },
       { id: 3, text: "Awesome! Let's get it deployed soon.", sender: "them", time: "Yesterday" },
     ],
   },
@@ -39,8 +64,18 @@ export const INITIAL_CONVERSATIONS = [
     email: "developer@apple.com",
     github: "https://developer.apple.com",
     messages: [
-      { id: 1, text: "Your Apple Developer Membership has been renewed.", sender: "them", time: "2 days ago" },
-      { id: 2, text: "Thank you for being a part of the Apple Developer Program.", sender: "them", time: "2 days ago" },
+      {
+        id: 1,
+        text: "Your Apple Developer Membership has been renewed.",
+        sender: "them",
+        time: "2 days ago",
+      },
+      {
+        id: 2,
+        text: "Thank you for being a part of the Apple Developer Program.",
+        sender: "them",
+        time: "2 days ago",
+      },
     ],
   },
 ];

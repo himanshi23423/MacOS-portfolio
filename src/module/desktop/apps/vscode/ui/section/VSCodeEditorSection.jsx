@@ -2,8 +2,13 @@ import VSCodeTabs from "../components/VSCodeTabs";
 import VSCodeEditor from "../components/VSCodeEditor";
 
 const VSCodeEditorSection = ({
-  openFiles, activeFile, onSelectFile, onCloseFile,
-  files, modifiedFiles, onContentChange,
+  openFiles,
+  activeFile,
+  onSelectFile,
+  onCloseFile,
+  files,
+  modifiedFiles,
+  onContentChange,
   isNarrow,
 }) => (
   <>

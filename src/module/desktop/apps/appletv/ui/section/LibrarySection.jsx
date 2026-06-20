@@ -3,9 +3,7 @@ import { Film } from "lucide-react";
 const LibrarySection = ({ onOpenStore }) => (
   <div className="text-center py-12 space-y-3 text-gray-800">
     <Film className="w-10 h-10 text-gray-400 mx-auto stroke-1" />
-    <h2 className="text-sm font-bold text-gray-700">
-      Your Movie Library is empty.
-    </h2>
+    <h2 className="text-sm font-bold text-gray-700">Your Movie Library is empty.</h2>
     <p className="text-xs text-gray-500 max-w-xs mx-auto">
       Any movies you purchase or rent from the Store will show up here.
     </p>

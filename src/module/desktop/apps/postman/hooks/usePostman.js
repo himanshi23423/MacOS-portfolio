@@ -12,7 +12,7 @@ const usePostman = () => {
   const [loading, setLoading] = useState(false);
   const [environment, setEnvironment] = useState("dev"); // "dev" | "prod" | "none"
   const [history, setHistory] = useState([
-    { method: "GET", url: "https://api.dev/v1/profile", timestamp: "Just now" }
+    { method: "GET", url: "https://api.dev/v1/profile", timestamp: "Just now" },
   ]);
   const [sidebarTab, setSidebarTab] = useState("collections"); // "collections" | "history"
 
@@ -22,15 +22,13 @@ const usePostman = () => {
   });
 
   // Query Params State
-  const [queryParams, setQueryParams] = useState([
-    { key: "", value: "", enabled: true }
-  ]);
+  const [queryParams, setQueryParams] = useState([{ key: "", value: "", enabled: true }]);
 
   // Headers State
   const [headers, setHeaders] = useState([
     { key: "Content-Type", value: "application/json", enabled: true },
     { key: "Authorization", value: "Bearer eyJhbGciOiJIUzI1NiJ9...", enabled: false },
-    { key: "", value: "", enabled: true }
+    { key: "", value: "", enabled: true },
   ]);
 
   // Sync environment dropdown with URL host
@@ -46,11 +44,11 @@ const usePostman = () => {
 
   // Sync Query Params with URL string
   useEffect(() => {
-    const activeParams = queryParams.filter(p => p.key && p.enabled);
+    const activeParams = queryParams.filter((p) => p.key && p.enabled);
     const baseUrl = url.split("?")[0];
     if (activeParams.length > 0) {
       const queryString = activeParams
-        .map(p => `${encodeURIComponent(p.key)}=${encodeURIComponent(p.value)}`)
+        .map((p) => `${encodeURIComponent(p.key)}=${encodeURIComponent(p.value)}`)
         .join("&");
       setUrl(`${baseUrl}?${queryString}`);
     } else {
@@ -76,9 +74,17 @@ const usePostman = () => {
     setResponse(null);
 
     // Save to history
-    setHistory(prev => [
-      { method, url, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) },
-      ...prev.filter(h => h.url !== url || h.method !== method).slice(0, 19)
+    setHistory((prev) => [
+      {
+        method,
+        url,
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }),
+      },
+      ...prev.filter((h) => h.url !== url || h.method !== method).slice(0, 19),
     ]);
 
     setTimeout(() => {
@@ -88,9 +94,9 @@ const usePostman = () => {
       let respHeaders = {
         "content-type": "application/json; charset=utf-8",
         "cache-control": "no-cache, no-store, must-revalidate",
-        "date": new Date().toUTCString(),
-        "server": "Bun/1.1.17 (macOS arm64)",
-        "x-powered-by": "Next.js/Turbopack"
+        date: new Date().toUTCString(),
+        server: "Bun/1.1.17 (macOS arm64)",
+        "x-powered-by": "Next.js/Turbopack",
       };
 
       const cleanUrl = url.trim().split("?")[0].replace(/\/$/, "");
@@ -105,7 +111,7 @@ const usePostman = () => {
               location: "Mumbai, India",
               github: "https://github.com/kuldeeprajput-dev",
               skills: ["React", "Node.js", "Bun", "Tailwind CSS", "GSAP"],
-              status: "active"
+              status: "active",
             };
           } else if (method === "PUT") {
             let parsed = {};
@@ -123,8 +129,8 @@ const usePostman = () => {
                 location: parsed.location || "Mumbai, India",
                 github: "https://github.com/kuldeeprajput-dev",
                 skills: ["React", "Node.js", "Bun", "Tailwind CSS", "GSAP"],
-                status: "active"
-              }
+                status: "active",
+              },
             };
           } else {
             status = 405;
@@ -142,7 +148,7 @@ const usePostman = () => {
               message: "Login successful!",
               token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mockTokenForTesting",
               expiresIn: "24h",
-              user: { username: "guest", role: "collaborator" }
+              user: { username: "guest", role: "collaborator" },
             };
           } else {
             status = 401;
@@ -150,14 +156,14 @@ const usePostman = () => {
             data = {
               error: "Invalid credentials",
               message: "Please double check your request payload username and password values.",
-              tip: "Use username 'guest' and password 'password123'"
+              tip: "Use username 'guest' and password 'password123'",
             };
           }
         } else if (cleanUrl.endsWith("/v1/logout") && method === "DELETE") {
           status = 200;
           data = {
             status: "success",
-            message: "User session terminated, credentials cleared."
+            message: "User session terminated, credentials cleared.",
           };
         } else if (cleanUrl.endsWith("/v1/projects") && method === "GET") {
           data = {
@@ -178,9 +184,9 @@ const usePostman = () => {
               unique_visitors: 485,
               github_stars: 42,
               coffee_cups_consumed: 184,
-              system_uptime: "99.99%"
+              system_uptime: "99.99%",
             },
-            status: "all_systems_operational"
+            status: "all_systems_operational",
           };
         } else if (cleanUrl.endsWith("/v1/contact") && method === "POST") {
           let parsed = {};
@@ -229,7 +235,7 @@ const usePostman = () => {
         time: Math.floor(Math.random() * 50) + 15 + " ms",
         size: (JSON.stringify(data).length / 1000).toFixed(2) + " KB",
         body: JSON.stringify(data, null, 2),
-        headers: respHeaders
+        headers: respHeaders,
       });
       setLoading(false);
     }, 450);
@@ -264,7 +270,7 @@ const usePostman = () => {
     setHeaders,
     handleEnvironmentChange,
     loadRequest,
-    handleSend
+    handleSend,
   };
 };
 

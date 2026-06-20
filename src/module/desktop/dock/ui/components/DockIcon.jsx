@@ -73,7 +73,9 @@ const DockIcon = ({
         isOpen ? "dock-item-open" : "",
         isMinimized ? "dock-item-minimized" : "",
         isFocused ? "dock-item-focused" : "",
-      ].filter(Boolean).join(" ")}
+      ]
+        .filter(Boolean)
+        .join(" ")}
       draggable={draggable}
       onDragStart={onDragStart}
       onDragOver={onDragOver}
@@ -91,9 +93,7 @@ const DockIcon = ({
         onMouseLeave={onMouseLeave}
       >
         {isHovered && !isDockDragging && (
-          <span className="dock-tooltip-custom animate-tooltip">
-            {name}
-          </span>
+          <span className="dock-tooltip-custom animate-tooltip">{name}</span>
         )}
         <span className="size-full flex items-center justify-center overflow-hidden">
           {id === "calendar" ? (

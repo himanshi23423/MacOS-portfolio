@@ -1,11 +1,23 @@
 import { Sliders, Info } from "lucide-react";
 
-const FontPreview = ({ activeFont, fontSize, setFontSize, isBold, setIsBold, isItalic, setIsItalic, specimenText, setSpecimenText }) => (
+const FontPreview = ({
+  activeFont,
+  fontSize,
+  setFontSize,
+  isBold,
+  setIsBold,
+  isItalic,
+  setIsItalic,
+  specimenText,
+  setSpecimenText,
+}) => (
   <div className="flex-1 flex flex-col bg-white min-w-0">
     <div className="p-4 border-b border-zinc-200 bg-gray-50/50 flex flex-wrap gap-4 items-center justify-between shrink-0">
       <div>
         <h2 className="text-base font-bold text-gray-900 leading-tight">{activeFont?.name}</h2>
-        <p className="text-[10px] text-gray-500 mt-0.5">Designed by {activeFont?.designer} • {activeFont?.category}</p>
+        <p className="text-[10px] text-gray-500 mt-0.5">
+          Designed by {activeFont?.designer} • {activeFont?.category}
+        </p>
       </div>
 
       <div className="flex items-center gap-4 text-xs font-semibold text-gray-600">
@@ -49,7 +61,7 @@ const FontPreview = ({ activeFont, fontSize, setFontSize, isBold, setIsBold, isI
           fontFamily: activeFont?.name || "inherit",
           fontSize: `${fontSize}px`,
           fontWeight: isBold ? "bold" : "normal",
-          fontStyle: isItalic ? "italic" : "normal"
+          fontStyle: isItalic ? "italic" : "normal",
         }}
         spellCheck="false"
       />

@@ -118,23 +118,23 @@ const useVSCode = () => {
           break;
         case "ls": {
           const allFiles = Object.keys(files);
-          const topLevel = [...new Set(allFiles.map(f => f.split("/")[0]))];
-          output = topLevel.map(f => {
-            const isDir = allFiles.some(p => p.startsWith(f + "/"));
+          const topLevel = [...new Set(allFiles.map((f) => f.split("/")[0]))];
+          output = topLevel.map((f) => {
+            const isDir = allFiles.some((p) => p.startsWith(f + "/"));
             return isDir ? `\x1b[34m${f}/\x1b[0m` : f;
           });
           // Since we can't render ANSI, just show plainly
-          output = topLevel.map(f => {
-            const isDir = allFiles.some(p => p.startsWith(f + "/"));
+          output = topLevel.map((f) => {
+            const isDir = allFiles.some((p) => p.startsWith(f + "/"));
             return isDir ? `📁 ${f}/` : `   ${f}`;
           });
           break;
         }
         case "tree": {
           output = [".", "├── src/"];
-          const srcFiles = Object.keys(files).filter(f => f.startsWith("src/"));
+          const srcFiles = Object.keys(files).filter((f) => f.startsWith("src/"));
           const srcChildren = {};
-          srcFiles.forEach(f => {
+          srcFiles.forEach((f) => {
             const rest = f.replace("src/", "");
             const parts = rest.split("/");
             if (parts.length === 1) {
@@ -161,13 +161,19 @@ const useVSCode = () => {
               });
             }
           });
-          const rootFiles = Object.keys(files).filter(f => !f.includes("/"));
+          const rootFiles = Object.keys(files).filter((f) => !f.includes("/"));
           rootFiles.forEach((f, i) => {
             const symbol = i === rootFiles.length - 1 ? "└── " : "├── ";
             output.push(symbol + f);
           });
           const totalFiles = Object.keys(files).length;
-          const totalDirs = [...new Set(Object.keys(files).map(f => f.split("/").slice(0, -1).join("/")).filter(Boolean))].length;
+          const totalDirs = [
+            ...new Set(
+              Object.keys(files)
+                .map((f) => f.split("/").slice(0, -1).join("/"))
+                .filter(Boolean),
+            ),
+          ].length;
           output.push("");
           output.push(`${totalDirs} directories, ${totalFiles} files`);
           break;
@@ -232,7 +238,7 @@ const useVSCode = () => {
             if (files[newFile] !== undefined) {
               output = [`File '${newFile}' already exists.`];
             } else {
-              setFiles(prev => ({ ...prev, [newFile]: "" }));
+              setFiles((prev) => ({ ...prev, [newFile]: "" }));
               output = [`Created file: ${newFile}`];
             }
           }

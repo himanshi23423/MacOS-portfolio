@@ -2,10 +2,21 @@ import { Calendar as CalendarIcon, X, Clock, Tag, AlignLeft } from "lucide-react
 import { CATEGORIES } from "./calendarData";
 
 const CalendarEventModal = ({
-  isModalOpen, eventTitle, setEventTitle,
-  eventDate, setEventDate, eventStart, setEventStart,
-  eventEnd, setEventEnd, eventCategory, setEventCategory,
-  eventDesc, setEventDesc, handleAddEvent, setIsModalOpen
+  isModalOpen,
+  eventTitle,
+  setEventTitle,
+  eventDate,
+  setEventDate,
+  eventStart,
+  setEventStart,
+  eventEnd,
+  setEventEnd,
+  eventCategory,
+  setEventCategory,
+  eventDesc,
+  setEventDesc,
+  handleAddEvent,
+  setIsModalOpen,
 }) => {
   if (!isModalOpen) return null;
 
@@ -89,8 +100,10 @@ const CalendarEventModal = ({
               onChange={(e) => setEventCategory(e.target.value)}
               className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-800 font-medium"
             >
-              {CATEGORIES.map(cat => (
-                <option key={cat.id} value={cat.id}>{cat.label}</option>
+              {CATEGORIES.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.label}
+                </option>
               ))}
             </select>
           </div>

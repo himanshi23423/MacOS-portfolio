@@ -269,8 +269,6 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
             : undefined
         }
       >
-
-
         {/* Slide Indicators */}
         <div className="absolute top-4 right-6 flex items-center gap-2 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
           {CAROUSEL_ITEMS.map((_, idx) => (

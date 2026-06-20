@@ -4,8 +4,7 @@ export const FEATURED_SHOW = {
   description:
     "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs.",
   bgImage: "bg-gradient-to-br from-neutral-900 via-slate-950 to-zinc-900",
-  videoUrl:
-    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+  videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
   tmdbId: "95396",
   type: "tv",
   season: 1,

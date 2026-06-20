@@ -2,19 +2,16 @@ import { useRef, useEffect, useMemo } from "react";
 import { FileText, ChevronRight } from "lucide-react";
 import VSCodeFileIcon from "./VSCodeFileIcon";
 
-
 // Syntax highlighter for JS/JSX/CSS/HTML (Light Theme)
 const highlight = (code) => {
   if (!code) return " ";
-  
+
   // Escape HTML tags to prevent execution/parsing bugs
-  let html = code
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  let html = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   // Single-pass regex highlighter for keywords, comments, strings, tags, functions, attributes, and numbers
-  const combinedRegex = /(\/\/.*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(&lt;\/?[a-zA-Z][a-zA-Z0-9]*\b)|(\b(?:import|export|default|function|return|const|let|var|from|class|extends|if|else|for|while|switch|case|break|new|this|typeof|instanceof)\b)|(\b[a-zA-Z_][a-zA-Z0-9_]*(?=\())|(\b[a-zA-Z_][a-zA-Z0-9_-]*(?=\s*=\s*(?:["'{])))|(\b\d+\b)/g;
+  const combinedRegex =
+    /(\/\/.*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(&lt;\/?[a-zA-Z][a-zA-Z0-9]*\b)|(\b(?:import|export|default|function|return|const|let|var|from|class|extends|if|else|for|while|switch|case|break|new|this|typeof|instanceof)\b)|(\b[a-zA-Z_][a-zA-Z0-9_]*(?=\())|(\b[a-zA-Z_][a-zA-Z0-9_-]*(?=\s*=\s*(?:["'{])))|(\b\d+\b)/g;
 
   html = html.replace(combinedRegex, (match, comment, string, tag, keyword, fn, attr, number) => {
     if (comment) return `<span style="color: #008000; font-style: italic;">${match}</span>`;
@@ -40,7 +37,9 @@ const Breadcrumb = ({ activeFile }) => {
       {segments.map((seg, i) => (
         <span key={i} className="flex items-center gap-0.5 shrink-0">
           {i > 0 && <ChevronRight size={10} className="text-[#b0b0b0]" />}
-          <span className={`hover:text-[#007acc] cursor-pointer transition-colors ${i === segments.length - 1 ? "text-[#333333] font-medium" : ""}`}>
+          <span
+            className={`hover:text-[#007acc] cursor-pointer transition-colors ${i === segments.length - 1 ? "text-[#333333] font-medium" : ""}`}
+          >
             {seg}
           </span>
         </span>
@@ -79,7 +78,14 @@ const Minimap = ({ content, isNarrow }) => {
   );
 };
 
-const VSCodeEditor = ({ files, activeFile, openTabs, modifiedFiles, onContentChange, isNarrow }) => {
+const VSCodeEditor = ({
+  files,
+  activeFile,
+  openTabs,
+  modifiedFiles,
+  onContentChange,
+  isNarrow,
+}) => {
   const textareaRef = useRef(null);
   const preRef = useRef(null);
 
@@ -106,9 +112,13 @@ const VSCodeEditor = ({ files, activeFile, openTabs, modifiedFiles, onContentCha
         </p>
         <div className="mt-6 flex flex-col items-center gap-2 text-[11px] text-[#a0a0a0]">
           <div className="flex items-center gap-2">
-            <kbd className="px-1.5 py-0.5 bg-[#f3f3f3] border border-[#e5e5e5] rounded text-[10px] font-mono">⌘</kbd>
+            <kbd className="px-1.5 py-0.5 bg-[#f3f3f3] border border-[#e5e5e5] rounded text-[10px] font-mono">
+              ⌘
+            </kbd>
             <span>+</span>
-            <kbd className="px-1.5 py-0.5 bg-[#f3f3f3] border border-[#e5e5e5] rounded text-[10px] font-mono">P</kbd>
+            <kbd className="px-1.5 py-0.5 bg-[#f3f3f3] border border-[#e5e5e5] rounded text-[10px] font-mono">
+              P
+            </kbd>
             <span className="ml-1">Quick Open</span>
           </div>
         </div>

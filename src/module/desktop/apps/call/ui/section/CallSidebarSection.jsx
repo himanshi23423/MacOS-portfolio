@@ -24,7 +24,9 @@ const CallSidebarSection = ({
       ${
         isNarrow
           ? `absolute inset-y-0 left-0 w-64 z-30 shadow-xl ${
-              isSidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0 pointer-events-none"
+              isSidebarOpen
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-full opacity-0 pointer-events-none"
             }`
           : "relative w-64 translate-x-0 opacity-100"
       }

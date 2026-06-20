@@ -3,7 +3,7 @@ const PRESET_PLACES = {
     name: "Mumbai",
     region: "Maharashtra, India",
     desc: "Kuldeep's current location. The financial powerhouse and entertainment capital of India, situated on the coastal edge of the Arabian Sea.",
-    lat: 19.0760,
+    lat: 19.076,
     lon: 72.8777,
     bboxWidth: 0.12,
     weather: "31°C • Partly Cloudy",
@@ -12,8 +12,8 @@ const PRESET_PLACES = {
       "Head north on Marine Drive toward Churchgate.",
       "Merge onto the Bandra-Worli Sea Link (toll road).",
       "Continue onto Western Express Highway.",
-      "Arrive at Kuldeep's Development Lab."
-    ]
+      "Arrive at Kuldeep's Development Lab.",
+    ],
   },
   sf: {
     name: "San Francisco",
@@ -28,15 +28,15 @@ const PRESET_PLACES = {
       "Depart from San Francisco International Airport.",
       "Take US-101 North toward Golden Gate Bridge.",
       "Take exit 434B for Lombard Street.",
-      "Turn left onto Van Ness Ave and arrive at Silicon Valley Hub."
-    ]
+      "Turn left onto Van Ness Ave and arrive at Silicon Valley Hub.",
+    ],
   },
   nyc: {
     name: "New York City",
     region: "New York, USA",
     desc: "The Big Apple. A global hub of finance, culture, art, fashion, and history, composed of 5 iconic boroughs where the Hudson meets the Atlantic.",
     lat: 40.7128,
-    lon: -74.0060,
+    lon: -74.006,
     bboxWidth: 0.09,
     weather: "22°C • Clear",
     landmarks: ["Times Square", "Central Park", "Statue of Liberty"],
@@ -44,8 +44,8 @@ const PRESET_PLACES = {
       "Start from Grand Central Terminal.",
       "Walk southwest toward Times Square.",
       "Turn right onto Broadway.",
-      "Arrive at Central Park South entrance."
-    ]
+      "Arrive at Central Park South entrance.",
+    ],
   },
   london: {
     name: "London",
@@ -60,8 +60,8 @@ const PRESET_PLACES = {
       "Depart from Heathrow Airport Terminals.",
       "Take the Piccadilly line eastbound to Piccadilly Circus.",
       "Walk down Whitehall toward Parliament Square.",
-      "Arrive at the Westminster Palace Gate."
-    ]
+      "Arrive at the Westminster Palace Gate.",
+    ],
   },
   tokyo: {
     name: "Tokyo",
@@ -69,16 +69,16 @@ const PRESET_PLACES = {
     desc: "Japan's bustling capital, mixing ultra-modern skyscrapers with historic temples and shrines. Home to the world's busiest pedestrian crossing.",
     lat: 35.6762,
     lon: 139.6503,
-    bboxWidth: 0.10,
+    bboxWidth: 0.1,
     weather: "19°C • Humid",
     landmarks: ["Shibuya Crossing", "Tokyo Skytree", "Senso-ji Temple"],
     steps: [
       "Start from Tokyo Station.",
       "Take the Yamanote Line (Green) toward Shibuya.",
       "Exit via Hachiko gate.",
-      "Cross Shibuya Crossing and arrive at your destination."
-    ]
-  }
+      "Cross Shibuya Crossing and arrive at your destination.",
+    ],
+  },
 };
 
 export default PRESET_PLACES;

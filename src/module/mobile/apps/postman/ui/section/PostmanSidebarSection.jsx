@@ -1,6 +1,12 @@
 import PostmanSidebar from "../components/PostmanSidebar";
 
-const PostmanSidebarSection = ({ expandedFolders, setExpandedFolders, loadRequest, url, method }) => (
+const PostmanSidebarSection = ({
+  expandedFolders,
+  setExpandedFolders,
+  loadRequest,
+  url,
+  method,
+}) => (
   <PostmanSidebar
     expandedFolders={expandedFolders}
     setExpandedFolders={setExpandedFolders}

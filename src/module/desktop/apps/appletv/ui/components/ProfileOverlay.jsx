@@ -98,9 +98,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
             <p className="text-[10px] text-blue-500 font-bold">
               @{profile?.login || "kuldeeprajput-dev"}
             </p>
-            <p className="text-[11px] text-zinc-500 max-w-[240px] mt-1.5 leading-relaxed">
-              {bio}
-            </p>
+            <p className="text-[11px] text-zinc-500 max-w-[240px] mt-1.5 leading-relaxed">{bio}</p>
 
             {/* Location */}
             <div className="flex items-center gap-1 text-[10px] text-zinc-400 mt-2.5">
@@ -176,7 +174,9 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                       <div className="p-1.5 bg-pink-50 text-pink-600 rounded-lg">
                         <Gift size={14} />
                       </div>
-                      <span className="text-[11px] font-semibold text-zinc-700">Redeem Gift Card</span>
+                      <span className="text-[11px] font-semibold text-zinc-700">
+                        Redeem Gift Card
+                      </span>
                     </div>
                     <span className="text-[10px] text-zinc-400">Redeem</span>
                   </div>
@@ -186,7 +186,9 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                       <div className="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg">
                         <CreditCard size={14} />
                       </div>
-                      <span className="text-[11px] font-semibold text-zinc-700">Account Balance</span>
+                      <span className="text-[11px] font-semibold text-zinc-700">
+                        Account Balance
+                      </span>
                     </div>
                     <span className="text-[10px] text-zinc-500 font-bold">$25.00</span>
                   </div>
@@ -210,7 +212,9 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                       <div className="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg">
                         <CreditCard size={14} />
                       </div>
-                      <span className="text-[11px] font-semibold text-zinc-700">Payment & Billing</span>
+                      <span className="text-[11px] font-semibold text-zinc-700">
+                        Payment & Billing
+                      </span>
                     </div>
                     <span className="text-[10px] text-zinc-400">Manage</span>
                   </div>
@@ -232,7 +236,9 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                       <div className="p-1.5 bg-blue-50 text-blue-600 rounded-lg">
                         <RefreshCw size={14} />
                       </div>
-                      <span className="text-[11px] font-semibold text-zinc-700">Automatic Updates</span>
+                      <span className="text-[11px] font-semibold text-zinc-700">
+                        Automatic Updates
+                      </span>
                     </div>
                     <span className="text-[10px] text-zinc-400">On</span>
                   </div>
@@ -242,7 +248,9 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                       <div className="p-1.5 bg-purple-50 text-purple-600 rounded-lg">
                         <PlayCircle size={14} />
                       </div>
-                      <span className="text-[11px] font-semibold text-zinc-700">Autoplay Videos</span>
+                      <span className="text-[11px] font-semibold text-zinc-700">
+                        Autoplay Videos
+                      </span>
                     </div>
                     <span className="text-[10px] text-zinc-400">Wi-Fi Only</span>
                   </div>
@@ -253,7 +261,9 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                     <div className="p-1.5 bg-purple-50 text-purple-600 rounded-lg">
                       <Settings size={14} />
                     </div>
-                    <span className="text-[11px] font-semibold text-zinc-700">Playback Quality</span>
+                    <span className="text-[11px] font-semibold text-zinc-700">
+                      Playback Quality
+                    </span>
                   </div>
                   <span className="text-[10px] text-zinc-400">Auto (4K)</span>
                 </div>
@@ -283,7 +293,10 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                 <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
                 <p className="text-[11px] text-gray-500 leading-relaxed">
                   Do you want to open the GitHub profile for{" "}
-                  <span className="font-semibold text-gray-700">@{profile?.login || "kuldeeprajput-dev"}</span> in a new tab?
+                  <span className="font-semibold text-gray-700">
+                    @{profile?.login || "kuldeeprajput-dev"}
+                  </span>{" "}
+                  in a new tab?
                 </p>
               </div>
               <div className="flex gap-2 pt-2">

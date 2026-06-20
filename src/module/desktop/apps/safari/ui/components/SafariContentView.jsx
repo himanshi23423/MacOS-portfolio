@@ -271,235 +271,240 @@ const SafariContentView = ({
           style={{ background: backgroundImage }}
         >
           <div className="relative z-10 max-w-4xl mx-auto px-8 py-14">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className={`text-4xl font-extrabold ${textClass} ${shadowClass} tracking-wide`}>
-              Safari
-            </h1>
-          </div>
-
-          {/* Central Search Bar */}
-          <div
-            className="max-w-md mx-auto mb-12"
-            onMouseDown={(e) => e.stopPropagation()}
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center gap-2 bg-white/95 border border-[#c8cbd0] rounded-full px-4.5 py-2.5 text-sm text-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20">
-              <Search size={14} className="text-gray-400" />
-              <input
-                type="text"
-                placeholder={`Search with ${searchEngine}`}
-                className="w-full bg-transparent border-none outline-none text-gray-800 placeholder-zinc-400"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && e.target.value.trim()) {
-                    navigateTabTo(e.target.value.trim());
-                    e.target.value = "";
-                  }
-                }}
-              />
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className={`text-4xl font-extrabold ${textClass} ${shadowClass} tracking-wide`}>
+                Safari
+              </h1>
             </div>
-          </div>
 
-          <div className="space-y-10">
-            {/* Favorites / Bookmarks Section */}
-            {enabledSections.favorites && (
-              <section>
-                <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>Favorites</h2>
-                <div className="grid grid-cols-3 @sm:grid-cols-4 @md:grid-cols-5 @lg:grid-cols-6 @xl:grid-cols-8 gap-6 justify-items-center">
-                  {bookmarks.map((fav) => (
-                    <div
-                      key={fav.id}
-                      onClick={() => navigateTabTo(fav.url)}
-                      className="flex flex-col items-center gap-2 cursor-pointer group"
-                      onMouseDown={(e) => e.stopPropagation()}
-                      onPointerDown={(e) => e.stopPropagation()}
-                    >
-                      <div
-                        className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-200 group-hover:scale-105 group-hover:shadow-md ${cardClass}`}
-                      >
-                        {fav.img ? (
-                          <img
-                            src={fav.img}
-                            alt={fav.title}
-                            className="w-11 h-11 object-contain rounded-md"
-                            onError={(e) => {
-                              e.target.src = "";
-                            }}
-                          />
-                        ) : (
-                          <Globe size={20} className={isLightBg ? "text-gray-600" : "text-white"} />
-                        )}
-                      </div>
-                      <span
-                        className={`text-[10px] font-semibold truncate max-w-full text-center ${isLightBg ? "text-gray-600" : "text-white/90"} group-hover:underline`}
-                      >
-                        {fav.title}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Privacy Report Section */}
-            {enabledSections.privacyReport && (
-              <section
-                className="cursor-pointer"
-                onClick={() => navigateTabTo("safari://privacy-report")}
-                onMouseDown={(e) => e.stopPropagation()}
-                onPointerDown={(e) => e.stopPropagation()}
-              >
-                <div
-                  className={`rounded-2xl p-5 transition-all duration-200 hover:scale-[1.01] ${cardClass}`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="p-2.5 bg-blue-500/10 rounded-xl text-blue-500">
-                        <ShieldHalf size={24} />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-sm">Privacy Report</h3>
-                        <p className={`text-[11px] ${subTextClass} mt-0.5`}>
-                          {preventTracking
-                            ? "Safari has prevented 14 trackers from profiling you across your portfolio visit."
-                            : "Cross-site tracking prevention is disabled. Trackers may be profiling you."}
-                        </p>
-                      </div>
-                    </div>
-                    <ChevronRight size={18} className="text-gray-400" />
-                  </div>
-                </div>
-              </section>
-            )}
-
-            {/* Featured Projects Section */}
-            <section>
-              <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>
-                Featured Projects
-              </h2>
-              <div className="grid grid-cols-1 @lg:grid-cols-2 gap-6">
-                {projects.map((project) => (
-                  <div
-                    key={project.id}
-                    className={`rounded-2xl overflow-hidden shadow-sm transition-all duration-200 hover:-translate-y-1 ${cardClass}`}
-                    onMouseDown={(e) => e.stopPropagation()}
-                    onPointerDown={(e) => e.stopPropagation()}
-                  >
-                    <div className="h-44 bg-gray-200/50 relative overflow-hidden">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <h3 className="text-sm font-bold mb-1">{project.title}</h3>
-                      <p
-                        className={`text-[11px] ${subTextClass} mb-4 line-clamp-2 leading-relaxed`}
-                      >
-                        {project.description}
-                      </p>
-                      <div className="flex items-center gap-4">
-                        <a
-                          href={project.link}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigateTabTo(project.link);
-                          }}
-                          className="flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-blue-600 transition-colors"
-                        >
-                          <ExternalLink size={14} /> Live Demo
-                        </a>
-                        <a
-                          href={project.github}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setRedirectProject(project);
-                          }}
-                          className={`flex items-center gap-1.5 text-xs font-bold ${isLightBg ? "text-gray-600 hover:text-black" : "text-white/80 hover:text-white"} transition-colors`}
-                        >
-                          Source
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            {/* Central Search Bar */}
+            <div
+              className="max-w-md mx-auto mb-12"
+              onMouseDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center gap-2 bg-white/95 border border-[#c8cbd0] rounded-full px-4.5 py-2.5 text-sm text-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20">
+                <Search size={14} className="text-gray-400" />
+                <input
+                  type="text"
+                  placeholder={`Search with ${searchEngine}`}
+                  className="w-full bg-transparent border-none outline-none text-gray-800 placeholder-zinc-400"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.target.value.trim()) {
+                      navigateTabTo(e.target.value.trim());
+                      e.target.value = "";
+                    }
+                  }}
+                />
               </div>
-            </section>
+            </div>
 
-            {/* Wallpaper Selection Section */}
-            {enabledSections.background && (
-              <section>
-                <div className="flex items-center gap-1.5 mb-4">
-                  <SlidersHorizontal
-                    size={14}
-                    className={isLightBg ? "text-gray-600" : "text-white"}
-                  />
-                  <h2 className={`text-sm font-bold ${textClass} ${shadowClass}`}>
-                    Customize Start Page
+            <div className="space-y-10">
+              {/* Favorites / Bookmarks Section */}
+              {enabledSections.favorites && (
+                <section>
+                  <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>
+                    Favorites
                   </h2>
-                </div>
-                <div
-                  className="flex flex-wrap gap-3.5"
+                  <div className="grid grid-cols-3 @sm:grid-cols-4 @md:grid-cols-5 @lg:grid-cols-6 @xl:grid-cols-8 gap-6 justify-items-center">
+                    {bookmarks.map((fav) => (
+                      <div
+                        key={fav.id}
+                        onClick={() => navigateTabTo(fav.url)}
+                        className="flex flex-col items-center gap-2 cursor-pointer group"
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
+                      >
+                        <div
+                          className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-200 group-hover:scale-105 group-hover:shadow-md ${cardClass}`}
+                        >
+                          {fav.img ? (
+                            <img
+                              src={fav.img}
+                              alt={fav.title}
+                              className="w-11 h-11 object-contain rounded-md"
+                              onError={(e) => {
+                                e.target.src = "";
+                              }}
+                            />
+                          ) : (
+                            <Globe
+                              size={20}
+                              className={isLightBg ? "text-gray-600" : "text-white"}
+                            />
+                          )}
+                        </div>
+                        <span
+                          className={`text-[10px] font-semibold truncate max-w-full text-center ${isLightBg ? "text-gray-600" : "text-white/90"} group-hover:underline`}
+                        >
+                          {fav.title}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* Privacy Report Section */}
+              {enabledSections.privacyReport && (
+                <section
+                  className="cursor-pointer"
+                  onClick={() => navigateTabTo("safari://privacy-report")}
                   onMouseDown={(e) => e.stopPropagation()}
                   onPointerDown={(e) => e.stopPropagation()}
                 >
-                  {WALLPAPERS.map((wp) => (
-                    <button
-                      key={wp.id}
-                      onClick={() => setBackgroundImage(wp.value)}
-                      className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 active:scale-95 ${
-                        backgroundImage === wp.value
-                          ? "border-blue-500 ring-2 ring-blue-500/25 scale-105"
-                          : "border-transparent shadow-sm"
-                      }`}
-                      style={{ background: wp.value }}
-                      title={wp.name}
-                    />
+                  <div
+                    className={`rounded-2xl p-5 transition-all duration-200 hover:scale-[1.01] ${cardClass}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="p-2.5 bg-blue-500/10 rounded-xl text-blue-500">
+                          <ShieldHalf size={24} />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-sm">Privacy Report</h3>
+                          <p className={`text-[11px] ${subTextClass} mt-0.5`}>
+                            {preventTracking
+                              ? "Safari has prevented 14 trackers from profiling you across your portfolio visit."
+                              : "Cross-site tracking prevention is disabled. Trackers may be profiling you."}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight size={18} className="text-gray-400" />
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {/* Featured Projects Section */}
+              <section>
+                <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>
+                  Featured Projects
+                </h2>
+                <div className="grid grid-cols-1 @lg:grid-cols-2 gap-6">
+                  {projects.map((project) => (
+                    <div
+                      key={project.id}
+                      className={`rounded-2xl overflow-hidden shadow-sm transition-all duration-200 hover:-translate-y-1 ${cardClass}`}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onPointerDown={(e) => e.stopPropagation()}
+                    >
+                      <div className="h-44 bg-gray-200/50 relative overflow-hidden">
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="p-5">
+                        <h3 className="text-sm font-bold mb-1">{project.title}</h3>
+                        <p
+                          className={`text-[11px] ${subTextClass} mb-4 line-clamp-2 leading-relaxed`}
+                        >
+                          {project.description}
+                        </p>
+                        <div className="flex items-center gap-4">
+                          <a
+                            href={project.link}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigateTabTo(project.link);
+                            }}
+                            className="flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-blue-600 transition-colors"
+                          >
+                            <ExternalLink size={14} /> Live Demo
+                          </a>
+                          <a
+                            href={project.github}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setRedirectProject(project);
+                            }}
+                            className={`flex items-center gap-1.5 text-xs font-bold ${isLightBg ? "text-gray-600 hover:text-black" : "text-white/80 hover:text-white"} transition-colors`}
+                          >
+                            Source
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </section>
-            )}
-          </div>
-        </div>
-      </div>
 
-      {redirectProject && (
-        <div className="absolute inset-0 bg-black/30 backdrop-blur-xs flex items-center justify-center z-[100] animate-in fade-in duration-150">
-          <div className="bg-white border border-[#c8cbd0]/80 p-5 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center space-y-4 transform animate-in zoom-in-95 duration-150">
-            <div className="w-11 h-11 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
-              <Globe className="w-5 h-5 animate-pulse" />
-            </div>
-            <div className="space-y-1">
-              <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
-              <p className="text-[11px] text-gray-500 leading-relaxed">
-                Do you want to open the source code repository for{" "}
-                <span className="font-semibold text-gray-700">{redirectProject.title}</span>?
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setRedirectProject(null)}
-                className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
-              >
-                Cancel
-              </button>
-              <a
-                href={redirectProject.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setRedirectProject(null)}
-                className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center cursor-pointer text-center"
-              >
-                Open Link
-              </a>
+              {/* Wallpaper Selection Section */}
+              {enabledSections.background && (
+                <section>
+                  <div className="flex items-center gap-1.5 mb-4">
+                    <SlidersHorizontal
+                      size={14}
+                      className={isLightBg ? "text-gray-600" : "text-white"}
+                    />
+                    <h2 className={`text-sm font-bold ${textClass} ${shadowClass}`}>
+                      Customize Start Page
+                    </h2>
+                  </div>
+                  <div
+                    className="flex flex-wrap gap-3.5"
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
+                    {WALLPAPERS.map((wp) => (
+                      <button
+                        key={wp.id}
+                        onClick={() => setBackgroundImage(wp.value)}
+                        className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 active:scale-95 ${
+                          backgroundImage === wp.value
+                            ? "border-blue-500 ring-2 ring-blue-500/25 scale-105"
+                            : "border-transparent shadow-sm"
+                        }`}
+                        style={{ background: wp.value }}
+                        title={wp.name}
+                      />
+                    ))}
+                  </div>
+                </section>
+              )}
             </div>
           </div>
         </div>
-      )}
-    </div>
-  );
-}
+
+        {redirectProject && (
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-xs flex items-center justify-center z-[100] animate-in fade-in duration-150">
+            <div className="bg-white border border-[#c8cbd0]/80 p-5 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center space-y-4 transform animate-in zoom-in-95 duration-150">
+              <div className="w-11 h-11 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                <Globe className="w-5 h-5 animate-pulse" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
+                <p className="text-[11px] text-gray-500 leading-relaxed">
+                  Do you want to open the source code repository for{" "}
+                  <span className="font-semibold text-gray-700">{redirectProject.title}</span>?
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setRedirectProject(null)}
+                  className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <a
+                  href={redirectProject.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setRedirectProject(null)}
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center cursor-pointer text-center"
+                >
+                  Open Link
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   // 2. Detailed Privacy Report (safari://privacy-report)
   if (activeTab.url === "safari://privacy-report") {
@@ -525,7 +530,10 @@ const SafariContentView = ({
           {!preventTracking ? (
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-amber-800 text-xs leading-relaxed space-y-2">
               <p className="font-bold">Tracking Prevention is Off</p>
-              <p>Because you've turned off "Prevent cross-site tracking" in Safari Settings, websites can track your browsing habits across different sites, and no trackers are blocked.</p>
+              <p>
+                Because you've turned off "Prevent cross-site tracking" in Safari Settings, websites
+                can track your browsing habits across different sites, and no trackers are blocked.
+              </p>
             </div>
           ) : (
             <>
@@ -650,7 +658,8 @@ const SafariContentView = ({
   }
 
   // 3.8 Wikipedia Article Mockup
-  const isWikipediaUrl = !activeTab.url.startsWith("safari://") && activeTab.url.toLowerCase().includes("wikipedia.org");
+  const isWikipediaUrl =
+    !activeTab.url.startsWith("safari://") && activeTab.url.toLowerCase().includes("wikipedia.org");
   if (isWikipediaUrl) {
     return (
       <div
@@ -976,8 +985,12 @@ root.render(<App />);`}</div>
             <div className="flex flex-col items-center gap-4">
               <div className="w-8 h-8 border-[3px] border-gray-200 border-t-blue-500 rounded-full animate-spin" />
               <div className="flex flex-col items-center gap-1">
-                <span className="text-xs font-semibold text-gray-700">Loading {activeTab.title}...</span>
-                <span className="text-[10px] text-gray-400 truncate max-w-[200px]">{activeTab.url}</span>
+                <span className="text-xs font-semibold text-gray-700">
+                  Loading {activeTab.title}...
+                </span>
+                <span className="text-[10px] text-gray-400 truncate max-w-[200px]">
+                  {activeTab.url}
+                </span>
               </div>
             </div>
           </div>
@@ -988,7 +1001,11 @@ root.render(<App />);`}</div>
           className={`flex-1 w-full h-full border-none bg-white relative z-0 transition-opacity duration-300 ${
             iframeLoading ? "opacity-0" : "opacity-100"
           }`}
-          sandbox={enableJavaScript ? "allow-scripts allow-same-origin allow-popups allow-forms" : "allow-same-origin allow-popups allow-forms"}
+          sandbox={
+            enableJavaScript
+              ? "allow-scripts allow-same-origin allow-popups allow-forms"
+              : "allow-same-origin allow-popups allow-forms"
+          }
           onLoad={() => setIframeLoading(false)}
         />
       </div>

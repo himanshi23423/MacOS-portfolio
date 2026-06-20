@@ -6,7 +6,9 @@ const MapControls = ({ mapStyle, setMapStyle, handleZoom }) => (
       <button
         onClick={() => setMapStyle("standard")}
         className={`px-3 py-1 rounded text-xs font-semibold flex items-center gap-1 transition-all ${
-          mapStyle === "standard" ? "bg-blue-500 text-white shadow-sm" : "text-gray-600 hover:bg-gray-150"
+          mapStyle === "standard"
+            ? "bg-blue-500 text-white shadow-sm"
+            : "text-gray-600 hover:bg-gray-150"
         }`}
       >
         <MapIcon size={12} /> Standard
@@ -14,7 +16,9 @@ const MapControls = ({ mapStyle, setMapStyle, handleZoom }) => (
       <button
         onClick={() => setMapStyle("satellite")}
         className={`px-3 py-1 rounded text-xs font-semibold flex items-center gap-1 transition-all ${
-          mapStyle === "satellite" ? "bg-blue-500 text-white shadow-sm" : "text-gray-600 hover:bg-gray-150"
+          mapStyle === "satellite"
+            ? "bg-blue-500 text-white shadow-sm"
+            : "text-gray-600 hover:bg-gray-150"
         }`}
       >
         <Layers size={12} /> Satellite

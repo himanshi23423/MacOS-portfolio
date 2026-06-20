@@ -25,8 +25,12 @@ const WeatherHero = ({ activeCity, unitMode }) => {
       <div className="flex justify-center gap-3 text-xs font-semibold opacity-85">
         {unitMode === "both" && (
           <>
-            <span>H: {activeTemps.highC}°C / {activeTemps.highF}°F</span>
-            <span>L: {activeTemps.lowC}°C / {activeTemps.lowF}°F</span>
+            <span>
+              H: {activeTemps.highC}°C / {activeTemps.highF}°F
+            </span>
+            <span>
+              L: {activeTemps.lowC}°C / {activeTemps.lowF}°F
+            </span>
           </>
         )}
         {unitMode === "c" && (

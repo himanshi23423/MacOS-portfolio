@@ -5,15 +5,24 @@ import ChatInput from "../components/ChatInput";
 import ContactInfoPanel from "../components/ContactInfoPanel";
 
 const MessagesChatSection = ({
-  conversations, searchQuery, setSearchQuery,
-  activeChat, activeChatId, setActiveChatId,
-  isSidebarOpen, setIsSidebarOpen,
-  inputText, setInputText,
+  conversations,
+  searchQuery,
+  setSearchQuery,
+  activeChat,
+  activeChatId,
+  setActiveChatId,
+  isSidebarOpen,
+  setIsSidebarOpen,
+  inputText,
+  setInputText,
   isTyping,
-  showInfo, setShowInfo,
-  mutedChats, setMutedChats,
+  showInfo,
+  setShowInfo,
+  mutedChats,
+  setMutedChats,
   messagesEndRef,
-  triggerCall, handleSend,
+  triggerCall,
+  handleSend,
   isLowWidth,
   isActualLowWidth,
   sidebarRef,
@@ -23,9 +32,10 @@ const MessagesChatSection = ({
       ref={sidebarRef}
       className={`
         z-20 transition-transform duration-300 h-full
-        ${isLowWidth
-          ? `absolute inset-y-0 left-0 w-64 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`
-          : "relative translate-x-0 w-60 lg:w-64"
+        ${
+          isLowWidth
+            ? `absolute inset-y-0 left-0 w-64 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`
+            : "relative translate-x-0 w-60 lg:w-64"
         }
       `}
     >
@@ -52,10 +62,18 @@ const MessagesChatSection = ({
               <span className="text-[10px] text-green-500 font-medium">iMessage</span>
             </div>
             <div className="flex items-center gap-3">
-              <button onClick={() => triggerCall("audio")} className="p-1.5 rounded hover:bg-gray-100 text-blue-500" title="Audio FaceTime">
+              <button
+                onClick={() => triggerCall("audio")}
+                className="p-1.5 rounded hover:bg-gray-100 text-blue-500"
+                title="Audio FaceTime"
+              >
                 <Phone className="w-4 h-4" />
               </button>
-              <button onClick={() => triggerCall("video")} className="p-1.5 rounded hover:bg-gray-100 text-blue-500" title="Video FaceTime">
+              <button
+                onClick={() => triggerCall("video")}
+                className="p-1.5 rounded hover:bg-gray-100 text-blue-500"
+                title="Video FaceTime"
+              >
                 <Video className="w-4 h-4" />
               </button>
               {!isActualLowWidth && (
@@ -77,17 +95,13 @@ const MessagesChatSection = ({
                 isTyping={isTyping}
                 messagesEndRef={messagesEndRef}
               />
-              <ChatInput
-                inputText={inputText}
-                onInputChange={setInputText}
-                onSend={handleSend}
-              />
+              <ChatInput inputText={inputText} onInputChange={setInputText} onSend={handleSend} />
             </div>
             {!isActualLowWidth && showInfo && (
               <ContactInfoPanel
                 activeChat={activeChat}
                 mutedChats={mutedChats}
-                onToggleMute={(id) => setMutedChats(prev => ({ ...prev, [id]: !prev[id] }))}
+                onToggleMute={(id) => setMutedChats((prev) => ({ ...prev, [id]: !prev[id] }))}
                 onTriggerCall={triggerCall}
                 onClose={() => setShowInfo(false)}
               />

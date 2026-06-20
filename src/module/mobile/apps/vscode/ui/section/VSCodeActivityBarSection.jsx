@@ -1,6 +1,11 @@
 import { Files, Search, GitBranch, Blocks, Terminal, Settings } from "lucide-react";
 
-const VSCodeActivityBarSection = ({ activeSidebar, onSidebarChange, modifiedCount, onToggleTerminal }) => {
+const VSCodeActivityBarSection = ({
+  activeSidebar,
+  onSidebarChange,
+  modifiedCount,
+  onToggleTerminal,
+}) => {
   const tabs = [
     { id: "explorer", icon: Files },
     { id: "search", icon: Search },

@@ -20,7 +20,7 @@ const AppStoreSection = () => {
 
   useEffect(() => {
     if (typeof window === "undefined" || !containerRef.current) return;
-    
+
     const initialWidth = containerRef.current.getBoundingClientRect().width;
     setContainerWidth(initialWidth);
     if (initialWidth < 800) {
@@ -28,7 +28,7 @@ const AppStoreSection = () => {
     } else {
       setIsSidebarOpen(true);
     }
-    
+
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
         setContainerWidth(entry.contentRect.width);
@@ -52,7 +52,7 @@ const AppStoreSection = () => {
       }
     }
   }, [isNarrow, isFirstLayout]);
-  
+
   useEffect(() => {
     fetch("https://api.github.com/users/kuldeeprajput-dev")
       .then((res) => res.json())
@@ -203,7 +203,11 @@ const AppStoreSection = () => {
         />
       </div>
 
-      <ProfileOverlay isOpen={showProfile} onClose={() => setShowProfile(false)} appName="appstore" />
+      <ProfileOverlay
+        isOpen={showProfile}
+        onClose={() => setShowProfile(false)}
+        appName="appstore"
+      />
 
       {alertApp && (
         <div className="absolute inset-0 bg-black/15 backdrop-blur-sm z-50 flex items-center justify-center p-4">

@@ -19,8 +19,15 @@ import PhotosAboutModal from "../../../photos/ui/components/PhotosAboutModal";
 const WINDOW_KEY = "imgfile";
 
 const ImageApp = () => {
-  const { windows, closeWindow, minimizeWindow, toggleMaximize, favorites, toggleFavorite, setWindowData } =
-    useWindowsStore();
+  const {
+    windows,
+    closeWindow,
+    minimizeWindow,
+    toggleMaximize,
+    favorites,
+    toggleFavorite,
+    setWindowData,
+  } = useWindowsStore();
 
   const data = windows[WINDOW_KEY]?.data || {};
   const photos = data.photos || (data.imageUrl ? [data] : []);
@@ -137,180 +144,176 @@ const ImageApp = () => {
   return (
     <>
       <div className="photos-preview-shell">
-      {/* ── Toolbar / Title bar ──────────────────────────────── */}
-      <div className="pp-toolbar window-header" id="window-header">
-        {/* Traffic lights */}
-        <div className="pp-trafficlights" onMouseDown={(e) => e.stopPropagation()}>
-          <button
-            className="pp-dot pp-dot-red"
-            title="Close"
-            onClick={() => closeWindow(WINDOW_KEY)}
-          >
-            <X size={7} strokeWidth={2.5} />
-          </button>
-          <button
-            className="pp-dot pp-dot-yellow"
-            title="Minimize"
-            onClick={() => minimizeWindow(WINDOW_KEY)}
-          >
-            <Minus size={7} strokeWidth={2.5} />
-          </button>
-          <button
-            className="pp-dot pp-dot-green"
-            title="Fullscreen"
-            onClick={() => toggleMaximize(WINDOW_KEY)}
-          >
-            <Minus size={7} strokeWidth={2.5} />
-          </button>
-        </div>
+        {/* ── Toolbar / Title bar ──────────────────────────────── */}
+        <div className="pp-toolbar window-header" id="window-header">
+          {/* Traffic lights */}
+          <div className="pp-trafficlights" onMouseDown={(e) => e.stopPropagation()}>
+            <button
+              className="pp-dot pp-dot-red"
+              title="Close"
+              onClick={() => closeWindow(WINDOW_KEY)}
+            >
+              <X size={7} strokeWidth={2.5} />
+            </button>
+            <button
+              className="pp-dot pp-dot-yellow"
+              title="Minimize"
+              onClick={() => minimizeWindow(WINDOW_KEY)}
+            >
+              <Minus size={7} strokeWidth={2.5} />
+            </button>
+            <button
+              className="pp-dot pp-dot-green"
+              title="Fullscreen"
+              onClick={() => toggleMaximize(WINDOW_KEY)}
+            >
+              <Minus size={7} strokeWidth={2.5} />
+            </button>
+          </div>
 
-        {/* Center: filename + resolution */}
-        <div className="pp-title">
-          <span className="pp-filename">{name || "Preview"}</span>
-          {resolution && (
-            <span className="pp-resolution">— {resolution}</span>
-          )}
-        </div>
+          {/* Center: filename + resolution */}
+          <div className="pp-title">
+            <span className="pp-filename">{name || "Preview"}</span>
+            {resolution && <span className="pp-resolution">— {resolution}</span>}
+          </div>
 
-        {/* Right: image tools */}
-        <div className="pp-tools" onMouseDown={(e) => e.stopPropagation()}>
-          {/* Nav prev/next segment */}
-          {photos.length > 1 && (
-            <div className="pp-nav-segment">
-              <button
-                className="pp-tool-btn"
-                onClick={handlePrev}
-                disabled={!hasPrev}
-                title="Previous (←)"
-              >
-                <ChevronLeft size={14} strokeWidth={2} />
-              </button>
-              <span className="pp-nav-sep" />
-              <button
-                className="pp-tool-btn"
-                onClick={handleNext}
-                disabled={!hasNext}
-                title="Next (→)"
-              >
-                <ChevronRight size={14} strokeWidth={2} />
-              </button>
-            </div>
-          )}
+          {/* Right: image tools */}
+          <div className="pp-tools" onMouseDown={(e) => e.stopPropagation()}>
+            {/* Nav prev/next segment */}
+            {photos.length > 1 && (
+              <div className="pp-nav-segment">
+                <button
+                  className="pp-tool-btn"
+                  onClick={handlePrev}
+                  disabled={!hasPrev}
+                  title="Previous (←)"
+                >
+                  <ChevronLeft size={14} strokeWidth={2} />
+                </button>
+                <span className="pp-nav-sep" />
+                <button
+                  className="pp-tool-btn"
+                  onClick={handleNext}
+                  disabled={!hasNext}
+                  title="Next (→)"
+                >
+                  <ChevronRight size={14} strokeWidth={2} />
+                </button>
+              </div>
+            )}
 
-          <span className="pp-tool-divider" />
+            <span className="pp-tool-divider" />
 
-          {/* Rotate */}
-          <button className="pp-tool-btn" onClick={handleRotate} title="Rotate 90°">
-            <RotateCw size={13} strokeWidth={2} />
-          </button>
+            {/* Rotate */}
+            <button className="pp-tool-btn" onClick={handleRotate} title="Rotate 90°">
+              <RotateCw size={13} strokeWidth={2} />
+            </button>
 
-          <span className="pp-tool-divider" />
+            <span className="pp-tool-divider" />
 
-          {/* Zoom out */}
-          <button
-            className="pp-tool-btn"
-            onClick={handleZoomOut}
-            disabled={zoomScale <= 0.25}
-            title="Zoom Out"
-          >
-            <ZoomOut size={13} strokeWidth={2} />
-          </button>
-
-          {/* Zoom reset */}
-          <button
-            className="pp-zoom-label"
-            onClick={handleZoomFit}
-            title="Reset Zoom"
-          >
-            {Math.round(zoomScale * 100)}%
-          </button>
-
-          {/* Zoom in */}
-          <button
-            className="pp-tool-btn"
-            onClick={handleZoomIn}
-            disabled={zoomScale >= 4}
-            title="Zoom In"
-          >
-            <ZoomIn size={13} strokeWidth={2} />
-          </button>
-
-          <span className="pp-tool-divider" />
-
-          {/* Favorite */}
-          {id && (
+            {/* Zoom out */}
             <button
               className="pp-tool-btn"
-              onClick={() => toggleFavorite(id)}
-              title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              onClick={handleZoomOut}
+              disabled={zoomScale <= 0.25}
+              title="Zoom Out"
             >
-              <Heart
-                size={13}
-                strokeWidth={2}
-                className={isFavorite ? "pp-heart-active" : ""}
-                style={isFavorite ? { fill: "#ff3b30", color: "#ff3b30" } : {}}
-              />
+              <ZoomOut size={13} strokeWidth={2} />
             </button>
-          )}
 
-          {/* Download */}
-          <button className="pp-tool-btn" onClick={handleDownload} title="Save Image">
-            <Download size={13} strokeWidth={2} />
-          </button>
-        </div>
-      </div>
+            {/* Zoom reset */}
+            <button className="pp-zoom-label" onClick={handleZoomFit} title="Reset Zoom">
+              {Math.round(zoomScale * 100)}%
+            </button>
 
-      <div
-        className="pp-canvas select-none"
-        ref={canvasRef}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
-        onDragStart={(e) => e.preventDefault()}
-        style={{
-          cursor: zoomScale > 1 ? (isDragging ? "grabbing" : "grab") : "default",
-          touchAction: "none",
-          userSelect: "none",
-        }}
-      >
-        {imageUrl ? (
-          <div
-            className="pp-image-wrap"
-            onDragStart={(e) => e.preventDefault()}
-            style={{
-              transform: `translate(${panOffset.x}px, ${panOffset.y}px) rotate(${rotation}deg) scale(${zoomScale})`,
-              transition: isDragging ? "none" : "transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94)",
-            }}
-          >
-            <img
-              src={imageUrl}
-              alt={name}
-              className="pp-image"
-              draggable={false}
-              onDragStart={(e) => e.preventDefault()}
-            />
-          </div>
-        ) : (
-          <div className="pp-empty">No Image Loaded</div>
-        )}
-      </div>
-
-      {/* ── Bottom filmstrip (when multiple photos) ───────────── */}
-      {photos.length > 1 && (
-        <div className="pp-filmstrip">
-          {photos.map((p, i) => (
+            {/* Zoom in */}
             <button
-              key={p.id ?? i}
-              className={`pp-film-thumb${i === currentIndex ? " pp-film-active" : ""}`}
-              onClick={() => setCurrentIndex(i)}
-              title={p.name}
+              className="pp-tool-btn"
+              onClick={handleZoomIn}
+              disabled={zoomScale >= 4}
+              title="Zoom In"
             >
-              <img src={p.imageUrl} alt={p.name} draggable={false} />
+              <ZoomIn size={13} strokeWidth={2} />
             </button>
-          ))}
+
+            <span className="pp-tool-divider" />
+
+            {/* Favorite */}
+            {id && (
+              <button
+                className="pp-tool-btn"
+                onClick={() => toggleFavorite(id)}
+                title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              >
+                <Heart
+                  size={13}
+                  strokeWidth={2}
+                  className={isFavorite ? "pp-heart-active" : ""}
+                  style={isFavorite ? { fill: "#ff3b30", color: "#ff3b30" } : {}}
+                />
+              </button>
+            )}
+
+            {/* Download */}
+            <button className="pp-tool-btn" onClick={handleDownload} title="Save Image">
+              <Download size={13} strokeWidth={2} />
+            </button>
+          </div>
         </div>
-      )}
+
+        <div
+          className="pp-canvas select-none"
+          ref={canvasRef}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          onDragStart={(e) => e.preventDefault()}
+          style={{
+            cursor: zoomScale > 1 ? (isDragging ? "grabbing" : "grab") : "default",
+            touchAction: "none",
+            userSelect: "none",
+          }}
+        >
+          {imageUrl ? (
+            <div
+              className="pp-image-wrap"
+              onDragStart={(e) => e.preventDefault()}
+              style={{
+                transform: `translate(${panOffset.x}px, ${panOffset.y}px) rotate(${rotation}deg) scale(${zoomScale})`,
+                transition: isDragging
+                  ? "none"
+                  : "transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94)",
+              }}
+            >
+              <img
+                src={imageUrl}
+                alt={name}
+                className="pp-image"
+                draggable={false}
+                onDragStart={(e) => e.preventDefault()}
+              />
+            </div>
+          ) : (
+            <div className="pp-empty">No Image Loaded</div>
+          )}
+        </div>
+
+        {/* ── Bottom filmstrip (when multiple photos) ───────────── */}
+        {photos.length > 1 && (
+          <div className="pp-filmstrip">
+            {photos.map((p, i) => (
+              <button
+                key={p.id ?? i}
+                className={`pp-film-thumb${i === currentIndex ? " pp-film-active" : ""}`}
+                onClick={() => setCurrentIndex(i)}
+                title={p.name}
+              >
+                <img src={p.imageUrl} alt={p.name} draggable={false} />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       {/* Photos About Dialog */}
       <PhotosAboutModal show={showAbout} onClose={() => setShowAbout(false)} />

@@ -150,7 +150,9 @@ const SafariDesktopToolbar = ({
             )}
 
             {/* Search Icon */}
-            {!activeTab.isReaderMode && <Search size={12} className="hidden @md:block text-gray-400" />}
+            {!activeTab.isReaderMode && (
+              <Search size={12} className="hidden @md:block text-gray-400" />
+            )}
 
             {/* Address Input - Large Container */}
             <input
@@ -324,7 +326,9 @@ const SafariDesktopToolbar = ({
                       ZIP
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold truncate text-left">Project_Portfolio_Source.zip</p>
+                      <p className="font-semibold truncate text-left">
+                        Project_Portfolio_Source.zip
+                      </p>
                       <p className="text-[10px] text-gray-400 text-left">14.8 MB — Complete</p>
                     </div>
                   </div>

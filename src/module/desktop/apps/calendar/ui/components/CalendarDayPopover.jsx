@@ -1,7 +1,12 @@
 import { X, Info, Trash2 } from "lucide-react";
 import { CATEGORIES } from "../../data/calendarData";
 
-const CalendarDayPopover = ({ dayEventsPopover, setDayEventsPopover, handleDeleteEvent, triggerAddEventOnDate }) => {
+const CalendarDayPopover = ({
+  dayEventsPopover,
+  setDayEventsPopover,
+  handleDeleteEvent,
+  triggerAddEventOnDate,
+}) => {
   if (!dayEventsPopover) return null;
 
   return (
@@ -17,7 +22,12 @@ const CalendarDayPopover = ({ dayEventsPopover, setDayEventsPopover, handleDelet
         <div className="space-y-1">
           <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
             <Info className="w-3.5 h-3.5 text-blue-500" />
-            Schedule for {dayEventsPopover.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            Schedule for{" "}
+            {dayEventsPopover.date.toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
           </h3>
         </div>
 
@@ -26,19 +36,27 @@ const CalendarDayPopover = ({ dayEventsPopover, setDayEventsPopover, handleDelet
             <p className="text-xs text-gray-400 italic py-2">No events scheduled on this day.</p>
           ) : (
             dayEventsPopover.events.map((ev) => {
-              const cat = CATEGORIES.find(c => c.id === ev.category);
+              const cat = CATEGORIES.find((c) => c.id === ev.category);
               return (
-                <div key={ev.id} className="pt-2.5 first:pt-0 flex items-start justify-between gap-3">
+                <div
+                  key={ev.id}
+                  className="pt-2.5 first:pt-0 flex items-start justify-between gap-3"
+                >
                   <div className="space-y-1 min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cat ? cat.color.replace('bg-', '') : '#ccc' }} />
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: cat ? cat.color.replace("bg-", "") : "#ccc" }}
+                      />
                       <h4 className="text-xs font-bold text-gray-800 truncate">{ev.title}</h4>
                     </div>
                     <p className="text-[10px] text-gray-400 font-semibold pl-4">
                       {ev.start} - {ev.end} ({cat?.label})
                     </p>
                     {ev.desc && (
-                      <p className="text-[10px] text-gray-500 pl-4 leading-normal font-medium">{ev.desc}</p>
+                      <p className="text-[10px] text-gray-500 pl-4 leading-normal font-medium">
+                        {ev.desc}
+                      </p>
                     )}
                   </div>
                   <button

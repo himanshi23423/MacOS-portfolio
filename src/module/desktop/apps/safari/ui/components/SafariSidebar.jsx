@@ -9,20 +9,20 @@ const SafariSidebar = ({
   sidebarTab,
   setSidebarTab,
   navigateTabTo,
-  projects
+  projects,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredBookmarks = bookmarks.filter(
     (b) =>
       b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      b.url.toLowerCase().includes(searchQuery.toLowerCase())
+      b.url.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const filteredHistory = historyList.filter(
     (h) =>
       h.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      h.url.toLowerCase().includes(searchQuery.toLowerCase())
+      h.url.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const clearHistory = () => {
@@ -42,7 +42,9 @@ const SafariSidebar = ({
           <button
             onClick={() => setSidebarTab("bookmarks")}
             className={`flex-1 flex justify-center py-1 rounded-md transition-all ${
-              sidebarTab === "bookmarks" ? "bg-white shadow-sm text-gray-800" : "text-gray-500 hover:text-gray-800"
+              sidebarTab === "bookmarks"
+                ? "bg-white shadow-sm text-gray-800"
+                : "text-gray-500 hover:text-gray-800"
             }`}
             title="Bookmarks"
           >
@@ -51,7 +53,9 @@ const SafariSidebar = ({
           <button
             onClick={() => setSidebarTab("readingList")}
             className={`flex-1 flex justify-center py-1 rounded-md transition-all ${
-              sidebarTab === "readingList" ? "bg-white shadow-sm text-gray-800" : "text-gray-500 hover:text-gray-800"
+              sidebarTab === "readingList"
+                ? "bg-white shadow-sm text-gray-800"
+                : "text-gray-500 hover:text-gray-800"
             }`}
             title="Reading List"
           >
@@ -60,7 +64,9 @@ const SafariSidebar = ({
           <button
             onClick={() => setSidebarTab("history")}
             className={`flex-1 flex justify-center py-1 rounded-md transition-all ${
-              sidebarTab === "history" ? "bg-white shadow-sm text-gray-800" : "text-gray-500 hover:text-gray-800"
+              sidebarTab === "history"
+                ? "bg-white shadow-sm text-gray-800"
+                : "text-gray-500 hover:text-gray-800"
             }`}
             title="History"
           >
@@ -129,7 +135,9 @@ const SafariSidebar = ({
             {projects.map((project) => (
               <div
                 key={project.id}
-                onClick={() => navigateTabTo(project.link || "https://github.com/kuldeeprajput-dev")}
+                onClick={() =>
+                  navigateTabTo(project.link || "https://github.com/kuldeeprajput-dev")
+                }
                 className="p-2 rounded-lg hover:bg-black/5 cursor-pointer transition-colors flex gap-2.5 items-start"
               >
                 <div className="w-10 h-10 rounded overflow-hidden bg-gray-200 shrink-0">

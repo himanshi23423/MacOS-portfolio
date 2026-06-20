@@ -32,15 +32,19 @@ const CallOverlay = ({
             ) : (
               <>
                 <div className="absolute inset-0 bg-gradient-to-tr from-neutral-800 via-indigo-950 to-neutral-900 animate-pulse opacity-60" />
-                <div className={`w-20 h-20 rounded-full overflow-hidden z-10 shadow-lg relative flex items-center justify-center bg-gray-50 border border-gray-100/20 ${callState.status === "ringing" ? "animate-pulse" : ""}`}>
+                <div
+                  className={`w-20 h-20 rounded-full overflow-hidden z-10 shadow-lg relative flex items-center justify-center bg-gray-50 border border-gray-100/20 ${callState.status === "ringing" ? "animate-pulse" : ""}`}
+                >
                   {activeChat.avatar ? (
-                    <img 
-                      src={activeChat.avatar} 
-                      alt={activeChat.name} 
-                      className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-4.5 bg-gray-100 object-contain" : ""}`} 
+                    <img
+                      src={activeChat.avatar}
+                      alt={activeChat.name}
+                      className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-4.5 bg-gray-100 object-contain" : ""}`}
                     />
                   ) : (
-                    <div className={`w-full h-full flex items-center justify-center text-white font-bold text-2xl ${activeChat.avatarColor}`}>
+                    <div
+                      className={`w-full h-full flex items-center justify-center text-white font-bold text-2xl ${activeChat.avatarColor}`}
+                    >
                       {activeChat.initials}
                     </div>
                   )}
@@ -48,13 +52,15 @@ const CallOverlay = ({
                 {callState.status !== "ringing" && (
                   <div className="w-20 h-20 rounded-full overflow-hidden z-10 shadow-lg relative flex items-center justify-center bg-gray-50 border border-gray-100/20">
                     {activeChat.avatar ? (
-                      <img 
-                        src={activeChat.avatar} 
-                        alt={activeChat.name} 
-                        className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-4.5 bg-gray-100 object-contain" : ""}`} 
+                      <img
+                        src={activeChat.avatar}
+                        alt={activeChat.name}
+                        className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-4.5 bg-gray-100 object-contain" : ""}`}
                       />
                     ) : (
-                      <div className={`w-full h-full flex items-center justify-center text-white font-bold text-2xl ${activeChat.avatarColor}`}>
+                      <div
+                        className={`w-full h-full flex items-center justify-center text-white font-bold text-2xl ${activeChat.avatarColor}`}
+                      >
                         {activeChat.initials}
                       </div>
                     )}
@@ -69,15 +75,19 @@ const CallOverlay = ({
           </div>
         ) : (
           <div className="relative col-center flex flex-col items-center">
-            <div className={`w-28 h-28 rounded-full overflow-hidden shadow-xl relative flex items-center justify-center bg-gray-50 border border-gray-100/20 ${callState.status === "ringing" ? "animate-pulse" : ""}`}>
+            <div
+              className={`w-28 h-28 rounded-full overflow-hidden shadow-xl relative flex items-center justify-center bg-gray-50 border border-gray-100/20 ${callState.status === "ringing" ? "animate-pulse" : ""}`}
+            >
               {activeChat.avatar ? (
-                <img 
-                  src={activeChat.avatar} 
-                  alt={activeChat.name} 
-                  className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-6 bg-gray-100 object-contain" : ""}`} 
+                <img
+                  src={activeChat.avatar}
+                  alt={activeChat.name}
+                  className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-6 bg-gray-100 object-contain" : ""}`}
                 />
               ) : (
-                <div className={`w-full h-full flex items-center justify-center text-white font-bold text-3xl ${activeChat.avatarColor}`}>
+                <div
+                  className={`w-full h-full flex items-center justify-center text-white font-bold text-3xl ${activeChat.avatarColor}`}
+                >
                   {activeChat.initials}
                 </div>
               )}
@@ -85,7 +95,9 @@ const CallOverlay = ({
             {callState.status === "connected" && (
               <div className="flex gap-1.5 items-center justify-center mt-6">
                 {[0, 150, 300, 450, 600].map((delay, i) => (
-                  <span key={i} className="w-1.5 h-3 bg-blue-500 rounded-full animate-bounce"
+                  <span
+                    key={i}
+                    className="w-1.5 h-3 bg-blue-500 rounded-full animate-bounce"
                     style={{ height: `${[3, 5, 7, 5, 3][i] * 4}px`, animationDelay: `${delay}ms` }}
                   />
                 ))}
@@ -99,7 +111,9 @@ const CallOverlay = ({
         <button
           onClick={onMicToggle}
           className={`p-4 rounded-full border border-white/10 transition-colors ${
-            callState.micMuted ? "bg-red-600 text-white" : "bg-neutral-800/80 hover:bg-neutral-700 text-neutral-200"
+            callState.micMuted
+              ? "bg-red-600 text-white"
+              : "bg-neutral-800/80 hover:bg-neutral-700 text-neutral-200"
           }`}
           title={callState.micMuted ? "Unmute Mic" : "Mute Mic"}
         >
@@ -116,7 +130,9 @@ const CallOverlay = ({
           <button
             onClick={onCameraToggle}
             className={`p-4 rounded-full border border-white/10 transition-colors ${
-              callState.cameraOff ? "bg-red-600 text-white" : "bg-neutral-800/80 hover:bg-neutral-700 text-neutral-200"
+              callState.cameraOff
+                ? "bg-red-600 text-white"
+                : "bg-neutral-800/80 hover:bg-neutral-700 text-neutral-200"
             }`}
             title={callState.cameraOff ? "Turn Camera On" : "Turn Camera Off"}
           >

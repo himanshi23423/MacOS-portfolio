@@ -3,9 +3,25 @@ import { STORE_APPS, FEATURED_APPS } from "../../data";
 import { AppStoreCard, UpdateItem, ActionButton } from "../components/AppStoreCard";
 
 const UPDATES_LIST = [
-  { id: "figma", name: "Figma", ver: "v116.4.2", details: "Improves responsiveness of layout resizing and resolves vector rendering glitches." },
-  { id: "vscode", name: "VS Code", ver: "v1.94.0", details: "Adds typescript syntax compiler accelerators and optimizes window redraw load times." },
-  { id: "slack", name: "Slack", ver: "v4.38.1", details: "Enhances video FaceTime call connection pipelines and optimizes message notification badges." },
+  {
+    id: "figma",
+    name: "Figma",
+    ver: "v116.4.2",
+    details: "Improves responsiveness of layout resizing and resolves vector rendering glitches.",
+  },
+  {
+    id: "vscode",
+    name: "VS Code",
+    ver: "v1.94.0",
+    details: "Adds typescript syntax compiler accelerators and optimizes window redraw load times.",
+  },
+  {
+    id: "slack",
+    name: "Slack",
+    ver: "v4.38.1",
+    details:
+      "Enhances video FaceTime call connection pipelines and optimizes message notification badges.",
+  },
 ];
 
 const AppStoreContentSection = ({
@@ -61,16 +77,24 @@ const AppStoreContentSection = ({
                         alt={item.title}
                         className="w-full h-full object-cover opacity-35 group-hover/featured:scale-105 transition-transform duration-500"
                         style={{
-                          maskImage: "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
-                          WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                          maskImage:
+                            "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                          WebkitMaskImage:
+                            "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
                         }}
                       />
                     </div>
                   )}
                   <div className="space-y-1 relative z-10">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-white/50">{item.subtitle}</span>
-                    <h3 className="text-xl font-extrabold tracking-tight leading-none">{item.title}</h3>
-                    <p className="text-[11px] text-white/70 max-w-[200px] mt-1 line-clamp-2">{item.desc}</p>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-white/50">
+                      {item.subtitle}
+                    </span>
+                    <h3 className="text-xl font-extrabold tracking-tight leading-none">
+                      {item.title}
+                    </h3>
+                    <p className="text-[11px] text-white/70 max-w-[200px] mt-1 line-clamp-2">
+                      {item.desc}
+                    </p>
                   </div>
                   <div className="flex items-center justify-between pt-4 relative z-10">
                     <span className="text-[10px] font-bold text-white/40">Developer Preview</span>
@@ -87,7 +111,9 @@ const AppStoreContentSection = ({
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-base font-extrabold tracking-tight px-1">Top Utilities & Productivity</h2>
+            <h2 className="text-base font-extrabold tracking-tight px-1">
+              Top Utilities & Productivity
+            </h2>
             <div className={`grid gap-4 ${isNarrow ? "grid-cols-1" : "grid-cols-2"}`}>
               {filteredApps
                 .filter((app) => !app.isGame)
@@ -110,7 +136,9 @@ const AppStoreContentSection = ({
         <div className="space-y-6">
           <div>
             <h2 className="text-base font-extrabold tracking-tight">Play Games</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Explore immersive arcade and adventure games designed for Mac.</p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Explore immersive arcade and adventure games designed for Mac.
+            </p>
           </div>
 
           {/* Hero Banner for Featured Game */}
@@ -119,7 +147,7 @@ const AppStoreContentSection = ({
             return asphaltApp ? (
               <div className="relative rounded-2xl overflow-hidden bg-linear-to-br from-[#0f172a] via-[#1e1b4b] to-[#311042] text-white p-6 md:p-8 flex flex-col justify-between min-h-[200px] shadow-lg border border-white/5 group/game-hero transition-all hover:shadow-xl hover:shadow-indigo-950/20">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-indigo-500/10 via-transparent to-transparent pointer-events-none" />
-                
+
                 {/* Banner Image overlay */}
                 <div className="absolute inset-y-0 right-0 w-1/2 md:w-3/5 overflow-hidden pointer-events-none select-none z-0">
                   <img
@@ -128,7 +156,8 @@ const AppStoreContentSection = ({
                     className="w-full h-full object-cover opacity-45 group-hover/game-hero:scale-105 transition-transform duration-500"
                     style={{
                       maskImage: "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
-                      WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                      WebkitMaskImage:
+                        "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
                     }}
                   />
                 </div>
@@ -140,7 +169,8 @@ const AppStoreContentSection = ({
                     {asphaltApp.name}
                   </h3>
                   <p className="text-[11px] text-zinc-300 leading-relaxed mt-2 font-medium max-w-lg">
-                    Tear up the asphalt and take on the world's most fearless racers. Custom build your dream supercar and experience ultimate street racing.
+                    Tear up the asphalt and take on the world's most fearless racers. Custom build
+                    your dream supercar and experience ultimate street racing.
                   </p>
                 </div>
                 <div className="flex items-center justify-between pt-6 relative z-10 border-t border-zinc-800 mt-4">
@@ -169,7 +199,9 @@ const AppStoreContentSection = ({
           })()}
 
           <div className="space-y-3 pt-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 px-1">All Games</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 px-1">
+              All Games
+            </h3>
             <div className={`grid gap-4 ${isNarrow ? "grid-cols-1" : "grid-cols-2"}`}>
               {getAppsByTab().map((app) => (
                 <AppStoreCard
@@ -190,7 +222,9 @@ const AppStoreContentSection = ({
         <div className="space-y-6">
           <div>
             <h2 className="text-base font-extrabold tracking-tight">Developer & Work Tools</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Build apps, manage workspaces, and collaborate with your team.</p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Build apps, manage workspaces, and collaborate with your team.
+            </p>
           </div>
           <div className={`grid gap-4 ${isNarrow ? "grid-cols-1" : "grid-cols-2"}`}>
             {getAppsByTab().map((app) => (
@@ -212,7 +246,9 @@ const AppStoreContentSection = ({
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
             <div>
               <h2 className="text-base font-extrabold tracking-tight">App Updates</h2>
-              <p className="text-xs text-gray-400 mt-0.5">Keep your tools updated for the latest system stability enhancements.</p>
+              <p className="text-xs text-gray-400 mt-0.5">
+                Keep your tools updated for the latest system stability enhancements.
+              </p>
             </div>
             <button
               onClick={handleUpdateAll}

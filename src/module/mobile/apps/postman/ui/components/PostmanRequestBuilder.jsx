@@ -1,6 +1,17 @@
 import { Send } from "lucide-react";
 
-const PostmanRequestBuilder = ({ method, setMethod, url, setUrl, handleSend, loading, activeTab, setActiveTab, reqBody, setReqBody }) => (
+const PostmanRequestBuilder = ({
+  method,
+  setMethod,
+  url,
+  setUrl,
+  handleSend,
+  loading,
+  activeTab,
+  setActiveTab,
+  reqBody,
+  setReqBody,
+}) => (
   <>
     <div className="flex gap-2 shrink-0">
       <select

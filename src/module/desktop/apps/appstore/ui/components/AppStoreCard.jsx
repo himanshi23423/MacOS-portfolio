@@ -89,7 +89,13 @@ const AppStoreCard = ({ app, installState, onStartDownload, onOpenApp, variant =
           <AppStoreIcon
             icon={app.icon}
             name={app.name}
-            fallbackBg={variant === "develop" ? "bg-indigo-500" : (variant === "game" ? "bg-amber-500" : "bg-blue-500")}
+            fallbackBg={
+              variant === "develop"
+                ? "bg-indigo-500"
+                : variant === "game"
+                  ? "bg-amber-500"
+                  : "bg-blue-500"
+            }
           />
         )}
         <div className="min-w-0">
@@ -127,19 +133,15 @@ const UpdateItem = ({ update, appIcon, progressVal, onUpdate, _updatingAll }) =>
           {update.name[0]}
         </div>
       )}
-      
+
       {/* Content */}
       <div className="flex-1 min-w-0 space-y-1">
         <div className="flex flex-wrap items-baseline gap-x-2">
           <h4 className="text-xs font-bold text-gray-800">{update.name}</h4>
-          <span className="text-[10px] text-gray-400 font-medium font-mono">
-            {update.ver}
-          </span>
+          <span className="text-[10px] text-gray-400 font-medium font-mono">{update.ver}</span>
         </div>
-        <p className="text-[11px] text-gray-500 leading-relaxed font-medium">
-          {update.details}
-        </p>
-        
+        <p className="text-[11px] text-gray-500 leading-relaxed font-medium">{update.details}</p>
+
         {isUpdating && (
           <div className="flex items-center gap-3 pt-1">
             <div className="w-full max-w-[150px] h-1.5 bg-gray-200 rounded-full overflow-hidden">
@@ -148,9 +150,7 @@ const UpdateItem = ({ update, appIcon, progressVal, onUpdate, _updatingAll }) =>
                 style={{ width: `${progressVal}%` }}
               />
             </div>
-            <span className="text-[9px] font-bold text-blue-600 tabular-nums">
-              {progressVal}%
-            </span>
+            <span className="text-[9px] font-bold text-blue-600 tabular-nums">{progressVal}%</span>
           </div>
         )}
       </div>

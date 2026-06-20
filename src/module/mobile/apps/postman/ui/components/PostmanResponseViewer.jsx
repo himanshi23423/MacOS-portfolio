@@ -6,13 +6,19 @@ const PostmanResponseViewer = ({ loading, response }) => (
       <span className="font-bold text-gray-600">Response</span>
       {response && (
         <div className="flex items-center gap-4 text-[11px] font-semibold text-gray-500">
-          <span className={`px-2 py-0.5 rounded text-[10px] font-bold text-white ${
-            response.status >= 200 && response.status < 300 ? "bg-emerald-500" : "bg-rose-500"
-          }`}>
+          <span
+            className={`px-2 py-0.5 rounded text-[10px] font-bold text-white ${
+              response.status >= 200 && response.status < 300 ? "bg-emerald-500" : "bg-rose-500"
+            }`}
+          >
             {response.status} {response.statusText}
           </span>
-          <span>Time: <span className="text-gray-800 font-bold">{response.time}</span></span>
-          <span>Size: <span className="text-gray-800 font-bold">{response.size}</span></span>
+          <span>
+            Time: <span className="text-gray-800 font-bold">{response.time}</span>
+          </span>
+          <span>
+            Size: <span className="text-gray-800 font-bold">{response.size}</span>
+          </span>
         </div>
       )}
     </div>

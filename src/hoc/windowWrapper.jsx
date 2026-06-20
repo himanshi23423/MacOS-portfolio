@@ -105,7 +105,7 @@ const windowWrapper = (Component, windowKey) => {
         gsap.fromTo(
           el,
           { scale: 0.85, opacity: 0, y: 30, x: 0 },
-          { scale: 1, opacity: 1, y: 0, x: 0, duration: 0.35, ease: "back.out(1.1)" }
+          { scale: 1, opacity: 1, y: 0, x: 0, duration: 0.35, ease: "back.out(1.1)" },
         );
       }
       // Case 2: Window closing
@@ -119,7 +119,7 @@ const windowWrapper = (Component, windowKey) => {
           ease: "power2.inOut",
           onComplete: () => {
             setShouldRender(false);
-          }
+          },
         });
       }
       // Case 3: Window minimizing
@@ -140,7 +140,7 @@ const windowWrapper = (Component, windowKey) => {
           ease: "power2.inOut",
           onComplete: () => {
             setShouldRender(false);
-          }
+          },
         });
       }
       // Case 4: Window restoring (unminimizing)
@@ -153,7 +153,7 @@ const windowWrapper = (Component, windowKey) => {
             scale: 0.15,
             opacity: 0,
             y: window.innerHeight - 80,
-            x: window.innerWidth / 2 - startRect.width / 2
+            x: window.innerWidth / 2 - startRect.width / 2,
           },
           {
             scale: 1,
@@ -161,8 +161,8 @@ const windowWrapper = (Component, windowKey) => {
             y: lastPosRef.current.y,
             x: lastPosRef.current.x,
             duration: 0.38,
-            ease: "back.out(1.1)"
-          }
+            ease: "back.out(1.1)",
+          },
         );
       }
 

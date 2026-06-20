@@ -17,9 +17,7 @@ const VSCodeTabs = ({ openTabs, activeFile, onSelectFile, onCloseTab }) => {
                 : "bg-[#ececec] text-[#616161] hover:bg-[#e8e8e8] hover:text-[#333333]"
             }`}
           >
-            {isActive && (
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#007acc]" />
-            )}
+            {isActive && <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#007acc]" />}
             <VSCodeFileIcon filename={fileName} size={14} />
             <span>{fileName}</span>
             <button

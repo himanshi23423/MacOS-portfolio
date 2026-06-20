@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Settings,
-  Layout,
-  Search,
-  Lock,
-  Shield,
-  Sliders,
-  X,
-} from "lucide-react";
+import { Settings, Layout, Search, Lock, Shield, Sliders, X } from "lucide-react";
 
 const SafariSettingsModal = ({
   show,
@@ -63,9 +55,7 @@ const SafariSettingsModal = ({
     );
   }
 
-  const sizeClass = isZoomed
-    ? "w-[680px] h-[480px]"
-    : "w-[550px] h-[380px]";
+  const sizeClass = isZoomed ? "w-[680px] h-[480px]" : "w-[550px] h-[380px]";
 
   return (
     <div
@@ -174,9 +164,7 @@ const SafariSettingsModal = ({
                 <label className="w-32 text-right pr-4 font-semibold text-gray-500">
                   Default browser:
                 </label>
-                <span className="text-gray-600 font-medium">
-                  Safari (Portfolio Edition)
-                </span>
+                <span className="text-gray-600 font-medium">Safari (Portfolio Edition)</span>
               </div>
             </div>
           )}
@@ -274,7 +262,8 @@ const SafariSettingsModal = ({
                     <span className="font-medium">Enable JavaScript</span>
                   </label>
                   <p className="text-[10px] text-gray-400 pl-5">
-                    Disabling JavaScript restricts script execution inside webpages. This will remove allow-scripts sandbox capabilities from the browser iframe.
+                    Disabling JavaScript restricts script execution inside webpages. This will
+                    remove allow-scripts sandbox capabilities from the browser iframe.
                   </p>
                 </div>
               </div>
@@ -316,7 +305,8 @@ const SafariSettingsModal = ({
                     <span className="font-medium">Prevent cross-site tracking</span>
                   </label>
                   <p className="text-[10px] text-gray-400 pl-5 leading-normal">
-                    Prevents tracking networks from profiling your activities across different domains. You can inspect this status on safari://privacy-report.
+                    Prevents tracking networks from profiling your activities across different
+                    domains. You can inspect this status on safari://privacy-report.
                   </p>
                 </div>
               </div>
@@ -337,7 +327,8 @@ const SafariSettingsModal = ({
                     <span className="font-medium">Block all cookies</span>
                   </label>
                   <p className="text-[10px] text-gray-405 pl-5 leading-normal">
-                    Websites, third parties, and advertisers may not store cookies or other data on your computer.
+                    Websites, third parties, and advertisers may not store cookies or other data on
+                    your computer.
                   </p>
                 </div>
               </div>
@@ -379,7 +370,8 @@ const SafariSettingsModal = ({
                     <span className="font-medium">Show Develop menu in menu bar</span>
                   </label>
                   <p className="text-[10px] text-gray-400 pl-5 leading-normal">
-                    Enables development tools for testing browser features and web design components. (Simulated)
+                    Enables development tools for testing browser features and web design
+                    components. (Simulated)
                   </p>
                 </div>
               </div>

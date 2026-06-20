@@ -67,9 +67,7 @@ const Postman = () => {
               </button>
             )}
             {!isNarrow && (
-              <span className="font-semibold pl-4">
-                Postman Agent (Desktop client)
-              </span>
+              <span className="font-semibold pl-4">Postman Agent (Desktop client)</span>
             )}
           </div>
           {!isVeryNarrow && (

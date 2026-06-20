@@ -25,7 +25,7 @@ const MapSidebarSection = ({
       className={clsx(
         "bg-[#fbfbfb] border-r border-zinc-200 flex flex-col shrink-0 min-w-0 h-full z-20 transition-all duration-300",
         isNarrow ? "absolute bg-[#fbfbfb]/95 shadow-lg" : "relative",
-        !isSidebarOpen ? "-translate-x-full w-0 overflow-hidden opacity-0" : "translate-x-0 w-60"
+        !isSidebarOpen ? "-translate-x-full w-0 overflow-hidden opacity-0" : "translate-x-0 w-60",
       )}
     >
       <div className="flex items-center p-2 border-b border-zinc-200">

@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { 
-  Eye, Search, Ear, Hand, MessageSquare, 
-  Volume2, Play, Sparkles, Sliders
+import {
+  Eye,
+  Search,
+  Ear,
+  Hand,
+  MessageSquare,
+  Volume2,
+  Play,
+  Sparkles,
+  Sliders,
 } from "lucide-react";
 
 const SettingsAccessibilitySection = () => {
@@ -86,30 +93,38 @@ const SettingsAccessibilitySection = () => {
         <Sliders size={20} className="text-blue-500" />
         <div>
           <h2 className="text-[17px] font-bold text-gray-900 leading-tight">Accessibility</h2>
-          <p className="text-[11px] text-gray-400 font-semibold mt-0.5">Customize display, hearing, and control features</p>
+          <p className="text-[11px] text-gray-400 font-semibold mt-0.5">
+            Customize display, hearing, and control features
+          </p>
         </div>
       </div>
 
       <div className="space-y-6">
-        
         {/* Category: Vision */}
         <div>
-          <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">Vision</h3>
+          <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">
+            Vision
+          </h3>
           <div className="w-full bg-gray-50 rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-            
             {/* VoiceOver option */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 gap-4">
               <div className="flex items-start gap-3">
                 <Eye size={16} className="text-blue-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-[13px] font-bold text-gray-900 block">VoiceOver</span>
-                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">Spoken descriptions of items on the screen</span>
+                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+                    Spoken descriptions of items on the screen
+                  </span>
                 </div>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 {voiceOver && (
-                  <button 
-                    onClick={() => speakText("You have VoiceOver enabled. This is your portfolio dashboard running macOS Sequoia Settings.")}
+                  <button
+                    onClick={() =>
+                      speakText(
+                        "You have VoiceOver enabled. This is your portfolio dashboard running macOS Sequoia Settings.",
+                      )
+                    }
                     className="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md px-2.5 py-1 text-[11px] font-bold transition-all shadow-sm active:scale-95"
                   >
                     <Play size={10} fill="currentColor" /> Speak View
@@ -119,7 +134,9 @@ const SettingsAccessibilitySection = () => {
                   onClick={() => handleToggleVoiceOver(!voiceOver)}
                   className={`w-10 h-6 rounded-full transition-colors relative cursor-pointer ${voiceOver ? "bg-[#007aff]" : "bg-gray-300"}`}
                 >
-                  <span className={`w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all ${voiceOver ? "left-[18px]" : "left-0.5"}`} />
+                  <span
+                    className={`w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all ${voiceOver ? "left-[18px]" : "left-0.5"}`}
+                  />
                 </button>
               </div>
             </div>
@@ -129,15 +146,21 @@ const SettingsAccessibilitySection = () => {
               <div className="flex items-start gap-3">
                 <Sparkles size={16} className="text-blue-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[13px] font-bold text-gray-900 block">Reduce Transparency</span>
-                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">Remove background glass blur styling on panel overlays</span>
+                  <span className="text-[13px] font-bold text-gray-900 block">
+                    Reduce Transparency
+                  </span>
+                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+                    Remove background glass blur styling on panel overlays
+                  </span>
                 </div>
               </div>
               <button
                 onClick={() => setReduceTransparency(!reduceTransparency)}
                 className={`w-10 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer ${reduceTransparency ? "bg-[#007aff]" : "bg-gray-300"}`}
               >
-                <span className={`w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all ${reduceTransparency ? "left-[18px]" : "left-0.5"}`} />
+                <span
+                  className={`w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all ${reduceTransparency ? "left-[18px]" : "left-0.5"}`}
+                />
               </button>
             </div>
 
@@ -146,15 +169,21 @@ const SettingsAccessibilitySection = () => {
               <div className="flex items-start gap-3">
                 <Sliders size={16} className="text-blue-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[13px] font-bold text-gray-900 block">Increase Contrast</span>
-                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">Sharpen layout borders and darken visual contrasts</span>
+                  <span className="text-[13px] font-bold text-gray-900 block">
+                    Increase Contrast
+                  </span>
+                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+                    Sharpen layout borders and darken visual contrasts
+                  </span>
                 </div>
               </div>
               <button
                 onClick={() => setIncreaseContrast(!increaseContrast)}
                 className={`w-10 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer ${increaseContrast ? "bg-[#007aff]" : "bg-gray-300"}`}
               >
-                <span className={`w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all ${increaseContrast ? "left-[18px]" : "left-0.5"}`} />
+                <span
+                  className={`w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all ${increaseContrast ? "left-[18px]" : "left-0.5"}`}
+                />
               </button>
             </div>
 
@@ -164,12 +193,14 @@ const SettingsAccessibilitySection = () => {
                 <Search size={16} className="text-blue-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-[13px] font-bold text-gray-900 block">Pointer Size</span>
-                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">Increase the cursor dimensions across the portfolio workspace</span>
+                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+                    Increase the cursor dimensions across the portfolio workspace
+                  </span>
                 </div>
               </div>
               <div className="flex items-center gap-4 pl-7 pr-2 w-full">
                 <span className="text-[10px] font-semibold text-gray-400">Normal</span>
-                <input 
+                <input
                   type="range"
                   min="1"
                   max="4"
@@ -180,27 +211,31 @@ const SettingsAccessibilitySection = () => {
                 <span className="text-[10px] font-semibold text-gray-400">Large</span>
               </div>
             </div>
-
           </div>
         </div>
 
         {/* Category: Hearing */}
         <div>
-          <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">Hearing</h3>
+          <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">
+            Hearing
+          </h3>
           <div className="w-full bg-gray-50 rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-            
             {/* Flash Screen option */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 gap-4">
               <div className="flex items-start gap-3">
                 <Ear size={16} className="text-blue-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[13px] font-bold text-gray-900 block">Screen Flash for Alerts</span>
-                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">Flash the display window when notification events trigger</span>
+                  <span className="text-[13px] font-bold text-gray-900 block">
+                    Screen Flash for Alerts
+                  </span>
+                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+                    Flash the display window when notification events trigger
+                  </span>
                 </div>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 {screenFlash && (
-                  <button 
+                  <button
                     onClick={triggerAlertFlash}
                     className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-2 py-1 text-[11px] font-bold transition-all shadow-sm active:scale-95"
                   >
@@ -211,7 +246,9 @@ const SettingsAccessibilitySection = () => {
                   onClick={() => handleToggleScreenFlash(!screenFlash)}
                   className={`w-10 h-6 rounded-full transition-colors relative cursor-pointer ${screenFlash ? "bg-[#007aff]" : "bg-gray-300"}`}
                 >
-                  <span className={`w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all ${screenFlash ? "left-[18px]" : "left-0.5"}`} />
+                  <span
+                    className={`w-5 h-5 rounded-full bg-white absolute top-0.5 shadow-md transition-all ${screenFlash ? "left-[18px]" : "left-0.5"}`}
+                  />
                 </button>
               </div>
             </div>
@@ -221,13 +258,17 @@ const SettingsAccessibilitySection = () => {
               <div className="flex items-start gap-3">
                 <Hand size={16} className="text-blue-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[13px] font-bold text-gray-900 block">Subtitles & Captioning</span>
-                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">Configure preferred visual captions style defaults</span>
+                  <span className="text-[13px] font-bold text-gray-900 block">
+                    Subtitles & Captioning
+                  </span>
+                  <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+                    Configure preferred visual captions style defaults
+                  </span>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-2 pl-7 mt-2">
                 {["Transparent", "Classic", "Large Text"].map((style) => (
-                  <div 
+                  <div
                     key={style}
                     className="border border-gray-200 bg-white rounded-lg p-2.5 flex flex-col items-center justify-center text-center cursor-pointer hover:border-blue-500 transition-all shadow-sm"
                   >
@@ -239,31 +280,36 @@ const SettingsAccessibilitySection = () => {
                 ))}
               </div>
             </div>
-
           </div>
         </div>
 
         {/* Category: Speech (TTS text synthesizer box) */}
         <div>
-          <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">Speech Synthesizer</h3>
+          <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">
+            Speech Synthesizer
+          </h3>
           <div className="w-full bg-gray-50 rounded-xl border border-gray-200 p-4 shadow-sm">
             <div className="flex items-start gap-3 mb-3">
               <MessageSquare size={16} className="text-blue-500 shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
-                <span className="text-[13px] font-bold text-gray-900 block">Text to Speech Reader</span>
-                <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">Input text phrases below and synthesize using voice synthesis</span>
+                <span className="text-[13px] font-bold text-gray-900 block">
+                  Text to Speech Reader
+                </span>
+                <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+                  Input text phrases below and synthesize using voice synthesis
+                </span>
               </div>
             </div>
-            
+
             <div className="flex gap-2 w-full mt-3 pl-7">
-              <input 
+              <input
                 type="text"
                 value={speechText}
                 onChange={(e) => setSpeechText(e.target.value)}
                 className="flex-1 bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-800 outline-none focus:border-blue-500 shadow-inner"
                 placeholder="Type something to speak..."
               />
-              <button 
+              <button
                 onClick={() => speakText(speechText)}
                 className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-1.5 text-xs font-bold transition-all shadow flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0"
               >
@@ -272,7 +318,6 @@ const SettingsAccessibilitySection = () => {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

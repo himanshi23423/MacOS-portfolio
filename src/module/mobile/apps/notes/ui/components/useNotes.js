@@ -82,16 +82,16 @@ export default function useNotes() {
   const filteredNotes = notes.filter(
     (note) =>
       note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      note.body.toLowerCase().includes(searchQuery.toLowerCase())
+      note.body.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const formatDate = (isoStr) => {
     const date = new Date(isoStr);
     const now = new Date();
     if (date.toDateString() === now.toDateString()) {
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     }
-    return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString([], { month: "short", day: "numeric" });
   };
 
   return {

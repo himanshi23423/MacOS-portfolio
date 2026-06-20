@@ -119,7 +119,9 @@ const PostmanRequestBuilder = ({
   return (
     <div className="flex flex-col gap-3 font-sans shrink-0">
       {/* Method + URL Input + Environment Dropdown */}
-      <div className={`flex gap-2.5 ${isNarrow ? "flex-col items-stretch" : "flex-row items-center"}`}>
+      <div
+        className={`flex gap-2.5 ${isNarrow ? "flex-col items-stretch" : "flex-row items-center"}`}
+      >
         <div className="flex gap-1.5 flex-1 min-w-0">
           <select
             value={method}
@@ -145,7 +147,9 @@ const PostmanRequestBuilder = ({
           />
         </div>
 
-        <div className={`flex gap-2 items-center ${isNarrow ? "w-full justify-between" : "w-auto"}`}>
+        <div
+          className={`flex gap-2 items-center ${isNarrow ? "w-full justify-between" : "w-auto"}`}
+        >
           <select
             value={environment}
             onChange={(e) => handleEnvironmentChange(e.target.value)}
@@ -153,8 +157,12 @@ const PostmanRequestBuilder = ({
             onPointerDown={(e) => e.stopPropagation()}
             className="flex-1 md:flex-initial bg-gray-50 hover:bg-gray-100 border border-zinc-300 rounded-md px-2 py-2 text-xs text-gray-700 outline-none cursor-pointer min-w-0 truncate"
           >
-            <option value="dev">{isVeryNarrow ? "Dev (api.dev)" : "Dev Environment (api.dev)"}</option>
-            <option value="prod">{isVeryNarrow ? "Prod (api.prod)" : "Prod Environment (api.prod)"}</option>
+            <option value="dev">
+              {isVeryNarrow ? "Dev (api.dev)" : "Dev Environment (api.dev)"}
+            </option>
+            <option value="prod">
+              {isVeryNarrow ? "Prod (api.prod)" : "Prod Environment (api.prod)"}
+            </option>
             <option value="none">{isVeryNarrow ? "Local" : "No Environment (localhost)"}</option>
           </select>
 
@@ -177,7 +185,9 @@ const PostmanRequestBuilder = ({
           <button
             onClick={() => setActiveTab("params")}
             className={`py-2 px-4 border-b-2 transition-all cursor-pointer ${
-              activeTab === "params" ? "border-orange-500 text-gray-900 font-bold" : "border-transparent hover:text-gray-800"
+              activeTab === "params"
+                ? "border-orange-500 text-gray-900 font-bold"
+                : "border-transparent hover:text-gray-800"
             }`}
           >
             Params
@@ -185,7 +195,9 @@ const PostmanRequestBuilder = ({
           <button
             onClick={() => setActiveTab("headers")}
             className={`py-2 px-4 border-b-2 transition-all cursor-pointer ${
-              activeTab === "headers" ? "border-orange-500 text-gray-900 font-bold" : "border-transparent hover:text-gray-800"
+              activeTab === "headers"
+                ? "border-orange-500 text-gray-900 font-bold"
+                : "border-transparent hover:text-gray-800"
             }`}
           >
             Headers
@@ -193,7 +205,9 @@ const PostmanRequestBuilder = ({
           <button
             onClick={() => setActiveTab("body")}
             className={`py-2 px-4 border-b-2 transition-all cursor-pointer ${
-              activeTab === "body" ? "border-orange-500 text-gray-900 font-bold" : "border-transparent hover:text-gray-800"
+              activeTab === "body"
+                ? "border-orange-500 text-gray-900 font-bold"
+                : "border-transparent hover:text-gray-800"
             }`}
           >
             Body (JSON)

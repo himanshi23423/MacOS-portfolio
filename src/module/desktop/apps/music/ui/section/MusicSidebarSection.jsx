@@ -27,13 +27,21 @@ const SECTIONS = [
   },
 ];
 
-const MusicSidebarSection = ({ activeCategory, setActiveCategory, isSidebarOpen, isPlaying, isNarrow }) => {
+const MusicSidebarSection = ({
+  activeCategory,
+  setActiveCategory,
+  isSidebarOpen,
+  isPlaying,
+  isNarrow,
+}) => {
   return (
     <div
       className={clsx(
         "bg-[#f9f9fb] border-r border-zinc-200 flex flex-col shrink-0 min-w-0 overflow-y-auto transition-all duration-300 h-full z-20",
         isNarrow ? "absolute shadow-lg" : "relative",
-        isNarrow && !isSidebarOpen ? "-translate-x-full w-0 overflow-hidden opacity-0" : "translate-x-0 w-48"
+        isNarrow && !isSidebarOpen
+          ? "-translate-x-full w-0 overflow-hidden opacity-0"
+          : "translate-x-0 w-48",
       )}
     >
       {SECTIONS.map((section, idx) => (

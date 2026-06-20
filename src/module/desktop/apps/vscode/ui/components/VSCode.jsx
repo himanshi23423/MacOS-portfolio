@@ -33,14 +33,16 @@ const VSCodeNotification = ({ notification, onClose }) => {
         }
       `}</style>
       <div className="flex items-start gap-2.5">
-        <span className={isError ? "text-[#cd1a2b] shrink-0 mt-0.5" : "text-[#007acc] shrink-0 mt-0.5"}>
+        <span
+          className={isError ? "text-[#cd1a2b] shrink-0 mt-0.5" : "text-[#007acc] shrink-0 mt-0.5"}
+        >
           {isError ? (
             <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0-1A6 6 0 1 0 8 2a6 6 0 0 0 0 12zM7.5 4h1v5h-1V4zm0 6h1v1.5h-1V10z"/>
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0-1A6 6 0 1 0 8 2a6 6 0 0 0 0 12zM7.5 4h1v5h-1V4zm0 6h1v1.5h-1V10z" />
             </svg>
           ) : (
             <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0-1A6 6 0 1 0 8 2a6 6 0 0 0 0 12zm-.5-5V5h1v4h-1zm0 2V9.5h1V11h-1z"/>
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0-1A6 6 0 1 0 8 2a6 6 0 0 0 0 12zm-.5-5V5h1v4h-1zm0 2V9.5h1V11h-1z" />
             </svg>
           )}
         </span>
@@ -52,7 +54,7 @@ const VSCodeNotification = ({ notification, onClose }) => {
           className="text-[#616161] hover:text-[#333333] hover:bg-[#e8e8e8] p-0.5 rounded transition-colors shrink-0"
         >
           <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 7.293l4.146-4.147.708.708L8.707 8l4.147 4.146-.708.708L8 8.707l-4.146 4.147-.708-.708L7.293 8 3.146 3.854l.708-.708L8 7.293z"/>
+            <path d="M8 7.293l4.146-4.147.708.708L8.707 8l4.147 4.146-.708.708L8 8.707l-4.146 4.147-.708-.708L7.293 8 3.146 3.854l.708-.708L8 7.293z" />
           </svg>
         </button>
       </div>

@@ -1,5 +1,3 @@
-
-
 const FinderFileList = ({ filteredChildren = [], openItem }) => (
   <ul className="flex-1 p-6 bg-white overflow-y-auto flex flex-wrap content-start gap-6">
     {filteredChildren.map((item) => (

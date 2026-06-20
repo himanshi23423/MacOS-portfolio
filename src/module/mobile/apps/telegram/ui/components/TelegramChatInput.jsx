@@ -3,9 +3,11 @@ import { Smile, Send } from "lucide-react";
 
 const TelegramChatInput = ({ inputText, setInputText, handleSend, activeChat, nightMode }) => {
   return (
-    <div className={`p-3 border-t shrink-0 transition-colors ${
-      nightMode ? "bg-zinc-950 border-zinc-850" : "bg-white border-zinc-200"
-    }`}>
+    <div
+      className={`p-3 border-t shrink-0 transition-colors ${
+        nightMode ? "bg-zinc-950 border-zinc-850" : "bg-white border-zinc-200"
+      }`}
+    >
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -16,7 +18,9 @@ const TelegramChatInput = ({ inputText, setInputText, handleSend, activeChat, ni
         <button
           type="button"
           className={`p-1.5 rounded text-gray-450 shrink-0 transition-colors ${
-            nightMode ? "hover:bg-zinc-800 hover:text-zinc-200" : "hover:bg-zinc-200/50 hover:text-gray-700"
+            nightMode
+              ? "hover:bg-zinc-800 hover:text-zinc-200"
+              : "hover:bg-zinc-200/50 hover:text-gray-700"
           }`}
         >
           <Smile className="w-5 h-5" />
@@ -25,7 +29,9 @@ const TelegramChatInput = ({ inputText, setInputText, handleSend, activeChat, ni
           type="text"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder={activeChat.type === "channel" ? "Muted (Channel Broadcast only)" : "Write a message..."}
+          placeholder={
+            activeChat.type === "channel" ? "Muted (Channel Broadcast only)" : "Write a message..."
+          }
           disabled={activeChat.type === "channel"}
           className={`flex-1 rounded-lg px-3.5 py-2 text-xs focus:outline-none border border-transparent outline-none disabled:opacity-50 select-text ${
             nightMode

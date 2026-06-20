@@ -3,9 +3,11 @@ import { Smile, Send, Paperclip } from "lucide-react";
 
 const TelegramChatInput = ({ inputText, setInputText, handleSend, activeChat, nightMode }) => {
   return (
-    <div className={`p-3.5 border-t shrink-0 transition-colors ${
-      nightMode ? "bg-zinc-900 border-zinc-800/60" : "bg-[#f4f4f5] border-zinc-200/80"
-    }`}>
+    <div
+      className={`p-3.5 border-t shrink-0 transition-colors ${
+        nightMode ? "bg-zinc-900 border-zinc-800/60" : "bg-[#f4f4f5] border-zinc-200/80"
+      }`}
+    >
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -13,11 +15,13 @@ const TelegramChatInput = ({ inputText, setInputText, handleSend, activeChat, ni
         }}
         className="flex items-center gap-2 max-w-4xl mx-auto"
       >
-        <div className={`flex items-center flex-1 rounded-full px-3 py-1.5 border transition-all ${
-          nightMode
-            ? "bg-zinc-950 border-zinc-800 text-white focus-within:border-zinc-750"
-            : "bg-white border-zinc-200/80 text-gray-800 focus-within:border-zinc-300"
-        }`}>
+        <div
+          className={`flex items-center flex-1 rounded-full px-3 py-1.5 border transition-all ${
+            nightMode
+              ? "bg-zinc-950 border-zinc-800 text-white focus-within:border-zinc-750"
+              : "bg-white border-zinc-200/80 text-gray-800 focus-within:border-zinc-300"
+          }`}
+        >
           <button
             type="button"
             className="p-1 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-zinc-300 shrink-0 transition-colors cursor-pointer mr-1.5"
@@ -25,12 +29,16 @@ const TelegramChatInput = ({ inputText, setInputText, handleSend, activeChat, ni
           >
             <Paperclip className="w-4 h-4" />
           </button>
-          
+
           <input
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder={activeChat.type === "channel" ? "Muted (Channel Broadcast only)" : "Write a message..."}
+            placeholder={
+              activeChat.type === "channel"
+                ? "Muted (Channel Broadcast only)"
+                : "Write a message..."
+            }
             disabled={activeChat.type === "channel"}
             className={`flex-1 bg-transparent text-xs focus:outline-none border-none outline-none disabled:opacity-50 select-text pointer-events-auto cursor-text ${
               nightMode ? "text-white" : "text-gray-800"

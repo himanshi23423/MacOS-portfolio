@@ -7,8 +7,8 @@ const useTelegram = () => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        return parsed.map(savedChat => {
-          const initialChat = INITIAL_CHATS.find(c => c.id === savedChat.id);
+        return parsed.map((savedChat) => {
+          const initialChat = INITIAL_CHATS.find((c) => c.id === savedChat.id);
           if (initialChat) {
             return {
               ...initialChat,
@@ -39,7 +39,7 @@ const useTelegram = () => {
     name: "Purav Rajput",
     username: "@purav_rajput",
     bio: "Student & Developer | Crafting beautiful macOS desktop portfolios.",
-    phone: "+91 98765 43210"
+    phone: "+91 98765 43210",
   });
 
   const [newGroupName, setNewGroupName] = useState("");
@@ -78,15 +78,13 @@ const useTelegram = () => {
       text: userMessageText,
       sender: "me",
       time: timeString,
-      status: "sent"
+      status: "sent",
     };
 
     setChats((prev) =>
       prev.map((c) =>
-        c.id === activeChat.id
-          ? { ...c, messages: [...c.messages, userMsgObj] }
-          : c
-      )
+        c.id === activeChat.id ? { ...c, messages: [...c.messages, userMsgObj] } : c,
+      ),
     );
     setInputText("");
 
@@ -97,11 +95,11 @@ const useTelegram = () => {
             ? {
                 ...c,
                 messages: c.messages.map((m) =>
-                  m.id === userMsgObj.id ? { ...m, status: "read" } : m
-                )
+                  m.id === userMsgObj.id ? { ...m, status: "read" } : m,
+                ),
               }
-            : c
-        )
+            : c,
+        ),
       );
     }, 800);
 
@@ -113,15 +111,20 @@ const useTelegram = () => {
         const cmd = userMessageText.toLowerCase().trim();
 
         if (cmd.includes("/start")) {
-          reply = "Hello! I am your Telegram assistant. Type `/projects`, `/skills`, or `/contact` to browse Kuldeep's portfolio.";
+          reply =
+            "Hello! I am your Telegram assistant. Type `/projects`, `/skills`, or `/contact` to browse Kuldeep's portfolio.";
         } else if (cmd.includes("/project")) {
-          reply = "Here are some top projects:\n1. **NewTube**: Video platform built with Next.js, Mux & PostgreSQL.\n2. **Free Course Finder**: Learning finder powered by AI.\n3. **Resume ATS Scanner**: ATS CV scoring app.\n4. **Docs Editor**: Live rich-text document collaboration.";
+          reply =
+            "Here are some top projects:\n1. **NewTube**: Video platform built with Next.js, Mux & PostgreSQL.\n2. **Free Course Finder**: Learning finder powered by AI.\n3. **Resume ATS Scanner**: ATS CV scoring app.\n4. **Docs Editor**: Live rich-text document collaboration.";
         } else if (cmd.includes("/skill") || cmd.includes("/tech")) {
-          reply = "Core Stack:\n• **Frontend**: React, Next.js, TypeScript\n• **Styling**: CSS, Sass, Tailwind CSS\n• **Backend**: Node.js, Express, Bun, tRPC\n• **Databases**: PostgreSQL, MongoDB\n• **Tools**: Git, GitHub, Docker";
+          reply =
+            "Core Stack:\n• **Frontend**: React, Next.js, TypeScript\n• **Styling**: CSS, Sass, Tailwind CSS\n• **Backend**: Node.js, Express, Bun, tRPC\n• **Databases**: PostgreSQL, MongoDB\n• **Tools**: Git, GitHub, Docker";
         } else if (cmd.includes("/contact")) {
-          reply = "Get in touch:\n• Email: kuldeeprajput.dev@gmail.com\n• Twitter: @kuldeepdotcom\n• LinkedIn: /in/kuldeepdotcom";
+          reply =
+            "Get in touch:\n• Email: kuldeeprajput.dev@gmail.com\n• Twitter: @kuldeepdotcom\n• LinkedIn: /in/kuldeepdotcom";
         } else if (cmd.includes("/help")) {
-          reply = "Available Commands:\n• `/start` - Start the helper\n• `/projects` - List developer projects\n• `/skills` - View technical skill list\n• `/contact` - Get direct emails/socials";
+          reply =
+            "Available Commands:\n• `/start` - Start the helper\n• `/projects` - List developer projects\n• `/skills` - View technical skill list\n• `/contact` - Get direct emails/socials";
         }
 
         setChats((prev) =>
@@ -135,26 +138,39 @@ const useTelegram = () => {
                       id: Date.now() + 1,
                       text: reply,
                       sender: "them",
-                      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-                      status: "read"
-                    }
-                  ]
+                      time: new Date().toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }),
+                      status: "read",
+                    },
+                  ],
                 }
-              : c
-          )
+              : c,
+          ),
         );
       }, 1500);
     } else if (activeChat.id === "kuldeep") {
       setIsTyping(true);
       setTimeout(() => {
         setIsTyping(false);
-        let reply = "Awesome! Thanks for reaching out. I'll get back to you as soon as I'm back at my workstation. 💻";
+        let reply =
+          "Awesome! Thanks for reaching out. I'll get back to you as soon as I'm back at my workstation. 💻";
         const normalized = userMessageText.toLowerCase();
 
-        if (normalized.includes("hello") || normalized.includes("hi") || normalized.includes("hey")) {
+        if (
+          normalized.includes("hello") ||
+          normalized.includes("hi") ||
+          normalized.includes("hey")
+        ) {
           reply = "Hey! Hope you are enjoying the macOS portfolio. How's everything going?";
-        } else if (normalized.includes("hiring") || normalized.includes("job") || normalized.includes("work")) {
-          reply = "I'm currently open to new roles and freelancing opportunities! Let's schedule a call. Drop me a line at kuldeeprajput.dev@gmail.com.";
+        } else if (
+          normalized.includes("hiring") ||
+          normalized.includes("job") ||
+          normalized.includes("work")
+        ) {
+          reply =
+            "I'm currently open to new roles and freelancing opportunities! Let's schedule a call. Drop me a line at kuldeeprajput.dev@gmail.com.";
         }
 
         setChats((prev) =>
@@ -168,13 +184,16 @@ const useTelegram = () => {
                       id: Date.now() + 2,
                       text: reply,
                       sender: "them",
-                      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-                      status: "read"
-                    }
-                  ]
+                      time: new Date().toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }),
+                      status: "read",
+                    },
+                  ],
                 }
-              : c
-          )
+              : c,
+          ),
         );
       }, 1800);
     }
@@ -187,16 +206,28 @@ const useTelegram = () => {
       name: newGroupName,
       type: "group",
       avatarColor: "bg-gradient-to-tr from-yellow-500 to-amber-600",
-      initials: newGroupName.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2),
+      initials: newGroupName
+        .split(" ")
+        .map((w) => w[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2),
       status: "1 member",
       username: `@${newGroupName.toLowerCase().replace(/ /g, "_")}`,
       bio: "A custom group created by user.",
       phone: "None",
       messages: [
-        { id: 1, text: `Group "${newGroupName}" has been successfully created.`, sender: "them", time: "Just now", status: "read", senderName: "System" }
-      ]
+        {
+          id: 1,
+          text: `Group "${newGroupName}" has been successfully created.`,
+          sender: "them",
+          time: "Just now",
+          status: "read",
+          senderName: "System",
+        },
+      ],
     };
-    setChats(prev => [newChatObj, ...prev]);
+    setChats((prev) => [newChatObj, ...prev]);
     setActiveChatId(newChatObj.id);
     setNewGroupName("");
     setIsDrawerOpen(false);
@@ -209,16 +240,27 @@ const useTelegram = () => {
       name: newChannelName,
       type: "channel",
       avatarColor: "bg-gradient-to-tr from-rose-500 to-red-600",
-      initials: newChannelName.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2),
+      initials: newChannelName
+        .split(" ")
+        .map((w) => w[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2),
       status: "0 subscribers",
       username: `@${newChannelName.toLowerCase().replace(/ /g, "_")}`,
       bio: newChannelBio || "A custom broadcast channel created by user.",
       phone: "None",
       messages: [
-        { id: 1, text: `Channel "${newChannelName}" broadcast stream created.`, sender: "channel", time: "Just now", status: "read" }
-      ]
+        {
+          id: 1,
+          text: `Channel "${newChannelName}" broadcast stream created.`,
+          sender: "channel",
+          time: "Just now",
+          status: "read",
+        },
+      ],
     };
-    setChats(prev => [newChatObj, ...prev]);
+    setChats((prev) => [newChatObj, ...prev]);
     setActiveChatId(newChatObj.id);
     setNewChannelName("");
     setNewChannelBio("");
@@ -226,7 +268,7 @@ const useTelegram = () => {
   };
 
   const openSavedMessages = () => {
-    const hasSaved = chats.some(c => c.id === "saved");
+    const hasSaved = chats.some((c) => c.id === "saved");
     if (!hasSaved) {
       const savedChat = {
         id: "saved",
@@ -239,10 +281,16 @@ const useTelegram = () => {
         bio: "Forward messages here to save them. Send media files or notes to store them.",
         phone: "None",
         messages: [
-          { id: 1, text: "Welcome to your personal cloud chat! Write ideas, copy logs, or save clips here.", sender: "them", time: "Just now", status: "read" }
-        ]
+          {
+            id: 1,
+            text: "Welcome to your personal cloud chat! Write ideas, copy logs, or save clips here.",
+            sender: "them",
+            time: "Just now",
+            status: "read",
+          },
+        ],
       };
-      setChats(prev => [savedChat, ...prev]);
+      setChats((prev) => [savedChat, ...prev]);
     }
     setActiveChatId("saved");
     setIsDrawerOpen(false);
@@ -251,7 +299,7 @@ const useTelegram = () => {
   const filteredChats = chats.filter(
     (c) =>
       c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.messages.some((m) => m.text.toLowerCase().includes(searchQuery.toLowerCase()))
+      c.messages.some((m) => m.text.toLowerCase().includes(searchQuery.toLowerCase())),
   );
 
   const getThemeClass = (isMe) => {
@@ -260,7 +308,7 @@ const useTelegram = () => {
         ? "bg-zinc-800 text-zinc-100 border border-zinc-700/80"
         : "bg-white text-gray-800 border border-zinc-200/50";
     }
-    switch(chatThemeColor) {
+    switch (chatThemeColor) {
       case "green":
         return "bg-emerald-500 text-white border border-emerald-600";
       case "purple":
@@ -276,21 +324,35 @@ const useTelegram = () => {
   };
 
   return {
-    chats, setChats,
-    activeChatId, setActiveChatId,
-    inputText, setInputText,
-    searchQuery, setSearchQuery,
-    isSidebarOpen, setIsSidebarOpen,
+    chats,
+    setChats,
+    activeChatId,
+    setActiveChatId,
+    inputText,
+    setInputText,
+    searchQuery,
+    setSearchQuery,
+    isSidebarOpen,
+    setIsSidebarOpen,
     isTyping,
-    showProfileDrawer, setShowProfileDrawer,
-    nightMode, setNightMode,
-    isDrawerOpen, setIsDrawerOpen,
-    drawerSection, setDrawerSection,
-    userProfile, setUserProfile,
-    newGroupName, setNewGroupName,
-    newChannelName, setNewChannelName,
-    newChannelBio, setNewChannelBio,
-    chatThemeColor, setChatThemeColor,
+    showProfileDrawer,
+    setShowProfileDrawer,
+    nightMode,
+    setNightMode,
+    isDrawerOpen,
+    setIsDrawerOpen,
+    drawerSection,
+    setDrawerSection,
+    userProfile,
+    setUserProfile,
+    newGroupName,
+    setNewGroupName,
+    newChannelName,
+    setNewChannelName,
+    newChannelBio,
+    setNewChannelBio,
+    chatThemeColor,
+    setChatThemeColor,
     messagesEndRef,
     activeChat,
     handleSend,

@@ -1,4 +1,10 @@
-import { Search, Sparkles, Play as PlayIcon, Terminal as TerminalIcon, ArrowDownCircle } from "lucide-react";
+import {
+  Search,
+  Sparkles,
+  Play as PlayIcon,
+  Terminal as TerminalIcon,
+  ArrowDownCircle,
+} from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "discover", label: "Discover", icon: Sparkles },
@@ -7,11 +13,18 @@ const NAV_ITEMS = [
   { id: "updates", label: "Updates", icon: ArrowDownCircle },
 ];
 
-const AppStoreSidebar = ({ searchQuery, onSearchChange, activeTab, onTabChange, onClose, githubProfile, onProfileClick, isNarrow }) => {
+const AppStoreSidebar = ({
+  searchQuery,
+  onSearchChange,
+  activeTab,
+  onTabChange,
+  onClose,
+  githubProfile,
+  onProfileClick,
+  isNarrow,
+}) => {
   return (
-    <aside
-      className="w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col h-full shrink-0"
-    >
+    <aside className="w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col h-full shrink-0">
       <div className="relative flex items-center bg-gray-200/60 border border-gray-300/40 rounded-lg px-2.5 py-1.5 shrink-0">
         <Search className="w-4 h-4 text-gray-400 mr-2 shrink-0" />
         <input

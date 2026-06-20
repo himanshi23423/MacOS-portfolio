@@ -9,11 +9,7 @@ const FavoritesSection = ({ upNext, onPlayMovie, isCompact }) => {
       <h2 className="text-sm font-bold text-gray-800">Your Up Next Queue</h2>
       <div className={`grid gap-4 ${isCompact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`}>
         {queuedMovies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-            onPlay={() => onPlayMovie(movie)}
-          />
+          <MovieCard key={movie.id} movie={movie} onPlay={() => onPlayMovie(movie)} />
         ))}
         {queuedMovies.length === 0 && (
           <div className="col-span-full py-12 text-center text-xs text-gray-500 italic">

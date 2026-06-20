@@ -1,7 +1,5 @@
 const LaunchpadGrid = ({ apps, onLaunch, searchQuery }) => (
-  <div
-    className="w-full max-w-4.5xl flex-1 overflow-y-auto px-4"
-  >
+  <div className="w-full max-w-4.5xl flex-1 overflow-y-auto px-4">
     <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-y-12 gap-x-8 justify-items-center justify-center">
       {apps.map((app) => (
         <button

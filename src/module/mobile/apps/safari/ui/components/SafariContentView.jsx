@@ -19,7 +19,13 @@ const SafariContentView = ({ socials, projects }) => {
                   <img src={favorite.img} alt={favorite.text} className="w-8 h-8 object-contain" />
                 </div>
                 <span className="text-xs font-medium text-gray-600 group-hover:text-black">
-                  {favorite.id === 1 ? "Github" : favorite.id === 2 ? "Youtube" : favorite.id === 3 ? "Twitter/X" : "LinkedIn"}
+                  {favorite.id === 1
+                    ? "Github"
+                    : favorite.id === 2
+                      ? "Youtube"
+                      : favorite.id === 3
+                        ? "Twitter/X"
+                        : "LinkedIn"}
                 </span>
               </a>
             ))}
@@ -35,7 +41,9 @@ const SafariContentView = ({ socials, projects }) => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800">Privacy Report</h3>
-                  <p className="text-sm text-gray-500">Safari has protected your projects from 14 trackers this week.</p>
+                  <p className="text-sm text-gray-500">
+                    Safari has protected your projects from 14 trackers this week.
+                  </p>
                 </div>
               </div>
               <ChevronRight size={20} className="text-gray-400" />
@@ -47,18 +55,35 @@ const SafariContentView = ({ socials, projects }) => {
           <h2 className="text-xl font-semibold text-gray-800 mb-6">Featured Projects</h2>
           <div className="grid grid-cols-1 @md:grid-cols-2 gap-6">
             {projects.map((project) => (
-              <div key={project.id} className="bg-white/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-sm border border-white/40 transition-transform hover:translate-y-[-4px]">
+              <div
+                key={project.id}
+                className="bg-white/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-sm border border-white/40 transition-transform hover:translate-y-[-4px]"
+              >
                 <div className="h-48 bg-gray-200">
-                  <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="p-6">
                   <h3 className="text-lg font-bold text-gray-800 mb-2">{project.title}</h3>
                   <p className="text-sm text-gray-600 mb-4 line-clamp-2">{project.description}</p>
                   <div className="flex items-center gap-4">
-                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+                    >
                       <ExternalLink size={16} /> Live Demo
                     </a>
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-black transition-colors">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-black transition-colors"
+                    >
                       Source
                     </a>
                   </div>

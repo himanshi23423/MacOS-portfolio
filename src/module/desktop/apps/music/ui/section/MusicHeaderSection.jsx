@@ -51,7 +51,9 @@ const MusicHeaderSection = ({
           </span>
         )}
       </div>
-      <div className={`${isNarrow ? "w-40" : "w-56"} relative flex items-center transition-all duration-200`}>
+      <div
+        className={`${isNarrow ? "w-40" : "w-56"} relative flex items-center transition-all duration-200`}
+      >
         <input
           ref={searchInputRef}
           type="text"

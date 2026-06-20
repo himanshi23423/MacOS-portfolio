@@ -9,7 +9,9 @@ const PostmanResponseViewer = ({
 }) => (
   <div className="flex-1 border border-zinc-200 rounded-lg flex flex-col bg-gray-50/50 min-h-[220px] font-sans">
     {/* Response Header Info & Tabs */}
-    <div className={`bg-gray-100/60 px-4 py-2 border-b border-zinc-200 flex ${isNarrow ? "flex-col items-stretch" : "flex-row justify-between items-center"} text-xs shrink-0 select-none gap-2`}>
+    <div
+      className={`bg-gray-100/60 px-4 py-2 border-b border-zinc-200 flex ${isNarrow ? "flex-col items-stretch" : "flex-row justify-between items-center"} text-xs shrink-0 select-none gap-2`}
+    >
       <div className="flex items-center gap-4">
         <span className="font-bold text-gray-600">Response</span>
         {response && (
@@ -17,7 +19,9 @@ const PostmanResponseViewer = ({
             <button
               onClick={() => setActiveResponseTab("pretty")}
               className={`px-2 py-1 transition-colors cursor-pointer ${
-                activeResponseTab === "pretty" ? "bg-orange-500 text-white font-bold" : "text-gray-600 hover:bg-gray-100"
+                activeResponseTab === "pretty"
+                  ? "bg-orange-500 text-white font-bold"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               Pretty
@@ -25,7 +29,9 @@ const PostmanResponseViewer = ({
             <button
               onClick={() => setActiveResponseTab("raw")}
               className={`px-2 py-1 transition-colors cursor-pointer border-l border-r border-zinc-200 ${
-                activeResponseTab === "raw" ? "bg-orange-500 text-white font-bold" : "text-gray-600 hover:bg-gray-100"
+                activeResponseTab === "raw"
+                  ? "bg-orange-500 text-white font-bold"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               Raw
@@ -33,7 +39,9 @@ const PostmanResponseViewer = ({
             <button
               onClick={() => setActiveResponseTab("headers")}
               className={`px-2 py-1 transition-colors cursor-pointer ${
-                activeResponseTab === "headers" ? "bg-orange-500 text-white font-bold" : "text-gray-600 hover:bg-gray-100"
+                activeResponseTab === "headers"
+                  ? "bg-orange-500 text-white font-bold"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               Headers
@@ -43,14 +51,22 @@ const PostmanResponseViewer = ({
       </div>
 
       {response && (
-        <div className={`flex items-center gap-3 text-[10px] font-semibold text-gray-500 ${isNarrow ? "justify-start mt-1" : "justify-end"}`}>
-          <span className={`px-1.5 py-0.5 rounded font-bold text-white ${
-            response.status >= 200 && response.status < 300 ? "bg-emerald-500" : "bg-rose-500"
-          }`}>
+        <div
+          className={`flex items-center gap-3 text-[10px] font-semibold text-gray-500 ${isNarrow ? "justify-start mt-1" : "justify-end"}`}
+        >
+          <span
+            className={`px-1.5 py-0.5 rounded font-bold text-white ${
+              response.status >= 200 && response.status < 300 ? "bg-emerald-500" : "bg-rose-500"
+            }`}
+          >
             {response.status} {response.statusText}
           </span>
-          <span>Time: <span className="text-gray-700 font-bold">{response.time}</span></span>
-          <span>Size: <span className="text-gray-700 font-bold">{response.size}</span></span>
+          <span>
+            Time: <span className="text-gray-700 font-bold">{response.time}</span>
+          </span>
+          <span>
+            Size: <span className="text-gray-700 font-bold">{response.size}</span>
+          </span>
         </div>
       )}
     </div>
@@ -69,7 +85,9 @@ const PostmanResponseViewer = ({
       ) : response ? (
         <>
           {activeResponseTab === "pretty" && (
-            <pre className="text-emerald-700 leading-relaxed font-medium whitespace-pre-wrap">{response.body}</pre>
+            <pre className="text-emerald-700 leading-relaxed font-medium whitespace-pre-wrap">
+              {response.body}
+            </pre>
           )}
 
           {activeResponseTab === "raw" && (

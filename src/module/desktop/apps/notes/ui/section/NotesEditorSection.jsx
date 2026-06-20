@@ -39,9 +39,9 @@ const NotesEditorSection = ({
           >
             <Underline className="w-4 h-4" />
           </button>
-          
+
           <div className="mx-1.5 w-px h-5 bg-gray-300" />
-          
+
           <button
             onClick={() => handleFormat("insertUnorderedList")}
             className="p-1.5 rounded hover:bg-gray-200 text-gray-600 hover:text-gray-900 active:bg-gray-300 transition-colors"
@@ -67,7 +67,7 @@ const NotesEditorSection = ({
             </>
           )}
         </div>
-        
+
         <button
           onClick={() => activeNote && onDeleteNote(activeNote.id)}
           disabled={!activeNote}

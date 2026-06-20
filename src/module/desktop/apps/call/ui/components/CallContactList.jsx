@@ -2,7 +2,7 @@ import { Search, Phone, Video } from "lucide-react";
 
 const CallContactList = ({ contacts, searchQuery, onSearchChange, onInitiateCall }) => {
   const filteredContacts = contacts.filter((c) =>
-    c.name.toLowerCase().includes(searchQuery.toLowerCase())
+    c.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -33,8 +33,13 @@ const CallContactList = ({ contacts, searchQuery, onSearchChange, onInitiateCall
                   className="w-9 h-9 rounded-full object-cover shadow-sm shrink-0 border border-black/5"
                 />
               ) : (
-                <div className={`w-9 h-9 rounded-full ${contact.avatarColor} text-white flex items-center justify-center font-bold text-xs uppercase shadow-sm shrink-0`}>
-                  {contact.name.split(" ").map(n => n[0]).join("")}
+                <div
+                  className={`w-9 h-9 rounded-full ${contact.avatarColor} text-white flex items-center justify-center font-bold text-xs uppercase shadow-sm shrink-0`}
+                >
+                  {contact.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
                 </div>
               )}
               <div className="min-w-0">

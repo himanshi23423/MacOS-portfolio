@@ -1,6 +1,11 @@
 import { Files, Search, GitBranch, Blocks, Terminal, Settings } from "lucide-react";
 
-const VSCodeActivityBarSection = ({ activeSidebar, onSidebarChange, modifiedCount, onToggleTerminal }) => {
+const VSCodeActivityBarSection = ({
+  activeSidebar,
+  onSidebarChange,
+  modifiedCount,
+  onToggleTerminal,
+}) => {
   const tabs = [
     { id: "explorer", icon: Files },
     { id: "search", icon: Search },
@@ -31,7 +36,10 @@ const VSCodeActivityBarSection = ({ activeSidebar, onSidebarChange, modifiedCoun
         ))}
       </div>
       <div className="flex flex-col items-center gap-2">
-        <button onClick={onToggleTerminal} className="p-2 text-[#616161] hover:text-[#333333] focus:outline-none">
+        <button
+          onClick={onToggleTerminal}
+          className="p-2 text-[#616161] hover:text-[#333333] focus:outline-none"
+        >
           <Terminal size={20} />
         </button>
         <button className="p-2 text-[#616161] hover:text-[#333333] focus:outline-none">

@@ -2,11 +2,15 @@ import { locations } from "@constants";
 import clsx from "clsx";
 
 const FinderSidebar = ({ activeLocation, setActiveLocation, isSidebarOpen, isNarrow }) => (
-  <div className={clsx(
-    "sidebar transition-all duration-300 h-full z-20 shrink-0",
-    isNarrow ? "absolute bg-gray-50/95 shadow-lg border-r border-gray-200" : "relative",
-    isNarrow && !isSidebarOpen ? "-translate-x-full w-0 overflow-hidden opacity-0" : "translate-x-0 w-48"
-  )}>
+  <div
+    className={clsx(
+      "sidebar transition-all duration-300 h-full z-20 shrink-0 overflow-y-auto",
+      isNarrow ? "absolute bg-gray-50/95 shadow-lg border-r border-gray-200" : "relative",
+      isNarrow && !isSidebarOpen
+        ? "-translate-x-full w-0 overflow-hidden opacity-0"
+        : "translate-x-0 w-48",
+    )}
+  >
     <div>
       <h3>Favorites</h3>
       <ul>

@@ -1,8 +1,16 @@
 import PostmanRequestBuilder from "../components/PostmanRequestBuilder";
 
 const PostmanRequestSection = ({
-  method, setMethod, url, setUrl, handleSend,
-  loading, activeTab, setActiveTab, reqBody, setReqBody,
+  method,
+  setMethod,
+  url,
+  setUrl,
+  handleSend,
+  loading,
+  activeTab,
+  setActiveTab,
+  reqBody,
+  setReqBody,
 }) => (
   <PostmanRequestBuilder
     method={method}

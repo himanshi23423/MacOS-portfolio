@@ -5,24 +5,45 @@ import VSCodeTerminalSection from "./VSCodeTerminalSection";
 import VSCodeStatusBarSection from "./VSCodeStatusBarSection";
 
 const languageMap = {
-  jsx: "JavaScript React", js: "JavaScript", tsx: "TypeScript React",
-  ts: "TypeScript", json: "JSON", css: "CSS", md: "Markdown",
-  html: "HTML", py: "Python", rs: "Rust",
+  jsx: "JavaScript React",
+  js: "JavaScript",
+  tsx: "TypeScript React",
+  ts: "TypeScript",
+  json: "JSON",
+  css: "CSS",
+  md: "Markdown",
+  html: "HTML",
+  py: "Python",
+  rs: "Rust",
 };
 
 const VSCodeSection = ({
-  files, activeFile, openTabs,
-  activeSidebarTab, setActiveSidebarTab,
-  explorerExpanded, setExplorerExpanded,
-  searchQuery, setSearchQuery,
+  files,
+  activeFile,
+  openTabs,
+  activeSidebarTab,
+  setActiveSidebarTab,
+  explorerExpanded,
+  setExplorerExpanded,
+  searchQuery,
+  setSearchQuery,
   searchResults,
-  commitMessage, setCommitMessage,
-  modifiedFiles, setModifiedFiles,
-  installedExtensions, setInstalledExtensions,
-  terminalHistory, terminalInput, setTerminalInput,
+  commitMessage,
+  setCommitMessage,
+  modifiedFiles,
+  setModifiedFiles,
+  installedExtensions,
+  setInstalledExtensions,
+  terminalHistory,
+  terminalInput,
+  setTerminalInput,
   terminalBottomRef,
-  handleContentChange, selectFile, closeTab, runCommand,
-  isTerminalOpen, onToggleTerminal,
+  handleContentChange,
+  selectFile,
+  closeTab,
+  runCommand,
+  isTerminalOpen,
+  onToggleTerminal,
 }) => {
   const ext = activeFile?.split(".").pop();
   const language = languageMap[ext] || "Plain Text";
@@ -43,7 +64,7 @@ const VSCodeSection = ({
           activeSidebar={activeSidebarTab}
           files={files}
           expandedFolders={explorerExpanded}
-          toggleFolder={(name) => setExplorerExpanded(prev => ({ ...prev, [name]: !prev[name] }))}
+          toggleFolder={(name) => setExplorerExpanded((prev) => ({ ...prev, [name]: !prev[name] }))}
           selectedFile={activeFile}
           onSelectFile={selectFile}
           searchQuery={searchQuery}
@@ -54,16 +75,19 @@ const VSCodeSection = ({
           installedExtensions={installedExtensions}
           onCommitMessageChange={setCommitMessage}
           onCommit={() => {
-            if (!commitMessage.trim()) { alert("Please type a commit message first!"); return; }
+            if (!commitMessage.trim()) {
+              alert("Please type a commit message first!");
+              return;
+            }
             alert(`Successfully committed changes to main:\n"${commitMessage}"`);
             setModifiedFiles({});
             setCommitMessage("");
           }}
           onToggleExtension={(name) => {
             if (installedExtensions.includes(name)) {
-              setInstalledExtensions(prev => prev.filter(n => n !== name));
+              setInstalledExtensions((prev) => prev.filter((n) => n !== name));
             } else {
-              setInstalledExtensions(prev => [...prev, name]);
+              setInstalledExtensions((prev) => [...prev, name]);
             }
           }}
         />
@@ -91,11 +115,7 @@ const VSCodeSection = ({
         runCommand={runCommand}
       />
 
-      <VSCodeStatusBarSection
-        activeFile={activeFile}
-        language={language}
-        lineCount={lineCount}
-      />
+      <VSCodeStatusBarSection activeFile={activeFile} language={language} lineCount={lineCount} />
     </div>
   );
 };

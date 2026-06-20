@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import { X, Phone, Video, Bell, BellOff, ExternalLink } from "lucide-react";
 
-const ContactInfoPanel = ({
-  activeChat,
-  mutedChats,
-  onToggleMute,
-  onTriggerCall,
-  onClose,
-}) => {
+const ContactInfoPanel = ({ activeChat, mutedChats, onToggleMute, onTriggerCall, onClose }) => {
   const [showRedirectPrompt, setShowRedirectPrompt] = useState(false);
 
   return (
@@ -22,29 +16,39 @@ const ContactInfoPanel = ({
 
       <div className="w-16 h-16 rounded-full shadow-md mt-4 overflow-hidden relative flex items-center justify-center bg-gray-50 border border-gray-100">
         {activeChat.avatar ? (
-          <img 
-            src={activeChat.avatar} 
-            alt={activeChat.name} 
-            className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-3.5 bg-gray-100 object-contain" : ""}`} 
+          <img
+            src={activeChat.avatar}
+            alt={activeChat.name}
+            className={`w-full h-full object-cover ${activeChat.id === "apple" ? "p-3.5 bg-gray-100 object-contain" : ""}`}
           />
         ) : (
-          <div className={`w-full h-full flex items-center justify-center text-white font-bold text-2xl ${activeChat.avatarColor}`}>
+          <div
+            className={`w-full h-full flex items-center justify-center text-white font-bold text-2xl ${activeChat.avatarColor}`}
+          >
             {activeChat.initials}
           </div>
         )}
       </div>
 
       <h3 className="font-bold text-gray-900 text-base mt-3 leading-tight">{activeChat.name}</h3>
-      <span className="text-xs text-gray-500 mt-1 truncate w-full">{activeChat.email || "No email info"}</span>
+      <span className="text-xs text-gray-500 mt-1 truncate w-full">
+        {activeChat.email || "No email info"}
+      </span>
 
       <div className="flex justify-center gap-4 my-5 w-full">
-        <button onClick={() => onTriggerCall("audio")} className="flex flex-col items-center gap-1 select-none">
+        <button
+          onClick={() => onTriggerCall("audio")}
+          className="flex flex-col items-center gap-1 select-none"
+        >
           <div className="w-9 h-9 rounded-full bg-gray-200 hover:bg-gray-300 text-blue-600 flex items-center justify-center active:scale-95 transition-all">
             <Phone className="w-4 h-4" />
           </div>
           <span className="text-[10px] text-gray-500 font-medium">call</span>
         </button>
-        <button onClick={() => onTriggerCall("video")} className="flex flex-col items-center gap-1 select-none">
+        <button
+          onClick={() => onTriggerCall("video")}
+          className="flex flex-col items-center gap-1 select-none"
+        >
           <div className="w-9 h-9 rounded-full bg-gray-200 hover:bg-gray-300 text-blue-600 flex items-center justify-center active:scale-95 transition-all">
             <Video className="w-4 h-4" />
           </div>
@@ -89,7 +93,9 @@ const ContactInfoPanel = ({
             }}
             className="flex items-center justify-between p-2 bg-gray-100 hover:bg-gray-200 rounded text-xs text-blue-600 transition-colors w-full font-medium"
           >
-            <span className="truncate max-w-[150px]">{activeChat.github.replace("https://", "")}</span>
+            <span className="truncate max-w-[150px]">
+              {activeChat.github.replace("https://", "")}
+            </span>
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
         ) : (
@@ -101,13 +107,23 @@ const ContactInfoPanel = ({
         <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center z-[100] p-6 text-center animate-in fade-in duration-150">
           <div className="space-y-4 max-w-xs transform animate-in zoom-in-95 duration-150">
             <div className="w-12 h-12 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
-              <img src="/images/github.png" alt="GitHub" className="w-7 h-7 object-contain" onError={(e) => { e.target.src = "/icons/safari.png" }} />
+              <img
+                src="/images/github.png"
+                alt="GitHub"
+                className="w-7 h-7 object-contain"
+                onError={(e) => {
+                  e.target.src = "/icons/safari.png";
+                }}
+              />
             </div>
             <div className="space-y-1">
               <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
               <p className="text-[11px] text-gray-500 leading-relaxed">
                 Do you want to open the link{" "}
-                <span className="font-semibold text-gray-700">{activeChat.github.replace("https://", "")}</span> in a new tab?
+                <span className="font-semibold text-gray-700">
+                  {activeChat.github.replace("https://", "")}
+                </span>{" "}
+                in a new tab?
               </p>
             </div>
             <div className="flex gap-2 pt-2">

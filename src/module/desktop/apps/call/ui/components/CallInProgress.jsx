@@ -23,7 +23,9 @@ const CallInProgress = ({
             className="absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
           />
         ) : (
-          <div className={`absolute inset-0 bg-linear-to-tr ${activeCall.avatarColor || "from-neutral-900 via-zinc-900 to-indigo-950"}`}>
+          <div
+            className={`absolute inset-0 bg-linear-to-tr ${activeCall.avatarColor || "from-neutral-900 via-zinc-900 to-indigo-950"}`}
+          >
             <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl" />
           </div>
         )}
@@ -32,7 +34,9 @@ const CallInProgress = ({
       {/* Top Header Overlay */}
       <div className="z-10 w-full flex flex-col items-center pt-8 text-center select-none pointer-events-none">
         <div className="flex items-center gap-1.5 bg-black/40 border border-white/10 px-3 py-1 rounded-full backdrop-blur-xl shadow-lg">
-          <span className={`w-1.5 h-1.5 rounded-full ${activeCall.status === "ringing" ? "bg-yellow-400 animate-ping" : "bg-emerald-500 animate-pulse"}`} />
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${activeCall.status === "ringing" ? "bg-yellow-400 animate-ping" : "bg-emerald-500 animate-pulse"}`}
+          />
           <span className="text-[10px] font-bold tracking-widest text-white/75 uppercase">
             FaceTime {activeCall.type === "video" ? "Video" : "Audio"}
           </span>
@@ -64,7 +68,10 @@ const CallInProgress = ({
               />
             ) : (
               <div className="w-28 h-28 rounded-full bg-linear-to-tr from-slate-700 to-slate-800 text-white flex items-center justify-center font-bold text-3xl uppercase shadow-2xl border-2 border-white/20 relative z-10">
-                {activeCall.name.split(" ").map(n => n[0]).join("")}
+                {activeCall.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
               </div>
             )}
           </div>
@@ -73,7 +80,7 @@ const CallInProgress = ({
               Camera Paused
             </span>
           )}
-          
+
           {/* Animated Wave visualizer */}
           {activeCall.status === "connected" && !micMuted && (
             <div className="flex items-center gap-2 h-10 mt-6">
@@ -83,7 +90,7 @@ const CallInProgress = ({
                   className="w-2 rounded-full bg-linear-to-t from-blue-500 to-cyan-400 animate-pulse"
                   style={{
                     height: `${Math.sin(idx) * 16 + 24}px`,
-                    animationDelay: `${idx * 150}ms`
+                    animationDelay: `${idx * 150}ms`,
                   }}
                 />
               ))}

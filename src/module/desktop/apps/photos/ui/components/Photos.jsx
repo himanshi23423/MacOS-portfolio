@@ -223,12 +223,12 @@ const Photos = () => {
       const index = activePhotos.findIndex((p) => p.id === photo.id);
       openWindow("imgfile", {
         currentIndex: index >= 0 ? index : 0,
-        photos: activePhotos.map(p => ({
+        photos: activePhotos.map((p) => ({
           id: p.id,
           name: p.title,
           imageUrl: p.img,
           resolution: p.resolution || "1920 × 1080",
-        }))
+        })),
       });
     }
   };

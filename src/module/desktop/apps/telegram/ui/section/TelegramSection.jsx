@@ -4,20 +4,33 @@ import TelegramChatListSection from "../section/TelegramChatListSection";
 import TelegramChatViewSection from "../section/TelegramChatViewSection";
 
 const TelegramSection = ({
-  activeChatId, setActiveChatId,
-  inputText, setInputText,
-  searchQuery, setSearchQuery,
-  isSidebarOpen, setIsSidebarOpen,
+  activeChatId,
+  setActiveChatId,
+  inputText,
+  setInputText,
+  searchQuery,
+  setSearchQuery,
+  isSidebarOpen,
+  setIsSidebarOpen,
   isTyping,
-  showProfileDrawer, setShowProfileDrawer,
-  nightMode, setNightMode,
-  isDrawerOpen, setIsDrawerOpen,
-  drawerSection, setDrawerSection,
-  userProfile, setUserProfile,
-  newGroupName, setNewGroupName,
-  newChannelName, setNewChannelName,
-  newChannelBio, setNewChannelBio,
-  chatThemeColor, setChatThemeColor,
+  showProfileDrawer,
+  setShowProfileDrawer,
+  nightMode,
+  setNightMode,
+  isDrawerOpen,
+  setIsDrawerOpen,
+  drawerSection,
+  setDrawerSection,
+  userProfile,
+  setUserProfile,
+  newGroupName,
+  setNewGroupName,
+  newChannelName,
+  setNewChannelName,
+  newChannelBio,
+  setNewChannelBio,
+  chatThemeColor,
+  setChatThemeColor,
   messagesEndRef,
   activeChat,
   handleSend,
@@ -61,7 +74,10 @@ const TelegramSection = ({
       <TelegramHeaderSection
         activeChat={activeChat}
         isDrawerOpen={isDrawerOpen}
-        onToggleDrawer={() => { setDrawerSection("menu"); setIsDrawerOpen(!isDrawerOpen); }}
+        onToggleDrawer={() => {
+          setDrawerSection("menu");
+          setIsDrawerOpen(!isDrawerOpen);
+        }}
         onToggleProfile={() => setShowProfileDrawer(!showProfileDrawer)}
         setShowProfileDrawer={setShowProfileDrawer}
         nightMode={nightMode}

@@ -217,7 +217,6 @@ const RefreshInterceptor = ({ enabled, isLoggedIn, setBooting, setIsLoggedIn }) 
             >
               {/* Main Sheet Container */}
               <div className="bg-zinc-950/75 border border-white/10 rounded-[30px] p-5 space-y-5 backdrop-blur-3xl shadow-[0_-15px_45px_rgba(0,0,0,0.6)]">
-                
                 {/* Drag Handle Indicator */}
                 <div className="w-10 h-1 bg-white/20 rounded-full mx-auto -mt-1 mb-1" />
 
@@ -322,7 +321,8 @@ const RefreshInterceptor = ({ enabled, isLoggedIn, setBooting, setIsLoggedIn }) 
                     Are you sure you want to shut down or restart your computer now?
                   </h3>
                   <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-normal">
-                    If you do nothing, the system will continue running. You can also choose to put the system to sleep.
+                    If you do nothing, the system will continue running. You can also choose to put
+                    the system to sleep.
                   </p>
                 </div>
 

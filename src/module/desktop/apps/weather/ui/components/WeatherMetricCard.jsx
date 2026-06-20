@@ -2,8 +2,12 @@ import React from "react";
 import { Compass, Sunrise, Sunset } from "lucide-react";
 
 const MetricCard = ({ title, children, className = "" }) => (
-  <div className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 flex flex-col justify-between border border-white/10 shadow-sm min-h-[120px] ${className}`}>
-    <h4 className="text-[9px] font-bold uppercase tracking-wider text-white/50 leading-none">{title}</h4>
+  <div
+    className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 flex flex-col justify-between border border-white/10 shadow-sm min-h-[120px] ${className}`}
+  >
+    <h4 className="text-[9px] font-bold uppercase tracking-wider text-white/50 leading-none">
+      {title}
+    </h4>
     {children}
   </div>
 );
@@ -27,7 +31,9 @@ export const WindCard = ({ windSpeed, windDir, windAngle }) => (
   <MetricCard title="Wind">
     <div className="flex items-center gap-3">
       <div className="space-y-1 min-w-0 flex-1">
-        <span className="text-xl font-bold tracking-tight">{windSpeed} <span className="text-[10px] font-semibold">mph</span></span>
+        <span className="text-xl font-bold tracking-tight">
+          {windSpeed} <span className="text-[10px] font-semibold">mph</span>
+        </span>
         <p className="text-[9px] font-bold opacity-80">{windDir} Direction</p>
       </div>
       <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center relative shrink-0">

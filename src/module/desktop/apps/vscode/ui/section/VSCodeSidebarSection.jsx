@@ -1,12 +1,23 @@
 import VSCodeSidebar from "../components/VSCodeSidebar";
 
 const VSCodeSidebarSection = ({
-  activeSidebar, files, expandedFolders, toggleFolder,
-  selectedFile, onSelectFile,
-  searchQuery, onSearchChange,
-  searchResults, commitMessage, modifiedFiles, installedExtensions,
-  onCommitMessageChange, onCommit, onToggleExtension,
-  isNarrow, containerWidth,
+  activeSidebar,
+  files,
+  expandedFolders,
+  toggleFolder,
+  selectedFile,
+  onSelectFile,
+  searchQuery,
+  onSearchChange,
+  searchResults,
+  commitMessage,
+  modifiedFiles,
+  installedExtensions,
+  onCommitMessageChange,
+  onCommit,
+  onToggleExtension,
+  isNarrow,
+  containerWidth,
 }) => (
   <VSCodeSidebar
     activeSidebarTab={activeSidebar}

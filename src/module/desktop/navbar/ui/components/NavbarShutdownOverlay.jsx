@@ -8,7 +8,11 @@ const NavbarShutdownOverlay = ({ isAsleep, isShuttingDown, setIsAsleep }) => (
     )}
     {isShuttingDown && (
       <div className="fixed inset-0 bg-black z-[9999999] flex flex-col items-center justify-center select-none cursor-none animate-fade-in">
-        <img src="/icons/logo.svg" alt="logo" className="w-14 h-14 invert opacity-95 animate-pulse mb-8" />
+        <img
+          src="/icons/logo.svg"
+          alt="logo"
+          className="w-14 h-14 invert opacity-95 animate-pulse mb-8"
+        />
         <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
       </div>
     )}

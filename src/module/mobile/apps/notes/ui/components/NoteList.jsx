@@ -9,10 +9,12 @@ const NoteList = ({
   onSearchChange,
   formatDate,
 }) => (
-  <div className={`
+  <div
+    className={`
     absolute md:relative inset-y-0 left-0 w-64 md:w-60 lg:w-64 bg-gray-50 border-r border-[#d1d1d1] flex flex-col z-20 transition-transform duration-300
     ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-  `}>
+  `}
+  >
     <div className="p-2.5">
       <div className="relative flex items-center bg-gray-200/60 rounded-md px-2 py-1.5">
         <Search className="w-4 h-4 text-gray-400 mr-2 shrink-0" />
@@ -28,9 +30,7 @@ const NoteList = ({
 
     <div className="flex-1 overflow-y-auto min-h-0 divide-y divide-gray-200">
       {notes.length === 0 ? (
-        <div className="p-4 text-center text-sm text-gray-400">
-          No Notes
-        </div>
+        <div className="p-4 text-center text-sm text-gray-400">No Notes</div>
       ) : (
         notes.map((note) => {
           const isSelected = activeNoteId === note.id;
@@ -49,7 +49,9 @@ const NoteList = ({
             >
               <h4 className="font-semibold text-sm truncate text-gray-900">{note.title}</h4>
               <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
-                <span className="shrink-0 font-medium text-blue-600">{formatDate(note.updatedAt)}</span>
+                <span className="shrink-0 font-medium text-blue-600">
+                  {formatDate(note.updatedAt)}
+                </span>
                 <span className="truncate text-gray-500">{preview}</span>
               </div>
             </div>

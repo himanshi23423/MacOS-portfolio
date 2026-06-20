@@ -27,7 +27,9 @@ const NavigationGroup = ({ title, items, activeTab, onSelect }) => (
               : "text-gray-600 hover:bg-gray-200/50 hover:text-gray-900"
           }`}
         >
-          <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-105 ${color}`} />
+          <Icon
+            className={`w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-105 ${color}`}
+          />
           <span>{label}</span>
         </button>
       ))}
@@ -107,4 +109,3 @@ const SidebarNavigation = ({
 );
 
 export default SidebarNavigation;
-

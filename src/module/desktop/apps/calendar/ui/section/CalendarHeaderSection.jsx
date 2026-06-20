@@ -42,7 +42,9 @@ const CalendarHeaderSection = ({
       >
         <ChevronLeft className="w-3.5 h-3.5" />
       </button>
-      <span className={`font-bold text-gray-700 text-center leading-none ${isNarrow ? "text-xs w-20" : "text-sm w-28"}`}>
+      <span
+        className={`font-bold text-gray-700 text-center leading-none ${isNarrow ? "text-xs w-20" : "text-sm w-28"}`}
+      >
         {MONTHS[month]} {year}
       </span>
       <button

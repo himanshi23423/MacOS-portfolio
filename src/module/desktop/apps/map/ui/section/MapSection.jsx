@@ -26,7 +26,7 @@ const MapSection = (props) => {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
         isNarrow={isNarrow}
-        onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
+        onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
         activeTab={props.activeTab}
         setActiveTab={props.setActiveTab}
         activeKey={props.activeKey}

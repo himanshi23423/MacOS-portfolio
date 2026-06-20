@@ -8,5 +8,5 @@ export const TRACKERS = [
   { name: "hotjar.com", category: "Analytics", count: 5 },
   { name: "segment.io", category: "Data Manager", count: 3 },
   { name: "criteo.com", category: "Advertising", count: 7 },
-  { name: "amazon-adsystem.com", category: "Advertising", count: 9 }
+  { name: "amazon-adsystem.com", category: "Advertising", count: 9 },
 ];

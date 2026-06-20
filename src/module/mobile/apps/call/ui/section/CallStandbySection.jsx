@@ -24,7 +24,8 @@ const CallStandbySection = () => (
     <div className="space-y-2 max-w-sm">
       <h3 className="text-sm font-bold text-gray-800">FaceTime</h3>
       <p className="text-xs text-gray-400 leading-relaxed">
-        Call developers, assistants, and colleagues using high-fidelity FaceTime audio or video directly from your browser.
+        Call developers, assistants, and colleagues using high-fidelity FaceTime audio or video
+        directly from your browser.
       </p>
     </div>
     <div className="text-[10px] text-gray-400 font-semibold flex items-center gap-1 bg-gray-200/50 px-3 py-1 rounded-full border border-gray-300/20">
