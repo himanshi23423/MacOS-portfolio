@@ -150,15 +150,15 @@ const ImageApp = () => {
           </button>
           <button
             className="pp-dot pp-dot-yellow"
-            title="Fullscreen"
-            onClick={() => toggleMaximize(WINDOW_KEY)}
+            title="Minimize"
+            onClick={() => minimizeWindow(WINDOW_KEY)}
           >
             <Minus size={7} strokeWidth={2.5} />
           </button>
           <button
             className="pp-dot pp-dot-green"
-            title="Minimize"
-            onClick={() => minimizeWindow(WINDOW_KEY)}
+            title="Fullscreen"
+            onClick={() => toggleMaximize(WINDOW_KEY)}
           >
             <Minus size={7} strokeWidth={2.5} />
           </button>

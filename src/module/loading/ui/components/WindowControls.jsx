@@ -45,8 +45,8 @@ const WindowControls = ({ target, onBack }) => {
   return (
     <div id="window-controls">
       <div className="close" onClick={() => closeWindow(target)} />
-      <div className="minimize" onClick={() => toggleMaximize(target)} title="Zoom" />
-      <div className="maximize" onClick={() => minimizeWindow(target)} title="Minimize" />
+      <div className="minimize" onClick={() => minimizeWindow(target)} title="Minimize" />
+      <div className="maximize" onClick={() => toggleMaximize(target)} title="Zoom" />
     </div>
   );
 };
