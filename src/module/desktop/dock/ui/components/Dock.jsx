@@ -2,7 +2,7 @@ import { dockApps } from "@constants";
 import useWindowsStore from "@store/window";
 import { Fragment, useMemo, useState } from "react";
 import DockIcon from "./DockIcon";
-import useDockAnimation from "./useDockAnimation";
+import useDock from "../../hooks/useDock";
 
 const Dock = () => {
   const {
@@ -18,7 +18,7 @@ const Dock = () => {
   const [hoveredAppId, setHoveredAppId] = useState(null);
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [isDraggingActive, setIsDraggingActive] = useState(false);
-  const dockRef = useDockAnimation();
+  const dockRef = useDock();
 
   const focusedWindowId = useMemo(() => {
     return Object.entries(windows).reduce((focusedId, [id, win]) => {

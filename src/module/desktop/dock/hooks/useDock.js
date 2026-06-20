@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { useRef, useEffect } from "react";
 import useWindowsStore from "@store/window";
 
-const useDockAnimation = () => {
+const useDock = () => {
   const dockRef = useRef(null);
   const isDockDragging = useWindowsStore((state) => state.isDockDragging);
 
@@ -86,4 +86,4 @@ const useDockAnimation = () => {
   return dockRef;
 };
 
-export default useDockAnimation;
+export default useDock;
