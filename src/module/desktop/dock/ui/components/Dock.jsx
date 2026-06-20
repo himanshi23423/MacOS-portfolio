@@ -5,9 +5,19 @@ import DockIcon from "./DockIcon";
 import useDockAnimation from "./useDockAnimation";
 
 const Dock = () => {
-  const { openWindow, closeWindow, unminimizeWindow, windows, music, isDockHiddenByCollision } =
-    useWindowsStore();
+  const {
+    openWindow,
+    closeWindow,
+    unminimizeWindow,
+    windows,
+    isDockHiddenByCollision,
+    dockAppIds,
+    reorderDockApps,
+    setDockDragging,
+  } = useWindowsStore();
   const [hoveredAppId, setHoveredAppId] = useState(null);
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  const [isDraggingActive, setIsDraggingActive] = useState(false);
   const dockRef = useDockAnimation();
 
   const focusedWindowId = useMemo(() => {
@@ -17,6 +27,13 @@ const Dock = () => {
       return win.zIndex > windows[focusedId].zIndex ? id : focusedId;
     }, null);
   }, [windows]);
+
+  const orderedDockApps = useMemo(() => {
+    if (!dockAppIds) return dockApps;
+    return dockAppIds
+      .map((id) => dockApps.find((app) => app.id === id))
+      .filter(Boolean);
+  }, [dockAppIds]);
 
   const toggleApp = (app) => {
     if (!app.canOpen) return;
@@ -38,6 +55,41 @@ const Dock = () => {
     (win) => win.isOpen && win.isMaximized && !win.isMinimized,
   );
 
+  const handleDragStart = (e, index, id) => {
+    e.dataTransfer.setData("text/plain", id);
+    e.dataTransfer.setData("drag-source", "dock");
+    e.dataTransfer.setData("drag-index", index.toString());
+    e.dataTransfer.effectAllowed = "copyMove";
+
+    // Set custom clean drag image using the inner icon/image element only
+    const img = e.currentTarget.querySelector("img") || e.currentTarget.querySelector(".size-full > div");
+    if (img) {
+      e.dataTransfer.setDragImage(img, 24, 24);
+    }
+
+    setDraggedIndex(index);
+    setDockDragging(true);
+
+    // Timeout ensures the browser has successfully captured the drag image before we hide it in the DOM
+    setTimeout(() => {
+      setIsDraggingActive(true);
+    }, 0);
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    if (draggedIndex !== null && draggedIndex !== index) {
+      reorderDockApps(draggedIndex, index);
+      setDraggedIndex(index);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+    setIsDraggingActive(false);
+    setDockDragging(false);
+  };
+
   return (
     <section
       id="dock"
@@ -45,7 +97,7 @@ const Dock = () => {
       aria-label="Dock"
     >
       <div ref={dockRef} className="dock-container">
-        {dockApps.map(({ id, name, icon, canOpen }) => (
+        {orderedDockApps.map(({ id, name, icon, canOpen }, index) => (
           <Fragment key={id}>
             {id === "folder" && (
               <div className="dock-separator-wrap" aria-hidden="true">
@@ -60,6 +112,13 @@ const Dock = () => {
               onMouseEnter={() => setHoveredAppId(id)}
               onMouseLeave={() => setHoveredAppId(null)}
               onClick={() => toggleApp({ id, canOpen })}
+              draggable={true}
+              onDragStart={(e) => handleDragStart(e, index, id)}
+              onDragOver={(e) => handleDragOver(e, index)}
+              onDragEnd={handleDragEnd}
+              style={{
+                opacity: isDraggingActive && draggedIndex === index ? 0 : 1,
+              }}
             />
           </Fragment>
         ))}

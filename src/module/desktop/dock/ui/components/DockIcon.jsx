@@ -1,3 +1,5 @@
+import useWindowsStore from "@store/window";
+
 const scaleMap = {
   finder: "scale-[0.90]",
   launchpad: "scale-[0.90]",
@@ -53,19 +55,30 @@ const DockIcon = ({
   onMouseEnter,
   onMouseLeave,
   onClick,
+  draggable,
+  onDragStart,
+  onDragOver,
+  onDragEnd,
+  style,
 }) => {
   const { id, name, icon, canOpen } = app;
   const isOpen = Boolean(state?.isOpen);
   const isMinimized = Boolean(state?.isMinimized);
+  const isDockDragging = useWindowsStore((state) => state.isDockDragging);
 
   return (
     <div
       className={[
-        "dock-item relative flex justify-center",
+        "dock-item relative flex justify-center cursor-grab active:cursor-grabbing select-none",
         isOpen ? "dock-item-open" : "",
         isMinimized ? "dock-item-minimized" : "",
         isFocused ? "dock-item-focused" : "",
       ].filter(Boolean).join(" ")}
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDragEnd={onDragEnd}
+      style={style}
     >
       <button
         type="button"
@@ -77,7 +90,7 @@ const DockIcon = ({
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-        {isHovered && (
+        {isHovered && !isDockDragging && (
           <span className="dock-tooltip-custom animate-tooltip">
             {name}
           </span>

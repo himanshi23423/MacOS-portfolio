@@ -1,17 +1,24 @@
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand";
-import { INITIAL_Z_INDEX, WINDOW_CONFIG } from "@constants";
+import { INITIAL_Z_INDEX, WINDOW_CONFIG, dockApps } from "@constants";
 
 const useWindowsStore = create(
   immer((set) => ({
     windows: WINDOW_CONFIG,
     nextZIndex: INITIAL_Z_INDEX + 1,
     favorites: [],
+    dockAppIds: dockApps.map((app) => app.id),
+    desktopShortcuts: [],
     isDockHiddenByCollision: false,
+    isDockDragging: false,
     githubRedirect: null,
     setGithubRedirect: (redirect) =>
       set((state) => {
         state.githubRedirect = redirect;
+      }),
+    setDockDragging: (isDragging) =>
+      set((state) => {
+        state.isDockDragging = isDragging;
       }),
     music: {
       activeTrack: {
@@ -144,6 +151,42 @@ const useWindowsStore = create(
         const win = state.windows[windowKey];
         if (!win) return;
         win.isMaximized = !win.isMaximized;
+      }),
+    reorderDockApps: (startIndex, endIndex) =>
+      set((state) => {
+        const result = Array.from(state.dockAppIds);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+        state.dockAppIds = result;
+      }),
+    addDesktopShortcut: (appId, x, y) =>
+      set((state) => {
+        const exists = state.desktopShortcuts.some((s) => s.appId === appId);
+        if (exists) return;
+
+        const app = dockApps.find((a) => a.id === appId);
+        if (!app) return;
+
+        state.desktopShortcuts.push({
+          id: `shortcut-${appId}-${Date.now()}`,
+          appId,
+          name: app.name,
+          icon: app.icon,
+          x,
+          y,
+        });
+      }),
+    removeDesktopShortcut: (id) =>
+      set((state) => {
+        state.desktopShortcuts = state.desktopShortcuts.filter((s) => s.id !== id);
+      }),
+    updateShortcutPosition: (id, x, y) =>
+      set((state) => {
+        const shortcut = state.desktopShortcuts.find((s) => s.id === id);
+        if (shortcut) {
+          shortcut.x = x;
+          shortcut.y = y;
+        }
       }),
   })),
 );
